@@ -182,13 +182,8 @@ export function takeSquadRestDay(career: CareerSave): CareerSave {
 
   // Reduce fatigue by 15% for all players of selectedTeamId in ALL_PLAYERS
   ALL_PLAYERS.forEach((p) => {
-    if (p.countryId === career.selectedTeamId && p.workload) {
-      p.workload.fatigueLevel = Math.max(0, p.workload.fatigueLevel - 15);
-      if (p.workload.fatigueLevel < 30) {
-        p.workload.injuryRisk = 'LOW';
-      } else if (p.workload.fatigueLevel < 60) {
-        p.workload.injuryRisk = 'MODERATE';
-      }
+    if (p.countryId === career.selectedTeamId) {
+      p.workloadFatigue = Math.max(0, (p.workloadFatigue || 15) - 15);
     }
   });
 

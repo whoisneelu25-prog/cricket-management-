@@ -29,9 +29,19 @@ export function getPlayerById(playerId: string): Player {
     countryId: 'GEN',
     countryName: 'International',
     age: 26,
+    gender: 'MALE',
+    status: 'ACTIVE',
     role: 'ALL_ROUNDER',
     battingHand: 'RIGHT_HAND',
     bowlingStyle: 'RIGHT_ARM_FAST_MEDIUM',
+    formatEligibility: { TEST: true, ODI: true, T20I: true },
+    workloadFatigue: 15,
+    sourceMeta: {
+      source: 'ICC',
+      sourceId: playerId,
+      lastUpdated: '2026-11-03',
+      verified: false,
+    },
     testRating: 75,
     odiRating: 75,
     t20Rating: 75,
@@ -343,7 +353,7 @@ export function stepMatchBall(match: Match): Match {
   const updatedInningsList = [...match.innings];
   updatedInningsList[match.currentInningsIndex] = updatedInnings;
 
-  let nextMatchStatus = match.status;
+  let nextMatchStatus: Match['status'] = match.status;
   let finalResultText = match.resultText;
   let finalPotm = match.playerOfTheMatch;
 

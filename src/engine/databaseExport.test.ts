@@ -35,30 +35,27 @@ test('buildAllDatabaseExportFiles generates all 10 required JSON files plus vali
   }
 });
 
-test('exportCountriesData and exportAllPlayersData reflect untouched database counts', () => {
+test('exportCountriesData and exportAllPlayersData reflect updated master database counts', () => {
   const countries = exportCountriesData();
-  assert.equal(countries.totalRegisteredCountries, 12);
-  assert.equal(countries.unregisteredCountriesReferencedByPlayers.length, 2); // NAM and USA
+  assert.equal(countries.totalRegisteredCountries, 22);
+  assert.equal(countries.unregisteredCountriesReferencedByPlayers.length, 0);
 
   const players = exportAllPlayersData();
-  assert.equal(players.totalPlayers, 85);
-  assert.equal(players.corePlayersCount, 25);
-  assert.equal(players.additionalSquadMembersCount, 60);
+  assert.equal(players.totalPlayers, 603);
+  assert.equal(players.corePlayersCount, 418);
+  assert.equal(players.additionalSquadMembersCount, 185);
 });
 
-test('generateDatabaseValidationReport detects duplicate shortNames, missing rosters, pool contamination, and lineup inconsistencies', () => {
+test('generateDatabaseValidationReport audits player pools, lineups, and format coverage', () => {
   const report = generateDatabaseValidationReport();
 
-  assert.equal(report.summary.totalPlayers, 85);
-  assert.ok(report.summary.totalIssuesFound > 0);
-  assert.ok(report.missingPlayers.some((i) => i.countryId === 'SRI'));
-  assert.ok(report.missingPlayers.some((i) => i.countryId === 'BAN'));
-  assert.ok(report.missingPlayers.some((i) => i.countryId === 'IRE'));
-  assert.ok(report.missingPlayers.some((i) => i.countryId === 'ZIM'));
-  assert.ok(report.incorrectCountryAssignments.some((i) => i.countryId === 'NAM'));
-  assert.ok(report.incorrectCountryAssignments.some((i) => i.countryId === 'USA'));
-  assert.ok(report.formatLineupInconsistencies.length > 0);
-  assert.ok(report.schemaAndTourAnomalies.some((i) => i.id.includes('invalid_bowling_style')));
+  assert.equal(report.summary.totalPlayers, 603);
+  assert.equal(report.summary.totalRegisteredCountries, 22);
+  assert.ok(report.countryRosterAudit.length >= 22);
+  assert.ok(report.countryRosterAudit.some((c) => c.countryId === 'IND' && c.status === 'COMPLETE'));
+  assert.ok(report.countryRosterAudit.some((c) => c.countryId === 'AUS' && c.status === 'COMPLETE'));
+  assert.ok(report.countryRosterAudit.some((c) => c.countryId === 'ENG' && c.status === 'COMPLETE'));
+  assert.ok(report.countryRosterAudit.some((c) => c.countryId === 'SL' && c.status === 'COMPLETE'));
 });
 
 test('createZipArchive builds a valid PKZIP archive with PK header and EOCD signature', () => {

@@ -1,0 +1,1120 @@
+{
+  "dataset_version": "2026-11-03",
+  "research_period": {
+    "start": "2025-01-01",
+    "end": "2026-11-03"
+  },
+  "total_format_captain_records": 53,
+  "format_captains": [
+    {
+      "country_code": "IND",
+      "country_name": "India",
+      "format": "Test",
+      "captain_id": "PLY_IND_038",
+      "captain_name": "Shubman Gill",
+      "vice_captain_id": "PLY_IND_029",
+      "vice_captain_name": "Rishabh Pant",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_IND_030",
+          "player_name": "Rohit Sharma"
+        },
+        {
+          "player_id": "PLY_IND_011",
+          "player_name": "Jasprit Bumrah"
+        },
+        {
+          "player_id": "PLY_IND_012",
+          "player_name": "KL Rahul"
+        }
+      ],
+      "appointment_or_verification_date": "2025-05-24",
+      "leadership_notes": "Shubman Gill appointed Test captain on 2025-05-24 after Rohit Sharma retired from Tests on 2025-05-07; Rishabh Pant and KL Rahul served as vice-captains.",
+      "source_url": "https://en.wikipedia.org/wiki/Indian_cricket_team_in_England_in_2025",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "IND",
+      "country_name": "India",
+      "format": "ODI",
+      "captain_id": "PLY_IND_038",
+      "captain_name": "Shubman Gill",
+      "vice_captain_id": "PLY_IND_037",
+      "vice_captain_name": "Shreyas Iyer",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_IND_030",
+          "player_name": "Rohit Sharma"
+        },
+        {
+          "player_id": "PLY_IND_012",
+          "player_name": "KL Rahul"
+        }
+      ],
+      "appointment_or_verification_date": "2025-10-04",
+      "leadership_notes": "Rohit Sharma led India to win the 2025 ICC Champions Trophy (2025-03-09); Shubman Gill appointed ODI captain from October 2025 with Shreyas Iyer as vice-captain.",
+      "source_url": "https://en.wikipedia.org/wiki/Indian_cricket_team_in_Australia_in_2025%E2%80%9326",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "IND",
+      "country_name": "India",
+      "format": "T20I",
+      "captain_id": "PLY_IND_037",
+      "captain_name": "Shreyas Iyer",
+      "vice_captain_id": "PLY_IND_041",
+      "vice_captain_name": "Tilak Varma",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_IND_039",
+          "player_name": "Suryakumar Yadav"
+        },
+        {
+          "player_id": "PLY_IND_004",
+          "player_name": "Axar Patel"
+        },
+        {
+          "player_id": "PLY_IND_031",
+          "player_name": "Ruturaj Gaikwad"
+        }
+      ],
+      "appointment_or_verification_date": "2026-06-06",
+      "leadership_notes": "Suryakumar Yadav led India to win the 2025 Asia Cup and 2026 ICC Men's T20 World Cup (2026-03-08); Shreyas Iyer appointed T20I captain in June 2026.",
+      "source_url": "https://en.wikipedia.org/wiki/2026_Men%27s_T20_World_Cup_final",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "AUS",
+      "country_name": "Australia",
+      "format": "Test",
+      "captain_id": "PLY_AUS_030",
+      "captain_name": "Pat Cummins",
+      "vice_captain_id": "PLY_AUS_034",
+      "vice_captain_name": "Steve Smith",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_AUS_037",
+          "player_name": "Travis Head"
+        }
+      ],
+      "appointment_or_verification_date": "2025-06-11",
+      "leadership_notes": "Pat Cummins full-time Test captain; Steve Smith and Travis Head co-vice-captains (Smith stand-in captain in Sri Lanka Jan–Feb 2025 and Ashes 1st/2nd Tests Nov–Dec 2025).",
+      "source_url": "https://en.wikipedia.org/wiki/2025_World_Test_Championship_final",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "AUS",
+      "country_name": "Australia",
+      "format": "ODI",
+      "captain_id": "PLY_AUS_030",
+      "captain_name": "Pat Cummins",
+      "vice_captain_id": "PLY_AUS_024",
+      "vice_captain_name": "Mitchell Marsh",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_AUS_034",
+          "player_name": "Steve Smith"
+        },
+        {
+          "player_id": "PLY_AUS_015",
+          "player_name": "Josh Inglis"
+        },
+        {
+          "player_id": "PLY_AUS_037",
+          "player_name": "Travis Head"
+        }
+      ],
+      "appointment_or_verification_date": "2025-08-19",
+      "leadership_notes": "Steve Smith captained Australia at 2025 Champions Trophy before retiring from ODIs on 2025-03-05; Mitchell Marsh and Pat Cummins led in 2025–2026 ODIs.",
+      "source_url": "https://en.wikipedia.org/wiki/2025_Champions_Trophy_squads",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "AUS",
+      "country_name": "Australia",
+      "format": "T20I",
+      "captain_id": "PLY_AUS_024",
+      "captain_name": "Mitchell Marsh",
+      "vice_captain_id": "PLY_AUS_037",
+      "vice_captain_name": "Travis Head",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_AUS_015",
+          "player_name": "Josh Inglis"
+        },
+        {
+          "player_id": "PLY_AUS_020",
+          "player_name": "Matt Renshaw"
+        }
+      ],
+      "appointment_or_verification_date": "2026-01-01",
+      "leadership_notes": "Mitchell Marsh full-time T20I captain through 2026 T20 World Cup; Travis Head and Matt Renshaw served as stand-in captains.",
+      "source_url": "https://en.wikipedia.org/wiki/2026_Men%27s_T20_World_Cup_squads",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "ENG",
+      "country_name": "England",
+      "format": "Test",
+      "captain_id": "PLY_ENG_013",
+      "captain_name": "Joe Root",
+      "vice_captain_id": "PLY_ENG_008",
+      "vice_captain_name": "Harry Brook",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_ENG_003",
+          "player_name": "Ben Stokes"
+        },
+        {
+          "player_id": "PLY_ENG_023",
+          "player_name": "Ollie Pope"
+        }
+      ],
+      "appointment_or_verification_date": "2026-08-19",
+      "leadership_notes": "Ben Stokes captained England Tests until retiring on 2026-06-29; Joe Root reappointed Test captain on 2026-08-19 with Harry Brook as vice-captain.",
+      "source_url": "https://en.wikipedia.org/wiki/List_of_England_cricket_captains",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "ENG",
+      "country_name": "England",
+      "format": "ODI",
+      "captain_id": "PLY_ENG_008",
+      "captain_name": "Harry Brook",
+      "vice_captain_id": "PLY_ENG_002",
+      "vice_captain_name": "Ben Duckett",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_ENG_015",
+          "player_name": "Jos Buttler"
+        }
+      ],
+      "appointment_or_verification_date": "2025-04-07",
+      "leadership_notes": "Harry Brook appointed England white-ball captain on 2025-04-07 after Jos Buttler stepped down on 2025-02-28 following the Champions Trophy.",
+      "source_url": "https://en.wikipedia.org/wiki/List_of_England_cricket_captains",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "ENG",
+      "country_name": "England",
+      "format": "T20I",
+      "captain_id": "PLY_ENG_008",
+      "captain_name": "Harry Brook",
+      "vice_captain_id": "PLY_ENG_009",
+      "vice_captain_name": "Jacob Bethell",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_ENG_015",
+          "player_name": "Jos Buttler"
+        },
+        {
+          "player_id": "PLY_ENG_024",
+          "player_name": "Phil Salt"
+        }
+      ],
+      "appointment_or_verification_date": "2025-04-07",
+      "leadership_notes": "Harry Brook led England to the 2026 T20 World Cup semi-finals after succeeding Jos Buttler in April 2025.",
+      "source_url": "https://en.wikipedia.org/wiki/2026_Men%27s_T20_World_Cup_squads",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "PAK",
+      "country_name": "Pakistan",
+      "format": "Test",
+      "captain_id": "PLY_PAK_005",
+      "captain_name": "Babar Azam",
+      "vice_captain_id": "PLY_PAK_027",
+      "vice_captain_name": "Saud Shakeel",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_PAK_031",
+          "player_name": "Shan Masood"
+        }
+      ],
+      "appointment_or_verification_date": "2026-07-05",
+      "leadership_notes": "Shan Masood captained Pakistan Tests through May 2026; Babar Azam reappointed Test captain on 2026-07-05 with Saud Shakeel as vice-captain.",
+      "source_url": "https://www.icc-cricket.com/news/babar-back-as-captain-as-pakistan-name-upcoming-test-squads",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "PAK",
+      "country_name": "Pakistan",
+      "format": "ODI",
+      "captain_id": "PLY_PAK_030",
+      "captain_name": "Shaheen Shah Afridi",
+      "vice_captain_id": "PLY_PAK_025",
+      "vice_captain_name": "Salman Ali Agha",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_PAK_019",
+          "player_name": "Mohammad Rizwan"
+        }
+      ],
+      "appointment_or_verification_date": "2025-10-20",
+      "leadership_notes": "Mohammad Rizwan captained Pakistan ODIs Jan–Aug 2025 (including CT 2025); Shaheen Shah Afridi appointed ODI captain on 2025-10-20 with Salman Ali Agha as vice-captain.",
+      "source_url": "https://en.wikipedia.org/wiki/Shaheen_Afridi",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "PAK",
+      "country_name": "Pakistan",
+      "format": "T20I",
+      "captain_id": "PLY_PAK_025",
+      "captain_name": "Salman Ali Agha",
+      "vice_captain_id": "PLY_PAK_028",
+      "vice_captain_name": "Shadab Khan",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_PAK_019",
+          "player_name": "Mohammad Rizwan"
+        }
+      ],
+      "appointment_or_verification_date": "2025-03-04",
+      "leadership_notes": "Salman Ali Agha appointed permanent T20I captain in March 2025, leading Pakistan at the 2025 Asia Cup (Runner-up) and 2026 T20 World Cup.",
+      "source_url": "https://en.wikipedia.org/wiki/Salman_Ali_Agha",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "RSA",
+      "country_name": "South Africa",
+      "format": "Test",
+      "captain_id": "PLY_RSA_028",
+      "captain_name": "Temba Bavuma",
+      "vice_captain_id": "PLY_RSA_001",
+      "vice_captain_name": "Aiden Markram",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_RSA_014",
+          "player_name": "Keshav Maharaj"
+        }
+      ],
+      "appointment_or_verification_date": "2025-06-14",
+      "leadership_notes": "Temba Bavuma led South Africa to win the 2023–2025 ICC World Test Championship Final at Lord's (2025-06-14) and a 2–0 Test series win in India (Nov 2025).",
+      "source_url": "https://en.wikipedia.org/wiki/Temba_Bavuma",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "RSA",
+      "country_name": "South Africa",
+      "format": "ODI",
+      "captain_id": "PLY_RSA_028",
+      "captain_name": "Temba Bavuma",
+      "vice_captain_id": "PLY_RSA_001",
+      "vice_captain_name": "Aiden Markram",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_RSA_014",
+          "player_name": "Keshav Maharaj"
+        }
+      ],
+      "appointment_or_verification_date": "2025-02-19",
+      "leadership_notes": "Temba Bavuma full-time ODI captain (2025 Champions Trophy semi-finalists and 2–1 series win vs Australia in Sep 2026).",
+      "source_url": "https://en.wikipedia.org/wiki/2025_Champions_Trophy_squads",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "RSA",
+      "country_name": "South Africa",
+      "format": "T20I",
+      "captain_id": "PLY_RSA_001",
+      "captain_name": "Aiden Markram",
+      "vice_captain_id": "PLY_RSA_023",
+      "vice_captain_name": "Quinton de Kock",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_RSA_014",
+          "player_name": "Keshav Maharaj"
+        },
+        {
+          "player_id": "PLY_RSA_011",
+          "player_name": "Heinrich Klaasen"
+        }
+      ],
+      "appointment_or_verification_date": "2026-01-02",
+      "leadership_notes": "Aiden Markram full-time T20I captain, leading South Africa to the 2026 ICC Men's T20 World Cup semi-finals.",
+      "source_url": "https://en.wikipedia.org/wiki/Aiden_Markram",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "NZL",
+      "country_name": "New Zealand",
+      "format": "Test",
+      "captain_id": "PLY_NZL_027",
+      "captain_name": "Tom Latham",
+      "vice_captain_id": "PLY_NZL_021",
+      "vice_captain_name": "Mitchell Santner",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_NZL_018",
+          "player_name": "Matt Henry"
+        }
+      ],
+      "appointment_or_verification_date": "2025-07-30",
+      "leadership_notes": "Tom Latham full-time Test captain across 2025–2026 (including 2–0 vs ZIM, 2–0 vs WI, and 2–1 Crowe–Thorpe Trophy win in England Jun 2026).",
+      "source_url": "https://en.wikipedia.org/wiki/Tom_Latham_(cricketer)",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "NZL",
+      "country_name": "New Zealand",
+      "format": "ODI",
+      "captain_id": "PLY_NZL_021",
+      "captain_name": "Mitchell Santner",
+      "vice_captain_id": "PLY_NZL_027",
+      "vice_captain_name": "Tom Latham",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_NZL_020",
+          "player_name": "Michael Bracewell"
+        }
+      ],
+      "appointment_or_verification_date": "2024-12-18",
+      "leadership_notes": "Mitchell Santner appointed permanent white-ball captain in Dec 2024, leading New Zealand to the 2025 Champions Trophy Final; Michael Bracewell led 2–1 ODI series win in India (Jan 2026).",
+      "source_url": "https://en.wikipedia.org/wiki/Mitchell_Santner",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "NZL",
+      "country_name": "New Zealand",
+      "format": "T20I",
+      "captain_id": "PLY_NZL_021",
+      "captain_name": "Mitchell Santner",
+      "vice_captain_id": "PLY_NZL_006",
+      "vice_captain_name": "Daryl Mitchell",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_NZL_020",
+          "player_name": "Michael Bracewell"
+        },
+        {
+          "player_id": "PLY_NZL_005",
+          "player_name": "Cole McConchie"
+        }
+      ],
+      "appointment_or_verification_date": "2024-12-18",
+      "leadership_notes": "Mitchell Santner led New Zealand to the 2026 ICC Men's T20 World Cup Final on 2026-03-08.",
+      "source_url": "https://en.wikipedia.org/wiki/2026_Men%27s_T20_World_Cup_final",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "SL",
+      "country_name": "Sri Lanka",
+      "format": "Test",
+      "captain_id": "PLY_SL_019",
+      "captain_name": "Kusal Mendis",
+      "vice_captain_id": "PLY_SL_017",
+      "vice_captain_name": "Kamindu Mendis",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_SL_006",
+          "player_name": "Dhananjaya de Silva"
+        }
+      ],
+      "appointment_or_verification_date": "2026-10-15",
+      "leadership_notes": "Dhananjaya de Silva captained Sri Lanka Tests from Jan 2025 through Aug 2026; Kusal Mendis appointed all-format captain in Oct 2026 with Kamindu Mendis as vice-captain.",
+      "source_url": "https://en.wikipedia.org/wiki/Kusal_Mendis",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "SL",
+      "country_name": "Sri Lanka",
+      "format": "ODI",
+      "captain_id": "PLY_SL_019",
+      "captain_name": "Kusal Mendis",
+      "vice_captain_id": "PLY_SL_017",
+      "vice_captain_name": "Kamindu Mendis",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_SL_004",
+          "player_name": "Charith Asalanka"
+        }
+      ],
+      "appointment_or_verification_date": "2026-10-15",
+      "leadership_notes": "Charith Asalanka captained Sri Lanka ODIs Jan 2025 – Sep 2026; Kusal Mendis appointed captain for Oct 2026 Pakistan ODI Tri-Series.",
+      "source_url": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Pakistan_ODI_Tri-Series",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "SL",
+      "country_name": "Sri Lanka",
+      "format": "T20I",
+      "captain_id": "PLY_SL_005",
+      "captain_name": "Dasun Shanaka",
+      "vice_captain_id": "PLY_SL_036",
+      "vice_captain_name": "Wanindu Hasaranga",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_SL_004",
+          "player_name": "Charith Asalanka"
+        },
+        {
+          "player_id": "PLY_SL_019",
+          "player_name": "Kusal Mendis"
+        }
+      ],
+      "appointment_or_verification_date": "2025-12-19",
+      "leadership_notes": "Dasun Shanaka replaced Charith Asalanka as T20I captain on 2025-12-19 for the 2026 ICC Men's T20 World Cup; Kusal Mendis led in Oct 2026.",
+      "source_url": "https://en.wikipedia.org/wiki/2026_Men%27s_T20_World_Cup_squads",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "BAN",
+      "country_name": "Bangladesh",
+      "format": "Test",
+      "captain_id": "PLY_BAN_014",
+      "captain_name": "Najmul Hossain Shanto",
+      "vice_captain_id": "PLY_BAN_009",
+      "vice_captain_name": "Mehidy Hasan Miraz",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_BAN_005",
+          "player_name": "Litton Das"
+        }
+      ],
+      "appointment_or_verification_date": "2025-11-01",
+      "leadership_notes": "Najmul Hossain Shanto captained Bangladesh Tests across 2025–2026 (reinstated Nov 2025 after briefly stepping down in Jun 2025) with Mehidy Hasan Miraz as vice-captain.",
+      "source_url": "https://en.wikipedia.org/wiki/Najmul_Hossain_Shanto",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "BAN",
+      "country_name": "Bangladesh",
+      "format": "ODI",
+      "captain_id": "PLY_BAN_005",
+      "captain_name": "Litton Das",
+      "vice_captain_id": "PLY_BAN_031",
+      "vice_captain_name": "Towhid Hridoy",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_BAN_009",
+          "player_name": "Mehidy Hasan Miraz"
+        },
+        {
+          "player_id": "PLY_BAN_014",
+          "player_name": "Najmul Hossain Shanto"
+        }
+      ],
+      "appointment_or_verification_date": "2026-07-29",
+      "leadership_notes": "Najmul Hossain Shanto led at CT 2025; Mehidy Hasan Miraz appointed ODI captain on 2025-06-12; Litton Das appointed ODI captain on 2026-07-29 with Tawhid Hridoy as vice-captain.",
+      "source_url": "https://en.wikipedia.org/wiki/Litton_Das",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "BAN",
+      "country_name": "Bangladesh",
+      "format": "T20I",
+      "captain_id": "PLY_BAN_005",
+      "captain_name": "Litton Das",
+      "vice_captain_id": "PLY_BAN_031",
+      "vice_captain_name": "Towhid Hridoy",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_BAN_006",
+          "player_name": "Mahedi Hasan"
+        },
+        {
+          "player_id": "PLY_BAN_003",
+          "player_name": "Jaker Ali"
+        }
+      ],
+      "appointment_or_verification_date": "2025-05-04",
+      "leadership_notes": "Litton Das appointed permanent T20I captain on 2025-05-04.",
+      "source_url": "https://en.wikipedia.org/wiki/Litton_Das",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "WI",
+      "country_name": "West Indies",
+      "format": "Test",
+      "captain_id": "PLY_WI_026",
+      "captain_name": "Roston Chase",
+      "vice_captain_id": "PLY_WI_013",
+      "vice_captain_name": "Jomel Warrican",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_WI_021",
+          "player_name": "Kraigg Brathwaite"
+        }
+      ],
+      "appointment_or_verification_date": "2025-05-16",
+      "leadership_notes": "Roston Chase appointed Test captain on 2025-05-16 after Kraigg Brathwaite stepped down on 2025-03-31, with Jomel Warrican as vice-captain.",
+      "source_url": "https://www.windiescricket.com/news/roston-chase-appointed-west-indies-test-captain/",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "WI",
+      "country_name": "West Indies",
+      "format": "ODI",
+      "captain_id": "PLY_WI_028",
+      "captain_name": "Shai Hope",
+      "vice_captain_id": "PLY_WI_026",
+      "vice_captain_name": "Roston Chase",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_WI_003",
+          "player_name": "Alzarri Joseph"
+        },
+        {
+          "player_id": "PLY_WI_006",
+          "player_name": "Brandon King"
+        }
+      ],
+      "appointment_or_verification_date": "2025-01-01",
+      "leadership_notes": "Shai Hope served as full-time ODI captain across 2025–2026.",
+      "source_url": "https://en.wikipedia.org/wiki/Shai_Hope",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "WI",
+      "country_name": "West Indies",
+      "format": "T20I",
+      "captain_id": "PLY_WI_028",
+      "captain_name": "Shai Hope",
+      "vice_captain_id": "PLY_WI_026",
+      "vice_captain_name": "Roston Chase",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_WI_027",
+          "player_name": "Rovman Powell"
+        },
+        {
+          "player_id": "PLY_WI_006",
+          "player_name": "Brandon King"
+        }
+      ],
+      "appointment_or_verification_date": "2025-05-16",
+      "leadership_notes": "Shai Hope replaced Rovman Powell as T20I captain in 2025 and led West Indies at the 2026 ICC Men's T20 World Cup.",
+      "source_url": "https://en.wikipedia.org/wiki/2026_Men%27s_T20_World_Cup_squads",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "AFG",
+      "country_name": "Afghanistan",
+      "format": "Test",
+      "captain_id": "PLY_AFG_034",
+      "captain_name": "Rahmat Shah",
+      "vice_captain_id": "PLY_AFG_017",
+      "vice_captain_name": "Ikram Alikhil",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_AFG_014",
+          "player_name": "Hashmatullah Shahidi"
+        }
+      ],
+      "appointment_or_verification_date": "2026-07-24",
+      "leadership_notes": "Hashmatullah Shahidi captained Afghanistan Tests Jan 2025 – Jun 2026; Rahmat Shah appointed Test & ODI captain on 2026-07-24 with Ikram Alikhil as Test vice-captain.",
+      "source_url": "https://www.icc-cricket.com/news/new-afghanistan-captain-takes-charge-for-maiden-assignment",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "AFG",
+      "country_name": "Afghanistan",
+      "format": "ODI",
+      "captain_id": "PLY_AFG_034",
+      "captain_name": "Rahmat Shah",
+      "vice_captain_id": "PLY_AFG_033",
+      "vice_captain_name": "Rahmanullah Gurbaz",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_AFG_014",
+          "player_name": "Hashmatullah Shahidi"
+        }
+      ],
+      "appointment_or_verification_date": "2026-07-24",
+      "leadership_notes": "Hashmatullah Shahidi led at 2025 Champions Trophy; Rahmat Shah appointed ODI captain on 2026-07-24 with Rahmanullah Gurbaz as vice-captain.",
+      "source_url": "https://www.icc-cricket.com/news/new-afghanistan-captain-takes-charge-for-maiden-assignment",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "AFG",
+      "country_name": "Afghanistan",
+      "format": "T20I",
+      "captain_id": "PLY_AFG_015",
+      "captain_name": "Ibrahim Zadran",
+      "vice_captain_id": "PLY_AFG_010",
+      "vice_captain_name": "Darwish Rasooli",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_AFG_035",
+          "player_name": "Rashid Khan"
+        }
+      ],
+      "appointment_or_verification_date": "2026-03-05",
+      "leadership_notes": "Rashid Khan captained Afghanistan T20Is through the 2026 T20 World Cup; Ibrahim Zadran appointed T20I captain on 2026-03-05.",
+      "source_url": "https://www.icc-cricket.com/news/rashid-khan-removed-as-afghanistan-name-new-t20i-captain",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "IRE",
+      "country_name": "Ireland",
+      "format": "Test",
+      "captain_id": "PLY_IRE_001",
+      "captain_name": "Andrew Balbirnie",
+      "vice_captain_id": "PLY_IRE_020",
+      "vice_captain_name": "Lorcan Tucker",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_IRE_024",
+          "player_name": "Paul Stirling"
+        }
+      ],
+      "appointment_or_verification_date": "2025-02-06",
+      "leadership_notes": "Andrew Balbirnie full-time Test captain across 2025–2026 with Lorcan Tucker as vice-captain.",
+      "source_url": "https://cricketireland.ie/",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "IRE",
+      "country_name": "Ireland",
+      "format": "ODI",
+      "captain_id": "PLY_IRE_024",
+      "captain_name": "Paul Stirling",
+      "vice_captain_id": "PLY_IRE_020",
+      "vice_captain_name": "Lorcan Tucker",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_IRE_001",
+          "player_name": "Andrew Balbirnie"
+        }
+      ],
+      "appointment_or_verification_date": "2025-05-21",
+      "leadership_notes": "Paul Stirling ODI captain; Lorcan Tucker vice-captain and stand-in ODI captain during Oct–Nov 2026 Namibia tour.",
+      "source_url": "https://cricketireland.ie/",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "IRE",
+      "country_name": "Ireland",
+      "format": "T20I",
+      "captain_id": "PLY_IRE_020",
+      "captain_name": "Lorcan Tucker",
+      "vice_captain_id": "PLY_IRE_015",
+      "vice_captain_name": "Harry Tector",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_IRE_024",
+          "player_name": "Paul Stirling"
+        }
+      ],
+      "appointment_or_verification_date": "2026-06-22",
+      "leadership_notes": "Paul Stirling captained Ireland at the 2026 T20 World Cup before stepping down on 2026-03-19; Lorcan Tucker appointed permanent T20I captain on 2026-06-22.",
+      "source_url": "https://www.icc-cricket.com/news/paul-stirling-steps-down-as-ireland-t20i-captain",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "ZIM",
+      "country_name": "Zimbabwe",
+      "format": "Test",
+      "captain_id": "PLY_ZIM_016",
+      "captain_name": "Richard Ngarava",
+      "vice_captain_id": "PLY_ZIM_006",
+      "vice_captain_name": "Brian Bennett",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_ZIM_008",
+          "player_name": "Craig Ervine"
+        },
+        {
+          "player_id": "PLY_ZIM_019",
+          "player_name": "Sikandar Raza"
+        }
+      ],
+      "appointment_or_verification_date": "2026-06-28",
+      "leadership_notes": "Craig Ervine and Sikandar Raza captained Zimbabwe Tests in 2025; Richard Ngarava led Zimbabwe to an innings victory over Bangladesh in June 2026.",
+      "source_url": "https://www.zimcricket.org/",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "ZIM",
+      "country_name": "Zimbabwe",
+      "format": "ODI",
+      "captain_id": "PLY_ZIM_019",
+      "captain_name": "Sikandar Raza",
+      "vice_captain_id": "PLY_ZIM_016",
+      "vice_captain_name": "Richard Ngarava",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_ZIM_008",
+          "player_name": "Craig Ervine"
+        }
+      ],
+      "appointment_or_verification_date": "2025-08-29",
+      "leadership_notes": "Craig Ervine and Sikandar Raza shared ODI leadership in 2025–2026, with Sikandar Raza leading at the Oct 2026 UAE ODI Tri-Series.",
+      "source_url": "https://www.zimcricket.org/",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "ZIM",
+      "country_name": "Zimbabwe",
+      "format": "T20I",
+      "captain_id": "PLY_ZIM_019",
+      "captain_name": "Sikandar Raza",
+      "vice_captain_id": "PLY_ZIM_017",
+      "vice_captain_name": "Ryan Burl",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_ZIM_006",
+          "player_name": "Brian Bennett"
+        }
+      ],
+      "appointment_or_verification_date": "2026-01-02",
+      "leadership_notes": "Sikandar Raza full-time T20I captain across 2025–2026 (including 2026 T20 World Cup victory over Australia) with Ryan Burl as vice-captain.",
+      "source_url": "https://en.wikipedia.org/wiki/2026_Men%27s_T20_World_Cup_squads",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "SCO",
+      "country_name": "Scotland",
+      "format": "ODI",
+      "captain_id": "PLY_SCO_019",
+      "captain_name": "Richie Berrington",
+      "vice_captain_id": "PLY_SCO_015",
+      "vice_captain_name": "Matthew Cross",
+      "earlier_or_stand_in_captains_2025_2026": [],
+      "appointment_or_verification_date": "2025-05-04",
+      "leadership_notes": "Richie Berrington full-time Scotland ODI captain across 2025–2026 CWC League 2.",
+      "source_url": "https://www.cricketscotland.com/",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "SCO",
+      "country_name": "Scotland",
+      "format": "T20I",
+      "captain_id": "PLY_SCO_019",
+      "captain_name": "Richie Berrington",
+      "vice_captain_id": "PLY_SCO_015",
+      "vice_captain_name": "Matthew Cross",
+      "earlier_or_stand_in_captains_2025_2026": [],
+      "appointment_or_verification_date": "2026-01-26",
+      "leadership_notes": "Richie Berrington led Scotland at the 2026 ICC Men's T20 World Cup.",
+      "source_url": "https://www.icc-cricket.com/news/scotland-name-squad-for-icc-men-s-t20-world-cup-2026",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "NED",
+      "country_name": "Netherlands",
+      "format": "ODI",
+      "captain_id": "PLY_NED_002",
+      "captain_name": "Bas de Leede",
+      "vice_captain_id": "PLY_NED_008",
+      "vice_captain_name": "Max O'Dowd",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_NED_014",
+          "player_name": "Scott Edwards"
+        }
+      ],
+      "appointment_or_verification_date": "2026-08-01",
+      "leadership_notes": "Scott Edwards captained Netherlands ODIs through July 2026; Bas de Leede appointed ODI captain on 2026-08-01.",
+      "source_url": "https://www.kncb.nl/",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "NED",
+      "country_name": "Netherlands",
+      "format": "T20I",
+      "captain_id": "PLY_NED_014",
+      "captain_name": "Scott Edwards",
+      "vice_captain_id": "PLY_NED_002",
+      "vice_captain_name": "Bas de Leede",
+      "earlier_or_stand_in_captains_2025_2026": [],
+      "appointment_or_verification_date": "2026-01-12",
+      "leadership_notes": "Scott Edwards full-time T20I captain including the 2026 ICC Men's T20 World Cup.",
+      "source_url": "https://en.wikipedia.org/wiki/2026_Men%27s_T20_World_Cup_squads",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "NEP",
+      "country_name": "Nepal",
+      "format": "ODI",
+      "captain_id": "PLY_NEP_015",
+      "captain_name": "Sandeep Lamichhane",
+      "vice_captain_id": "PLY_NEP_004",
+      "vice_captain_name": "Dipendra Singh Airee",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_NEP_014",
+          "player_name": "Rohit Paudel"
+        }
+      ],
+      "appointment_or_verification_date": "2026-08-10",
+      "leadership_notes": "Rohit Paudel captained Nepal ODIs through July 2026; Sandeep Lamichhane appointed ODI captain on 2026-08-10.",
+      "source_url": "https://cricketnepal.org.np/",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "NEP",
+      "country_name": "Nepal",
+      "format": "T20I",
+      "captain_id": "PLY_NEP_004",
+      "captain_name": "Dipendra Singh Airee",
+      "vice_captain_id": "PLY_NEP_001",
+      "vice_captain_name": "Aasif Sheikh",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_NEP_014",
+          "player_name": "Rohit Paudel"
+        }
+      ],
+      "appointment_or_verification_date": "2026-04-07",
+      "leadership_notes": "Rohit Paudel captained Nepal at the Feb 2026 T20 World Cup; Dipendra Singh Airee appointed T20I captain on 2026-04-07.",
+      "source_url": "https://en.wikipedia.org/wiki/2026_Men%27s_T20_World_Cup_squads",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "NAM",
+      "country_name": "Namibia",
+      "format": "ODI",
+      "captain_id": "PLY_NAM_005",
+      "captain_name": "Gerhard Erasmus",
+      "vice_captain_id": "PLY_NAM_006",
+      "vice_captain_name": "JJ Smit",
+      "earlier_or_stand_in_captains_2025_2026": [],
+      "appointment_or_verification_date": "2025-05-01",
+      "leadership_notes": "Gerhard Erasmus full-time Namibia ODI captain with JJ Smit as vice-captain.",
+      "source_url": "https://cricketnamibia.com/",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "NAM",
+      "country_name": "Namibia",
+      "format": "T20I",
+      "captain_id": "PLY_NAM_005",
+      "captain_name": "Gerhard Erasmus",
+      "vice_captain_id": "PLY_NAM_006",
+      "vice_captain_name": "JJ Smit",
+      "earlier_or_stand_in_captains_2025_2026": [],
+      "appointment_or_verification_date": "2026-01-03",
+      "leadership_notes": "Gerhard Erasmus full-time Namibia T20I captain with JJ Smit as vice-captain.",
+      "source_url": "https://en.wikipedia.org/wiki/2026_Men%27s_T20_World_Cup_squads",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "USA",
+      "country_name": "United States",
+      "format": "ODI",
+      "captain_id": "PLY_USA_009",
+      "captain_name": "Monank Patel",
+      "vice_captain_id": "PLY_USA_007",
+      "vice_captain_name": "Milind Kumar",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_USA_001",
+          "player_name": "Aaron Jones"
+        }
+      ],
+      "appointment_or_verification_date": "2025-05-17",
+      "leadership_notes": "Monank Patel full-time USA ODI captain across 2025–2026 CWC League 2.",
+      "source_url": "https://usacricket.org/",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "USA",
+      "country_name": "United States",
+      "format": "T20I",
+      "captain_id": "PLY_USA_009",
+      "captain_name": "Monank Patel",
+      "vice_captain_id": "PLY_USA_013",
+      "vice_captain_name": "Saurabh Netravalkar",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_USA_001",
+          "player_name": "Aaron Jones"
+        }
+      ],
+      "appointment_or_verification_date": "2026-01-15",
+      "leadership_notes": "Monank Patel led the United States at the 2026 ICC Men's T20 World Cup.",
+      "source_url": "https://en.wikipedia.org/wiki/2026_Men%27s_T20_World_Cup_squads",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "UAE",
+      "country_name": "United Arab Emirates",
+      "format": "ODI",
+      "captain_id": "PLY_UAE_004",
+      "captain_name": "CWCL2 Stats",
+      "vice_captain_id": "PLY_UAE_016",
+      "vice_captain_name": "Muhammad Waseem",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_UAE_023",
+          "player_name": "UAE T20I Batting"
+        }
+      ],
+      "appointment_or_verification_date": "2025-05-04",
+      "leadership_notes": "Rahul Chopra appointed UAE ODI captain for 2025–2026 CWC League 2.",
+      "source_url": "https://www.emiratescricket.com/",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "UAE",
+      "country_name": "United Arab Emirates",
+      "format": "T20I",
+      "captain_id": "PLY_UAE_016",
+      "captain_name": "Muhammad Waseem",
+      "vice_captain_id": "PLY_UAE_023",
+      "vice_captain_name": "UAE T20I Batting",
+      "earlier_or_stand_in_captains_2025_2026": [],
+      "appointment_or_verification_date": "2026-01-20",
+      "leadership_notes": "Muhammad Waseem full-time UAE T20I captain at the 2025 Asia Cup and 2026 T20 World Cup.",
+      "source_url": "https://en.wikipedia.org/wiki/2026_Men%27s_T20_World_Cup_squads",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "OMA",
+      "country_name": "Oman",
+      "format": "ODI",
+      "captain_id": "PLY_OMA_010",
+      "captain_name": "Jatinder Singh",
+      "vice_captain_id": "PLY_OMA_001",
+      "vice_captain_name": "2026 T20WC Squads",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_OMA_003",
+          "player_name": "Aqib Ilyas"
+        },
+        {
+          "player_id": "PLY_OMA_024",
+          "player_name": "Zeeshan Maqsood"
+        }
+      ],
+      "appointment_or_verification_date": "2025-05-15",
+      "leadership_notes": "Jatinder Singh full-time Oman ODI captain in 2025–2026 with Vinayak Shukla as vice-captain.",
+      "source_url": "https://www.omancricket.org/",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "OMA",
+      "country_name": "Oman",
+      "format": "T20I",
+      "captain_id": "PLY_OMA_010",
+      "captain_name": "Jatinder Singh",
+      "vice_captain_id": "PLY_OMA_001",
+      "vice_captain_name": "2026 T20WC Squads",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_OMA_003",
+          "player_name": "Aqib Ilyas"
+        }
+      ],
+      "appointment_or_verification_date": "2026-01-18",
+      "leadership_notes": "Jatinder Singh captained Oman at the 2025 Asia Cup and 2026 ICC Men's T20 World Cup.",
+      "source_url": "https://en.wikipedia.org/wiki/2026_Men%27s_T20_World_Cup_squads",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "CAN",
+      "country_name": "Canada",
+      "format": "ODI",
+      "captain_id": "PLY_CAN_017",
+      "captain_name": "Saad Bin Zafar",
+      "vice_captain_id": "PLY_CAN_005",
+      "vice_captain_name": "CAN ODI Batting",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_CAN_013",
+          "player_name": "Nicholas Kirton"
+        },
+        {
+          "player_id": "PLY_CAN_012",
+          "player_name": "Navneet Dhaliwal"
+        }
+      ],
+      "appointment_or_verification_date": "2025-05-17",
+      "leadership_notes": "Saad Bin Zafar and Nicholas Kirton led Canada in 2025–2026 CWC League 2 ODIs.",
+      "source_url": "https://cricketcanada.org/",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "CAN",
+      "country_name": "Canada",
+      "format": "T20I",
+      "captain_id": "PLY_CAN_007",
+      "captain_name": "Dilpreet Bajwa",
+      "vice_captain_id": "PLY_CAN_017",
+      "vice_captain_name": "Saad Bin Zafar",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_CAN_013",
+          "player_name": "Nicholas Kirton"
+        }
+      ],
+      "appointment_or_verification_date": "2026-01-15",
+      "leadership_notes": "Dilpreet Bajwa captained Canada at the 2026 ICC Men's T20 World Cup.",
+      "source_url": "https://en.wikipedia.org/wiki/2026_Men%27s_T20_World_Cup_squads",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "country_code": "PNG",
+      "country_name": "Papua New Guinea",
+      "format": "T20I",
+      "captain_id": "PLY_PNG_002",
+      "captain_name": "Assad Vala",
+      "vice_captain_id": "PLY_PNG_011",
+      "vice_captain_name": "Sese Bau",
+      "earlier_or_stand_in_captains_2025_2026": [
+        {
+          "player_id": "PLY_PNG_004",
+          "player_name": "Charles Amini"
+        }
+      ],
+      "appointment_or_verification_date": "2026-05-14",
+      "leadership_notes": "Assad Vala full-time Papua New Guinea captain across 2025–2026 T20Is and CWC Challenge League A; Sese Bau succeeded retired Charles Amini as vice-captain.",
+      "source_url": "https://www.cricketpng.org.pg/",
+      "verification_status": "Verified",
+      "verification_date": "2026-11-03"
+    }
+  ]
+}

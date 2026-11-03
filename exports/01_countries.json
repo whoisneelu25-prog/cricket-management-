@@ -1,6 +1,6 @@
 {
-  "exportedAt": "2026-11-02T18:59:16.908Z",
-  "totalRegisteredCountries": 12,
+  "exportedAt": "2026-11-03T15:24:22.572Z",
+  "totalRegisteredCountries": 22,
   "countries": [
     {
       "id": "IND",
@@ -32,8 +32,8 @@
         "ICC Champions Trophy (2002, 2013)",
         "Border-Gavaskar Trophy Winners (2018-19, 2020-21)"
       ],
-      "databasePlayerCount": 21,
-      "activeMalePlayerCount": 18
+      "databasePlayerCount": 49,
+      "activeMalePlayerCount": 45
     },
     {
       "id": "AUS",
@@ -66,8 +66,8 @@
         "ICC T20 World Cup (2021)",
         "The Ashes Holders"
       ],
-      "databasePlayerCount": 15,
-      "activeMalePlayerCount": 13
+      "databasePlayerCount": 41,
+      "activeMalePlayerCount": 36
     },
     {
       "id": "ENG",
@@ -99,8 +99,39 @@
         "ICC T20 World Cup (2010, 2022)",
         "Pioneers of aggressive Bazball Test philosophy"
       ],
-      "databasePlayerCount": 10,
-      "activeMalePlayerCount": 10
+      "databasePlayerCount": 33,
+      "activeMalePlayerCount": 27
+    },
+    {
+      "id": "PAK",
+      "name": "Pakistan",
+      "shortName": "Pakistan",
+      "code": "PAK",
+      "flagEmoji": "🇵🇰",
+      "primaryColor": "#006629",
+      "secondaryColor": "#9BC53D",
+      "worldRankings": {
+        "TEST": 6,
+        "ODI": 6,
+        "T20I": 7
+      },
+      "ratingPoints": {
+        "TEST": 92,
+        "ODI": 98,
+        "T20I": 232
+      },
+      "homeVenues": [
+        "Gaddafi Stadium, Lahore",
+        "National Stadium, Karachi",
+        "Rawalpindi Cricket Stadium"
+      ],
+      "historicalAchievements": [
+        "ICC Cricket World Cup (1992)",
+        "ICC T20 World Cup (2009)",
+        "ICC Champions Trophy (2017)"
+      ],
+      "databasePlayerCount": 35,
+      "activeMalePlayerCount": 34
     },
     {
       "id": "RSA",
@@ -131,8 +162,8 @@
         "ICC T20 World Cup Finalists (2024)",
         "Dominant Test pace attack history"
       ],
-      "databasePlayerCount": 8,
-      "activeMalePlayerCount": 8
+      "databasePlayerCount": 31,
+      "activeMalePlayerCount": 30
     },
     {
       "id": "NZL",
@@ -162,45 +193,74 @@
         "ICC Champions Trophy (2000)",
         "ICC Cricket World Cup Finalists (2015, 2019)"
       ],
-      "databasePlayerCount": 6,
-      "activeMalePlayerCount": 6
+      "databasePlayerCount": 29,
+      "activeMalePlayerCount": 27
     },
     {
-      "id": "PAK",
-      "name": "Pakistan",
-      "shortName": "Pakistan",
-      "code": "PAK",
-      "flagEmoji": "🇵🇰",
-      "primaryColor": "#006629",
-      "secondaryColor": "#9BC53D",
+      "id": "SL",
+      "name": "Sri Lanka",
+      "shortName": "Sri Lanka",
+      "code": "SL",
+      "flagEmoji": "🇱🇰",
+      "primaryColor": "#0033A0",
+      "secondaryColor": "#FFB81C",
       "worldRankings": {
-        "TEST": 6,
-        "ODI": 6,
-        "T20I": 7
+        "TEST": 7,
+        "ODI": 7,
+        "T20I": 8
       },
       "ratingPoints": {
-        "TEST": 92,
-        "ODI": 98,
-        "T20I": 232
+        "TEST": 85,
+        "ODI": 94,
+        "T20I": 230
       },
       "homeVenues": [
-        "Gaddafi Stadium, Lahore",
-        "National Stadium, Karachi",
-        "Rawalpindi Cricket Stadium"
+        "R. Premadasa Stadium, Colombo",
+        "Galle International Stadium",
+        "Pallekele International Cricket Stadium"
       ],
       "historicalAchievements": [
-        "ICC Cricket World Cup (1992)",
-        "ICC T20 World Cup (2009)",
-        "ICC Champions Trophy (2017)"
+        "ICC Cricket World Cup (1996)",
+        "ICC T20 World Cup (2014)",
+        "ICC Champions Trophy (2002 co-champions)"
       ],
-      "databasePlayerCount": 8,
-      "activeMalePlayerCount": 7
+      "databasePlayerCount": 36,
+      "activeMalePlayerCount": 35
     },
     {
-      "id": "WIN",
+      "id": "BAN",
+      "name": "Bangladesh",
+      "shortName": "Bangladesh",
+      "code": "BAN",
+      "flagEmoji": "🇧🇩",
+      "primaryColor": "#006A4E",
+      "secondaryColor": "#F42A41",
+      "worldRankings": {
+        "TEST": 9,
+        "ODI": 8,
+        "T20I": 9
+      },
+      "ratingPoints": {
+        "TEST": 65,
+        "ODI": 86,
+        "T20I": 224
+      },
+      "homeVenues": [
+        "Sher-e-Bangla National Cricket Stadium, Mirpur",
+        "Zahur Ahmed Chowdhury Stadium, Chattogram"
+      ],
+      "historicalAchievements": [
+        "ICC Champions Trophy Semi-finalists (2017)",
+        "Multi-nation Asia Cup Finalists (2012, 2016, 2018)"
+      ],
+      "databasePlayerCount": 31,
+      "activeMalePlayerCount": 29
+    },
+    {
+      "id": "WI",
       "name": "West Indies",
       "shortName": "West Indies",
-      "code": "WIN",
+      "code": "WI",
       "flagEmoji": "🌴",
       "primaryColor": "#7A0026",
       "secondaryColor": "#FDB913",
@@ -217,47 +277,16 @@
       "homeVenues": [
         "Kensington Oval, Barbados",
         "Queen's Park Oval, Trinidad",
-        "Sabina Park, Jamaica"
+        "Sabina Park, Jamaica",
+        "Daren Sammy Cricket Ground, St Lucia"
       ],
       "historicalAchievements": [
         "ICC Cricket World Cup (1975, 1979)",
         "ICC T20 World Cup Two-Time Champions (2012, 2016)",
         "ICC Champions Trophy (2004)"
       ],
-      "databasePlayerCount": 1,
-      "activeMalePlayerCount": 0
-    },
-    {
-      "id": "SRI",
-      "name": "Sri Lanka",
-      "shortName": "Sri Lanka",
-      "code": "SRI",
-      "flagEmoji": "🇱🇰",
-      "primaryColor": "#002B49",
-      "secondaryColor": "#FFB81C",
-      "worldRankings": {
-        "TEST": 7,
-        "ODI": 7,
-        "T20I": 8
-      },
-      "ratingPoints": {
-        "TEST": 88,
-        "ODI": 92,
-        "T20I": 228
-      },
-      "homeVenues": [
-        "R. Premadasa Stadium, Colombo",
-        "Galle International Stadium",
-        "Pallekele International Stadium"
-      ],
-      "historicalAchievements": [
-        "ICC Cricket World Cup (1996)",
-        "ICC T20 World Cup (2014)",
-        "ICC Champions Trophy (2002 Joint)",
-        "Asia Cup Champions (6 times)"
-      ],
-      "databasePlayerCount": 0,
-      "activeMalePlayerCount": 0
+      "databasePlayerCount": 32,
+      "activeMalePlayerCount": 30
     },
     {
       "id": "AFG",
@@ -265,57 +294,28 @@
       "shortName": "Afghanistan",
       "code": "AFG",
       "flagEmoji": "🇦🇫",
-      "primaryColor": "#0099FF",
+      "primaryColor": "#002B49",
       "secondaryColor": "#D32011",
       "worldRankings": {
         "TEST": 10,
-        "ODI": 8,
-        "T20I": 9
-      },
-      "ratingPoints": {
-        "TEST": 58,
-        "ODI": 85,
-        "T20I": 220
-      },
-      "homeVenues": [
-        "Sharjah Cricket Stadium",
-        "Greater Noida Stadium"
-      ],
-      "historicalAchievements": [
-        "ICC T20 World Cup Semi-Finalists (2024)",
-        "Rapid historic ascent through ICC global divisions"
-      ],
-      "databasePlayerCount": 4,
-      "activeMalePlayerCount": 4
-    },
-    {
-      "id": "BAN",
-      "name": "Bangladesh",
-      "shortName": "Bangladesh",
-      "code": "BAN",
-      "flagEmoji": "🇧🇩",
-      "primaryColor": "#006A4E",
-      "secondaryColor": "#F42A41",
-      "worldRankings": {
-        "TEST": 9,
         "ODI": 10,
         "T20I": 10
       },
       "ratingPoints": {
-        "TEST": 65,
-        "ODI": 82,
-        "T20I": 215
+        "TEST": 45,
+        "ODI": 80,
+        "T20I": 220
       },
       "homeVenues": [
-        "Sher-e-Bangla National Stadium, Dhaka",
-        "Zahur Ahmed Chowdhury Stadium, Chattogram"
+        "Sharjah Cricket Stadium (UAE)",
+        "Greater Noida Sports Complex"
       ],
       "historicalAchievements": [
-        "ICC Champions Trophy Semi-Finalists (2017)",
-        "Historic Test series win in Pakistan (2024)"
+        "ICC T20 World Cup Semi-finalists (2024)",
+        "Incredible rise through ICC World Cricket League to Test status (2017)"
       ],
-      "databasePlayerCount": 0,
-      "activeMalePlayerCount": 0
+      "databasePlayerCount": 41,
+      "activeMalePlayerCount": 40
     },
     {
       "id": "IRE",
@@ -340,11 +340,11 @@
         "Civil Service Cricket Club, Belfast"
       ],
       "historicalAchievements": [
-        "Famous World Cup wins over England (2011), Pakistan (2007), West Indies (2015)",
-        "Inaugural Test in 2018"
+        "Historic World Cup victories over England (2011), Pakistan (2007), West Indies (2015)",
+        "Full Test Status achieved in 2017"
       ],
-      "databasePlayerCount": 0,
-      "activeMalePlayerCount": 0
+      "databasePlayerCount": 30,
+      "activeMalePlayerCount": 29
     },
     {
       "id": "ZIM",
@@ -370,26 +370,299 @@
       ],
       "historicalAchievements": [
         "ICC Cricket World Cup Super Six (1999)",
-        "Historic victory over Australia in T20 World Cup"
+        "Historic victories in ICC tournaments"
       ],
-      "databasePlayerCount": 0,
-      "activeMalePlayerCount": 0
-    }
-  ],
-  "unregisteredCountriesReferencedByPlayers": [
+      "databasePlayerCount": 30,
+      "activeMalePlayerCount": 30
+    },
+    {
+      "id": "SCO",
+      "name": "Scotland",
+      "shortName": "Scotland",
+      "code": "SCO",
+      "flagEmoji": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+      "primaryColor": "#003B6F",
+      "secondaryColor": "#E03C31",
+      "worldRankings": {
+        "TEST": 13,
+        "ODI": 13,
+        "T20I": 13
+      },
+      "ratingPoints": {
+        "TEST": 20,
+        "ODI": 55,
+        "T20I": 185
+      },
+      "homeVenues": [
+        "The Grange Club, Edinburgh",
+        "Titwood, Glasgow"
+      ],
+      "historicalAchievements": [
+        "ICC Men’s T20 World Cup Super 12 (2021)",
+        "CWC League 2 Champions"
+      ],
+      "databasePlayerCount": 23,
+      "activeMalePlayerCount": 23
+    },
+    {
+      "id": "NED",
+      "name": "Netherlands",
+      "shortName": "Netherlands",
+      "code": "NED",
+      "flagEmoji": "🇳🇱",
+      "primaryColor": "#FF6600",
+      "secondaryColor": "#003399",
+      "worldRankings": {
+        "TEST": 14,
+        "ODI": 14,
+        "T20I": 14
+      },
+      "ratingPoints": {
+        "TEST": 18,
+        "ODI": 52,
+        "T20I": 182
+      },
+      "homeVenues": [
+        "VRA Cricket Ground, Amstelveen",
+        "Sportpark Westvliet, The Hague"
+      ],
+      "historicalAchievements": [
+        "ICC Cricket World Cup 2023 wins over South Africa & Bangladesh",
+        "T20 World Cup 2022 win over South Africa"
+      ],
+      "databasePlayerCount": 17,
+      "activeMalePlayerCount": 17
+    },
+    {
+      "id": "NEP",
+      "name": "Nepal",
+      "shortName": "Nepal",
+      "code": "NEP",
+      "flagEmoji": "🇳🇵",
+      "primaryColor": "#DC143C",
+      "secondaryColor": "#003893",
+      "worldRankings": {
+        "TEST": 15,
+        "ODI": 15,
+        "T20I": 17
+      },
+      "ratingPoints": {
+        "TEST": 15,
+        "ODI": 48,
+        "T20I": 175
+      },
+      "homeVenues": [
+        "Tribhuvan University International Cricket Ground, Kirtipur",
+        "Mulpani Cricket Ground, Kathmandu"
+      ],
+      "historicalAchievements": [
+        "ICC Men’s T20 World Cup (2014, 2024)",
+        "Asia Cup qualification (2023)"
+      ],
+      "databasePlayerCount": 18,
+      "activeMalePlayerCount": 18
+    },
     {
       "id": "NAM",
       "name": "Namibia",
-      "registeredInTeamsTable": false,
-      "playerCount": 1
+      "shortName": "Namibia",
+      "code": "NAM",
+      "flagEmoji": "🇳🇦",
+      "primaryColor": "#003580",
+      "secondaryColor": "#D21034",
+      "worldRankings": {
+        "TEST": 16,
+        "ODI": 16,
+        "T20I": 15
+      },
+      "ratingPoints": {
+        "TEST": 12,
+        "ODI": 45,
+        "T20I": 178
+      },
+      "homeVenues": [
+        "United Cricket Club Ground, Windhoek",
+        "Wanderers Cricket Ground, Windhoek"
+      ],
+      "historicalAchievements": [
+        "ICC Men’s T20 World Cup Super 12 (2021, 2022, 2024)",
+        "Win over Sri Lanka in T20 World Cup 2022"
+      ],
+      "databasePlayerCount": 17,
+      "activeMalePlayerCount": 17
     },
     {
       "id": "USA",
       "name": "United States",
-      "registeredInTeamsTable": false,
-      "playerCount": 1
+      "shortName": "United States",
+      "code": "USA",
+      "flagEmoji": "🇺🇸",
+      "primaryColor": "#0A3161",
+      "secondaryColor": "#B31942",
+      "worldRankings": {
+        "TEST": 17,
+        "ODI": 17,
+        "T20I": 16
+      },
+      "ratingPoints": {
+        "TEST": 10,
+        "ODI": 42,
+        "T20I": 176
+      },
+      "homeVenues": [
+        "Grand Prairie Stadium, Dallas",
+        "Central Broward Park, Lauderhill, Florida",
+        "Church Street Park, Morrisville"
+      ],
+      "historicalAchievements": [
+        "ICC Men’s T20 World Cup Super 8 (2024)",
+        "Historic victory over Pakistan in 2024 T20 World Cup"
+      ],
+      "databasePlayerCount": 19,
+      "activeMalePlayerCount": 19
+    },
+    {
+      "id": "UAE",
+      "name": "United Arab Emirates",
+      "shortName": "United Arab Emirates",
+      "code": "UAE",
+      "flagEmoji": "🇦🇪",
+      "primaryColor": "#00732F",
+      "secondaryColor": "#C8102E",
+      "worldRankings": {
+        "TEST": 18,
+        "ODI": 18,
+        "T20I": 18
+      },
+      "ratingPoints": {
+        "TEST": 8,
+        "ODI": 38,
+        "T20I": 170
+      },
+      "homeVenues": [
+        "Dubai International Cricket Stadium",
+        "Sharjah Cricket Stadium",
+        "Zayed Cricket Stadium, Abu Dhabi"
+      ],
+      "historicalAchievements": [
+        "ICC Cricket World Cup appearances (1996, 2015)",
+        "ICC T20 World Cup 2022 participant with win over Namibia"
+      ],
+      "databasePlayerCount": 24,
+      "activeMalePlayerCount": 24
+    },
+    {
+      "id": "OMA",
+      "name": "Oman",
+      "shortName": "Oman",
+      "code": "OMA",
+      "flagEmoji": "🇴🇲",
+      "primaryColor": "#D32011",
+      "secondaryColor": "#008000",
+      "worldRankings": {
+        "TEST": 19,
+        "ODI": 19,
+        "T20I": 19
+      },
+      "ratingPoints": {
+        "TEST": 6,
+        "ODI": 35,
+        "T20I": 165
+      },
+      "homeVenues": [
+        "Al Amerat Cricket Stadium, Muscat"
+      ],
+      "historicalAchievements": [
+        "ICC Men’s T20 World Cup co-hosts (2021) and participants (2016, 2021, 2024)"
+      ],
+      "databasePlayerCount": 24,
+      "activeMalePlayerCount": 24
+    },
+    {
+      "id": "CAN",
+      "name": "Canada",
+      "shortName": "Canada",
+      "code": "CAN",
+      "flagEmoji": "🇨🇦",
+      "primaryColor": "#D80621",
+      "secondaryColor": "#FFFFFF",
+      "worldRankings": {
+        "TEST": 20,
+        "ODI": 20,
+        "T20I": 20
+      },
+      "ratingPoints": {
+        "TEST": 5,
+        "ODI": 32,
+        "T20I": 160
+      },
+      "homeVenues": [
+        "Maple Leaf Cricket Club, King City, Ontario"
+      ],
+      "historicalAchievements": [
+        "ICC Men’s T20 World Cup 2024 win over Ireland",
+        "World Cup appearances (1979, 2003, 2007, 2011)"
+      ],
+      "databasePlayerCount": 19,
+      "activeMalePlayerCount": 18
+    },
+    {
+      "id": "PNG",
+      "name": "Papua New Guinea",
+      "shortName": "Papua New Guinea",
+      "code": "PNG",
+      "flagEmoji": "🇵🇬",
+      "primaryColor": "#000000",
+      "secondaryColor": "#CE1126",
+      "worldRankings": {
+        "TEST": 21,
+        "ODI": 21,
+        "T20I": 21
+      },
+      "ratingPoints": {
+        "TEST": 4,
+        "ODI": 28,
+        "T20I": 155
+      },
+      "homeVenues": [
+        "Amini Park, Port Moresby"
+      ],
+      "historicalAchievements": [
+        "ICC Men’s T20 World Cup (2021, 2024)",
+        "ODI status in 2014-2023"
+      ],
+      "databasePlayerCount": 13,
+      "activeMalePlayerCount": 12
+    },
+    {
+      "id": "IDN",
+      "name": "Indonesia",
+      "shortName": "Indonesia",
+      "code": "IDN",
+      "flagEmoji": "🇮🇩",
+      "primaryColor": "#CE1126",
+      "secondaryColor": "#FFFFFF",
+      "worldRankings": {
+        "TEST": 22,
+        "ODI": 22,
+        "T20I": 22
+      },
+      "ratingPoints": {
+        "TEST": 2,
+        "ODI": 15,
+        "T20I": 110
+      },
+      "homeVenues": [
+        "Udayana Cricket Ground, Bali"
+      ],
+      "historicalAchievements": [
+        "Rising East Asia-Pacific Associate, ICC T20I status since 2019"
+      ],
+      "databasePlayerCount": 11,
+      "activeMalePlayerCount": 11
     }
   ],
+  "unregisteredCountriesReferencedByPlayers": [],
   "venues": [
     {
       "id": "lord_london",
@@ -495,7 +768,7 @@
       "id": "kensington_barbados",
       "name": "Kensington Oval",
       "city": "Bridgetown",
-      "countryId": "WIN",
+      "countryId": "WI",
       "capacity": 28000,
       "pitch": {
         "name": "Caribbean Hard Deck",

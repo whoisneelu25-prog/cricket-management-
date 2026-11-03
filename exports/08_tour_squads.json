@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-11-02T18:59:16.917Z",
+  "exportedAt": "2026-11-03T15:24:22.585Z",
   "totalTours": 7,
   "toursWithAnnouncedSquads": 1,
   "toursWithEmptySquads": 6,
@@ -35,147 +35,63 @@
       "resolvedPlayers": [
         {
           "id": "ind_rohit",
-          "name": "Rohit Sharma",
-          "countryId": "IND",
-          "role": "BATTER",
-          "status": "ACTIVE",
-          "formatEligibility": {
-            "TEST": true,
-            "ODI": true,
-            "T20I": true
-          }
+          "name": "UNRESOLVED_PLAYER_ID",
+          "missing": true
         },
         {
           "id": "ind_jaiswal",
-          "name": "Yashasvi Jaiswal",
-          "countryId": "IND",
-          "role": "BATTER",
-          "status": "ACTIVE",
-          "formatEligibility": {
-            "TEST": true,
-            "ODI": true,
-            "T20I": true
-          }
+          "name": "UNRESOLVED_PLAYER_ID",
+          "missing": true
         },
         {
           "id": "ind_gill",
-          "name": "Shubman Gill",
-          "countryId": "IND",
-          "role": "BATTER",
-          "status": "ACTIVE",
-          "formatEligibility": {
-            "TEST": true,
-            "ODI": true,
-            "T20I": true
-          }
+          "name": "UNRESOLVED_PLAYER_ID",
+          "missing": true
         },
         {
           "id": "ind_virat",
-          "name": "Virat Kohli",
-          "countryId": "IND",
-          "role": "BATTER",
-          "status": "ACTIVE",
-          "formatEligibility": {
-            "TEST": true,
-            "ODI": true,
-            "T20I": true
-          }
+          "name": "UNRESOLVED_PLAYER_ID",
+          "missing": true
         },
         {
           "id": "ind_pant",
-          "name": "Rishabh Pant",
-          "countryId": "IND",
-          "role": "WICKETKEEPER_BATTER",
-          "status": "ACTIVE",
-          "formatEligibility": {
-            "TEST": true,
-            "ODI": true,
-            "T20I": true
-          }
+          "name": "UNRESOLVED_PLAYER_ID",
+          "missing": true
         },
         {
           "id": "ind_rahane",
-          "name": "Ajinkya Rahane",
-          "countryId": "IND",
-          "role": "BATTER",
-          "status": "ACTIVE",
-          "formatEligibility": {
-            "TEST": true,
-            "ODI": false,
-            "T20I": false
-          }
+          "name": "UNRESOLVED_PLAYER_ID",
+          "missing": true
         },
         {
           "id": "ind_jadeja",
-          "name": "Ravindra Jadeja",
-          "countryId": "IND",
-          "role": "ALL_ROUNDER",
-          "status": "ACTIVE",
-          "formatEligibility": {
-            "TEST": true,
-            "ODI": true,
-            "T20I": true
-          }
+          "name": "UNRESOLVED_PLAYER_ID",
+          "missing": true
         },
         {
           "id": "ind_bumrah",
-          "name": "Jasprit Bumrah",
-          "countryId": "IND",
-          "role": "BOWLER",
-          "status": "ACTIVE",
-          "formatEligibility": {
-            "TEST": true,
-            "ODI": true,
-            "T20I": true
-          }
+          "name": "UNRESOLVED_PLAYER_ID",
+          "missing": true
         },
         {
           "id": "ind_shiraz",
-          "name": "Mohammed Siraj",
-          "countryId": "IND",
-          "role": "BOWLER",
-          "status": "ACTIVE",
-          "formatEligibility": {
-            "TEST": true,
-            "ODI": true,
-            "T20I": true
-          }
+          "name": "UNRESOLVED_PLAYER_ID",
+          "missing": true
         },
         {
           "id": "ind_shami",
-          "name": "Mohammed Shami",
-          "countryId": "IND",
-          "role": "BOWLER",
-          "status": "ACTIVE",
-          "formatEligibility": {
-            "TEST": true,
-            "ODI": true,
-            "T20I": true
-          }
+          "name": "UNRESOLVED_PLAYER_ID",
+          "missing": true
         },
         {
           "id": "ind_kuldeep",
-          "name": "Kuldeep Yadav",
-          "countryId": "IND",
-          "role": "BOWLER",
-          "status": "ACTIVE",
-          "formatEligibility": {
-            "TEST": true,
-            "ODI": true,
-            "T20I": true
-          }
+          "name": "UNRESOLVED_PLAYER_ID",
+          "missing": true
         },
         {
           "id": "ind_axar",
-          "name": "Axar Patel",
-          "countryId": "IND",
-          "role": "ALL_ROUNDER",
-          "status": "ACTIVE",
-          "formatEligibility": {
-            "TEST": true,
-            "ODI": true,
-            "T20I": true
-          }
+          "name": "UNRESOLVED_PLAYER_ID",
+          "missing": true
         }
       ]
     },

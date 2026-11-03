@@ -1,0 +1,3700 @@
+{
+  "format": "ODI",
+  "research_period": {
+    "start": "2025-01-01",
+    "end": "2026-11-03"
+  },
+  "verified_lineup_matches_count": 20,
+  "verified_team_playing_xis_count": 40,
+  "lineups": [
+    {
+      "match_id": "MAT_ODI_2025_2026_001",
+      "match_date": "2025-03-09",
+      "format": "ODI",
+      "gender": "Male",
+      "competition": "ICC Men's Champions Trophy 2025 (Final)",
+      "series": "ICC Men's Champions Trophy 2025 (Final)",
+      "host_country": "NZL",
+      "team_a": "New Zealand",
+      "team_a_code": "NZL",
+      "team_b": "India",
+      "team_b_code": "IND",
+      "venue": "Dubai International Cricket Stadium, Dubai",
+      "toss_winner": "NZL",
+      "toss_decision": "bat",
+      "team_a_playing_xi": [
+        "PLY_NZL_028",
+        "PLY_NZL_023",
+        "PLY_NZL_014",
+        "PLY_NZL_006",
+        "PLY_NZL_027",
+        "PLY_NZL_009",
+        "PLY_NZL_020",
+        "PLY_NZL_021",
+        "PLY_NZL_022",
+        "PLY_NZL_015",
+        "PLY_NZL_029"
+      ],
+      "team_b_playing_xi": [
+        "PLY_IND_030",
+        "PLY_IND_038",
+        "PLY_IND_044",
+        "PLY_IND_037",
+        "PLY_IND_004",
+        "PLY_IND_012",
+        "PLY_IND_008",
+        "PLY_IND_027",
+        "PLY_IND_017",
+        "PLY_IND_014",
+        "PLY_IND_042"
+      ],
+      "team_a_captain": "PLY_NZL_021",
+      "team_b_captain": "PLY_IND_030",
+      "wicketkeepers": {
+        "team_a": "PLY_NZL_027",
+        "team_b": "PLY_IND_012"
+      },
+      "batting_order": {
+        "team_a": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_NZL_028",
+            "player_name": "Will Young"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_NZL_023",
+            "player_name": "Rachin Ravindra"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_NZL_014",
+            "player_name": "Kane Williamson"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_NZL_006",
+            "player_name": "Daryl Mitchell"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_NZL_027",
+            "player_name": "Tom Latham"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_NZL_009",
+            "player_name": "Glenn Phillips"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_NZL_020",
+            "player_name": "Michael Bracewell"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_NZL_021",
+            "player_name": "Mitchell Santner"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_NZL_022",
+            "player_name": "Nathan Smith"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_NZL_015",
+            "player_name": "Kyle Jamieson"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_NZL_029",
+            "player_name": "William O'Rourke"
+          }
+        ],
+        "team_b": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_IND_030",
+            "player_name": "Rohit Sharma"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_IND_038",
+            "player_name": "Shubman Gill"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_IND_044",
+            "player_name": "Virat Kohli"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_IND_037",
+            "player_name": "Shreyas Iyer"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_IND_004",
+            "player_name": "Axar Patel"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_IND_012",
+            "player_name": "KL Rahul"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_IND_008",
+            "player_name": "Hardik Pandya"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_IND_027",
+            "player_name": "Ravindra Jadeja"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_IND_017",
+            "player_name": "Mohammed Shami"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_IND_014",
+            "player_name": "Kuldeep Yadav"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_IND_042",
+            "player_name": "Varun Chakravarthy"
+          }
+        ]
+      },
+      "bowling_options": {
+        "team_a": [
+          "PLY_NZL_023",
+          "PLY_NZL_006",
+          "PLY_NZL_021",
+          "PLY_NZL_022",
+          "PLY_NZL_015",
+          "PLY_NZL_029"
+        ],
+        "team_b": [
+          "PLY_IND_004",
+          "PLY_IND_008",
+          "PLY_IND_027",
+          "PLY_IND_017",
+          "PLY_IND_014",
+          "PLY_IND_042"
+        ]
+      },
+      "official_substitutes_or_replacements": null,
+      "match_result": "New Zealand 251/7 (50 overs) lost to India 254/6 (49 overs) — India won by 4 wickets",
+      "scorecard_url": "https://www.skysports.com/cricket/india-v-new-zealand/scorecard/b728d886-32ef-51d7-85da-773fa15667c5",
+      "source_url": "https://www.skysports.com/cricket/india-v-new-zealand/scorecard/b728d886-32ef-51d7-85da-773fa15667c5",
+      "verification_status": "Verified (Official Match Scorecard 1–11 Batting Order)",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "match_id": "MAT_ODI_2025_2026_002",
+      "match_date": "2025-05-04",
+      "format": "ODI",
+      "gender": "Male",
+      "competition": "ICC CWC League 2, Match 61)",
+      "series": "ICC CWC League 2, Match 61)",
+      "host_country": "SCO",
+      "team_a": "Scotland",
+      "team_a_code": "SCO",
+      "team_b": "United Arab Emirates",
+      "team_b_code": "UAE",
+      "venue": "VRA Ground, Amstelveen",
+      "toss_winner": "SCO",
+      "toss_decision": "field",
+      "team_a_playing_xi": [
+        "PLY_SCO_011",
+        "PLY_SCO_015",
+        "PLY_SCO_004",
+        "PLY_SCO_019",
+        "PLY_SCO_005",
+        "PLY_SCO_009",
+        "PLY_SCO_017",
+        "PLY_SCO_014",
+        "PLY_SCO_012",
+        "PLY_SCO_006",
+        "PLY_SCO_013"
+      ],
+      "team_b_playing_xi": [
+        "PLY_UAE_023",
+        "PLY_UAE_018",
+        "PLY_UAE_024",
+        "PLY_UAE_004",
+        "PLY_UAE_023",
+        "PLY_UAE_016",
+        "PLY_UAE_005",
+        "PLY_UAE_001",
+        "PLY_UAE_019",
+        "PLY_UAE_008",
+        "PLY_UAE_013"
+      ],
+      "team_a_captain": "PLY_SCO_019",
+      "team_b_captain": "PLY_UAE_004",
+      "wicketkeepers": {
+        "team_a": "PLY_SCO_015",
+        "team_b": "PLY_UAE_023"
+      },
+      "batting_order": {
+        "team_a": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_SCO_011",
+            "player_name": "George Munsey"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_SCO_015",
+            "player_name": "Matthew Cross"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_SCO_004",
+            "player_name": "Brandon McMullen"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_SCO_019",
+            "player_name": "Richie Berrington"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_SCO_005",
+            "player_name": "CWCL2 Stats"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_SCO_009",
+            "player_name": "Christopher McBride"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_SCO_017",
+            "player_name": "Michael Leask"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_SCO_014",
+            "player_name": "Mark Watt"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_SCO_012",
+            "player_name": "Jack Jarvis"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_SCO_006",
+            "player_name": "Charlie Cassell"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_SCO_013",
+            "player_name": "Jasper Davidson †"
+          }
+        ],
+        "team_b": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_UAE_023",
+            "player_name": "UAE T20I Batting"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_UAE_018",
+            "player_name": "Sagar Kalyan"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_UAE_024",
+            "player_name": "Vriitya Aravind"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_UAE_004",
+            "player_name": "CWCL2 Stats"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_UAE_023",
+            "player_name": "UAE T20I Batting"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_UAE_016",
+            "player_name": "Muhammad Waseem"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_UAE_005",
+            "player_name": "Dhruv Parashar"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_UAE_001",
+            "player_name": "Aayan Afzal Khan"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_UAE_019",
+            "player_name": "Simranjeet Singh"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_UAE_008",
+            "player_name": "Junaid Siddique"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_UAE_013",
+            "player_name": "Muhammad Jawadullah"
+          }
+        ]
+      },
+      "bowling_options": {
+        "team_a": [
+          "PLY_SCO_004",
+          "PLY_SCO_017",
+          "PLY_SCO_014",
+          "PLY_SCO_012",
+          "PLY_SCO_013"
+        ],
+        "team_b": [
+          "PLY_UAE_008",
+          "PLY_UAE_013"
+        ]
+      },
+      "official_substitutes_or_replacements": null,
+      "match_result": "Scotland (226/7, 46.2 ov) beat UAE (225/9, 50.0 ov) by 3 wickets",
+      "scorecard_url": "https://www.icc-cricket.com/tournaments/icc-cricket-world-cup-league-2/matches/259380/uni",
+      "source_url": "https://www.icc-cricket.com/tournaments/icc-cricket-world-cup-league-2/matches/259380/uni",
+      "verification_status": "Verified (Official Match Scorecard 1–11 Batting Order)",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "match_id": "MAT_ODI_2025_2026_003",
+      "match_date": "2025-05-17",
+      "format": "ODI",
+      "gender": "Male",
+      "competition": "ICC CWC League 2, Match 68)",
+      "series": "ICC CWC League 2, Match 68)",
+      "host_country": "CAN",
+      "team_a": "Canada",
+      "team_a_code": "CAN",
+      "team_b": "United States",
+      "team_b_code": "USA",
+      "venue": "Central Broward Regional Park, Lauderhill",
+      "toss_winner": "USA",
+      "toss_decision": "bat",
+      "team_a_playing_xi": [
+        "PLY_CAN_019",
+        "PLY_CAN_012",
+        "PLY_CAN_014",
+        "PLY_CAN_005",
+        "PLY_CAN_005",
+        "PLY_CAN_011",
+        "PLY_CAN_015",
+        "PLY_CAN_017",
+        "PLY_CAN_018",
+        "PLY_CAN_006",
+        "PLY_CAN_009"
+      ],
+      "team_b_playing_xi": [
+        "PLY_USA_018",
+        "PLY_USA_003",
+        "PLY_USA_009",
+        "PLY_USA_007",
+        "PLY_USA_018",
+        "PLY_USA_012",
+        "PLY_USA_014",
+        "PLY_USA_005",
+        "PLY_USA_010",
+        "PLY_USA_019",
+        "PLY_USA_013"
+      ],
+      "team_a_captain": "PLY_CAN_012",
+      "team_b_captain": "PLY_USA_009",
+      "wicketkeepers": {
+        "team_a": "PLY_CAN_005",
+        "team_b": "PLY_USA_018"
+      },
+      "batting_order": {
+        "team_a": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_CAN_019",
+            "player_name": "Yuvraj Samra"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_CAN_012",
+            "player_name": "Navneet Dhaliwal"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_CAN_014",
+            "player_name": "Pargat Singh"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_CAN_005",
+            "player_name": "CAN ODI Batting"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_CAN_005",
+            "player_name": "CAN ODI Batting"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_CAN_011",
+            "player_name": "Mansab Gill"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_CAN_015",
+            "player_name": "Parveen Kumar"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_CAN_017",
+            "player_name": "Saad Bin Zafar"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_CAN_018",
+            "player_name": "Shivam Sharma"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_CAN_006",
+            "player_name": "Dillon Heyliger"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_CAN_009",
+            "player_name": "Kaleem Sana"
+          }
+        ],
+        "team_b": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_USA_018",
+            "player_name": "USA ODI Batting"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_USA_003",
+            "player_name": "Andries Gous"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_USA_009",
+            "player_name": "Monank Patel"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_USA_007",
+            "player_name": "Milind Kumar"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_USA_018",
+            "player_name": "USA ODI Batting"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_USA_012",
+            "player_name": "Sanjay Krishnamurthi"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_USA_014",
+            "player_name": "Shadley van Schalkwyk"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_USA_005",
+            "player_name": "Harmeet Singh"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_USA_010",
+            "player_name": "Nosthush Kenjige"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_USA_019",
+            "player_name": "Yasir Mohammad"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_USA_013",
+            "player_name": "Saurabh Netravalkar"
+          }
+        ]
+      },
+      "bowling_options": {
+        "team_a": [
+          "PLY_CAN_017",
+          "PLY_CAN_006",
+          "PLY_CAN_009"
+        ],
+        "team_b": [
+          "PLY_USA_005",
+          "PLY_USA_013"
+        ]
+      },
+      "official_substitutes_or_replacements": null,
+      "match_result": "United States (361/3, 50.0 ov) beat Canada (192, 46.2 ov) by 169 runs",
+      "scorecard_url": "https://www.icc-cricket.com/tournaments/icc-cricket-world-cup-league-2/matches/259387/usa-vs-canada",
+      "source_url": "https://www.icc-cricket.com/tournaments/icc-cricket-world-cup-league-2/matches/259387/usa-vs-canada",
+      "verification_status": "Verified (Official Match Scorecard 1–11 Batting Order)",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "match_id": "MAT_ODI_2025_2026_004",
+      "match_date": "2025-07-05",
+      "format": "ODI",
+      "gender": "Male",
+      "competition": "Bangladesh in Sri Lanka 2025",
+      "series": "Bangladesh in Sri Lanka 2025",
+      "host_country": "SL",
+      "team_a": "Sri Lanka",
+      "team_a_code": "SL",
+      "team_b": "Bangladesh",
+      "team_b_code": "BAN",
+      "venue": "R. Premadasa Stadium, Colombo",
+      "toss_winner": "BAN",
+      "toss_decision": "bat",
+      "team_a_playing_xi": [
+        "PLY_SL_029",
+        "PLY_SL_027",
+        "PLY_SL_019",
+        "PLY_SL_017",
+        "PLY_SL_004",
+        "PLY_SL_014",
+        "PLY_SL_010",
+        "PLY_SL_036",
+        "PLY_SL_023",
+        "PLY_SL_012",
+        "PLY_SL_002"
+      ],
+      "team_b_playing_xi": [
+        "PLY_BAN_017",
+        "PLY_BAN_027",
+        "PLY_BAN_014",
+        "PLY_BAN_030",
+        "PLY_BAN_022",
+        "PLY_BAN_009",
+        "PLY_BAN_003",
+        "PLY_BAN_028",
+        "PLY_BAN_025",
+        "PLY_BAN_012",
+        "PLY_BAN_002"
+      ],
+      "team_a_captain": "PLY_SL_004",
+      "team_b_captain": "PLY_BAN_009",
+      "wicketkeepers": {
+        "team_a": "PLY_SL_027",
+        "team_b": "PLY_BAN_017"
+      },
+      "batting_order": {
+        "team_a": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_SL_029",
+            "player_name": "Pathum Nissanka"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_SL_027",
+            "player_name": "Nishan Madushka"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_SL_019",
+            "player_name": "Kusal Mendis"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_SL_017",
+            "player_name": "Kamindu Mendis"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_SL_004",
+            "player_name": "Charith Asalanka"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_SL_014",
+            "player_name": "Janith Liyanage"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_SL_010",
+            "player_name": "Dunith Wellalage"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_SL_036",
+            "player_name": "Wanindu Hasaranga"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_SL_023",
+            "player_name": "Maheesh Theekshana"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_SL_012",
+            "player_name": "Dushmantha Chameera"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_SL_002",
+            "player_name": "Asitha Fernando"
+          }
+        ],
+        "team_b": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_BAN_017",
+            "player_name": "Parvez Hossain Emon"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_BAN_027",
+            "player_name": "Tanzid Hasan"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_BAN_014",
+            "player_name": "Najmul Hossain Shanto"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_BAN_030",
+            "player_name": "Tawhid Hridoy"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_BAN_022",
+            "player_name": "Shamim Hossain Patwari"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_BAN_009",
+            "player_name": "Mehidy Hasan Miraz"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_BAN_003",
+            "player_name": "Jaker Ali"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_BAN_028",
+            "player_name": "Tanzim Hasan Sakib"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_BAN_025",
+            "player_name": "Taijul Islam"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_BAN_012",
+            "player_name": "Mustafizur Rahman"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_BAN_002",
+            "player_name": "Hasan Mahmud"
+          }
+        ]
+      },
+      "bowling_options": {
+        "team_a": [
+          "PLY_SL_017",
+          "PLY_SL_004",
+          "PLY_SL_014",
+          "PLY_SL_010",
+          "PLY_SL_036",
+          "PLY_SL_023",
+          "PLY_SL_012",
+          "PLY_SL_002"
+        ],
+        "team_b": [
+          "PLY_BAN_009",
+          "PLY_BAN_028",
+          "PLY_BAN_025",
+          "PLY_BAN_012",
+          "PLY_BAN_002"
+        ]
+      },
+      "official_substitutes_or_replacements": null,
+      "match_result": "Bangladesh won by 16 runs (BAN 248 in 45.5 overs; SL 232 in 48.5 overs — Tanvir Islam 5/39)",
+      "scorecard_url": "https://www.cricketworld.com/cricket/sri-lanka-vs-bangladesh/match/players/90122",
+      "source_url": "https://www.cricketworld.com/cricket/sri-lanka-vs-bangladesh/match/players/90122",
+      "verification_status": "Verified (Official Match Scorecard 1–11 Batting Order)",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "match_id": "MAT_ODI_2025_2026_005",
+      "match_date": "2026-05-14",
+      "format": "ODI",
+      "gender": "Male",
+      "competition": "ICC CWC League 2, Match 105)",
+      "series": "ICC CWC League 2, Match 105)",
+      "host_country": "USA",
+      "team_a": "United States",
+      "team_a_code": "USA",
+      "team_b": "Scotland",
+      "team_b_code": "SCO",
+      "venue": "Tribhuvan University International Cricket Ground, Kirtipur",
+      "toss_winner": "USA",
+      "toss_decision": "field",
+      "team_a_playing_xi": [
+        "PLY_USA_018",
+        "PLY_USA_015",
+        "PLY_USA_009",
+        "PLY_USA_018",
+        "PLY_USA_016",
+        "PLY_USA_007",
+        "PLY_USA_017",
+        "PLY_USA_005",
+        "PLY_USA_006",
+        "PLY_USA_008",
+        "PLY_USA_013"
+      ],
+      "team_b_playing_xi": [
+        "PLY_SCO_011",
+        "PLY_SCO_007",
+        "PLY_SCO_004",
+        "PLY_SCO_019",
+        "PLY_SCO_005",
+        "PLY_SCO_017",
+        "PLY_SCO_008",
+        "PLY_SCO_014",
+        "PLY_SCO_012",
+        "PLY_SCO_002",
+        "PLY_SCO_010"
+      ],
+      "team_a_captain": "PLY_USA_009",
+      "team_b_captain": "PLY_SCO_019",
+      "wicketkeepers": {
+        "team_a": "PLY_USA_018",
+        "team_b": "PLY_SCO_007"
+      },
+      "batting_order": {
+        "team_a": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_USA_018",
+            "player_name": "USA ODI Batting"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_USA_015",
+            "player_name": "Shayan Jahangir"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_USA_009",
+            "player_name": "Monank Patel"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_USA_018",
+            "player_name": "USA ODI Batting"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_USA_016",
+            "player_name": "Shehan Jayasuriya"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_USA_007",
+            "player_name": "Milind Kumar"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_USA_017",
+            "player_name": "Shubham Ranjane"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_USA_005",
+            "player_name": "Harmeet Singh"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_USA_006",
+            "player_name": "Jessy Singh"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_USA_008",
+            "player_name": "Mohammad Mohsin"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_USA_013",
+            "player_name": "Saurabh Netravalkar"
+          }
+        ],
+        "team_b": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_SCO_011",
+            "player_name": "George Munsey"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_SCO_007",
+            "player_name": "Charlie Tear"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_SCO_004",
+            "player_name": "Brandon McMullen"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_SCO_019",
+            "player_name": "Richie Berrington"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_SCO_005",
+            "player_name": "CWCL2 Stats"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_SCO_017",
+            "player_name": "Michael Leask"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_SCO_008",
+            "player_name": "Chris Greaves"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_SCO_014",
+            "player_name": "Mark Watt"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_SCO_012",
+            "player_name": "Jack Jarvis"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_SCO_002",
+            "player_name": "Brad Currie"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_SCO_010",
+            "player_name": "Gavin Main"
+          }
+        ]
+      },
+      "bowling_options": {
+        "team_a": [
+          "PLY_USA_005",
+          "PLY_USA_013"
+        ],
+        "team_b": [
+          "PLY_SCO_004",
+          "PLY_SCO_017",
+          "PLY_SCO_008",
+          "PLY_SCO_014",
+          "PLY_SCO_012",
+          "PLY_SCO_002"
+        ]
+      },
+      "official_substitutes_or_replacements": null,
+      "match_result": "Scotland (321/6, 47/47 ov) beat United States (246/8, 32/32 ov, Target: 249) by 2 runs (DLS method)",
+      "scorecard_url": "https://www.icc-cricket.com/tournaments/icc-cricket-world-cup-league-2/matches/270461/scotland-vs-usa",
+      "source_url": "https://www.icc-cricket.com/tournaments/icc-cricket-world-cup-league-2/matches/270461/scotland-vs-usa",
+      "verification_status": "Verified (Official Match Scorecard 1–11 Batting Order)",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "match_id": "MAT_ODI_2025_2026_006",
+      "match_date": "2026-06-03",
+      "format": "ODI",
+      "gender": "Male",
+      "competition": "Sri Lanka in West Indies 2026",
+      "series": "Sri Lanka in West Indies 2026",
+      "host_country": "WI",
+      "team_a": "West Indies",
+      "team_a_code": "WI",
+      "team_b": "Sri Lanka",
+      "team_b_code": "SL",
+      "venue": "Sabina Park, Kingston",
+      "toss_winner": "WI",
+      "toss_decision": "field",
+      "team_a_playing_xi": [
+        "PLY_WI_011",
+        "PLY_WI_016",
+        "PLY_WI_018",
+        "PLY_WI_028",
+        "PLY_WI_030",
+        "PLY_WI_026",
+        "PLY_WI_022",
+        "PLY_WI_007",
+        "PLY_WI_003",
+        "PLY_WI_029",
+        "PLY_WI_009"
+      ],
+      "team_b_playing_xi": [
+        "PLY_SL_029",
+        "PLY_SL_017",
+        "PLY_SL_019",
+        "PLY_SL_030",
+        "PLY_SL_004",
+        "PLY_SL_014",
+        "PLY_SL_036",
+        "PLY_SL_025",
+        "PLY_SL_023",
+        "PLY_SL_012",
+        "PLY_SL_002"
+      ],
+      "team_a_captain": "PLY_WI_028",
+      "team_b_captain": "PLY_SL_030",
+      "wicketkeepers": {
+        "team_a": "PLY_WI_028",
+        "team_b": "PLY_SL_019"
+      },
+      "batting_order": {
+        "team_a": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_WI_011",
+            "player_name": "John Campbell"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_WI_016",
+            "player_name": "Justin Greaves"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_WI_018",
+            "player_name": "Keacy Carty"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_WI_028",
+            "player_name": "Shai Hope"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_WI_030",
+            "player_name": "Sherfane Rutherford"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_WI_026",
+            "player_name": "Roston Chase"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_WI_022",
+            "player_name": "Matthew Forde"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_WI_007",
+            "player_name": "Gudakesh Motie"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_WI_003",
+            "player_name": "Alzarri Joseph"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_WI_029",
+            "player_name": "Shamar Joseph"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_WI_009",
+            "player_name": "Jayden Seales"
+          }
+        ],
+        "team_b": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_SL_029",
+            "player_name": "Pathum Nissanka"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_SL_017",
+            "player_name": "Kamindu Mendis"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_SL_019",
+            "player_name": "Kusal Mendis"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_SL_030",
+            "player_name": "Pavan Rathnayake"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_SL_004",
+            "player_name": "Charith Asalanka"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_SL_014",
+            "player_name": "Janith Liyanage"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_SL_036",
+            "player_name": "Wanindu Hasaranga"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_SL_025",
+            "player_name": "Milan Rathnayake"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_SL_023",
+            "player_name": "Maheesh Theekshana"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_SL_012",
+            "player_name": "Dushmantha Chameera"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_SL_002",
+            "player_name": "Asitha Fernando"
+          }
+        ]
+      },
+      "bowling_options": {
+        "team_a": [
+          "PLY_WI_016",
+          "PLY_WI_026",
+          "PLY_WI_007",
+          "PLY_WI_003",
+          "PLY_WI_029",
+          "PLY_WI_009"
+        ],
+        "team_b": [
+          "PLY_SL_017",
+          "PLY_SL_004",
+          "PLY_SL_014",
+          "PLY_SL_036",
+          "PLY_SL_025",
+          "PLY_SL_023",
+          "PLY_SL_012",
+          "PLY_SL_002"
+        ]
+      },
+      "official_substitutes_or_replacements": null,
+      "match_result": "Sri Lanka won by 41 runs (SL 303/7 in 50 overs; WI 262 in 49.2 overs)",
+      "scorecard_url": "https://www.cricketworld.com/cricket/west-indies-vs-sri-lanka/match/players/96239",
+      "source_url": "https://www.cricketworld.com/cricket/west-indies-vs-sri-lanka/match/players/96239",
+      "verification_status": "Verified (Official Match Scorecard 1–11 Batting Order)",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "match_id": "MAT_ODI_2025_2026_007",
+      "match_date": "2026-06-08",
+      "format": "ODI",
+      "gender": "Male",
+      "competition": "ICC CWC League 2, Match 111)",
+      "series": "ICC CWC League 2, Match 111)",
+      "host_country": "USA",
+      "team_a": "United States",
+      "team_a_code": "USA",
+      "team_b": "Netherlands",
+      "team_b_code": "NED",
+      "venue": "Maple Leaf North-West Ground, King City",
+      "toss_winner": "USA",
+      "toss_decision": "field",
+      "team_a_playing_xi": [
+        "PLY_USA_018",
+        "PLY_USA_009",
+        "PLY_USA_016",
+        "PLY_USA_018",
+        "PLY_USA_007",
+        "PLY_USA_017",
+        "PLY_USA_012",
+        "PLY_USA_005",
+        "PLY_USA_004",
+        "PLY_USA_013",
+        "PLY_USA_011"
+      ],
+      "team_b_playing_xi": [
+        "PLY_NED_003",
+        "PLY_NED_008",
+        "PLY_NED_016",
+        "PLY_NED_002",
+        "PLY_NED_014",
+        "PLY_NED_010",
+        "PLY_NED_017",
+        "PLY_NED_007",
+        "PLY_NED_009",
+        "PLY_NED_009",
+        "PLY_NED_011"
+      ],
+      "team_a_captain": "PLY_USA_009",
+      "team_b_captain": "PLY_NED_014",
+      "wicketkeepers": {
+        "team_a": "PLY_USA_018",
+        "team_b": "PLY_NED_003"
+      },
+      "batting_order": {
+        "team_a": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_USA_018",
+            "player_name": "USA ODI Batting"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_USA_009",
+            "player_name": "Monank Patel"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_USA_016",
+            "player_name": "Shehan Jayasuriya"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_USA_018",
+            "player_name": "USA ODI Batting"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_USA_007",
+            "player_name": "Milind Kumar"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_USA_017",
+            "player_name": "Shubham Ranjane"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_USA_012",
+            "player_name": "Sanjay Krishnamurthi"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_USA_005",
+            "player_name": "Harmeet Singh"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_USA_004",
+            "player_name": "Ehsan Adil"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_USA_013",
+            "player_name": "Saurabh Netravalkar"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_USA_011",
+            "player_name": "Rushil Ugarkar"
+          }
+        ],
+        "team_b": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_NED_003",
+            "player_name": "CWCL2 Stats"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_NED_008",
+            "player_name": "Max O'Dowd"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_NED_016",
+            "player_name": "Viktor Lubbers"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_NED_002",
+            "player_name": "Bas de Leede"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_NED_014",
+            "player_name": "Scott Edwards"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_NED_010",
+            "player_name": "Noah Croes"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_NED_017",
+            "player_name": "Zach Lion-Cachet"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_NED_007",
+            "player_name": "Logan van Beek"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_NED_009",
+            "player_name": "NED T20I Stats"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_NED_009",
+            "player_name": "NED T20I Stats"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_NED_011",
+            "player_name": "Paul van Meekeren"
+          }
+        ]
+      },
+      "bowling_options": {
+        "team_a": [
+          "PLY_USA_005",
+          "PLY_USA_013"
+        ],
+        "team_b": [
+          "PLY_NED_002",
+          "PLY_NED_007",
+          "PLY_NED_009",
+          "PLY_NED_009",
+          "PLY_NED_011"
+        ]
+      },
+      "official_substitutes_or_replacements": null,
+      "match_result": "Netherlands (196/8, 50.0 ov) beat United States (175, 47.5 ov) by 21 runs",
+      "scorecard_url": "https://www.icc-cricket.com/tournaments/icc-cricket-world-cup-league-2/matches/271457/netherlands-vs-usa",
+      "source_url": "https://www.icc-cricket.com/tournaments/icc-cricket-world-cup-league-2/matches/271457/netherlands-vs-usa",
+      "verification_status": "Verified (Official Match Scorecard 1–11 Batting Order)",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "match_id": "MAT_ODI_2025_2026_008",
+      "match_date": "2026-06-12",
+      "format": "ODI",
+      "gender": "Male",
+      "competition": "ICC CWC League 2, Match 113)",
+      "series": "ICC CWC League 2, Match 113)",
+      "host_country": "USA",
+      "team_a": "United States",
+      "team_a_code": "USA",
+      "team_b": "Canada",
+      "team_b_code": "CAN",
+      "venue": "Maple Leaf North-West Ground, King City",
+      "toss_winner": "USA",
+      "toss_decision": "field",
+      "team_a_playing_xi": [
+        "PLY_USA_018",
+        "PLY_USA_009",
+        "PLY_USA_016",
+        "PLY_USA_018",
+        "PLY_USA_007",
+        "PLY_USA_017",
+        "PLY_USA_012",
+        "PLY_USA_004",
+        "PLY_USA_013",
+        "PLY_USA_005",
+        "PLY_USA_010"
+      ],
+      "team_b_playing_xi": [
+        "PLY_CAN_001",
+        "PLY_CAN_014",
+        "PLY_CAN_019",
+        "PLY_CAN_013",
+        "PLY_CAN_005",
+        "PLY_CAN_005",
+        "PLY_CAN_017",
+        "PLY_CAN_006",
+        "PLY_CAN_009",
+        "PLY_CAN_008",
+        "PLY_CAN_004"
+      ],
+      "team_a_captain": "PLY_USA_009",
+      "team_b_captain": "PLY_CAN_017",
+      "wicketkeepers": {
+        "team_a": "PLY_USA_018",
+        "team_b": "PLY_CAN_005"
+      },
+      "batting_order": {
+        "team_a": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_USA_018",
+            "player_name": "USA ODI Batting"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_USA_009",
+            "player_name": "Monank Patel"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_USA_016",
+            "player_name": "Shehan Jayasuriya"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_USA_018",
+            "player_name": "USA ODI Batting"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_USA_007",
+            "player_name": "Milind Kumar"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_USA_017",
+            "player_name": "Shubham Ranjane"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_USA_012",
+            "player_name": "Sanjay Krishnamurthi"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_USA_004",
+            "player_name": "Ehsan Adil"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_USA_013",
+            "player_name": "Saurabh Netravalkar"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_USA_005",
+            "player_name": "Harmeet Singh"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_USA_010",
+            "player_name": "Nosthush Kenjige"
+          }
+        ],
+        "team_b": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_CAN_001",
+            "player_name": "Aaron Johnson"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_CAN_014",
+            "player_name": "Pargat Singh"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_CAN_019",
+            "player_name": "Yuvraj Samra"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_CAN_013",
+            "player_name": "Nicholas Kirton"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_CAN_005",
+            "player_name": "CAN ODI Batting"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_CAN_005",
+            "player_name": "CAN ODI Batting"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_CAN_017",
+            "player_name": "Saad Bin Zafar"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_CAN_006",
+            "player_name": "Dillon Heyliger"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_CAN_009",
+            "player_name": "Kaleem Sana"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_CAN_008",
+            "player_name": "Jaskaran Singh"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_CAN_004",
+            "player_name": "Ansh Patel"
+          }
+        ]
+      },
+      "bowling_options": {
+        "team_a": [
+          "PLY_USA_013",
+          "PLY_USA_005"
+        ],
+        "team_b": [
+          "PLY_CAN_017",
+          "PLY_CAN_006",
+          "PLY_CAN_009",
+          "PLY_CAN_008"
+        ]
+      },
+      "official_substitutes_or_replacements": null,
+      "match_result": "United States (276/5, 50.0 ov) beat Canada (275/8, 50.0 ov) by 5 wickets",
+      "scorecard_url": "https://www.icc-cricket.com/tournaments/icc-cricket-world-cup-league-2/matches/271459/usa-vs-canada",
+      "source_url": "https://www.icc-cricket.com/tournaments/icc-cricket-world-cup-league-2/matches/271459/usa-vs-canada",
+      "verification_status": "Verified (Official Match Scorecard 1–11 Batting Order)",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "match_id": "MAT_ODI_2025_2026_009",
+      "match_date": "2026-07-14",
+      "format": "ODI",
+      "gender": "Male",
+      "competition": "India Tour of England 2026 (1st ODI)",
+      "series": "India Tour of England 2026 (1st ODI)",
+      "host_country": "ENG",
+      "team_a": "England",
+      "team_a_code": "ENG",
+      "team_b": "India",
+      "team_b_code": "IND",
+      "venue": "Edgbaston, Birmingham",
+      "toss_winner": "ENG",
+      "toss_decision": "bat",
+      "team_a_playing_xi": [
+        "PLY_ENG_002",
+        "PLY_ENG_009",
+        "PLY_ENG_013",
+        "PLY_ENG_008",
+        "PLY_ENG_015",
+        "PLY_ENG_026",
+        "PLY_ENG_032",
+        "PLY_ENG_017",
+        "PLY_ENG_014",
+        "PLY_ENG_001",
+        "PLY_ENG_016"
+      ],
+      "team_b_playing_xi": [
+        "PLY_IND_030",
+        "PLY_IND_038",
+        "PLY_IND_044",
+        "PLY_IND_037",
+        "PLY_IND_045",
+        "PLY_IND_012",
+        "PLY_IND_004",
+        "PLY_IND_036",
+        "PLY_IND_007",
+        "PLY_IND_011",
+        "PLY_IND_023"
+      ],
+      "team_a_captain": "PLY_ENG_008",
+      "team_b_captain": "PLY_IND_038",
+      "wicketkeepers": {
+        "team_a": "PLY_ENG_015",
+        "team_b": "PLY_IND_012"
+      },
+      "batting_order": {
+        "team_a": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_ENG_002",
+            "player_name": "Ben Duckett"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_ENG_009",
+            "player_name": "Jacob Bethell"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_ENG_013",
+            "player_name": "Joe Root"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_ENG_008",
+            "player_name": "Harry Brook"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_ENG_015",
+            "player_name": "Jos Buttler"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_ENG_026",
+            "player_name": "Sam Curran"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_ENG_032",
+            "player_name": "Will Jacks"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_ENG_017",
+            "player_name": "Liam Dawson"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_ENG_014",
+            "player_name": "Jofra Archer"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_ENG_001",
+            "player_name": "Adil Rashid"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_ENG_016",
+            "player_name": "Josh Tongue"
+          }
+        ],
+        "team_b": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_IND_030",
+            "player_name": "Rohit Sharma"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_IND_038",
+            "player_name": "Shubman Gill"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_IND_044",
+            "player_name": "Virat Kohli"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_IND_037",
+            "player_name": "Shreyas Iyer"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_IND_045",
+            "player_name": "Washington Sundar"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_IND_012",
+            "player_name": "KL Rahul"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_IND_004",
+            "player_name": "Axar Patel"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_IND_036",
+            "player_name": "Shivam Dube"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_IND_007",
+            "player_name": "Gurnoor Brar"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_IND_011",
+            "player_name": "Jasprit Bumrah"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_IND_023",
+            "player_name": "Prasidh Krishna"
+          }
+        ]
+      },
+      "bowling_options": {
+        "team_a": [
+          "PLY_ENG_009",
+          "PLY_ENG_026",
+          "PLY_ENG_014",
+          "PLY_ENG_001",
+          "PLY_ENG_016"
+        ],
+        "team_b": [
+          "PLY_IND_045",
+          "PLY_IND_004",
+          "PLY_IND_011"
+        ]
+      },
+      "official_substitutes_or_replacements": "(Shubman Gill retired not out on 80 off 75 balls).",
+      "match_result": "England 258 (47.5 overs) lost to India 262/4 (45.2 overs) — India won by 6 wickets",
+      "scorecard_url": "https://www.skysports.com/cricket/england-v-india/scorecard/062239c6-6471-5351-b2d0-3f8ca68fee70",
+      "source_url": "https://www.skysports.com/cricket/england-v-india/scorecard/062239c6-6471-5351-b2d0-3f8ca68fee70",
+      "verification_status": "Verified (Official Match Scorecard 1–11 Batting Order)",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "match_id": "MAT_ODI_2025_2026_010",
+      "match_date": "2026-07-23",
+      "format": "ODI",
+      "gender": "Male",
+      "competition": "ICC CWC League 2, Match 117)",
+      "series": "ICC CWC League 2, Match 117)",
+      "host_country": "NED",
+      "team_a": "Netherlands",
+      "team_a_code": "NED",
+      "team_b": "Nepal",
+      "team_b_code": "NEP",
+      "venue": "Sportpark Maarschalkerweerd, Utrecht",
+      "toss_winner": "NED",
+      "toss_decision": "field",
+      "team_a_playing_xi": [
+        "PLY_NED_004",
+        "PLY_NED_008",
+        "PLY_NED_017",
+        "PLY_NED_002",
+        "PLY_NED_014",
+        "PLY_NED_010",
+        "PLY_NED_012",
+        "PLY_NED_007",
+        "PLY_NED_009",
+        "PLY_NED_009",
+        "PLY_NED_001"
+      ],
+      "team_b_playing_xi": [
+        "PLY_NEP_007",
+        "PLY_NEP_001",
+        "PLY_NEP_003",
+        "PLY_NEP_014",
+        "PLY_NEP_004",
+        "PLY_NEP_010",
+        "PLY_NEP_005",
+        "PLY_NEP_017",
+        "PLY_NEP_012",
+        "PLY_NEP_015",
+        "PLY_NEP_008"
+      ],
+      "team_a_captain": "PLY_NED_014",
+      "team_b_captain": "PLY_NEP_014",
+      "wicketkeepers": {
+        "team_a": "PLY_NED_014",
+        "team_b": "PLY_NEP_001"
+      },
+      "batting_order": {
+        "team_a": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_NED_004",
+            "player_name": "Cedric de Lange"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_NED_008",
+            "player_name": "Max O'Dowd"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_NED_017",
+            "player_name": "Zach Lion-Cachet"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_NED_002",
+            "player_name": "Bas de Leede"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_NED_014",
+            "player_name": "Scott Edwards"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_NED_010",
+            "player_name": "Noah Croes"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_NED_012",
+            "player_name": "Roelof van der Merwe"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_NED_007",
+            "player_name": "Logan van Beek"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_NED_009",
+            "player_name": "NED T20I Stats"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_NED_009",
+            "player_name": "NED T20I Stats"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_NED_001",
+            "player_name": "Alex Roy"
+          }
+        ],
+        "team_b": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_NEP_007",
+            "player_name": "Kushal Bhurtel"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_NEP_001",
+            "player_name": "Aasif Sheikh"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_NEP_003",
+            "player_name": "Bhim Sharki"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_NEP_014",
+            "player_name": "Rohit Paudel"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_NEP_004",
+            "player_name": "Dipendra Singh Airee"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_NEP_010",
+            "player_name": "NEP ODI Batting"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_NEP_005",
+            "player_name": "Gulshan Jha"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_NEP_017",
+            "player_name": "Sompal Kami"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_NEP_012",
+            "player_name": "NEP T20I Bowling"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_NEP_015",
+            "player_name": "Sandeep Lamichhane"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_NEP_008",
+            "player_name": "Lalit Rajbanshi"
+          }
+        ]
+      },
+      "bowling_options": {
+        "team_a": [
+          "PLY_NED_002",
+          "PLY_NED_007",
+          "PLY_NED_009",
+          "PLY_NED_009"
+        ],
+        "team_b": [
+          "PLY_NEP_004",
+          "PLY_NEP_017",
+          "PLY_NEP_012",
+          "PLY_NEP_015"
+        ]
+      },
+      "official_substitutes_or_replacements": null,
+      "match_result": "Netherlands (158/4, 44.1 ov) beat Nepal (157, 44.4 ov) by 6 wickets",
+      "scorecard_url": "https://www.icc-cricket.com/tournaments/icc-cricket-world-cup-league-2/matches/270951/netherlands-vs-nepal",
+      "source_url": "https://www.icc-cricket.com/tournaments/icc-cricket-world-cup-league-2/matches/270951/netherlands-vs-nepal",
+      "verification_status": "Verified (Official Match Scorecard 1–11 Batting Order)",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "match_id": "MAT_ODI_2025_2026_011",
+      "match_date": "2026-07-27",
+      "format": "ODI",
+      "gender": "Male",
+      "competition": "ICC CWC League 2, Match 119)",
+      "series": "ICC CWC League 2, Match 119)",
+      "host_country": "NEP",
+      "team_a": "Nepal",
+      "team_a_code": "NEP",
+      "team_b": "Namibia",
+      "team_b_code": "NAM",
+      "venue": "Sportpark Maarschalkerweerd, Utrecht",
+      "toss_winner": "NEP",
+      "toss_decision": "field",
+      "team_a_playing_xi": [
+        "PLY_NEP_007",
+        "PLY_NEP_001",
+        "PLY_NEP_006",
+        "PLY_NEP_003",
+        "PLY_NEP_014",
+        "PLY_NEP_004",
+        "PLY_NEP_010",
+        "PLY_NEP_005",
+        "PLY_NEP_017",
+        "PLY_NEP_012",
+        "PLY_NEP_015"
+      ],
+      "team_b_playing_xi": [
+        "PLY_NAM_012",
+        "PLY_NAM_013",
+        "PLY_NAM_013",
+        "PLY_NAM_005",
+        "PLY_NAM_006",
+        "PLY_NAM_017",
+        "PLY_NAM_009",
+        "PLY_NAM_014",
+        "PLY_NAM_003",
+        "PLY_NAM_007",
+        "PLY_NAM_015"
+      ],
+      "team_a_captain": "PLY_NEP_014",
+      "team_b_captain": "PLY_NAM_005",
+      "wicketkeepers": {
+        "team_a": "PLY_NEP_001",
+        "team_b": "PLY_NAM_013"
+      },
+      "batting_order": {
+        "team_a": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_NEP_007",
+            "player_name": "Kushal Bhurtel"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_NEP_001",
+            "player_name": "Aasif Sheikh"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_NEP_006",
+            "player_name": "Ishan Pandey"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_NEP_003",
+            "player_name": "Bhim Sharki"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_NEP_014",
+            "player_name": "Rohit Paudel"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_NEP_004",
+            "player_name": "Dipendra Singh Airee"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_NEP_010",
+            "player_name": "NEP ODI Batting"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_NEP_005",
+            "player_name": "Gulshan Jha"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_NEP_017",
+            "player_name": "Sompal Kami"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_NEP_012",
+            "player_name": "NEP T20I Bowling"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_NEP_015",
+            "player_name": "Sandeep Lamichhane"
+          }
+        ],
+        "team_b": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_NAM_012",
+            "player_name": "Michael van Lingen"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_NAM_013",
+            "player_name": "NAM T20I Stats"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_NAM_013",
+            "player_name": "NAM T20I Stats"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_NAM_005",
+            "player_name": "Gerhard Erasmus"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_NAM_006",
+            "player_name": "JJ Smit"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_NAM_017",
+            "player_name": "Zane Green"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_NAM_009",
+            "player_name": "Jan Frylinck"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_NAM_014",
+            "player_name": "Ruben Trumpelmann"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_NAM_003",
+            "player_name": "Bernard Scholtz"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_NAM_007",
+            "player_name": "Jack Brassell"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_NAM_015",
+            "player_name": "Tangeni Lungameni"
+          }
+        ]
+      },
+      "bowling_options": {
+        "team_a": [
+          "PLY_NEP_004",
+          "PLY_NEP_017",
+          "PLY_NEP_012",
+          "PLY_NEP_015"
+        ],
+        "team_b": [
+          "PLY_NAM_005",
+          "PLY_NAM_006",
+          "PLY_NAM_009",
+          "PLY_NAM_014",
+          "PLY_NAM_003"
+        ]
+      },
+      "official_substitutes_or_replacements": null,
+      "match_result": "Namibia (211/7, 50.0 ov) beat Nepal (208/6, 50.0 ov) by 3 runs",
+      "scorecard_url": "https://www.icc-cricket.com/tournaments/icc-cricket-world-cup-league-2/matches/270954/namibia-vs-nepal",
+      "source_url": "https://www.icc-cricket.com/tournaments/icc-cricket-world-cup-league-2/matches/270954/namibia-vs-nepal",
+      "verification_status": "Verified (Official Match Scorecard 1–11 Batting Order)",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "match_id": "MAT_ODI_2025_2026_012",
+      "match_date": "2026-09-10",
+      "format": "ODI",
+      "gender": "Male",
+      "competition": "ACC Men's Premier Cup 2026, Semi-Final 1)",
+      "series": "ACC Men's Premier Cup 2026, Semi-Final 1)",
+      "host_country": "OMA",
+      "team_a": "Oman",
+      "team_a_code": "OMA",
+      "team_b": "Nepal",
+      "team_b_code": "NEP",
+      "venue": "Bayuemas Oval, Kuala Lumpur",
+      "toss_winner": "OMA",
+      "toss_decision": "field",
+      "team_a_playing_xi": [
+        "PLY_OMA_010",
+        "PLY_OMA_008",
+        "PLY_OMA_007",
+        "PLY_OMA_004",
+        "PLY_OMA_001",
+        "PLY_OMA_015",
+        "PLY_OMA_023",
+        "PLY_OMA_012",
+        "PLY_OMA_009",
+        "PLY_OMA_021",
+        "PLY_OMA_011"
+      ],
+      "team_b_playing_xi": [
+        "PLY_NEP_007",
+        "PLY_NEP_001",
+        "PLY_NEP_003",
+        "PLY_NEP_014",
+        "PLY_NEP_004",
+        "PLY_NEP_010",
+        "PLY_NEP_002",
+        "PLY_NEP_005",
+        "PLY_NEP_017",
+        "PLY_NEP_015",
+        "PLY_NEP_008"
+      ],
+      "team_a_captain": "PLY_OMA_001",
+      "team_b_captain": "PLY_NEP_015",
+      "wicketkeepers": {
+        "team_a": "PLY_OMA_007",
+        "team_b": "PLY_NEP_001"
+      },
+      "batting_order": {
+        "team_a": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_OMA_010",
+            "player_name": "Jatinder Singh"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_OMA_008",
+            "player_name": "Hasnain Ul Wahab"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_OMA_007",
+            "player_name": "CWCL2 Stats"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_OMA_004",
+            "player_name": "Aryan Bisht"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_OMA_001",
+            "player_name": "2026 T20WC Squads"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_OMA_015",
+            "player_name": "Mujibur Ali"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_OMA_023",
+            "player_name": "Wasim Ali"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_OMA_012",
+            "player_name": "Jiten Ramanandi"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_OMA_009",
+            "player_name": "Hassnain Shah"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_OMA_021",
+            "player_name": "Shakeel Ahmed"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_OMA_011",
+            "player_name": "Jay Odedra"
+          }
+        ],
+        "team_b": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_NEP_007",
+            "player_name": "Kushal Bhurtel"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_NEP_001",
+            "player_name": "Aasif Sheikh"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_NEP_003",
+            "player_name": "Bhim Sharki"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_NEP_014",
+            "player_name": "Rohit Paudel"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_NEP_004",
+            "player_name": "Dipendra Singh Airee"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_NEP_010",
+            "player_name": "NEP ODI Batting"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_NEP_002",
+            "player_name": "Basir Ahamad"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_NEP_005",
+            "player_name": "Gulshan Jha"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_NEP_017",
+            "player_name": "Sompal Kami"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_NEP_015",
+            "player_name": "Sandeep Lamichhane"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_NEP_008",
+            "player_name": "Lalit Rajbanshi"
+          }
+        ]
+      },
+      "bowling_options": {
+        "team_a": [],
+        "team_b": [
+          "PLY_NEP_004",
+          "PLY_NEP_017",
+          "PLY_NEP_015"
+        ]
+      },
+      "official_substitutes_or_replacements": null,
+      "match_result": "Nepal (147, 45.4 ov) beat Oman (60, 24.3 ov) by 87 runs",
+      "scorecard_url": "https://www.icc-cricket.com/matches/273943/nepal-vs-oman",
+      "source_url": "https://www.icc-cricket.com/matches/273943/nepal-vs-oman",
+      "verification_status": "Verified (Official Match Scorecard 1–11 Batting Order)",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "match_id": "MAT_ODI_2025_2026_013",
+      "match_date": "2026-09-30",
+      "format": "ODI",
+      "gender": "Male",
+      "competition": "Australia Tour of South Africa 2026–27 (3rd ODI)",
+      "series": "Australia Tour of South Africa 2026–27 (3rd ODI)",
+      "host_country": "AUS",
+      "team_a": "Australia",
+      "team_a_code": "AUS",
+      "team_b": "South Africa",
+      "team_b_code": "RSA",
+      "venue": "JB Marks Oval (NWC Oval), Potchefstroom",
+      "toss_winner": "RSA",
+      "toss_decision": "field",
+      "team_a_playing_xi": [
+        "PLY_AUS_024",
+        "PLY_AUS_037",
+        "PLY_AUS_008",
+        "PLY_AUS_029",
+        "PLY_AUS_003",
+        "PLY_AUS_020",
+        "PLY_AUS_007",
+        "PLY_AUS_039",
+        "PLY_AUS_030",
+        "PLY_AUS_026",
+        "PLY_AUS_002"
+      ],
+      "team_b_playing_xi": [
+        "PLY_RSA_001",
+        "PLY_RSA_023",
+        "PLY_RSA_026",
+        "PLY_RSA_021",
+        "PLY_RSA_030",
+        "PLY_RSA_004",
+        "PLY_RSA_029",
+        "PLY_RSA_003",
+        "PLY_RSA_010",
+        "PLY_RSA_022",
+        "PLY_RSA_018"
+      ],
+      "team_a_captain": "PLY_AUS_024",
+      "team_b_captain": "PLY_RSA_001",
+      "wicketkeepers": {
+        "team_a": "PLY_AUS_003",
+        "team_b": "PLY_RSA_023"
+      },
+      "batting_order": {
+        "team_a": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_AUS_024",
+            "player_name": "Mitchell Marsh"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_AUS_037",
+            "player_name": "Travis Head"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_AUS_008",
+            "player_name": "Cooper Connolly"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_AUS_029",
+            "player_name": "Oliver Peake"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_AUS_003",
+            "player_name": "Alex Carey"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_AUS_020",
+            "player_name": "Matt Renshaw"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_AUS_007",
+            "player_name": "Cameron Green"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_AUS_039",
+            "player_name": "Xavier Bartlett"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_AUS_030",
+            "player_name": "Pat Cummins"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_AUS_026",
+            "player_name": "Mitchell Starc"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_AUS_002",
+            "player_name": "Adam Zampa"
+          }
+        ],
+        "team_b": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_RSA_001",
+            "player_name": "Aiden Markram"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_RSA_023",
+            "player_name": "Quinton de Kock"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_RSA_026",
+            "player_name": "Ryan Rickelton"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_RSA_021",
+            "player_name": "Matthew Breetzke"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_RSA_030",
+            "player_name": "Tristan Stubbs"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_RSA_004",
+            "player_name": "Corbin Bosch"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_RSA_029",
+            "player_name": "Tony de Zorzi"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_RSA_003",
+            "player_name": "Bjorn Fortuin"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_RSA_010",
+            "player_name": "Gerald Coetzee"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_RSA_022",
+            "player_name": "Nqobani Mokoena"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_RSA_018",
+            "player_name": "Lizaad Williams"
+          }
+        ]
+      },
+      "bowling_options": {
+        "team_a": [
+          "PLY_AUS_024",
+          "PLY_AUS_008",
+          "PLY_AUS_007",
+          "PLY_AUS_039",
+          "PLY_AUS_030",
+          "PLY_AUS_026",
+          "PLY_AUS_002"
+        ],
+        "team_b": [
+          "PLY_RSA_004"
+        ]
+      },
+      "official_substitutes_or_replacements": null,
+      "match_result": "Australia 322/9 (50 overs) defeated South Africa 145/4 (28 overs; target 191 in 28 overs) — Australia won by 45 runs (DLS method)",
+      "scorecard_url": "https://www.skysports.com/cricket/south-africa-v-australia/scorecard/f933c791-d83a-5a87-83cc-94c8a6c6be48",
+      "source_url": "https://www.skysports.com/cricket/south-africa-v-australia/scorecard/f933c791-d83a-5a87-83cc-94c8a6c6be48",
+      "verification_status": "Verified (Official Match Scorecard 1–11 Batting Order)",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "match_id": "MAT_ODI_2025_2026_014",
+      "match_date": "2026-10-13",
+      "format": "ODI",
+      "gender": "Male",
+      "competition": "ICC CWC League 2, Match 136)",
+      "series": "ICC CWC League 2, Match 136)",
+      "host_country": "NAM",
+      "team_a": "Namibia",
+      "team_a_code": "NAM",
+      "team_b": "United States",
+      "team_b_code": "USA",
+      "venue": "Grand Prairie Stadium, Dallas",
+      "toss_winner": "NAM",
+      "toss_decision": "field",
+      "team_a_playing_xi": [
+        "PLY_NAM_012",
+        "PLY_NAM_013",
+        "PLY_NAM_009",
+        "PLY_NAM_005",
+        "PLY_NAM_017",
+        "PLY_NAM_006",
+        "PLY_NAM_014",
+        "PLY_NAM_001",
+        "PLY_NAM_007",
+        "PLY_NAM_003",
+        "PLY_NAM_011"
+      ],
+      "team_b_playing_xi": [
+        "PLY_USA_018",
+        "PLY_USA_009",
+        "PLY_USA_016",
+        "PLY_USA_018",
+        "PLY_USA_007",
+        "PLY_USA_017",
+        "PLY_USA_012",
+        "PLY_USA_005",
+        "PLY_USA_013",
+        "PLY_USA_006",
+        "PLY_USA_004"
+      ],
+      "team_a_captain": "PLY_NAM_005",
+      "team_b_captain": "PLY_USA_009",
+      "wicketkeepers": {
+        "team_a": "PLY_NAM_013",
+        "team_b": "PLY_USA_018"
+      },
+      "batting_order": {
+        "team_a": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_NAM_012",
+            "player_name": "Michael van Lingen"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_NAM_013",
+            "player_name": "NAM T20I Stats"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_NAM_009",
+            "player_name": "Jan Frylinck"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_NAM_005",
+            "player_name": "Gerhard Erasmus"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_NAM_017",
+            "player_name": "Zane Green"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_NAM_006",
+            "player_name": "JJ Smit"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_NAM_014",
+            "player_name": "Ruben Trumpelmann"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_NAM_001",
+            "player_name": "Alexander Volschenk"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_NAM_007",
+            "player_name": "Jack Brassell"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_NAM_003",
+            "player_name": "Bernard Scholtz"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_NAM_011",
+            "player_name": "Max Heingo"
+          }
+        ],
+        "team_b": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_USA_018",
+            "player_name": "USA ODI Batting"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_USA_009",
+            "player_name": "Monank Patel"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_USA_016",
+            "player_name": "Shehan Jayasuriya"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_USA_018",
+            "player_name": "USA ODI Batting"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_USA_007",
+            "player_name": "Milind Kumar"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_USA_017",
+            "player_name": "Shubham Ranjane"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_USA_012",
+            "player_name": "Sanjay Krishnamurthi"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_USA_005",
+            "player_name": "Harmeet Singh"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_USA_013",
+            "player_name": "Saurabh Netravalkar"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_USA_006",
+            "player_name": "Jessy Singh"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_USA_004",
+            "player_name": "Ehsan Adil"
+          }
+        ]
+      },
+      "bowling_options": {
+        "team_a": [
+          "PLY_NAM_009",
+          "PLY_NAM_005",
+          "PLY_NAM_006",
+          "PLY_NAM_014",
+          "PLY_NAM_003"
+        ],
+        "team_b": [
+          "PLY_USA_005",
+          "PLY_USA_013"
+        ]
+      },
+      "official_substitutes_or_replacements": null,
+      "match_result": "Namibia (278/4, 48.3 ov) beat United States (277/7, 50.0 ov) by 6 wickets",
+      "scorecard_url": "https://www.icc-cricket.com/tournaments/icc-cricket-world-cup-league-2/matches/275016/usa-vs-namibia",
+      "source_url": "https://www.icc-cricket.com/tournaments/icc-cricket-world-cup-league-2/matches/275016/usa-vs-namibia",
+      "verification_status": "Verified (Official Match Scorecard 1–11 Batting Order)",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "match_id": "MAT_ODI_2025_2026_015",
+      "match_date": "2026-10-19",
+      "format": "ODI",
+      "gender": "Male",
+      "competition": "UAE ODI Tri-Nation Series 2026 — 2nd Match",
+      "series": "UAE ODI Tri-Nation Series 2026 — 2nd Match",
+      "host_country": "AFG",
+      "team_a": "Afghanistan",
+      "team_a_code": "AFG",
+      "team_b": "Zimbabwe",
+      "team_b_code": "ZIM",
+      "venue": "United Arab Emirates — Sheikh Zayed Stadium, Abu Dhabi",
+      "toss_winner": "AFG",
+      "toss_decision": "bat",
+      "team_a_playing_xi": [
+        "PLY_AFG_033",
+        "PLY_AFG_015",
+        "PLY_AFG_036",
+        "PLY_AFG_034",
+        "PLY_AFG_010",
+        "PLY_AFG_007",
+        "PLY_AFG_022",
+        "PLY_AFG_035",
+        "PLY_AFG_009",
+        "PLY_AFG_006",
+        "PLY_AFG_012"
+      ],
+      "team_b_playing_xi": [
+        "PLY_ZIM_002",
+        "PLY_ZIM_006",
+        "PLY_ZIM_005",
+        "PLY_ZIM_008",
+        "PLY_ZIM_019",
+        "PLY_ZIM_017",
+        "PLY_ZIM_020",
+        "PLY_ZIM_004",
+        "PLY_ZIM_014",
+        "PLY_ZIM_010",
+        "PLY_ZIM_003"
+      ],
+      "team_a_captain": "PLY_AFG_034",
+      "team_b_captain": "PLY_ZIM_019",
+      "wicketkeepers": {
+        "team_a": "PLY_AFG_033",
+        "team_b": "PLY_ZIM_005"
+      },
+      "batting_order": {
+        "team_a": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_AFG_033",
+            "player_name": "Rahmanullah Gurbaz"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_AFG_015",
+            "player_name": "Ibrahim Zadran"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_AFG_036",
+            "player_name": "Sediqullah Atal"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_AFG_034",
+            "player_name": "Rahmat Shah"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_AFG_010",
+            "player_name": "Darwish Rasooli"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_AFG_007",
+            "player_name": "Azmatullah Omarzai"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_AFG_022",
+            "player_name": "Mohammad Nabi"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_AFG_035",
+            "player_name": "Rashid Khan"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_AFG_009",
+            "player_name": "Bilal Sami"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_AFG_006",
+            "player_name": "Allah Ghazanfar"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_AFG_012",
+            "player_name": "Fazalhaq Farooqi"
+          }
+        ],
+        "team_b": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_ZIM_002",
+            "player_name": "Benjamin Curran"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_ZIM_006",
+            "player_name": "Brian Bennett"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_ZIM_005",
+            "player_name": "Brendan Taylor"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_ZIM_008",
+            "player_name": "Craig Ervine"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_ZIM_019",
+            "player_name": "Sikandar Raza"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_ZIM_017",
+            "player_name": "Ryan Burl"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_ZIM_020",
+            "player_name": "Tadiwanashe Marumani"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_ZIM_004",
+            "player_name": "Bradley Evans"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_ZIM_014",
+            "player_name": "Newman Nyamhuri"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_ZIM_010",
+            "player_name": "Ernest Masuku"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_ZIM_003",
+            "player_name": "Blessing Muzarabani"
+          }
+        ]
+      },
+      "bowling_options": {
+        "team_a": [
+          "PLY_AFG_007",
+          "PLY_AFG_022",
+          "PLY_AFG_035",
+          "PLY_AFG_009",
+          "PLY_AFG_006",
+          "PLY_AFG_012"
+        ],
+        "team_b": [
+          "PLY_ZIM_019",
+          "PLY_ZIM_017",
+          "PLY_ZIM_004",
+          "PLY_ZIM_014",
+          "PLY_ZIM_010",
+          "PLY_ZIM_003"
+        ]
+      },
+      "official_substitutes_or_replacements": null,
+      "match_result": "Afghanistan (286/9 in 50 overs) beat Zimbabwe (128 all out in 33.4 overs) by 158 runs",
+      "scorecard_url": "https://www.skysports.com/cricket/afghanistan-v-zimbabwe/scorecard/dff8e09b-32ef-5b3f-bbce-d903baea95d2",
+      "source_url": "https://www.skysports.com/cricket/afghanistan-v-zimbabwe/scorecard/dff8e09b-32ef-5b3f-bbce-d903baea95d2",
+      "verification_status": "Verified (Official Match Scorecard 1–11 Batting Order)",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "match_id": "MAT_ODI_2025_2026_016",
+      "match_date": "2026-10-19",
+      "format": "ODI",
+      "gender": "Male",
+      "competition": "ICC CWC League 2, Match 139)",
+      "series": "ICC CWC League 2, Match 139)",
+      "host_country": "OMA",
+      "team_a": "Oman",
+      "team_a_code": "OMA",
+      "team_b": "Nepal",
+      "team_b_code": "NEP",
+      "venue": "Al Amerat Cricket Ground (Ministry Turf 1), Al Amerat",
+      "toss_winner": "NEP",
+      "toss_decision": "bat",
+      "team_a_playing_xi": [
+        "PLY_OMA_010",
+        "PLY_OMA_008",
+        "PLY_OMA_007",
+        "PLY_OMA_015",
+        "PLY_OMA_001",
+        "PLY_OMA_018",
+        "PLY_OMA_009",
+        "PLY_OMA_020",
+        "PLY_OMA_021",
+        "PLY_OMA_011",
+        "PLY_OMA_017"
+      ],
+      "team_b_playing_xi": [
+        "PLY_NEP_007",
+        "PLY_NEP_001",
+        "PLY_NEP_003",
+        "PLY_NEP_014",
+        "PLY_NEP_004",
+        "PLY_NEP_010",
+        "PLY_NEP_005",
+        "PLY_NEP_017",
+        "PLY_NEP_012",
+        "PLY_NEP_015",
+        "PLY_NEP_008"
+      ],
+      "team_a_captain": "PLY_OMA_001",
+      "team_b_captain": "PLY_NEP_015",
+      "wicketkeepers": {
+        "team_a": "PLY_OMA_007",
+        "team_b": "PLY_NEP_001"
+      },
+      "batting_order": {
+        "team_a": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_OMA_010",
+            "player_name": "Jatinder Singh"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_OMA_008",
+            "player_name": "Hasnain Ul Wahab"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_OMA_007",
+            "player_name": "CWCL2 Stats"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_OMA_015",
+            "player_name": "Mujibur Ali"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_OMA_001",
+            "player_name": "2026 T20WC Squads"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_OMA_018",
+            "player_name": "Sanju Sajeev"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_OMA_009",
+            "player_name": "Hassnain Shah"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_OMA_020",
+            "player_name": "Shah Faisal"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_OMA_021",
+            "player_name": "Shakeel Ahmed"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_OMA_011",
+            "player_name": "Jay Odedra"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_OMA_017",
+            "player_name": "Samay Shrivastava"
+          }
+        ],
+        "team_b": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_NEP_007",
+            "player_name": "Kushal Bhurtel"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_NEP_001",
+            "player_name": "Aasif Sheikh"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_NEP_003",
+            "player_name": "Bhim Sharki"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_NEP_014",
+            "player_name": "Rohit Paudel"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_NEP_004",
+            "player_name": "Dipendra Singh Airee"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_NEP_010",
+            "player_name": "NEP ODI Batting"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_NEP_005",
+            "player_name": "Gulshan Jha"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_NEP_017",
+            "player_name": "Sompal Kami"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_NEP_012",
+            "player_name": "NEP T20I Bowling"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_NEP_015",
+            "player_name": "Sandeep Lamichhane"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_NEP_008",
+            "player_name": "Lalit Rajbanshi"
+          }
+        ]
+      },
+      "bowling_options": {
+        "team_a": [
+          "PLY_OMA_020"
+        ],
+        "team_b": [
+          "PLY_NEP_004",
+          "PLY_NEP_017",
+          "PLY_NEP_012",
+          "PLY_NEP_015"
+        ]
+      },
+      "official_substitutes_or_replacements": null,
+      "match_result": "Nepal (280, 50.0 ov) beat Oman (270/7, 50.0 ov) by 10 runs",
+      "scorecard_url": "https://www.icc-cricket.com/tournaments/icc-cricket-world-cup-league-2/matches/273765/oman-vs-nepal",
+      "source_url": "https://www.icc-cricket.com/tournaments/icc-cricket-world-cup-league-2/matches/273765/oman-vs-nepal",
+      "verification_status": "Verified (Official Match Scorecard 1–11 Batting Order)",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "match_id": "MAT_ODI_2025_2026_017",
+      "match_date": "2026-10-23",
+      "format": "ODI",
+      "gender": "Male",
+      "competition": "UAE ODI Tri-Nation Series 2026 — Final",
+      "series": "UAE ODI Tri-Nation Series 2026 — Final",
+      "host_country": "ZIM",
+      "team_a": "Zimbabwe",
+      "team_a_code": "ZIM",
+      "team_b": "Afghanistan",
+      "team_b_code": "AFG",
+      "venue": "United Arab Emirates — Sharjah Cricket Stadium, Sharjah",
+      "toss_winner": "ZIM",
+      "toss_decision": "bat",
+      "team_a_playing_xi": [
+        "PLY_ZIM_002",
+        "PLY_ZIM_006",
+        "PLY_ZIM_005",
+        "PLY_ZIM_008",
+        "PLY_ZIM_019",
+        "PLY_ZIM_030",
+        "PLY_ZIM_021",
+        "PLY_ZIM_004",
+        "PLY_ZIM_029",
+        "PLY_ZIM_010",
+        "PLY_ZIM_003"
+      ],
+      "team_b_playing_xi": [
+        "PLY_AFG_033",
+        "PLY_AFG_015",
+        "PLY_AFG_036",
+        "PLY_AFG_034",
+        "PLY_AFG_014",
+        "PLY_AFG_007",
+        "PLY_AFG_022",
+        "PLY_AFG_035",
+        "PLY_AFG_006",
+        "PLY_AFG_012",
+        "PLY_AFG_041"
+      ],
+      "team_a_captain": "PLY_ZIM_019",
+      "team_b_captain": "PLY_AFG_034",
+      "wicketkeepers": {
+        "team_a": "PLY_ZIM_005",
+        "team_b": "PLY_AFG_033"
+      },
+      "batting_order": {
+        "team_a": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_ZIM_002",
+            "player_name": "Benjamin Curran"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_ZIM_006",
+            "player_name": "Brian Bennett"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_ZIM_005",
+            "player_name": "Brendan Taylor"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_ZIM_008",
+            "player_name": "Craig Ervine"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_ZIM_019",
+            "player_name": "Sikandar Raza"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_ZIM_030",
+            "player_name": "Wessly Madhevere"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_ZIM_021",
+            "player_name": "Tafadzwa Tsiga"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_ZIM_004",
+            "player_name": "Bradley Evans"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_ZIM_029",
+            "player_name": "Wellington Masakadza"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_ZIM_010",
+            "player_name": "Ernest Masuku"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_ZIM_003",
+            "player_name": "Blessing Muzarabani"
+          }
+        ],
+        "team_b": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_AFG_033",
+            "player_name": "Rahmanullah Gurbaz"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_AFG_015",
+            "player_name": "Ibrahim Zadran"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_AFG_036",
+            "player_name": "Sediqullah Atal"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_AFG_034",
+            "player_name": "Rahmat Shah"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_AFG_014",
+            "player_name": "Hashmatullah Shahidi"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_AFG_007",
+            "player_name": "Azmatullah Omarzai"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_AFG_022",
+            "player_name": "Mohammad Nabi"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_AFG_035",
+            "player_name": "Rashid Khan"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_AFG_006",
+            "player_name": "Allah Ghazanfar"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_AFG_012",
+            "player_name": "Fazalhaq Farooqi"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_AFG_041",
+            "player_name": "Ziaur Rahman"
+          }
+        ]
+      },
+      "bowling_options": {
+        "team_a": [
+          "PLY_ZIM_019",
+          "PLY_ZIM_030",
+          "PLY_ZIM_004",
+          "PLY_ZIM_029",
+          "PLY_ZIM_010",
+          "PLY_ZIM_003"
+        ],
+        "team_b": [
+          "PLY_AFG_007",
+          "PLY_AFG_022",
+          "PLY_AFG_035",
+          "PLY_AFG_006",
+          "PLY_AFG_012",
+          "PLY_AFG_041"
+        ]
+      },
+      "official_substitutes_or_replacements": null,
+      "match_result": "Afghanistan (188/3 in 40 overs) beat Zimbabwe (186 all out in 46.2 overs) by 7 wickets to win the Tri-Nation Series",
+      "scorecard_url": "https://www.cricketworld.com/cricket/afghanistan-vs-zimbabwe/match/scorecard/99754",
+      "source_url": "https://www.cricketworld.com/cricket/afghanistan-vs-zimbabwe/match/scorecard/99754",
+      "verification_status": "Verified (Official Match Scorecard 1–11 Batting Order)",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "match_id": "MAT_ODI_2025_2026_018",
+      "match_date": "2026-10-29",
+      "format": "ODI",
+      "gender": "Male",
+      "competition": "ICC CWC League 2, Match 142)",
+      "series": "ICC CWC League 2, Match 142)",
+      "host_country": "UAE",
+      "team_a": "United Arab Emirates",
+      "team_a_code": "UAE",
+      "team_b": "Oman",
+      "team_b_code": "OMA",
+      "venue": "ICC Academy, Dubai",
+      "toss_winner": "UAE",
+      "toss_decision": "field",
+      "team_a_playing_xi": [
+        "PLY_UAE_023",
+        "PLY_UAE_022",
+        "PLY_UAE_015",
+        "PLY_UAE_004",
+        "PLY_UAE_002",
+        "PLY_UAE_016",
+        "PLY_UAE_003",
+        "PLY_UAE_023",
+        "PLY_UAE_009",
+        "PLY_UAE_011",
+        "PLY_UAE_014"
+      ],
+      "team_b_playing_xi": [
+        "PLY_OMA_010",
+        "PLY_OMA_008",
+        "PLY_OMA_007",
+        "PLY_OMA_015",
+        "PLY_OMA_001",
+        "PLY_OMA_018",
+        "PLY_OMA_009",
+        "PLY_OMA_020",
+        "PLY_OMA_021",
+        "PLY_OMA_011",
+        "PLY_OMA_017"
+      ],
+      "team_a_captain": "PLY_UAE_004",
+      "team_b_captain": "PLY_OMA_001",
+      "wicketkeepers": {
+        "team_a": "PLY_UAE_023",
+        "team_b": "PLY_OMA_007"
+      },
+      "batting_order": {
+        "team_a": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_UAE_023",
+            "player_name": "UAE T20I Batting"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_UAE_022",
+            "player_name": "Tanish Suri"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_UAE_015",
+            "player_name": "Muhammad Shahdad"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_UAE_004",
+            "player_name": "CWCL2 Stats"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_UAE_002",
+            "player_name": "Akshdeep Nath"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_UAE_016",
+            "player_name": "Muhammad Waseem"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_UAE_003",
+            "player_name": "Awais Ali Shah"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_UAE_023",
+            "player_name": "UAE T20I Batting"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_UAE_009",
+            "player_name": "Khuzaima Tanveer"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_UAE_011",
+            "player_name": "Muhammad Arfan"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_UAE_014",
+            "player_name": "Muhammad Rohid"
+          }
+        ],
+        "team_b": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_OMA_010",
+            "player_name": "Jatinder Singh"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_OMA_008",
+            "player_name": "Hasnain Ul Wahab"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_OMA_007",
+            "player_name": "CWCL2 Stats"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_OMA_015",
+            "player_name": "Mujibur Ali"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_OMA_001",
+            "player_name": "2026 T20WC Squads"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_OMA_018",
+            "player_name": "Sanju Sajeev"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_OMA_009",
+            "player_name": "Hassnain Shah"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_OMA_020",
+            "player_name": "Shah Faisal"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_OMA_021",
+            "player_name": "Shakeel Ahmed"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_OMA_011",
+            "player_name": "Jay Odedra"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_OMA_017",
+            "player_name": "Samay Shrivastava"
+          }
+        ]
+      },
+      "bowling_options": {
+        "team_a": [
+          "PLY_UAE_014"
+        ],
+        "team_b": [
+          "PLY_OMA_020"
+        ]
+      },
+      "official_substitutes_or_replacements": null,
+      "match_result": "UAE (199/6, 47.3 ov) beat Oman (196, 45.1 ov) by 4 wickets",
+      "scorecard_url": "https://www.icc-cricket.com/matches/275769/united-arab-emirates-vs-oman",
+      "source_url": "https://www.icc-cricket.com/matches/275769/united-arab-emirates-vs-oman",
+      "verification_status": "Verified (Official Match Scorecard 1–11 Batting Order)",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "match_id": "MAT_ODI_2025_2026_019",
+      "match_date": "2026-10-31",
+      "format": "ODI",
+      "gender": "Male",
+      "competition": "2026–27 Pakistan ODI Tri-Series Final",
+      "series": "2026–27 Pakistan ODI Tri-Series Final",
+      "host_country": "SL",
+      "team_a": "Sri Lanka",
+      "team_a_code": "SL",
+      "team_b": "Pakistan",
+      "team_b_code": "PAK",
+      "venue": "Gaddafi Stadium, Lahore",
+      "toss_winner": "PAK",
+      "toss_decision": "field",
+      "team_a_playing_xi": [
+        "PLY_SL_002",
+        "PLY_SL_017",
+        "PLY_SL_019",
+        "PLY_SL_030",
+        "PLY_SL_005",
+        "PLY_SL_014",
+        "PLY_SL_034",
+        "PLY_SL_010",
+        "PLY_SL_023",
+        "PLY_SL_002",
+        "PLY_SL_007"
+      ],
+      "team_b_playing_xi": [
+        "PLY_PAK_007",
+        "PLY_PAK_015",
+        "PLY_PAK_005",
+        "PLY_PAK_022",
+        "PLY_PAK_025",
+        "PLY_PAK_010",
+        "PLY_PAK_003",
+        "PLY_PAK_006",
+        "PLY_PAK_030",
+        "PLY_PAK_020",
+        "PLY_PAK_008"
+      ],
+      "team_a_captain": "PLY_SL_019",
+      "team_b_captain": "PLY_PAK_030",
+      "wicketkeepers": {
+        "team_a": "PLY_SL_019",
+        "team_b": "PLY_PAK_022"
+      },
+      "batting_order": {
+        "team_a": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_SL_002",
+            "player_name": "Asitha Fernando"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_SL_017",
+            "player_name": "Kamindu Mendis"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_SL_019",
+            "player_name": "Kusal Mendis"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_SL_030",
+            "player_name": "Pavan Rathnayake"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_SL_005",
+            "player_name": "Dasun Shanaka"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_SL_014",
+            "player_name": "Janith Liyanage"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_SL_034",
+            "player_name": "Sahan Arachchige"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_SL_010",
+            "player_name": "Dunith Wellalage"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_SL_023",
+            "player_name": "Maheesh Theekshana"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_SL_002",
+            "player_name": "Asitha Fernando"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_SL_007",
+            "player_name": "Dilshan Madushanka"
+          }
+        ],
+        "team_b": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_PAK_007",
+            "player_name": "Fakhar Zaman"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_PAK_015",
+            "player_name": "Maaz Sadaqat"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_PAK_005",
+            "player_name": "Babar Azam"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_PAK_022",
+            "player_name": "Saad Baig"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_PAK_025",
+            "player_name": "Salman Ali Agha"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_PAK_010",
+            "player_name": "Hasan Nawaz"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_PAK_003",
+            "player_name": "Arafat Minhas"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_PAK_006",
+            "player_name": "Faheem Ashraf"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_PAK_030",
+            "player_name": "Shaheen Shah Afridi"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_PAK_020",
+            "player_name": "Naseem Shah"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_PAK_008",
+            "player_name": "Haris Rauf"
+          }
+        ]
+      },
+      "bowling_options": {
+        "team_a": [
+          "PLY_SL_002",
+          "PLY_SL_017",
+          "PLY_SL_005",
+          "PLY_SL_014",
+          "PLY_SL_010",
+          "PLY_SL_023",
+          "PLY_SL_002",
+          "PLY_SL_007"
+        ],
+        "team_b": [
+          "PLY_PAK_025",
+          "PLY_PAK_030",
+          "PLY_PAK_020",
+          "PLY_PAK_008"
+        ]
+      },
+      "official_substitutes_or_replacements": null,
+      "match_result": "Pakistan won by 3 wickets (SL 325/8 in 50 overs — Kamindu Mendis 131; PAK 331/7 in 48.3 overs — Salman Agha 134*, Hasan Nawaz 107*)",
+      "scorecard_url": "https://www.cricketworld.com/cricket/pakistan-vs-sri-lanka/match/scorecard/98981",
+      "source_url": "https://www.cricketworld.com/cricket/pakistan-vs-sri-lanka/match/scorecard/98981",
+      "verification_status": "Verified (Official Match Scorecard 1–11 Batting Order)",
+      "verification_date": "2026-11-03"
+    },
+    {
+      "match_id": "MAT_ODI_2025_2026_020",
+      "match_date": "2026-11-01",
+      "format": "ODI",
+      "gender": "Male",
+      "competition": "Ireland tour of Namibia 2026 — 5th ODI",
+      "series": "Ireland tour of Namibia 2026 — 5th ODI",
+      "host_country": "IRE",
+      "team_a": "Ireland",
+      "team_a_code": "IRE",
+      "team_b": "Namibia",
+      "team_b_code": "NAM",
+      "venue": "Namibia — Wanderers Cricket Ground / Namibia Cricket Ground, Windhoek",
+      "toss_winner": "NAM",
+      "toss_decision": "field",
+      "team_a_playing_xi": [
+        "PLY_IRE_030",
+        "PLY_IRE_006",
+        "PLY_IRE_015",
+        "PLY_IRE_020",
+        "PLY_IRE_008",
+        "PLY_IRE_013",
+        "PLY_IRE_011",
+        "PLY_IRE_017",
+        "PLY_IRE_023",
+        "PLY_IRE_019",
+        "PLY_IRE_025"
+      ],
+      "team_b_playing_xi": [
+        "PLY_NAM_010",
+        "PLY_NAM_017",
+        "PLY_NAM_009",
+        "PLY_NAM_005",
+        "PLY_NAM_013",
+        "PLY_NAM_006",
+        "PLY_NAM_004",
+        "PLY_NAM_014",
+        "PLY_NAM_003",
+        "PLY_NAM_002",
+        "PLY_NAM_011"
+      ],
+      "team_a_captain": "PLY_IRE_020",
+      "team_b_captain": "PLY_NAM_005",
+      "wicketkeepers": {
+        "team_a": "PLY_IRE_020",
+        "team_b": "PLY_NAM_017"
+      },
+      "batting_order": {
+        "team_a": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_IRE_030",
+            "player_name": "Tim Tector"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_IRE_006",
+            "player_name": "Cade Carmichael"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_IRE_015",
+            "player_name": "Harry Tector"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_IRE_020",
+            "player_name": "Lorcan Tucker"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_IRE_008",
+            "player_name": "Curtis Campher"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_IRE_013",
+            "player_name": "George Dockrell"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_IRE_011",
+            "player_name": "Gavin Hoey"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_IRE_017",
+            "player_name": "Jordan Neill"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_IRE_023",
+            "player_name": "Matthew Humphreys"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_IRE_019",
+            "player_name": "Liam McCarthy"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_IRE_025",
+            "player_name": "Reuben Wilson"
+          }
+        ],
+        "team_b": [
+          {
+            "batting_position": 1,
+            "player_id": "PLY_NAM_010",
+            "player_name": "Malan Kruger"
+          },
+          {
+            "batting_position": 2,
+            "player_id": "PLY_NAM_017",
+            "player_name": "Zane Green"
+          },
+          {
+            "batting_position": 3,
+            "player_id": "PLY_NAM_009",
+            "player_name": "Jan Frylinck"
+          },
+          {
+            "batting_position": 4,
+            "player_id": "PLY_NAM_005",
+            "player_name": "Gerhard Erasmus"
+          },
+          {
+            "batting_position": 5,
+            "player_id": "PLY_NAM_013",
+            "player_name": "NAM T20I Stats"
+          },
+          {
+            "batting_position": 6,
+            "player_id": "PLY_NAM_006",
+            "player_name": "JJ Smit"
+          },
+          {
+            "batting_position": 7,
+            "player_id": "PLY_NAM_004",
+            "player_name": "Dylan Leicher"
+          },
+          {
+            "batting_position": 8,
+            "player_id": "PLY_NAM_014",
+            "player_name": "Ruben Trumpelmann"
+          },
+          {
+            "batting_position": 9,
+            "player_id": "PLY_NAM_003",
+            "player_name": "Bernard Scholtz"
+          },
+          {
+            "batting_position": 10,
+            "player_id": "PLY_NAM_002",
+            "player_name": "Ben Shikongo"
+          },
+          {
+            "batting_position": 11,
+            "player_id": "PLY_NAM_011",
+            "player_name": "Max Heingo"
+          }
+        ]
+      },
+      "bowling_options": {
+        "team_a": [
+          "PLY_IRE_008",
+          "PLY_IRE_013",
+          "PLY_IRE_011",
+          "PLY_IRE_017",
+          "PLY_IRE_023",
+          "PLY_IRE_019"
+        ],
+        "team_b": [
+          "PLY_NAM_009",
+          "PLY_NAM_005",
+          "PLY_NAM_006",
+          "PLY_NAM_014",
+          "PLY_NAM_003",
+          "PLY_NAM_002"
+        ]
+      },
+      "official_substitutes_or_replacements": null,
+      "match_result": "Namibia (278/6 in 47 overs) beat Ireland (275 all out in 49.5 overs) by 4 wickets (Namibia won series 3–2)",
+      "scorecard_url": "https://www.cricketworld.com/cricket/namibia-vs-ireland/match/scorecard/100109",
+      "source_url": "https://www.cricketworld.com/cricket/namibia-vs-ireland/match/scorecard/100109",
+      "verification_status": "Verified (Official Match Scorecard 1–11 Batting Order)",
+      "verification_date": "2026-11-03"
+    }
+  ]
+}

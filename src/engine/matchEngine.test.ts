@@ -27,6 +27,7 @@ test('matchEngine runs full T20 match to completion with realistic outcome', () 
     dayNumber: 1,
     sessionNumber: 3,
     status: 'IN_PROGRESS',
+    isUserMatch: true,
     currentInningsIndex: 0,
     innings: [
       createInitialInningsState(

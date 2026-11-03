@@ -372,6 +372,25 @@ export interface Match {
   aiTactics: MatchTactics;
 }
 
+export interface TournamentTableEntry {
+  teamId: string;
+  teamName: string;
+  flagEmoji: string;
+  played: number;
+  won: number;
+  lost: number;
+  drawn: number;
+  tied: number;
+  noResult: number;
+  points: number;
+  pointsPercentage?: number; // for WTC (PCT%)
+  netRunRate?: number; // for ODI & T20
+  forRuns: number;
+  forOvers: number;
+  againstRuns: number;
+  againstOvers: number;
+}
+
 export interface NewsArticle {
   id: string;
   title: string;
@@ -488,13 +507,13 @@ export interface CareerSave {
 
   // Deprecated backwards-compatible field
   customSquadXI?: {
-    TEST: string[];
-    ODI: string[];
-    T20I: string[];
-    captainId: string;
-    viceCaptainId: string;
-    wicketKeeperId: string;
-    battingOrder: string[];
+    TEST?: string[];
+    ODI?: string[];
+    T20I?: string[];
+    captainId?: string;
+    viceCaptainId?: string;
+    wicketKeeperId?: string;
+    battingOrder?: string[];
   };
 
   fixtures: Match[];

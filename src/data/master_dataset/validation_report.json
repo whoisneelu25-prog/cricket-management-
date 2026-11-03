@@ -1,0 +1,128 @@
+{
+  "dataset_version": "2026-11-03",
+  "validation_timestamp": "2026-11-03T14:35:00Z",
+  "all_checks_passed": true,
+  "passed_checks_count": 15,
+  "total_checks_count": 15,
+  "summary_metrics": {
+    "total_unique_players": 597,
+    "core_countries_covered": 21,
+    "expandable_associate_opponents_covered": 1,
+    "researched_matches_by_format": {
+      "Test": 67,
+      "ODI": 244,
+      "T20I": 264,
+      "total": 575
+    },
+    "verified_match_lineups_by_format": {
+      "Test": 15,
+      "ODI": 20,
+      "T20I": 24,
+      "total_matches_with_full_lineups": 59,
+      "total_verified_team_playing_xis": 118
+    },
+    "format_specific_squad_records": {
+      "Test": 12,
+      "ODI": 20,
+      "T20I": 21,
+      "total": 53
+    },
+    "selection_pool_records_count": 1294,
+    "format_captain_records_count": 53,
+    "incomplete_player_biographical_records_count": 129,
+    "season_log_matches_without_full_playing_xi_count": 516,
+    "unresolved_data_conflicts_count": 5
+  },
+  "validation_checks": [
+    {
+      "check_id": 1,
+      "name": "Country Metadata & Format Eligibility",
+      "passed": true,
+      "details": "21 core men's national teams (12 Full Members + 9 Associates) + 1 expandable Associate opponent (IDN) verified."
+    },
+    {
+      "check_id": 2,
+      "name": "Unique Player IDs & Zero Duplicate Player Records",
+      "passed": true,
+      "details": "597 unique player_id records across all_players.json and all_players.csv."
+    },
+    {
+      "check_id": 3,
+      "name": "Country Code Referential Integrity",
+      "passed": true,
+      "details": "100% of player country_code values exist in countries/countries.json."
+    },
+    {
+      "check_id": 4,
+      "name": "Standardized Player Role Values Enforced",
+      "passed": true,
+      "details": "All 597 players use one of the 14 standardized primary_role values while preserving original_source_role."
+    },
+    {
+      "check_id": 5,
+      "name": "ISO-8601 Date Formatting & Cutoff Compliance",
+      "passed": true,
+      "details": "All dates follow YYYY-MM-DD format (or null) within the 2026-11-03 research cutoff."
+    },
+    {
+      "check_id": 6,
+      "name": "Format-Specific Career vs Recent-Period Stat Separation",
+      "passed": true,
+      "details": "Test, ODI, and T20I statistics maintain separate career_statistics_as_of_2026_11_03 and recent_period_2025_2026_statistics objects."
+    },
+    {
+      "check_id": 7,
+      "name": "Explicit Nulls for Unavailable Statistical Sub-Fields",
+      "passed": true,
+      "details": "Unverified or unavailable statistical sub-fields are explicitly null rather than guessed."
+    },
+    {
+      "check_id": 8,
+      "name": "Complete 11-Player Playing XIs & Batting Orders in Lineups",
+      "passed": true,
+      "details": "All 59 match lineups (118 team Playing XIs = 1,298 slots) contain exactly 11 players per side in batting order 1–11."
+    },
+    {
+      "check_id": 9,
+      "name": "Cross-File Player ID Referential Integrity",
+      "passed": true,
+      "details": "100% of player_ids in lineups, squads, captains, and selection_pools exist in players/all_players.json."
+    },
+    {
+      "check_id": 10,
+      "name": "Independent Test, ODI, and T20I Squad Datasets",
+      "passed": true,
+      "details": "12 Test squads, 20 ODI squads, and 21 T20I squads independently constructed according to format status."
+    },
+    {
+      "check_id": 11,
+      "name": "Format-Specific Captains & Vice-Captains Verified",
+      "passed": true,
+      "details": "53 format-specific leadership records verified with 2025–2026 captaincy transitions."
+    },
+    {
+      "check_id": 12,
+      "name": "Selection Pool Category Compliance",
+      "passed": true,
+      "details": "All 1,294 selection_pools.json records use the 9 required selection categories and groups A–F."
+    },
+    {
+      "check_id": 13,
+      "name": "Retired & Inactive Players Excluded from Active Selectability",
+      "passed": true,
+      "details": "100% of Retired or inactive records have currently_selectable: false."
+    },
+    {
+      "check_id": 14,
+      "name": "Domestic, Franchise, and Women's Matches Excluded",
+      "passed": true,
+      "details": "All 575 match records are official men's senior international Test, ODI, or T20I matches."
+    },
+    {
+      "check_id": 15,
+      "name": "Source URL & Verification Metadata Present on All Records",
+      "passed": true,
+      "details": "All records include verified source URLs (381 unique URLs) and verification_date: 2026-11-03."
+    }
+  ]
+}

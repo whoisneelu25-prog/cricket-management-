@@ -115,7 +115,7 @@ export const VENUES: VenueInfo[] = [
     id: 'kensington_barbados',
     name: 'Kensington Oval',
     city: 'Bridgetown',
-    countryId: 'WIN',
+    countryId: 'WI',
     capacity: 28000,
     pitch: {
       name: 'Caribbean Hard Deck',

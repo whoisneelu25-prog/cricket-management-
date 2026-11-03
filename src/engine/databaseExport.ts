@@ -1131,7 +1131,7 @@ export function createZipArchive(files: Record<string, string>): Uint8Array {
 export function downloadDatabaseExportZip(filename = 'ICM_Database_Export.zip'): void {
   const files = buildAllDatabaseExportFiles();
   const zipBytes = createZipArchive(files);
-  const blob = new Blob([zipBytes], { type: 'application/zip' });
+  const blob = new Blob([zipBytes as unknown as BlobPart], { type: 'application/zip' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;

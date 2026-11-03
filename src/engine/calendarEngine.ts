@@ -18,7 +18,7 @@ export function buildInternationalCalendar(userTeamId: string): CalendarTimeline
   const worldMatches: Match[] = [];
 
   // Other top nations
-  const worldTeams = ['IND', 'AUS', 'ENG', 'RSA', 'PAK', 'NZL', 'WIN', 'AFG'].filter((id) => id !== userTeamId);
+  const worldTeams = ['IND', 'AUS', 'ENG', 'RSA', 'PAK', 'NZL', 'WI', 'AFG'].filter((id) => id !== userTeamId);
 
   // 1. Initial Tour for the user
   // If user is IND, start with Border-Gavaskar in AUS; if user is AUS, host IND; if ENG, Ashes prep; etc.
@@ -167,7 +167,7 @@ export function buildInternationalCalendar(userTeamId: string): CalendarTimeline
   const worldMatchPairings = [
     { team1: 'ENG', team2: 'AUS', format: 'TEST' as MatchFormat, date: '2026-11-20', dayIndex: 0, venue: VENUES[1] },
     { team1: 'RSA', team2: 'PAK', format: 'ODI' as MatchFormat, date: '2026-11-25', dayIndex: 4, venue: VENUES[3] },
-    { team1: 'NZL', team2: 'WIN', format: 'T20I' as MatchFormat, date: '2026-11-30', dayIndex: 9, venue: VENUES[0] },
+    { team1: 'NZL', team2: 'WI', format: 'T20I' as MatchFormat, date: '2026-11-30', dayIndex: 9, venue: VENUES[0] },
     { team1: 'ENG', team2: 'RSA', format: 'TEST' as MatchFormat, date: '2026-12-08', dayIndex: 17, venue: VENUES[1] },
     { team1: 'AUS', team2: 'PAK', format: 'T20I' as MatchFormat, date: '2026-12-18', dayIndex: 27, venue: VENUES[2] },
     { team1: 'RSA', team2: 'NZL', format: 'ODI' as MatchFormat, date: '2027-01-05', dayIndex: 45, venue: VENUES[3] },
