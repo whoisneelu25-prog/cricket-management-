@@ -8,7 +8,9 @@ import {
   SupportStaff,
   Tour,
   CalendarEvent,
-  DataProvenanceReport
+  DataProvenanceReport,
+  TournamentEdition,
+  RivalryCompetition,
 } from '../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../data/teams';
 import { ALL_PLAYERS, getDefaultFormatSquadConfig, getDefaultSupportStaff, getPlayersByCountry } from '../data/squads';
@@ -16,6 +18,10 @@ import { OFFICIAL_TOURS } from '../data/tours';
 import { buildInternationalCalendar } from '../engine/calendarEngine';
 import { simulateWorldMatchesUntil } from '../engine/worldSimulation';
 import { OFFICIAL_SOURCES } from '../data/players';
+import { INITIAL_ASHES_COMPETITION, INITIAL_BGT_COMPETITION, INITIAL_TOURNAMENT_EDITIONS } from '../data/tournamentData';
+import { updateTourSeriesStandings } from '../engine/tourEngine';
+import { recordMatchInTournament } from '../engine/tournamentEngine';
+import { applyMatchWorkload, TrainingFocus } from '../engine/playerDevelopmentEngine';
 
 const STORAGE_KEY = 'icm_career_save_v1';
 
@@ -23,10 +29,13 @@ export type MainNavigationTab =
   | 'DASHBOARD'
   | 'MY_TEAM'
   | 'SQUAD_MANAGEMENT'
-  | 'PLAYER_DATABASE'
-  | 'FIXTURES'
+  | 'PLAYER_DEVELOPMENT'
+  | 'TOURS'
+  | 'RIVALRIES'
   | 'MATCH_CENTRE'
+  | 'FIXTURES'
   | 'TOURNAMENTS'
+  | 'PLAYER_DATABASE'
   | 'RANKINGS'
   | 'STATISTICS'
   | 'NEWS'
@@ -118,6 +127,11 @@ export function createNewCareerSave(
     calendar: events,
     news: generateInitialNews(managerName, team.name),
     dataProvenance: generateDataProvenanceReport(),
+    playerTrainingFocus: {},
+    playerOverrides: {},
+    ashes: JSON.parse(JSON.stringify(INITIAL_ASHES_COMPETITION)),
+    borderGavaskar: JSON.parse(JSON.stringify(INITIAL_BGT_COMPETITION)),
+    tournamentEditions: JSON.parse(JSON.stringify(INITIAL_TOURNAMENT_EDITIONS)),
   };
 }
 
@@ -151,12 +165,54 @@ export function generateInitialNews(managerName: string, teamName: string): News
 }
 
 /**
+ * Assigns or updates a player's training focus
+ */
+export function assignPlayerTrainingFocus(
+  career: CareerSave,
+  playerId: string,
+  focus: TrainingFocus
+): CareerSave {
+  return {
+    ...career,
+    playerTrainingFocus: {
+      ...(career.playerTrainingFocus || {}),
+      [playerId]: focus,
+    },
+  };
+}
+
+/**
+ * Updates playing XI for a given format
+ */
+export function setFormatPlayingXI(
+  career: CareerSave,
+  format: MatchFormat,
+  playingXI: string[]
+): CareerSave {
+  const currentFormatConfig = career.formatSquads[format];
+  return {
+    ...career,
+    formatSquads: {
+      ...career.formatSquads,
+      [format]: {
+        ...currentFormatConfig,
+        playingXI,
+      },
+    },
+    customSquadXI: {
+      ...(career.customSquadXI || {}),
+      [format]: playingXI,
+    },
+  };
+}
+
+/**
  * Advances calendar to the next scheduled match date, simulating world matches in between
  */
 export function advanceToNextMatchDate(career: CareerSave): CareerSave {
   const nextMatch = career.fixtures.find((f) => f.status === 'SCHEDULED');
   if (!nextMatch || !nextMatch.date) {
-    // Just advance 7 days
+    // Advance 7 days
     const currentMs = new Date(career.currentDate).getTime();
     const nextDate = new Date(currentMs + 7 * 24 * 3600 * 1000).toISOString().split('T')[0];
     const sim = simulateWorldMatchesUntil(career, nextDate);
@@ -180,11 +236,16 @@ export function takeSquadRestDay(career: CareerSave): CareerSave {
   const updatedCareer = sim.updatedCareer;
   updatedCareer.currentDayIndex = (updatedCareer.currentDayIndex || 0) + 1;
 
-  // Reduce fatigue by 15% for all players of selectedTeamId in ALL_PLAYERS
-  ALL_PLAYERS.forEach((p) => {
-    if (p.countryId === career.selectedTeamId) {
-      p.workloadFatigue = Math.max(0, (p.workloadFatigue || 15) - 15);
-    }
+  // Reduce fatigue for all players in user squad
+  const userPlayers = getPlayersByCountry(career.selectedTeamId);
+  userPlayers.forEach((p) => {
+    if (!updatedCareer.playerOverrides) updatedCareer.playerOverrides = {};
+    const existing = updatedCareer.playerOverrides[p.id] || {};
+    const currentFatigue = existing.workloadFatigue !== undefined ? existing.workloadFatigue : (p.workloadFatigue || 15);
+    updatedCareer.playerOverrides[p.id] = {
+      ...existing,
+      workloadFatigue: Math.max(0, currentFatigue - 15),
+    };
   });
 
   const newsArticle: NewsArticle = {
@@ -197,6 +258,91 @@ export function takeSquadRestDay(career: CareerSave): CareerSave {
   };
 
   updatedCareer.news = [newsArticle, ...updatedCareer.news];
+  return updatedCareer;
+}
+
+/**
+ * Applies a completed user match result to the career save:
+ * Updates manager record, tour standings, tournament standings, Ashes/BGT, and player workloads.
+ */
+export function applyUserMatchResult(
+  career: CareerSave,
+  completedMatch: Match
+): CareerSave {
+  const updatedCareer: CareerSave = {
+    ...career,
+    fixtures: career.fixtures.map((m) => (m.id === completedMatch.id ? completedMatch : m)),
+    tours: JSON.parse(JSON.stringify(career.tours || [])),
+    tournamentEditions: JSON.parse(JSON.stringify(career.tournamentEditions || INITIAL_TOURNAMENT_EDITIONS)),
+    ashes: career.ashes ? JSON.parse(JSON.stringify(career.ashes)) : JSON.parse(JSON.stringify(INITIAL_ASHES_COMPETITION)),
+    borderGavaskar: career.borderGavaskar ? JSON.parse(JSON.stringify(career.borderGavaskar)) : JSON.parse(JSON.stringify(INITIAL_BGT_COMPETITION)),
+    playerOverrides: { ...(career.playerOverrides || {}) },
+  };
+
+  // 1. Manager record update
+  const inn1 = completedMatch.innings[0];
+  const inn2 = completedMatch.innings[1];
+  let userWon = false;
+  let userLost = false;
+  let isDraw = completedMatch.status === 'DRAW';
+
+  if (inn1 && inn2 && completedMatch.status === 'COMPLETED') {
+    const userBatFirst = inn1.battingTeamId === career.selectedTeamId;
+    const userRuns = userBatFirst ? inn1.totalRuns : inn2.totalRuns;
+    const oppRuns = userBatFirst ? inn2.totalRuns : inn1.totalRuns;
+    userWon = userRuns > oppRuns;
+    userLost = oppRuns > userRuns;
+  }
+
+  updatedCareer.manager = {
+    ...updatedCareer.manager,
+    matchesManaged: updatedCareer.manager.matchesManaged + 1,
+    matchesWon: updatedCareer.manager.matchesWon + (userWon ? 1 : 0),
+    matchesLost: updatedCareer.manager.matchesLost + (userLost ? 1 : 0),
+    matchesDrawn: updatedCareer.manager.matchesDrawn + (isDraw ? 1 : 0),
+  };
+
+  // 2. Tour standings update
+  if (completedMatch.tourId && updatedCareer.tours) {
+    const tourIdx = updatedCareer.tours.findIndex((t) => t.id === completedMatch.tourId);
+    if (tourIdx !== -1) {
+      const allTourMatches = [...updatedCareer.fixtures, ...(updatedCareer.worldFixtures || [])];
+      const { updatedTour, updatedAshes, updatedBGT } = updateTourSeriesStandings(
+        updatedCareer.tours[tourIdx],
+        allTourMatches,
+        updatedCareer.ashes,
+        updatedCareer.borderGavaskar
+      );
+      updatedCareer.tours[tourIdx] = updatedTour;
+      if (updatedAshes) updatedCareer.ashes = updatedAshes;
+      if (updatedBGT) updatedCareer.borderGavaskar = updatedBGT;
+    }
+  }
+
+  // 3. Tournament standings update
+  const compId = completedMatch.tournamentId || completedMatch.competitionId;
+  if (compId && updatedCareer.tournamentEditions) {
+    const tIdx = updatedCareer.tournamentEditions.findIndex((t) => t.id === compId || t.competitionType === compId);
+    if (tIdx !== -1) {
+      updatedCareer.tournamentEditions[tIdx] = recordMatchInTournament(
+        updatedCareer.tournamentEditions[tIdx],
+        completedMatch
+      );
+    }
+  }
+
+  // 4. Workload fatigue for playing XI
+  const playingXI = completedMatch.homeTeamId === career.selectedTeamId ? completedMatch.homeXI : completedMatch.awayXI;
+  playingXI.forEach((pId) => {
+    const existing = updatedCareer.playerOverrides?.[pId] || {};
+    const baseFatigue = existing.workloadFatigue !== undefined ? existing.workloadFatigue : 15;
+    const fatigueGain = completedMatch.format === 'TEST' ? 22 : completedMatch.format === 'ODI' ? 14 : 9;
+    updatedCareer.playerOverrides![pId] = {
+      ...existing,
+      workloadFatigue: Math.min(100, baseFatigue + fatigueGain),
+    };
+  });
+
   return updatedCareer;
 }
 
@@ -262,6 +408,7 @@ export function loadSavedCareerFromStorage(): CareerSave | null {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw);
+
     // Ensure formatSquads and dataProvenance are present
     if (!parsed.formatSquads && parsed.selectedTeamId) {
       parsed.formatSquads = {
@@ -276,6 +423,22 @@ export function loadSavedCareerFromStorage(): CareerSave | null {
     if (!parsed.dataProvenance) {
       parsed.dataProvenance = generateDataProvenanceReport();
     }
+    if (!parsed.ashes) {
+      parsed.ashes = JSON.parse(JSON.stringify(INITIAL_ASHES_COMPETITION));
+    }
+    if (!parsed.borderGavaskar) {
+      parsed.borderGavaskar = JSON.parse(JSON.stringify(INITIAL_BGT_COMPETITION));
+    }
+    if (!parsed.tournamentEditions) {
+      parsed.tournamentEditions = JSON.parse(JSON.stringify(INITIAL_TOURNAMENT_EDITIONS));
+    }
+    if (!parsed.playerTrainingFocus) {
+      parsed.playerTrainingFocus = {};
+    }
+    if (!parsed.playerOverrides) {
+      parsed.playerOverrides = {};
+    }
+
     return parsed;
   } catch {
     return null;

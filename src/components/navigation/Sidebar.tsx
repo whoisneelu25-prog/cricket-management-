@@ -13,7 +13,10 @@ import {
   Award,
   Settings,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Briefcase,
+  Flame,
+  Dumbbell
 } from 'lucide-react';
 import { MainNavigationTab } from '../../store/careerStore';
 
@@ -44,10 +47,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'DASHBOARD', label: 'Home Dashboard', icon: LayoutDashboard },
     { id: 'MY_TEAM', label: 'My Team', icon: Users },
     { id: 'SQUAD_MANAGEMENT', label: 'Squad & Lineup', icon: UserCheck },
+    { id: 'PLAYER_DEVELOPMENT', label: 'Player Development', icon: Dumbbell },
+    { id: 'TOURS', label: 'Bilateral Tours', icon: Briefcase },
+    { id: 'RIVALRIES', label: 'Ashes & Rivalries', icon: Flame },
     { id: 'MATCH_CENTRE', label: 'Match Centre', icon: Radio, badge: isMatchActive ? 'LIVE' : undefined, badgeColor: 'bg-rose-600' },
-    { id: 'FIXTURES', label: 'Fixtures & Tours', icon: Calendar },
+    { id: 'FIXTURES', label: 'Calendar & Fixtures', icon: Calendar },
+    { id: 'TOURNAMENTS', label: 'Tournaments & WTC', icon: Trophy },
     { id: 'PLAYER_DATABASE', label: 'Player Database', icon: Database },
-    { id: 'TOURNAMENTS', label: 'Tournaments', icon: Trophy },
     { id: 'RANKINGS', label: 'ICC Rankings', icon: TrendingUp },
     { id: 'STATISTICS', label: 'Statistics & Records', icon: BarChart3 },
     { id: 'NEWS', label: 'News Centre', icon: Newspaper },

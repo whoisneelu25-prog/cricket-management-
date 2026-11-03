@@ -1128,3 +1128,4 @@ fs.writeFileSync(squadsTsPath, squadsTsContent, 'utf-8');
 console.log('Wrote squads.ts:', squadsTsPath);
 
 console.log('Master database generation completed successfully!');
+

@@ -17,8 +17,11 @@ import {
   createNewCareerSave,
   advanceToNextMatchDate,
   takeSquadRestDay,
-  announceTourSquad
+  announceTourSquad,
+  assignPlayerTrainingFocus,
+  applyUserMatchResult,
 } from './store/careerStore';
+import { TrainingFocus } from './engine/playerDevelopmentEngine';
 import { INTERNATIONAL_TEAMS } from './data/teams';
 import { ALL_PLAYERS } from './data/squads';
 import { TopBar } from './components/navigation/TopBar';
@@ -37,6 +40,9 @@ import { CareerHistoryView } from './components/career/CareerHistoryView';
 import { SettingsView } from './components/settings/SettingsView';
 import { PlayerProfileModal } from './components/players/PlayerProfileModal';
 import { TourSelectionModal } from './components/squad/TourSelectionModal';
+import { ToursView } from './components/tours/ToursView';
+import { RivalriesView } from './components/rivalries/RivalriesView';
+import { PlayerDevelopmentView } from './components/development/PlayerDevelopmentView';
 import { MainMenu } from './components/menu/MainMenu';
 import { NewCareerWizard } from './components/career/NewCareerWizard';
 import {
@@ -92,12 +98,25 @@ export default function App() {
   // Helper to update active match in career store
   const updateActiveMatch = (updated: Match) => {
     if (!career) return;
-    const updatedFixtures = career.fixtures.map((f) => (f.id === updated.id ? updated : f));
-    const nextCareer: CareerSave = {
-      ...career,
-      fixtures: updatedFixtures,
-      savedAt: new Date().toISOString(),
-    };
+    if (updated.status === 'COMPLETED' || updated.status === 'DRAW' || updated.status === 'TIE') {
+      const nextCareer = applyUserMatchResult(career, updated);
+      setCareer(nextCareer);
+      saveCareerToStorage(nextCareer);
+    } else {
+      const updatedFixtures = career.fixtures.map((f) => (f.id === updated.id ? updated : f));
+      const nextCareer: CareerSave = {
+        ...career,
+        fixtures: updatedFixtures,
+        savedAt: new Date().toISOString(),
+      };
+      setCareer(nextCareer);
+      saveCareerToStorage(nextCareer);
+    }
+  };
+
+  const handleUpdateTrainingFocus = (playerId: string, focus: TrainingFocus) => {
+    if (!career) return;
+    const nextCareer = assignPlayerTrainingFocus(career, playerId, focus);
     setCareer(nextCareer);
     saveCareerToStorage(nextCareer);
   };
@@ -438,6 +457,42 @@ export default function App() {
               onSetWicketKeeper={handleSetWicketKeeper}
               onSelectPlayer={(p) => setSelectedPlayer(p)}
               onOpenTourSelection={(tourId) => setSelectedTourIdForModal(tourId)}
+            />
+          )}
+
+          {activeTab === 'PLAYER_DEVELOPMENT' && career && (
+            <PlayerDevelopmentView
+              career={career}
+              onUpdateTrainingFocus={handleUpdateTrainingFocus}
+              onSelectPlayer={(p) => setSelectedPlayer(p)}
+              onRestSquadDay={handleRestSquadDay}
+              onCareerUpdated={(updated) => {
+                setCareer(updated);
+                saveCareerToStorage(updated);
+              }}
+            />
+          )}
+
+          {activeTab === 'TOURS' && career && (
+            <ToursView
+              career={career}
+              onNavigateToMatch={(matchId) => {
+                setActiveMatchId(matchId);
+                setActiveTab('MATCH_CENTRE');
+              }}
+              onOpenTourSelection={(tourId) => setSelectedTourIdForModal(tourId)}
+              onUpdateSquadXI={handleUpdateSquadXI}
+              onSelectPlayer={(p) => setSelectedPlayer(p)}
+            />
+          )}
+
+          {activeTab === 'RIVALRIES' && career && (
+            <RivalriesView
+              career={career}
+              onNavigateToMatch={(matchId) => {
+                setActiveMatchId(matchId);
+                setActiveTab('MATCH_CENTRE');
+              }}
             />
           )}
 

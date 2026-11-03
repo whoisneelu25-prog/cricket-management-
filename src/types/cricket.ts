@@ -133,7 +133,24 @@ export interface Player {
   // Workload & Health
   isInjured?: boolean;
   injuryDaysRemaining?: number;
+  injuryType?: string;
+  injurySeverity?: 'MINOR' | 'MODERATE' | 'SEVERE';
   workloadFatigue: number; // 0 (fresh) to 100 (exhausted)
+  fitness?: number; // 0-100 overall physical conditioning
+  currentForm?: number; // 0-100 form momentum
+
+  // Player Development & Potential (Phases 11 & 12)
+  potential?: number; // 0-100 development ceiling
+  trainingFocus?: 'BATTING' | 'BOWLING' | 'FIELDING' | 'FITNESS' | 'AUTO';
+  developmentFeedback?: 'Improving' | 'Developing steadily' | 'No significant change' | 'At peak performance' | 'Declining';
+  developmentHistory?: Array<{
+    date: string;
+    attribute: string;
+    change: number;
+    message: string;
+    ratingBefore: number;
+    ratingAfter: number;
+  }>;
 
   // Format skill ratings (0-100)
   testRating: number;
@@ -341,6 +358,14 @@ export interface Match {
   seriesName?: string;
   tourId?: string;
   tournamentId?: string;
+  competitionId?: string; // Phase 1
+  matchNumber?: number; // Phase 1
+  totalMatchesInSeries?: number;
+  seriesStartDate?: string; // Phase 1
+  seriesEndDate?: string; // Phase 1
+  squadSelectionDeadline?: string; // Phase 1
+  tourStatus?: 'UPCOMING' | 'IN_PROGRESS' | 'COMPLETED'; // Phase 1
+  stage?: 'GROUP' | 'SUPER_EIGHT' | 'SEMI_FINAL' | 'FINAL' | 'LEAGUE';
   homeTeamId: string;
   awayTeamId: string;
   venue: string;
@@ -435,6 +460,9 @@ export interface Tour {
   endDate: string;
   year: number;
   status: 'UPCOMING' | 'IN_PROGRESS' | 'COMPLETED';
+  competitionType?: 'BILATERAL' | 'ASHES' | 'BORDER_GAVASKAR' | 'TRI_SERIES' | 'ICC_TOURNAMENT';
+  trophyHolder?: string;
+  retainedTrophy?: boolean;
   series: {
     TEST?: { matchCount: number; matchesPlayed: number; homeWins: number; awayWins: number; draws: number };
     ODI?: { matchCount: number; matchesPlayed: number; homeWins: number; awayWins: number; ties: number };
@@ -444,6 +472,25 @@ export interface Tour {
   squadSelectionDeadline: string;
   squadAnnounced: boolean;
   tourSquadIds: string[]; // 15-20 players selected from national pool
+  formatSquads?: {
+    TEST?: string[];
+    ODI?: string[];
+    T20I?: string[];
+  };
+  captains?: {
+    TEST?: string;
+    ODI?: string;
+    T20I?: string;
+  };
+  viceCaptains?: {
+    TEST?: string;
+    ODI?: string;
+    T20I?: string;
+  };
+  leadingRunScorer?: { playerId: string; playerName: string; runs: number; average: number };
+  leadingWicketTaker?: { playerId: string; playerName: string; wickets: number; average: number };
+  playerOfTheSeries?: { playerId: string; playerName: string; reason: string };
+  historicalResults?: Array<{ year: number; host: string; winner: string; score: string; retained?: boolean }>;
   resultText?: string;
 }
 
@@ -451,13 +498,101 @@ export interface CalendarEvent {
   id: string;
   date: string;
   dayIndex: number;
-  type: 'USER_MATCH' | 'WORLD_MATCH' | 'SQUAD_DEADLINE' | 'TOUR_START' | 'TOURNAMENT_STAGE' | 'REST_DAY';
+  type:
+    | 'USER_MATCH'
+    | 'WORLD_MATCH'
+    | 'SQUAD_DEADLINE'
+    | 'TOUR_START'
+    | 'TOUR_END'
+    | 'TOURNAMENT_STAGE'
+    | 'REST_DAY'
+    | 'TRAINING_DAY'
+    | 'TRAVEL_DAY';
   title: string;
   description: string;
+  countryId?: string;
+  format?: MatchFormat;
   matchId?: string;
   tourId?: string;
   tournamentId?: string;
   isSimulated?: boolean;
+}
+
+export type TournamentCompetitionType =
+  | 'WTC'
+  | 'ODI_WORLD_CUP'
+  | 'T20_WORLD_CUP'
+  | 'CHAMPIONS_TROPHY'
+  | 'ASIA_CUP'
+  | 'TRI_SERIES';
+
+export interface TournamentGroup {
+  id: string;
+  name: string;
+  teamIds: string[];
+  table: TournamentTableEntry[];
+}
+
+export interface TournamentEdition {
+  id: string;
+  competitionType: TournamentCompetitionType;
+  name: string;
+  format: MatchFormat;
+  season: string;
+  cycleLengthYears: number;
+  year: number;
+  hostCountryId?: string;
+  description: string;
+  status: 'UPCOMING' | 'IN_PROGRESS' | 'COMPLETED';
+  rules: {
+    pointsForWin: number;
+    pointsForTie: number;
+    pointsForDraw: number;
+    pointsForLoss: number;
+    usePCT?: boolean; // For WTC
+  };
+  table: TournamentTableEntry[];
+  groups?: TournamentGroup[];
+  finalistTeamIds?: [string, string];
+  finalMatchId?: string;
+  winnerTeamId?: string;
+  runnerUpTeamId?: string;
+  playerOfTheTournament?: { playerId: string; playerName: string; reason: string };
+  leadingRunScorer?: { playerId: string; playerName: string; runs: number };
+  leadingWicketTaker?: { playerId: string; playerName: string; wickets: number };
+  pastChampions: Array<{
+    year: number;
+    host: string;
+    winner: string;
+    runnerUp: string;
+    finalResult: string;
+  }>;
+}
+
+export interface RivalryCompetition {
+  id: 'the_ashes' | 'border_gavaskar';
+  name: string;
+  format: 'TEST';
+  team1Id: string;
+  team2Id: string;
+  currentTrophyHolder: string; // Team ID
+  currentTourId: string;
+  currentEditionYear: number;
+  matchesInSeries: number;
+  currentScore: { team1Wins: number; team2Wins: number; draws: number };
+  leadingRunScorer?: { playerId: string; playerName: string; runs: number; average: number };
+  leadingWicketTaker?: { playerId: string; playerName: string; wickets: number; average: number };
+  playerOfTheSeries?: { playerId: string; playerName: string; reason: string };
+  historicalEditions: Array<{
+    year: string;
+    host: string;
+    winner: string;
+    score: string;
+    holderRetained?: boolean;
+    playerOfTheSeries?: string;
+    leadingRunScorer?: string;
+    leadingWicketTaker?: string;
+  }>;
 }
 
 export interface DataProvenanceReport {
@@ -522,4 +657,15 @@ export interface CareerSave {
   calendar: CalendarEvent[];
   news: NewsArticle[];
   dataProvenance: DataProvenanceReport;
+
+  // Player Training Assignments & Progression (Phases 11 & 12)
+  playerTrainingFocus?: Record<string, 'BATTING' | 'BOWLING' | 'FIELDING' | 'FITNESS' | 'AUTO'>;
+  playerOverrides?: Record<string, Partial<Player>>;
+
+  // Special Rivalry Series (Phases 3 & 4)
+  ashes?: RivalryCompetition;
+  borderGavaskar?: RivalryCompetition;
+
+  // Complete Multi-Year Tournament System (Phases 5, 6, 7, 8)
+  tournamentEditions?: TournamentEdition[];
 }
