@@ -1,0 +1,1449 @@
+{
+  "dataset_version": "2026-11-03",
+  "zero_fabrication_policy": "All unavailable or unverified fields are explicitly set to null. No fictional matches, players, or career/period statistics were generated.",
+  "incomplete_player_biographical_records_count": 129,
+  "season_log_matches_without_full_playing_xi_count": 516,
+  "countries_and_formats_with_fewer_than_50_or_insufficient_matches": [
+    {
+      "country_code": "PAK",
+      "country_name": "Pakistan",
+      "format": "Test",
+      "actual_matches_in_period_2025_2026": 9,
+      "reason": "Only 9 Test matches were scheduled and completed by Pakistan during the 1 Jan 2025 – 3 Nov 2026 window (fewer than 50-match cap; all actual matches reported without fabrication)."
+    },
+    {
+      "country_code": "SL",
+      "country_name": "Sri Lanka",
+      "format": "Test",
+      "actual_matches_in_period_2025_2026": 8,
+      "reason": "Only 8 Test matches were scheduled and completed by Sri Lanka during the 1 Jan 2025 – 3 Nov 2026 window (fewer than 50-match cap; all actual matches reported without fabrication)."
+    },
+    {
+      "country_code": "AFG",
+      "country_name": "Afghanistan",
+      "format": "Test",
+      "actual_matches_in_period_2025_2026": 4,
+      "reason": "Only 4 Test matches were scheduled and completed by Afghanistan during the 1 Jan 2025 – 3 Nov 2026 window (fewer than 50-match cap; all actual matches reported without fabrication)."
+    },
+    {
+      "country_code": "IRE",
+      "country_name": "Ireland",
+      "format": "Test",
+      "actual_matches_in_period_2025_2026": 4,
+      "reason": "Only 4 Test matches were scheduled and completed by Ireland during the 1 Jan 2025 – 3 Nov 2026 window (fewer than 50-match cap; all actual matches reported without fabrication)."
+    },
+    {
+      "country_code": "SCO",
+      "country_name": "Scotland",
+      "format": "Test",
+      "actual_matches_in_period_2025_2026": 0,
+      "reason": "Scotland does not hold ICC Test status (0 Test matches played)."
+    },
+    {
+      "country_code": "NED",
+      "country_name": "Netherlands",
+      "format": "Test",
+      "actual_matches_in_period_2025_2026": 0,
+      "reason": "Netherlands does not hold ICC Test status (0 Test matches played)."
+    },
+    {
+      "country_code": "NEP",
+      "country_name": "Nepal",
+      "format": "Test",
+      "actual_matches_in_period_2025_2026": 0,
+      "reason": "Nepal does not hold ICC Test status (0 Test matches played)."
+    },
+    {
+      "country_code": "NAM",
+      "country_name": "Namibia",
+      "format": "Test",
+      "actual_matches_in_period_2025_2026": 0,
+      "reason": "Namibia does not hold ICC Test status (0 Test matches played)."
+    },
+    {
+      "country_code": "USA",
+      "country_name": "United States",
+      "format": "Test",
+      "actual_matches_in_period_2025_2026": 0,
+      "reason": "United States does not hold ICC Test status (0 Test matches played)."
+    },
+    {
+      "country_code": "UAE",
+      "country_name": "United Arab Emirates",
+      "format": "Test",
+      "actual_matches_in_period_2025_2026": 0,
+      "reason": "United Arab Emirates does not hold ICC Test status (0 Test matches played)."
+    },
+    {
+      "country_code": "OMA",
+      "country_name": "Oman",
+      "format": "Test",
+      "actual_matches_in_period_2025_2026": 0,
+      "reason": "Oman does not hold ICC Test status (0 Test matches played)."
+    },
+    {
+      "country_code": "CAN",
+      "country_name": "Canada",
+      "format": "Test",
+      "actual_matches_in_period_2025_2026": 0,
+      "reason": "Canada does not hold ICC Test status (0 Test matches played)."
+    },
+    {
+      "country_code": "PNG",
+      "country_name": "Papua New Guinea",
+      "format": "Test",
+      "actual_matches_in_period_2025_2026": 0,
+      "reason": "Papua New Guinea does not hold ICC Test status (0 Test matches played)."
+    },
+    {
+      "country_code": "PNG",
+      "country_name": "Papua New Guinea",
+      "format": "ODI",
+      "actual_matches_in_period_2025_2026": 0,
+      "reason": "Papua New Guinea lost ODI status in April 2023 and competed in the 50-over List A ICC CWC Challenge League A (10 List A matches in 2025–2026, 0 official ODIs)."
+    },
+    {
+      "country_code": "PNG",
+      "country_name": "Papua New Guinea",
+      "format": "T20I",
+      "actual_matches_in_period_2025_2026": 7,
+      "reason": "Only 7 T20I matches were scheduled and completed by Papua New Guinea during the 1 Jan 2025 – 3 Nov 2026 window (fewer than 50-match cap; all actual matches reported without fabrication)."
+    }
+  ],
+  "unresolved_data_conflicts": [
+    {
+      "conflict_id": "CONF_001",
+      "country_code": "BAN",
+      "topic": "2026 ICC Men's T20 World Cup Participation (Bangladesh vs Scotland Replacement)",
+      "description": "Bangladesh originally qualified for the 2026 ICC Men's T20 World Cup, and Litton Das was named T20I captain in May 2025. However, following BCB's refusal to travel to India for Group C fixtures in Kolkata and Mumbai, the ICC replaced Bangladesh with Scotland on 24 January 2026. Both Bangladesh's active 2025–2026 bilateral T20I squad and Scotland's replacement T20 World Cup 2026 squad are preserved in the dataset.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Men%27s_T20_World_Cup_squads",
+        "https://www.icc-cricket.com/news/scotland-name-squad-for-icc-men-s-t20-world-cup-2026"
+      ]
+    },
+    {
+      "conflict_id": "CONF_002",
+      "country_code": "SL",
+      "topic": "Late-2026 Sri Lanka Captaincy Transition (Dhananjaya de Silva / Charith Asalanka / Dasun Shanaka vs Kusal Mendis)",
+      "description": "Sri Lanka Cricket rotated captaincy across 2025–2026: Dhananjaya de Silva led Tests through August 2026, Charith Asalanka led ODIs through September 2026, and Dasun Shanaka replaced Asalanka as T20I captain on 19 December 2025 for the 2026 T20 World Cup, before Kusal Mendis was named captain across the October 2026 Pakistan tour and ODI Tri-Series. All four leaders are documented in format_captains.json.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Kusal_Mendis",
+        "https://en.wikipedia.org/wiki/2026%E2%80%9327_Pakistan_ODI_Tri-Series"
+      ]
+    },
+    {
+      "conflict_id": "CONF_003",
+      "country_code": "BAN",
+      "topic": "Shakib Al Hasan International Selection Status (2025–2026)",
+      "description": "Shakib Al Hasan retired from T20Is in June 2024 and intended to play a farewell home Test in October 2024, but did not appear in any international match in 2025–2026 due to political/security absence despite never issuing a formal ODI retirement letter to the BCB. He is categorized as Inactive/Unavailable rather than currently selectable.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Shakib_Al_Hasan"
+      ]
+    },
+    {
+      "conflict_id": "CONF_004",
+      "country_code": "ZIM",
+      "topic": "Zimbabwe Test & ODI Captaincy Rotation (Craig Ervine, Sikandar Raza, Richard Ngarava)",
+      "description": "Craig Ervine served as Zimbabwe's appointed Test and ODI captain into 2025, but missed multiple fixtures where Sikandar Raza and Richard Ngarava (who captained Zimbabwe's innings Test victory over Bangladesh in June 2026) led the side. All three captains are cross-referenced across Test and ODI records.",
+      "sources": [
+        "https://www.cricketworld.com/zim-v-ban-test-day-3-muzarabani-and-ngarava-star-as-zimbabwe-wrap-up-comprehensive-test-victory/111596.htm",
+        "https://www.zimcricket.org/"
+      ]
+    },
+    {
+      "conflict_id": "CONF_005",
+      "country_code": "PNG",
+      "topic": "Papua New Guinea 11th Bowler Slot in ICC EAP Qualifier Match 270402 vs Indonesia (2026-05-14)",
+      "description": "In the ICC Match 270402 public summary for Indonesia vs Papua New Guinea (14 May 2026 at Sano), 10 PNG players had explicit batting/bowling figures while the 11th non-batting slot was shared in tournament squad sheets between pace bowlers Alei Nao and Semo Kamea. Alei Nao is recorded in the XI slot and both players are included in the PNG squad pool.",
+      "sources": [
+        "https://www.icc-cricket.com/matches/270402/indonesia-vs-papua-new-guinea"
+      ]
+    }
+  ],
+  "incomplete_player_records": [
+    {
+      "player_id": "PLY_AFG_004",
+      "player_name": "Abdullah Tarakhail",
+      "country_code": "AFG",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_AFG_008",
+      "player_name": "Bahir Shah",
+      "country_code": "AFG",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_AFG_019",
+      "player_name": "Khalil Gurbaz",
+      "country_code": "AFG",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_AFG_020",
+      "player_name": "Mohammad Akram",
+      "country_code": "AFG",
+      "missing_fields": [
+        "date_of_birth",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_AFG_031",
+      "player_name": "Noor Rahman",
+      "country_code": "AFG",
+      "missing_fields": [
+        "date_of_birth",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_AUS_006",
+      "player_name": "Brendan Doggett",
+      "country_code": "AUS",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_AUS_011",
+      "player_name": "Jack Edwards",
+      "country_code": "AUS",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_AUS_013",
+      "player_name": "Jake Weatherald",
+      "country_code": "AUS",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_AUS_016",
+      "player_name": "Josh Philippe",
+      "country_code": "AUS",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_AUS_017",
+      "player_name": "Mahli Beardman",
+      "country_code": "AUS",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_AUS_023",
+      "player_name": "Michael Neser",
+      "country_code": "AUS",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_AUS_025",
+      "player_name": "Mitchell Owen",
+      "country_code": "AUS",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_AUS_029",
+      "player_name": "Oliver Peake",
+      "country_code": "AUS",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_BAN_001",
+      "player_name": "Ebadot Hossain",
+      "country_code": "BAN",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_BAN_004",
+      "player_name": "Khaled Ahmed",
+      "country_code": "BAN",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_BAN_007",
+      "player_name": "Mahmudul Hasan Joy",
+      "country_code": "BAN",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_BAN_022",
+      "player_name": "Shamim Hossain Patwari",
+      "country_code": "BAN",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_CAN_001",
+      "player_name": "Aaron Johnson",
+      "country_code": "CAN",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_CAN_003",
+      "player_name": "Ammar Khalid",
+      "country_code": "CAN",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_CAN_011",
+      "player_name": "Mansab Gill",
+      "country_code": "CAN",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_CAN_015",
+      "player_name": "Parveen Kumar",
+      "country_code": "CAN",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_ENG_006",
+      "player_name": "Emilio Gay",
+      "country_code": "ENG",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_ENG_021",
+      "player_name": "Matthew Potts",
+      "country_code": "ENG",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_ENG_027",
+      "player_name": "Samuel Cook",
+      "country_code": "ENG",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_ENG_029",
+      "player_name": "Shoaib Bashir",
+      "country_code": "ENG",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IDN_001",
+      "player_name": "Anjar Tadarus",
+      "country_code": "IDN",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IDN_002",
+      "player_name": "Apriliandi",
+      "country_code": "IDN",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IDN_003",
+      "player_name": "Danilson Hawoe",
+      "country_code": "IDN",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IDN_004",
+      "player_name": "Dharma Kesuma",
+      "country_code": "IDN",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IDN_005",
+      "player_name": "Ferdinando Banunaek",
+      "country_code": "IDN",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IDN_006",
+      "player_name": "Gede Arta",
+      "country_code": "IDN",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IDN_007",
+      "player_name": "Gede Priandana",
+      "country_code": "IDN",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IDN_008",
+      "player_name": "Kadek Gamantika",
+      "country_code": "IDN",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IDN_009",
+      "player_name": "Ketut Artawan",
+      "country_code": "IDN",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IDN_010",
+      "player_name": "Padmakar Surve",
+      "country_code": "IDN",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IDN_011",
+      "player_name": "Vineet Shah",
+      "country_code": "IDN",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IND_002",
+      "player_name": "Akash Deep",
+      "country_code": "IND",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IND_005",
+      "player_name": "Devdutt Padikkal",
+      "country_code": "IND",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IND_007",
+      "player_name": "Gurnoor Brar",
+      "country_code": "IND",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IND_013",
+      "player_name": "Karun Nair",
+      "country_code": "IND",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IND_015",
+      "player_name": "Manav Suthar",
+      "country_code": "IND",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IND_016",
+      "player_name": "Mayank Yadav",
+      "country_code": "IND",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IND_019",
+      "player_name": "Naman Dhir",
+      "country_code": "IND",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IND_020",
+      "player_name": "Nehal Wadhera",
+      "country_code": "IND",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IND_022",
+      "player_name": "Prabhsimran Singh",
+      "country_code": "IND",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IND_023",
+      "player_name": "Prasidh Krishna",
+      "country_code": "IND",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IND_024",
+      "player_name": "Prince Yadav",
+      "country_code": "IND",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IND_025",
+      "player_name": "Priyansh Arya",
+      "country_code": "IND",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IND_031",
+      "player_name": "Ruturaj Gaikwad",
+      "country_code": "IND",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IND_032",
+      "player_name": "Sai Sudharsan",
+      "country_code": "IND",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IND_034",
+      "player_name": "Shahbaz Ahmed",
+      "country_code": "IND",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IND_035",
+      "player_name": "Shashank Singh",
+      "country_code": "IND",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IND_040",
+      "player_name": "Suyash Sharma",
+      "country_code": "IND",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IND_043",
+      "player_name": "Vipraj Nigam",
+      "country_code": "IND",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IRE_016",
+      "player_name": "Jai Moondra",
+      "country_code": "IRE",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IRE_022",
+      "player_name": "Matthew Hollard",
+      "country_code": "IRE",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_IRE_025",
+      "player_name": "Reuben Wilson",
+      "country_code": "IRE",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_NAM_012",
+      "player_name": "Michael van Lingen",
+      "country_code": "NAM",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_NAM_015",
+      "player_name": "Tangeni Lungameni",
+      "country_code": "NAM",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_NED_001",
+      "player_name": "Alex Roy",
+      "country_code": "NED",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_NED_004",
+      "player_name": "Cedric de Lange",
+      "country_code": "NED",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_NED_016",
+      "player_name": "Viktor Lubbers",
+      "country_code": "NED",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_NEP_003",
+      "player_name": "Bhim Sharki",
+      "country_code": "NEP",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_NEP_006",
+      "player_name": "Ishan Pandey",
+      "country_code": "NEP",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_NZL_003",
+      "player_name": "Bevon Jacobs",
+      "country_code": "NZL",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_NZL_004",
+      "player_name": "Blair Tickner",
+      "country_code": "NZL",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_NZL_010",
+      "player_name": "Henry Nicholls",
+      "country_code": "NZL",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_NZL_019",
+      "player_name": "Matthew Fisher",
+      "country_code": "NZL",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_NZL_026",
+      "player_name": "Tom Blundell",
+      "country_code": "NZL",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_OMA_004",
+      "player_name": "Aryan Bisht",
+      "country_code": "OMA",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_OMA_008",
+      "player_name": "Hasnain Ul Wahab",
+      "country_code": "OMA",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_OMA_015",
+      "player_name": "Mujibur Ali",
+      "country_code": "OMA",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_OMA_017",
+      "player_name": "Samay Shrivastava",
+      "country_code": "OMA",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_OMA_018",
+      "player_name": "Sanju Sajeev",
+      "country_code": "OMA",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_PAK_001",
+      "player_name": "Abdullah Fazal",
+      "country_code": "PAK",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_PAK_003",
+      "player_name": "Arafat Minhas",
+      "country_code": "PAK",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_PAK_004",
+      "player_name": "Azan Awais",
+      "country_code": "PAK",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_PAK_009",
+      "player_name": "Hasan Ali",
+      "country_code": "PAK",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_PAK_010",
+      "player_name": "Hasan Nawaz",
+      "country_code": "PAK",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_PAK_015",
+      "player_name": "Maaz Sadaqat",
+      "country_code": "PAK",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_PAK_016",
+      "player_name": "Mohammad Abbas",
+      "country_code": "PAK",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_PAK_021",
+      "player_name": "Noman Ali",
+      "country_code": "PAK",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_PAK_022",
+      "player_name": "Saad Baig",
+      "country_code": "PAK",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_PNG_001",
+      "player_name": "Alei Nao",
+      "country_code": "PNG",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_PNG_003",
+      "player_name": "Boio Ray",
+      "country_code": "PNG",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_PNG_005",
+      "player_name": "Hiri Hiri",
+      "country_code": "PNG",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_PNG_006",
+      "player_name": "John Kariko",
+      "country_code": "PNG",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_PNG_008",
+      "player_name": "Lega Siaka",
+      "country_code": "PNG",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_PNG_009",
+      "player_name": "Michael Charlie",
+      "country_code": "PNG",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_PNG_013",
+      "player_name": "Wallace Ovia",
+      "country_code": "PNG",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_RSA_003",
+      "player_name": "Bjorn Fortuin",
+      "country_code": "RSA",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_RSA_005",
+      "player_name": "David Bedingham",
+      "country_code": "RSA",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_RSA_010",
+      "player_name": "Gerald Coetzee",
+      "country_code": "RSA",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_RSA_016",
+      "player_name": "Kyle Verreynne",
+      "country_code": "RSA",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_RSA_017",
+      "player_name": "Lhuan-dre Pretorius",
+      "country_code": "RSA",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_RSA_018",
+      "player_name": "Lizaad Williams",
+      "country_code": "RSA",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_RSA_021",
+      "player_name": "Matthew Breetzke",
+      "country_code": "RSA",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_RSA_022",
+      "player_name": "Nqobani Mokoena",
+      "country_code": "RSA",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_RSA_025",
+      "player_name": "Rubin Hermann",
+      "country_code": "RSA",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_SCO_006",
+      "player_name": "Charlie Cassell",
+      "country_code": "SCO",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_SCO_007",
+      "player_name": "Charlie Tear",
+      "country_code": "SCO",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_SCO_009",
+      "player_name": "Christopher McBride",
+      "country_code": "SCO",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_SCO_010",
+      "player_name": "Gavin Main",
+      "country_code": "SCO",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_SCO_022",
+      "player_name": "Tom Bruce",
+      "country_code": "SCO",
+      "missing_fields": [
+        "date_of_birth"
+      ]
+    },
+    {
+      "player_id": "PLY_SL_003",
+      "player_name": "Binura Fernando",
+      "country_code": "SL",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_SL_018",
+      "player_name": "Keshara Nuwantha",
+      "country_code": "SL",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_SL_021",
+      "player_name": "Lahiru Kumara",
+      "country_code": "SL",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_SL_026",
+      "player_name": "Niroshan Dickwella",
+      "country_code": "SL",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_SL_034",
+      "player_name": "Sahan Arachchige",
+      "country_code": "SL",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_SL_035",
+      "player_name": "Sonal Dinusha",
+      "country_code": "SL",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_UAE_001",
+      "player_name": "Aayan Afzal Khan",
+      "country_code": "UAE",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_UAE_002",
+      "player_name": "Akshdeep Nath",
+      "country_code": "UAE",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_UAE_003",
+      "player_name": "Awais Ali Shah",
+      "country_code": "UAE",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_UAE_009",
+      "player_name": "Khuzaima Tanveer",
+      "country_code": "UAE",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_UAE_015",
+      "player_name": "Muhammad Shahdad",
+      "country_code": "UAE",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_UAE_018",
+      "player_name": "Sagar Kalyan",
+      "country_code": "UAE",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_UAE_022",
+      "player_name": "Tanish Suri",
+      "country_code": "UAE",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_UAE_024",
+      "player_name": "Vriitya Aravind",
+      "country_code": "UAE",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_USA_011",
+      "player_name": "Rushil Ugarkar",
+      "country_code": "USA",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_USA_019",
+      "player_name": "Yasir Mohammad",
+      "country_code": "USA",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_WI_010",
+      "player_name": "Johann Layne",
+      "country_code": "WI",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_WI_011",
+      "player_name": "John Campbell",
+      "country_code": "WI",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_WI_014",
+      "player_name": "Joshua Bishop",
+      "country_code": "WI",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_WI_020",
+      "player_name": "Khary Pierre",
+      "country_code": "WI",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_ZIM_010",
+      "player_name": "Ernest Masuku",
+      "country_code": "ZIM",
+      "missing_fields": [
+        "date_of_birth"
+      ]
+    },
+    {
+      "player_id": "PLY_ZIM_013",
+      "player_name": "Kundai Matigimu",
+      "country_code": "ZIM",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_ZIM_015",
+      "player_name": "Nick Welch",
+      "country_code": "ZIM",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_ZIM_022",
+      "player_name": "Tanaka Chivanga",
+      "country_code": "ZIM",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    },
+    {
+      "player_id": "PLY_ZIM_027",
+      "player_name": "Victor Nyauchi",
+      "country_code": "ZIM",
+      "missing_fields": [
+        "date_of_birth",
+        "batting_style",
+        "bowling_style"
+      ]
+    }
+  ]
+}

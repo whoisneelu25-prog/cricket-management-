@@ -1,0 +1,36 @@
+{
+  "dataset_version": "2026-11-03",
+  "research_period": {
+    "start": "2025-01-01",
+    "end": "2026-11-03"
+  },
+  "formats": {
+    "Test": {
+      "eligible_countries_count": 12,
+      "squad_records_count": 12,
+      "selection_pool_records_count": 276,
+      "researched_matches_in_dataset": 67,
+      "verified_match_lineups_count": 15,
+      "verified_team_playing_xis_count": 30,
+      "captain_records_count": 12
+    },
+    "ODI": {
+      "eligible_countries_count": 20,
+      "squad_records_count": 20,
+      "selection_pool_records_count": 433,
+      "researched_matches_in_dataset": 244,
+      "verified_match_lineups_count": 20,
+      "verified_team_playing_xis_count": 40,
+      "captain_records_count": 20
+    },
+    "T20I": {
+      "eligible_countries_count": 21,
+      "squad_records_count": 21,
+      "selection_pool_records_count": 585,
+      "researched_matches_in_dataset": 264,
+      "verified_match_lineups_count": 24,
+      "verified_team_playing_xis_count": 48,
+      "captain_records_count": 21
+    }
+  }
+}

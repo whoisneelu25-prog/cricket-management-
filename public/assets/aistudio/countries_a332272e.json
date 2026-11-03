@@ -1,0 +1,351 @@
+{
+  "dataset_version": "2026-11-03",
+  "research_period": {
+    "start": "2025-01-01",
+    "end": "2026-11-03"
+  },
+  "core_countries_count": 21,
+  "expandable_opponent_countries_count": 1,
+  "countries": [
+    {
+      "country_code": "IND",
+      "country_name": "India",
+      "official_team_name": "India Men's National Cricket Team",
+      "governing_body": "Board of Control for Cricket in India (BCCI)",
+      "icc_membership": "Full Member",
+      "dataset_tier": "Core 12 Full Member",
+      "gender": "Male",
+      "formats_eligible": [
+        "Test",
+        "ODI",
+        "T20I"
+      ],
+      "official_board_url": "https://www.bcci.tv/",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    },
+    {
+      "country_code": "AUS",
+      "country_name": "Australia",
+      "official_team_name": "Australia Men's National Cricket Team",
+      "governing_body": "Cricket Australia (CA)",
+      "icc_membership": "Full Member",
+      "dataset_tier": "Core 12 Full Member",
+      "gender": "Male",
+      "formats_eligible": [
+        "Test",
+        "ODI",
+        "T20I"
+      ],
+      "official_board_url": "https://www.cricket.com.au/",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    },
+    {
+      "country_code": "ENG",
+      "country_name": "England",
+      "official_team_name": "England Men's Cricket Team",
+      "governing_body": "England and Wales Cricket Board (ECB)",
+      "icc_membership": "Full Member",
+      "dataset_tier": "Core 12 Full Member",
+      "gender": "Male",
+      "formats_eligible": [
+        "Test",
+        "ODI",
+        "T20I"
+      ],
+      "official_board_url": "https://www.ecb.co.uk/",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    },
+    {
+      "country_code": "PAK",
+      "country_name": "Pakistan",
+      "official_team_name": "Pakistan Men's National Cricket Team",
+      "governing_body": "Pakistan Cricket Board (PCB)",
+      "icc_membership": "Full Member",
+      "dataset_tier": "Core 12 Full Member",
+      "gender": "Male",
+      "formats_eligible": [
+        "Test",
+        "ODI",
+        "T20I"
+      ],
+      "official_board_url": "https://www.pcb.com.pk/",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    },
+    {
+      "country_code": "RSA",
+      "country_name": "South Africa",
+      "official_team_name": "South Africa Men's National Cricket Team (Proteas)",
+      "governing_body": "Cricket South Africa (CSA)",
+      "icc_membership": "Full Member",
+      "dataset_tier": "Core 12 Full Member",
+      "gender": "Male",
+      "formats_eligible": [
+        "Test",
+        "ODI",
+        "T20I"
+      ],
+      "official_board_url": "https://cricket.co.za/",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    },
+    {
+      "country_code": "NZL",
+      "country_name": "New Zealand",
+      "official_team_name": "New Zealand Men's National Cricket Team (BLACKCAPS)",
+      "governing_body": "New Zealand Cricket (NZC)",
+      "icc_membership": "Full Member",
+      "dataset_tier": "Core 12 Full Member",
+      "gender": "Male",
+      "formats_eligible": [
+        "Test",
+        "ODI",
+        "T20I"
+      ],
+      "official_board_url": "https://www.nzc.nz/",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    },
+    {
+      "country_code": "SL",
+      "country_name": "Sri Lanka",
+      "official_team_name": "Sri Lanka Men's National Cricket Team",
+      "governing_body": "Sri Lanka Cricket (SLC)",
+      "icc_membership": "Full Member",
+      "dataset_tier": "Core 12 Full Member",
+      "gender": "Male",
+      "formats_eligible": [
+        "Test",
+        "ODI",
+        "T20I"
+      ],
+      "official_board_url": "https://srilankacricket.lk/",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    },
+    {
+      "country_code": "BAN",
+      "country_name": "Bangladesh",
+      "official_team_name": "Bangladesh Men's National Cricket Team",
+      "governing_body": "Bangladesh Cricket Board (BCB)",
+      "icc_membership": "Full Member",
+      "dataset_tier": "Core 12 Full Member",
+      "gender": "Male",
+      "formats_eligible": [
+        "Test",
+        "ODI",
+        "T20I"
+      ],
+      "official_board_url": "https://www.tigercricket.com.bd/",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    },
+    {
+      "country_code": "WI",
+      "country_name": "West Indies",
+      "official_team_name": "West Indies Men's Cricket Team",
+      "governing_body": "Cricket West Indies (CWI)",
+      "icc_membership": "Full Member",
+      "dataset_tier": "Core 12 Full Member",
+      "gender": "Male",
+      "formats_eligible": [
+        "Test",
+        "ODI",
+        "T20I"
+      ],
+      "official_board_url": "https://www.windiescricket.com/",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    },
+    {
+      "country_code": "AFG",
+      "country_name": "Afghanistan",
+      "official_team_name": "Afghanistan Men's National Cricket Team",
+      "governing_body": "Afghanistan Cricket Board (ACB)",
+      "icc_membership": "Full Member",
+      "dataset_tier": "Core 12 Full Member",
+      "gender": "Male",
+      "formats_eligible": [
+        "Test",
+        "ODI",
+        "T20I"
+      ],
+      "official_board_url": "https://cricket.af/",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    },
+    {
+      "country_code": "IRE",
+      "country_name": "Ireland",
+      "official_team_name": "Ireland Men's Cricket Team",
+      "governing_body": "Cricket Ireland",
+      "icc_membership": "Full Member",
+      "dataset_tier": "Core 12 Full Member",
+      "gender": "Male",
+      "formats_eligible": [
+        "Test",
+        "ODI",
+        "T20I"
+      ],
+      "official_board_url": "https://cricketireland.ie/",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    },
+    {
+      "country_code": "ZIM",
+      "country_name": "Zimbabwe",
+      "official_team_name": "Zimbabwe Men's National Cricket Team (Chevrons)",
+      "governing_body": "Zimbabwe Cricket (ZC)",
+      "icc_membership": "Full Member",
+      "dataset_tier": "Core 12 Full Member",
+      "gender": "Male",
+      "formats_eligible": [
+        "Test",
+        "ODI",
+        "T20I"
+      ],
+      "official_board_url": "https://www.zimcricket.org/",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    },
+    {
+      "country_code": "SCO",
+      "country_name": "Scotland",
+      "official_team_name": "Scotland Men's National Cricket Team",
+      "governing_body": "Cricket Scotland",
+      "icc_membership": "Associate Member (ODI & T20I Status)",
+      "dataset_tier": "Core 9 Associate Member",
+      "gender": "Male",
+      "formats_eligible": [
+        "ODI",
+        "T20I"
+      ],
+      "official_board_url": "https://www.cricketscotland.com/",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    },
+    {
+      "country_code": "NED",
+      "country_name": "Netherlands",
+      "official_team_name": "Netherlands Men's National Cricket Team",
+      "governing_body": "Royal Dutch Cricket Association (KNCB)",
+      "icc_membership": "Associate Member (ODI & T20I Status)",
+      "dataset_tier": "Core 9 Associate Member",
+      "gender": "Male",
+      "formats_eligible": [
+        "ODI",
+        "T20I"
+      ],
+      "official_board_url": "https://www.kncb.nl/",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    },
+    {
+      "country_code": "NEP",
+      "country_name": "Nepal",
+      "official_team_name": "Nepal Men's National Cricket Team",
+      "governing_body": "Cricket Association of Nepal (CAN)",
+      "icc_membership": "Associate Member (ODI & T20I Status)",
+      "dataset_tier": "Core 9 Associate Member",
+      "gender": "Male",
+      "formats_eligible": [
+        "ODI",
+        "T20I"
+      ],
+      "official_board_url": "https://cricketnepal.org.np/",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    },
+    {
+      "country_code": "NAM",
+      "country_name": "Namibia",
+      "official_team_name": "Namibia Men's National Cricket Team (Eagles)",
+      "governing_body": "Cricket Namibia",
+      "icc_membership": "Associate Member (ODI & T20I Status)",
+      "dataset_tier": "Core 9 Associate Member",
+      "gender": "Male",
+      "formats_eligible": [
+        "ODI",
+        "T20I"
+      ],
+      "official_board_url": "https://cricketnamibia.com/",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    },
+    {
+      "country_code": "USA",
+      "country_name": "United States",
+      "official_team_name": "United States Men's National Cricket Team",
+      "governing_body": "USA Cricket",
+      "icc_membership": "Associate Member (ODI & T20I Status)",
+      "dataset_tier": "Core 9 Associate Member",
+      "gender": "Male",
+      "formats_eligible": [
+        "ODI",
+        "T20I"
+      ],
+      "official_board_url": "https://usacricket.org/",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    },
+    {
+      "country_code": "UAE",
+      "country_name": "United Arab Emirates",
+      "official_team_name": "United Arab Emirates Men's National Cricket Team",
+      "governing_body": "Emirates Cricket Board (ECB)",
+      "icc_membership": "Associate Member (ODI & T20I Status)",
+      "dataset_tier": "Core 9 Associate Member",
+      "gender": "Male",
+      "formats_eligible": [
+        "ODI",
+        "T20I"
+      ],
+      "official_board_url": "https://www.emiratescricket.com/",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    },
+    {
+      "country_code": "OMA",
+      "country_name": "Oman",
+      "official_team_name": "Oman Men's National Cricket Team",
+      "governing_body": "Oman Cricket",
+      "icc_membership": "Associate Member (ODI & T20I Status)",
+      "dataset_tier": "Core 9 Associate Member",
+      "gender": "Male",
+      "formats_eligible": [
+        "ODI",
+        "T20I"
+      ],
+      "official_board_url": "https://www.omancricket.org/",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    },
+    {
+      "country_code": "CAN",
+      "country_name": "Canada",
+      "official_team_name": "Canada Men's National Cricket Team",
+      "governing_body": "Cricket Canada",
+      "icc_membership": "Associate Member (ODI & T20I Status)",
+      "dataset_tier": "Core 9 Associate Member",
+      "gender": "Male",
+      "formats_eligible": [
+        "ODI",
+        "T20I"
+      ],
+      "official_board_url": "https://cricketcanada.org/",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    },
+    {
+      "country_code": "PNG",
+      "country_name": "Papua New Guinea",
+      "official_team_name": "Papua New Guinea Men's National Cricket Team (Barramundis)",
+      "governing_body": "Cricket PNG",
+      "icc_membership": "Associate Member (T20I Status; CWC Challenge League A in 50-over)",
+      "dataset_tier": "Core 9 Associate Member",
+      "gender": "Male",
+      "formats_eligible": [
+        "T20I"
+      ],
+      "official_board_url": "https://www.cricketpng.org.pg/",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    },
+    {
+      "country_code": "IDN",
+      "country_name": "Indonesia",
+      "official_team_name": "Indonesia Men's National Cricket Team",
+      "governing_body": "Persatuan Cricket Indonesia (PCI)",
+      "icc_membership": "Associate Member (T20I Status — Expandable Opponent Record vs PNG)",
+      "dataset_tier": "Expandable Associate Opponent",
+      "gender": "Male",
+      "formats_eligible": [
+        "T20I"
+      ],
+      "official_board_url": "https://www.icc-cricket.com/teams/men",
+      "icc_team_url": "https://www.icc-cricket.com/teams/men"
+    }
+  ]
+}

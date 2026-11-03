@@ -1,0 +1,288 @@
+{
+  "exportedAt": "2026-11-02T18:59:16.917Z",
+  "totalTours": 7,
+  "toursWithAnnouncedSquads": 1,
+  "toursWithEmptySquads": 6,
+  "tourSquads": [
+    {
+      "tourId": "tour_bgt_2026_27",
+      "tourName": "Border-Gavaskar Trophy (India tour of Australia)",
+      "hostTeamId": "AUS",
+      "visitingTeamId": "IND",
+      "startDate": "2026-11-22",
+      "endDate": "2027-01-07",
+      "status": "IN_PROGRESS",
+      "formatsIncluded": [
+        "TEST"
+      ],
+      "squadSelectionDeadline": "2026-11-15",
+      "squadAnnounced": true,
+      "squadCount": 12,
+      "tourSquadIds": [
+        "ind_rohit",
+        "ind_jaiswal",
+        "ind_gill",
+        "ind_virat",
+        "ind_pant",
+        "ind_rahane",
+        "ind_jadeja",
+        "ind_bumrah",
+        "ind_shiraz",
+        "ind_shami",
+        "ind_kuldeep",
+        "ind_axar"
+      ],
+      "resolvedPlayers": [
+        {
+          "id": "ind_rohit",
+          "name": "Rohit Sharma",
+          "countryId": "IND",
+          "role": "BATTER",
+          "status": "ACTIVE",
+          "formatEligibility": {
+            "TEST": true,
+            "ODI": true,
+            "T20I": true
+          }
+        },
+        {
+          "id": "ind_jaiswal",
+          "name": "Yashasvi Jaiswal",
+          "countryId": "IND",
+          "role": "BATTER",
+          "status": "ACTIVE",
+          "formatEligibility": {
+            "TEST": true,
+            "ODI": true,
+            "T20I": true
+          }
+        },
+        {
+          "id": "ind_gill",
+          "name": "Shubman Gill",
+          "countryId": "IND",
+          "role": "BATTER",
+          "status": "ACTIVE",
+          "formatEligibility": {
+            "TEST": true,
+            "ODI": true,
+            "T20I": true
+          }
+        },
+        {
+          "id": "ind_virat",
+          "name": "Virat Kohli",
+          "countryId": "IND",
+          "role": "BATTER",
+          "status": "ACTIVE",
+          "formatEligibility": {
+            "TEST": true,
+            "ODI": true,
+            "T20I": true
+          }
+        },
+        {
+          "id": "ind_pant",
+          "name": "Rishabh Pant",
+          "countryId": "IND",
+          "role": "WICKETKEEPER_BATTER",
+          "status": "ACTIVE",
+          "formatEligibility": {
+            "TEST": true,
+            "ODI": true,
+            "T20I": true
+          }
+        },
+        {
+          "id": "ind_rahane",
+          "name": "Ajinkya Rahane",
+          "countryId": "IND",
+          "role": "BATTER",
+          "status": "ACTIVE",
+          "formatEligibility": {
+            "TEST": true,
+            "ODI": false,
+            "T20I": false
+          }
+        },
+        {
+          "id": "ind_jadeja",
+          "name": "Ravindra Jadeja",
+          "countryId": "IND",
+          "role": "ALL_ROUNDER",
+          "status": "ACTIVE",
+          "formatEligibility": {
+            "TEST": true,
+            "ODI": true,
+            "T20I": true
+          }
+        },
+        {
+          "id": "ind_bumrah",
+          "name": "Jasprit Bumrah",
+          "countryId": "IND",
+          "role": "BOWLER",
+          "status": "ACTIVE",
+          "formatEligibility": {
+            "TEST": true,
+            "ODI": true,
+            "T20I": true
+          }
+        },
+        {
+          "id": "ind_shiraz",
+          "name": "Mohammed Siraj",
+          "countryId": "IND",
+          "role": "BOWLER",
+          "status": "ACTIVE",
+          "formatEligibility": {
+            "TEST": true,
+            "ODI": true,
+            "T20I": true
+          }
+        },
+        {
+          "id": "ind_shami",
+          "name": "Mohammed Shami",
+          "countryId": "IND",
+          "role": "BOWLER",
+          "status": "ACTIVE",
+          "formatEligibility": {
+            "TEST": true,
+            "ODI": true,
+            "T20I": true
+          }
+        },
+        {
+          "id": "ind_kuldeep",
+          "name": "Kuldeep Yadav",
+          "countryId": "IND",
+          "role": "BOWLER",
+          "status": "ACTIVE",
+          "formatEligibility": {
+            "TEST": true,
+            "ODI": true,
+            "T20I": true
+          }
+        },
+        {
+          "id": "ind_axar",
+          "name": "Axar Patel",
+          "countryId": "IND",
+          "role": "ALL_ROUNDER",
+          "status": "ACTIVE",
+          "formatEligibility": {
+            "TEST": true,
+            "ODI": true,
+            "T20I": true
+          }
+        }
+      ]
+    },
+    {
+      "tourId": "tour_ashes_2027",
+      "tourName": "The Ashes Series (England tour of Australia)",
+      "hostTeamId": "AUS",
+      "visitingTeamId": "ENG",
+      "startDate": "2027-01-14",
+      "endDate": "2027-02-28",
+      "status": "UPCOMING",
+      "formatsIncluded": [
+        "TEST"
+      ],
+      "squadSelectionDeadline": "2027-01-05",
+      "squadAnnounced": false,
+      "squadCount": 0,
+      "tourSquadIds": [],
+      "resolvedPlayers": []
+    },
+    {
+      "tourId": "tour_sa_ind_2027",
+      "tourName": "South Africa Tour of India (Multi-Format Bilateral Series)",
+      "hostTeamId": "IND",
+      "visitingTeamId": "RSA",
+      "startDate": "2027-03-05",
+      "endDate": "2027-04-10",
+      "status": "UPCOMING",
+      "formatsIncluded": [
+        "TEST",
+        "ODI",
+        "T20I"
+      ],
+      "squadSelectionDeadline": "2027-02-24",
+      "squadAnnounced": false,
+      "squadCount": 0,
+      "tourSquadIds": [],
+      "resolvedPlayers": []
+    },
+    {
+      "tourId": "tour_pak_aus_2027",
+      "tourName": "Pakistan Tour of Australia (Bilateral Test & ODI Tour)",
+      "hostTeamId": "AUS",
+      "visitingTeamId": "PAK",
+      "startDate": "2027-04-15",
+      "endDate": "2027-05-18",
+      "status": "UPCOMING",
+      "formatsIncluded": [
+        "TEST",
+        "ODI"
+      ],
+      "squadSelectionDeadline": "2027-04-01",
+      "squadAnnounced": false,
+      "squadCount": 0,
+      "tourSquadIds": [],
+      "resolvedPlayers": []
+    },
+    {
+      "tourId": "tour_wtc_final_2027",
+      "tourName": "ICC World Test Championship Final (Lord’s)",
+      "hostTeamId": "ENG",
+      "visitingTeamId": "IND",
+      "startDate": "2027-06-10",
+      "endDate": "2027-06-15",
+      "status": "UPCOMING",
+      "formatsIncluded": [
+        "TEST"
+      ],
+      "squadSelectionDeadline": "2027-05-25",
+      "squadAnnounced": false,
+      "squadCount": 0,
+      "tourSquadIds": [],
+      "resolvedPlayers": []
+    },
+    {
+      "tourId": "tour_eng_ind_pataudi",
+      "tourName": "Anthony de Mello Trophy (India Tour of England)",
+      "hostTeamId": "ENG",
+      "visitingTeamId": "IND",
+      "startDate": "2027-07-02",
+      "endDate": "2027-08-15",
+      "status": "UPCOMING",
+      "formatsIncluded": [
+        "TEST"
+      ],
+      "squadSelectionDeadline": "2027-06-20",
+      "squadAnnounced": false,
+      "squadCount": 0,
+      "tourSquadIds": [],
+      "resolvedPlayers": []
+    },
+    {
+      "tourId": "tour_cwc_2027",
+      "tourName": "ICC Men’s Cricket World Cup 2027 (Southern Africa)",
+      "hostTeamId": "RSA",
+      "visitingTeamId": "IND",
+      "startDate": "2027-10-01",
+      "endDate": "2027-11-15",
+      "status": "UPCOMING",
+      "formatsIncluded": [
+        "ODI"
+      ],
+      "squadSelectionDeadline": "2027-09-10",
+      "squadAnnounced": false,
+      "squadCount": 0,
+      "tourSquadIds": [],
+      "resolvedPlayers": []
+    }
+  ]
+}

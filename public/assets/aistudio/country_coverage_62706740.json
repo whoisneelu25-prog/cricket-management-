@@ -1,0 +1,724 @@
+{
+  "dataset_version": "2026-11-03",
+  "research_period": {
+    "start": "2025-01-01",
+    "end": "2026-11-03"
+  },
+  "core_countries_covered": 21,
+  "country_coverage": [
+    {
+      "country_code": "IND",
+      "country_name": "India",
+      "icc_membership": "Full Member",
+      "total_players_in_database": 46,
+      "active_players_count": 45,
+      "retired_or_inactive_players_count": 1,
+      "formats": {
+        "Test": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 13,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 13,
+          "verified_11_player_playing_xis_count": 3,
+          "selection_pool_players_count": 27
+        },
+        "ODI": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 23,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 23,
+          "verified_11_player_playing_xis_count": 2,
+          "selection_pool_players_count": 27
+        },
+        "T20I": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 53,
+          "fewer_than_50_matches_in_period": false,
+          "researched_match_records_in_dataset": 54,
+          "verified_11_player_playing_xis_count": 6,
+          "selection_pool_players_count": 46
+        }
+      }
+    },
+    {
+      "country_code": "AUS",
+      "country_name": "Australia",
+      "icc_membership": "Full Member",
+      "total_players_in_database": 39,
+      "active_players_count": 36,
+      "retired_or_inactive_players_count": 3,
+      "formats": {
+        "Test": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 14,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 17,
+          "verified_11_player_playing_xis_count": 3,
+          "selection_pool_players_count": 21
+        },
+        "ODI": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 14,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 24,
+          "verified_11_player_playing_xis_count": 1,
+          "selection_pool_players_count": 29
+        },
+        "T20I": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 25,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 26,
+          "verified_11_player_playing_xis_count": 4,
+          "selection_pool_players_count": 39
+        }
+      }
+    },
+    {
+      "country_code": "ENG",
+      "country_name": "England",
+      "icc_membership": "Full Member",
+      "total_players_in_database": 33,
+      "active_players_count": 27,
+      "retired_or_inactive_players_count": 6,
+      "formats": {
+        "Test": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 16,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 17,
+          "verified_11_player_playing_xis_count": 5,
+          "selection_pool_players_count": 26
+        },
+        "ODI": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 21,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 28,
+          "verified_11_player_playing_xis_count": 1,
+          "selection_pool_players_count": 27
+        },
+        "T20I": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 28,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 35,
+          "verified_11_player_playing_xis_count": 2,
+          "selection_pool_players_count": 33
+        }
+      }
+    },
+    {
+      "country_code": "PAK",
+      "country_name": "Pakistan",
+      "icc_membership": "Full Member",
+      "total_players_in_database": 34,
+      "active_players_count": 34,
+      "retired_or_inactive_players_count": 0,
+      "formats": {
+        "Test": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 9,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 12,
+          "verified_11_player_playing_xis_count": 1,
+          "selection_pool_players_count": 16
+        },
+        "ODI": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 24,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 29,
+          "verified_11_player_playing_xis_count": 1,
+          "selection_pool_players_count": 23
+        },
+        "T20I": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 38,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 52,
+          "verified_11_player_playing_xis_count": 2,
+          "selection_pool_players_count": 34
+        }
+      }
+    },
+    {
+      "country_code": "RSA",
+      "country_name": "South Africa",
+      "icc_membership": "Full Member",
+      "total_players_in_database": 31,
+      "active_players_count": 30,
+      "retired_or_inactive_players_count": 1,
+      "formats": {
+        "Test": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 11,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 11,
+          "verified_11_player_playing_xis_count": 1,
+          "selection_pool_players_count": 13
+        },
+        "ODI": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 21,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 24,
+          "verified_11_player_playing_xis_count": 1,
+          "selection_pool_players_count": 22
+        },
+        "T20I": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 31,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 41,
+          "verified_11_player_playing_xis_count": 1,
+          "selection_pool_players_count": 31
+        }
+      }
+    },
+    {
+      "country_code": "NZL",
+      "country_name": "New Zealand",
+      "icc_membership": "Full Member",
+      "total_players_in_database": 29,
+      "active_players_count": 27,
+      "retired_or_inactive_players_count": 2,
+      "formats": {
+        "Test": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 10,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 9,
+          "verified_11_player_playing_xis_count": 2,
+          "selection_pool_players_count": 16
+        },
+        "ODI": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 25,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 31,
+          "verified_11_player_playing_xis_count": 1,
+          "selection_pool_players_count": 18
+        },
+        "T20I": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 34,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 49,
+          "verified_11_player_playing_xis_count": 3,
+          "selection_pool_players_count": 29
+        }
+      }
+    },
+    {
+      "country_code": "SL",
+      "country_name": "Sri Lanka",
+      "icc_membership": "Full Member",
+      "total_players_in_database": 36,
+      "active_players_count": 35,
+      "retired_or_inactive_players_count": 1,
+      "formats": {
+        "Test": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 8,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 8,
+          "verified_11_player_playing_xis_count": 2,
+          "selection_pool_players_count": 28
+        },
+        "ODI": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 23,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 27,
+          "verified_11_player_playing_xis_count": 3,
+          "selection_pool_players_count": 27
+        },
+        "T20I": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 30,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 42,
+          "verified_11_player_playing_xis_count": 1,
+          "selection_pool_players_count": 35
+        }
+      }
+    },
+    {
+      "country_code": "BAN",
+      "country_name": "Bangladesh",
+      "icc_membership": "Full Member",
+      "total_players_in_database": 31,
+      "active_players_count": 29,
+      "retired_or_inactive_players_count": 2,
+      "formats": {
+        "Test": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 12,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 13,
+          "verified_11_player_playing_xis_count": 4,
+          "selection_pool_players_count": 26
+        },
+        "ODI": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 23,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 26,
+          "verified_11_player_playing_xis_count": 1,
+          "selection_pool_players_count": 26
+        },
+        "T20I": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 36,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 40,
+          "verified_11_player_playing_xis_count": 2,
+          "selection_pool_players_count": 31
+        }
+      }
+    },
+    {
+      "country_code": "WI",
+      "country_name": "West Indies",
+      "icc_membership": "Full Member",
+      "total_players_in_database": 32,
+      "active_players_count": 30,
+      "retired_or_inactive_players_count": 2,
+      "formats": {
+        "Test": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 15,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 15,
+          "verified_11_player_playing_xis_count": 3,
+          "selection_pool_players_count": 24
+        },
+        "ODI": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 21,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 23,
+          "verified_11_player_playing_xis_count": 1,
+          "selection_pool_players_count": 25
+        },
+        "T20I": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 39,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 40,
+          "verified_11_player_playing_xis_count": 2,
+          "selection_pool_players_count": 32
+        }
+      }
+    },
+    {
+      "country_code": "AFG",
+      "country_name": "Afghanistan",
+      "icc_membership": "Full Member",
+      "total_players_in_database": 41,
+      "active_players_count": 40,
+      "retired_or_inactive_players_count": 1,
+      "formats": {
+        "Test": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 4,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 4,
+          "verified_11_player_playing_xis_count": 2,
+          "selection_pool_players_count": 30
+        },
+        "ODI": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 12,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 17,
+          "verified_11_player_playing_xis_count": 2,
+          "selection_pool_players_count": 32
+        },
+        "T20I": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 31,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 25,
+          "verified_11_player_playing_xis_count": 3,
+          "selection_pool_players_count": 41
+        }
+      }
+    },
+    {
+      "country_code": "IRE",
+      "country_name": "Ireland",
+      "icc_membership": "Full Member",
+      "total_players_in_database": 30,
+      "active_players_count": 29,
+      "retired_or_inactive_players_count": 1,
+      "formats": {
+        "Test": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 4,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 4,
+          "verified_11_player_playing_xis_count": 1,
+          "selection_pool_players_count": 24
+        },
+        "ODI": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 11,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 16,
+          "verified_11_player_playing_xis_count": 1,
+          "selection_pool_players_count": 26
+        },
+        "T20I": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 21,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 20,
+          "verified_11_player_playing_xis_count": 2,
+          "selection_pool_players_count": 30
+        }
+      }
+    },
+    {
+      "country_code": "ZIM",
+      "country_name": "Zimbabwe",
+      "icc_membership": "Full Member",
+      "total_players_in_database": 30,
+      "active_players_count": 30,
+      "retired_or_inactive_players_count": 0,
+      "formats": {
+        "Test": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 12,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 11,
+          "verified_11_player_playing_xis_count": 3,
+          "selection_pool_players_count": 25
+        },
+        "ODI": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 11,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 14,
+          "verified_11_player_playing_xis_count": 2,
+          "selection_pool_players_count": 24
+        },
+        "T20I": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 30,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 41,
+          "verified_11_player_playing_xis_count": 5,
+          "selection_pool_players_count": 30
+        }
+      }
+    },
+    {
+      "country_code": "SCO",
+      "country_name": "Scotland",
+      "icc_membership": "Associate Member (ODI & T20I Status)",
+      "total_players_in_database": 23,
+      "active_players_count": 23,
+      "retired_or_inactive_players_count": 0,
+      "formats": {
+        "Test": {
+          "eligible": false,
+          "total_completed_matches_in_period_2025_2026": 0,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 0,
+          "verified_11_player_playing_xis_count": 0,
+          "selection_pool_players_count": 0
+        },
+        "ODI": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 13,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 25,
+          "verified_11_player_playing_xis_count": 2,
+          "selection_pool_players_count": 17
+        },
+        "T20I": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 16,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 3,
+          "verified_11_player_playing_xis_count": 1,
+          "selection_pool_players_count": 23
+        }
+      }
+    },
+    {
+      "country_code": "NED",
+      "country_name": "Netherlands",
+      "icc_membership": "Associate Member (ODI & T20I Status)",
+      "total_players_in_database": 17,
+      "active_players_count": 17,
+      "retired_or_inactive_players_count": 0,
+      "formats": {
+        "Test": {
+          "eligible": false,
+          "total_completed_matches_in_period_2025_2026": 0,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 0,
+          "verified_11_player_playing_xis_count": 0,
+          "selection_pool_players_count": 0
+        },
+        "ODI": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 12,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 24,
+          "verified_11_player_playing_xis_count": 2,
+          "selection_pool_players_count": 13
+        },
+        "T20I": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 17,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 7,
+          "verified_11_player_playing_xis_count": 1,
+          "selection_pool_players_count": 17
+        }
+      }
+    },
+    {
+      "country_code": "NEP",
+      "country_name": "Nepal",
+      "icc_membership": "Associate Member (ODI & T20I Status)",
+      "total_players_in_database": 18,
+      "active_players_count": 18,
+      "retired_or_inactive_players_count": 0,
+      "formats": {
+        "Test": {
+          "eligible": false,
+          "total_completed_matches_in_period_2025_2026": 0,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 0,
+          "verified_11_player_playing_xis_count": 0,
+          "selection_pool_players_count": 0
+        },
+        "ODI": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 13,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 26,
+          "verified_11_player_playing_xis_count": 4,
+          "selection_pool_players_count": 14
+        },
+        "T20I": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 24,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 8,
+          "verified_11_player_playing_xis_count": 2,
+          "selection_pool_players_count": 18
+        }
+      }
+    },
+    {
+      "country_code": "NAM",
+      "country_name": "Namibia",
+      "icc_membership": "Associate Member (ODI & T20I Status)",
+      "total_players_in_database": 17,
+      "active_players_count": 17,
+      "retired_or_inactive_players_count": 0,
+      "formats": {
+        "Test": {
+          "eligible": false,
+          "total_completed_matches_in_period_2025_2026": 0,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 0,
+          "verified_11_player_playing_xis_count": 0,
+          "selection_pool_players_count": 0
+        },
+        "ODI": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 17,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 32,
+          "verified_11_player_playing_xis_count": 3,
+          "selection_pool_players_count": 15
+        },
+        "T20I": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 19,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 12,
+          "verified_11_player_playing_xis_count": 2,
+          "selection_pool_players_count": 17
+        }
+      }
+    },
+    {
+      "country_code": "USA",
+      "country_name": "United States",
+      "icc_membership": "Associate Member (ODI & T20I Status)",
+      "total_players_in_database": 19,
+      "active_players_count": 19,
+      "retired_or_inactive_players_count": 0,
+      "formats": {
+        "Test": {
+          "eligible": false,
+          "total_completed_matches_in_period_2025_2026": 0,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 0,
+          "verified_11_player_playing_xis_count": 0,
+          "selection_pool_players_count": 0
+        },
+        "ODI": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 16,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 24,
+          "verified_11_player_playing_xis_count": 5,
+          "selection_pool_players_count": 18
+        },
+        "T20I": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 16,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 4,
+          "verified_11_player_playing_xis_count": 2,
+          "selection_pool_players_count": 19
+        }
+      }
+    },
+    {
+      "country_code": "UAE",
+      "country_name": "United Arab Emirates",
+      "icc_membership": "Associate Member (ODI & T20I Status)",
+      "total_players_in_database": 24,
+      "active_players_count": 24,
+      "retired_or_inactive_players_count": 0,
+      "formats": {
+        "Test": {
+          "eligible": false,
+          "total_completed_matches_in_period_2025_2026": 0,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 0,
+          "verified_11_player_playing_xis_count": 0,
+          "selection_pool_players_count": 0
+        },
+        "ODI": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 16,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 26,
+          "verified_11_player_playing_xis_count": 2,
+          "selection_pool_players_count": 17
+        },
+        "T20I": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 33,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 16,
+          "verified_11_player_playing_xis_count": 2,
+          "selection_pool_players_count": 24
+        }
+      }
+    },
+    {
+      "country_code": "OMA",
+      "country_name": "Oman",
+      "icc_membership": "Associate Member (ODI & T20I Status)",
+      "total_players_in_database": 24,
+      "active_players_count": 24,
+      "retired_or_inactive_players_count": 0,
+      "formats": {
+        "Test": {
+          "eligible": false,
+          "total_completed_matches_in_period_2025_2026": 0,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 0,
+          "verified_11_player_playing_xis_count": 0,
+          "selection_pool_players_count": 0
+        },
+        "ODI": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 12,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 25,
+          "verified_11_player_playing_xis_count": 3,
+          "selection_pool_players_count": 18
+        },
+        "T20I": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 20,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 7,
+          "verified_11_player_playing_xis_count": 1,
+          "selection_pool_players_count": 24
+        }
+      }
+    },
+    {
+      "country_code": "CAN",
+      "country_name": "Canada",
+      "icc_membership": "Associate Member (ODI & T20I Status)",
+      "total_players_in_database": 19,
+      "active_players_count": 18,
+      "retired_or_inactive_players_count": 1,
+      "formats": {
+        "Test": {
+          "eligible": false,
+          "total_completed_matches_in_period_2025_2026": 0,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 0,
+          "verified_11_player_playing_xis_count": 0,
+          "selection_pool_players_count": 0
+        },
+        "ODI": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 14,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 24,
+          "verified_11_player_playing_xis_count": 2,
+          "selection_pool_players_count": 15
+        },
+        "T20I": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 19,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 4,
+          "verified_11_player_playing_xis_count": 2,
+          "selection_pool_players_count": 19
+        }
+      }
+    },
+    {
+      "country_code": "PNG",
+      "country_name": "Papua New Guinea",
+      "icc_membership": "Associate Member (T20I Status; CWC Challenge League A in 50-over)",
+      "total_players_in_database": 13,
+      "active_players_count": 12,
+      "retired_or_inactive_players_count": 1,
+      "formats": {
+        "Test": {
+          "eligible": false,
+          "total_completed_matches_in_period_2025_2026": 0,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 0,
+          "verified_11_player_playing_xis_count": 0,
+          "selection_pool_players_count": 0
+        },
+        "ODI": {
+          "eligible": false,
+          "total_completed_matches_in_period_2025_2026": 0,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 0,
+          "verified_11_player_playing_xis_count": 0,
+          "selection_pool_players_count": 0
+        },
+        "T20I": {
+          "eligible": true,
+          "total_completed_matches_in_period_2025_2026": 7,
+          "fewer_than_50_matches_in_period": true,
+          "researched_match_records_in_dataset": 1,
+          "verified_11_player_playing_xis_count": 1,
+          "selection_pool_players_count": 13
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+import { Tour } from '../types/cricket';
+
+export const OFFICIAL_TOURS: Tour[] = [
+  {
+    id: 'tour_bgt_2026_27',
+    name: 'Border-Gavaskar Trophy (India tour of Australia)',
+    hostTeamId: 'AUS',
+    visitingTeamId: 'IND',
+    startDate: '2026-11-22',
+    endDate: '2027-01-07',
+    year: 2026,
+    status: 'IN_PROGRESS',
+    series: {
+      TEST: { matchCount: 5, matchesPlayed: 0, homeWins: 0, awayWins: 0, draws: 0 },
+    },
+    venues: ['Perth Stadium', 'Adelaide Oval', 'The Gabba', 'Melbourne Cricket Ground', 'Sydney Cricket Ground'],
+    squadSelectionDeadline: '2026-11-15',
+    squadAnnounced: true,
+    tourSquadIds: [
+      'ind_rohit', 'ind_jaiswal', 'ind_gill', 'ind_virat', 'ind_pant', 'ind_rahane',
+      'ind_jadeja', 'ind_bumrah', 'ind_shiraz', 'ind_shami', 'ind_kuldeep', 'ind_axar'
+    ],
+  },
+  {
+    id: 'tour_ashes_2027',
+    name: 'The Ashes Series (England tour of Australia)',
+    hostTeamId: 'AUS',
+    visitingTeamId: 'ENG',
+    startDate: '2027-01-14',
+    endDate: '2027-02-28',
+    year: 2027,
+    status: 'UPCOMING',
+    series: {
+      TEST: { matchCount: 5, matchesPlayed: 0, homeWins: 0, awayWins: 0, draws: 0 },
+    },
+    venues: ['The Gabba', 'Adelaide Oval', 'Melbourne Cricket Ground', 'Sydney Cricket Ground', 'Perth Stadium'],
+    squadSelectionDeadline: '2027-01-05',
+    squadAnnounced: false,
+    tourSquadIds: [],
+  },
+  {
+    id: 'tour_sa_ind_2027',
+    name: 'South Africa Tour of India (Multi-Format Bilateral Series)',
+    hostTeamId: 'IND',
+    visitingTeamId: 'RSA',
+    startDate: '2027-03-05',
+    endDate: '2027-04-10',
+    year: 2027,
+    status: 'UPCOMING',
+    series: {
+      TEST: { matchCount: 2, matchesPlayed: 0, homeWins: 0, awayWins: 0, draws: 0 },
+      ODI: { matchCount: 3, matchesPlayed: 0, homeWins: 0, awayWins: 0, ties: 0 },
+      T20I: { matchCount: 5, matchesPlayed: 0, homeWins: 0, awayWins: 0, ties: 0 },
+    },
+    venues: ['Eden Gardens', 'Wankhede Stadium', 'M. Chinnaswamy Stadium', 'Narendra Modi Stadium', 'Himachal Pradesh Cricket Association Stadium'],
+    squadSelectionDeadline: '2027-02-24',
+    squadAnnounced: false,
+    tourSquadIds: [],
+  },
+  {
+    id: 'tour_pak_aus_2027',
+    name: 'Pakistan Tour of Australia (Bilateral Test & ODI Tour)',
+    hostTeamId: 'AUS',
+    visitingTeamId: 'PAK',
+    startDate: '2027-04-15',
+    endDate: '2027-05-18',
+    year: 2027,
+    status: 'UPCOMING',
+    series: {
+      TEST: { matchCount: 3, matchesPlayed: 0, homeWins: 0, awayWins: 0, draws: 0 },
+      ODI: { matchCount: 3, matchesPlayed: 0, homeWins: 0, awayWins: 0, ties: 0 },
+    },
+    venues: ['Melbourne Cricket Ground', 'Sydney Cricket Ground', 'Adelaide Oval'],
+    squadSelectionDeadline: '2027-04-01',
+    squadAnnounced: false,
+    tourSquadIds: [],
+  },
+  {
+    id: 'tour_wtc_final_2027',
+    name: 'ICC World Test Championship Final (Lord’s)',
+    hostTeamId: 'ENG', // Neutral Lord's host
+    visitingTeamId: 'IND',
+    startDate: '2027-06-10',
+    endDate: '2027-06-15',
+    year: 2027,
+    status: 'UPCOMING',
+    series: {
+      TEST: { matchCount: 1, matchesPlayed: 0, homeWins: 0, awayWins: 0, draws: 0 },
+    },
+    venues: ["Lord's Cricket Ground"],
+    squadSelectionDeadline: '2027-05-25',
+    squadAnnounced: false,
+    tourSquadIds: [],
+  },
+  {
+    id: 'tour_eng_ind_pataudi',
+    name: 'Anthony de Mello Trophy (India Tour of England)',
+    hostTeamId: 'ENG',
+    visitingTeamId: 'IND',
+    startDate: '2027-07-02',
+    endDate: '2027-08-15',
+    year: 2027,
+    status: 'UPCOMING',
+    series: {
+      TEST: { matchCount: 5, matchesPlayed: 0, homeWins: 0, awayWins: 0, draws: 0 },
+    },
+    venues: ["Lord's Cricket Ground", 'The Oval', 'Edgbaston', 'Headingley', 'Old Trafford'],
+    squadSelectionDeadline: '2027-06-20',
+    squadAnnounced: false,
+    tourSquadIds: [],
+  },
+  {
+    id: 'tour_cwc_2027',
+    name: 'ICC Men’s Cricket World Cup 2027 (Southern Africa)',
+    hostTeamId: 'RSA',
+    visitingTeamId: 'IND',
+    startDate: '2027-10-01',
+    endDate: '2027-11-15',
+    year: 2027,
+    status: 'UPCOMING',
+    series: {
+      ODI: { matchCount: 9, matchesPlayed: 0, homeWins: 0, awayWins: 0, ties: 0 },
+    },
+    venues: ['Wanderers Stadium', 'SuperSport Park', 'Newlands'],
+    squadSelectionDeadline: '2027-09-10',
+    squadAnnounced: false,
+    tourSquadIds: [],
+  },
+];
+
+export function getTourById(tourId: string): Tour | undefined {
+  return OFFICIAL_TOURS.find((t) => t.id === tourId);
+}

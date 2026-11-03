@@ -1,0 +1,1816 @@
+{
+  "exportedAt": "2026-11-02T18:59:16.917Z",
+  "totalPlayers": 75,
+  "roleBreakdown": {
+    "BATTER": 24,
+    "BOWLER": 25,
+    "ALL_ROUNDER": 15,
+    "WICKETKEEPER_BATTER": 11
+  },
+  "battingHandBreakdown": {
+    "RIGHT_HAND": 55,
+    "LEFT_HAND": 20
+  },
+  "players": [
+    {
+      "id": "ind_rohit",
+      "name": "Rohit Sharma",
+      "shortName": "R. Sharma",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "OFF_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 88,
+        "ODI": 93,
+        "T20I": 91
+      }
+    },
+    {
+      "id": "ind_virat",
+      "name": "Virat Kohli",
+      "shortName": "V. Kohli",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 92,
+        "ODI": 96,
+        "T20I": 93
+      }
+    },
+    {
+      "id": "ind_bumrah",
+      "name": "Jasprit Bumrah",
+      "shortName": "J. Bumrah",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_FAST",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 97,
+        "ODI": 96,
+        "T20I": 98
+      }
+    },
+    {
+      "id": "ind_surya",
+      "name": "Suryakumar Yadav",
+      "shortName": "S. Yadav",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": false,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 72,
+        "ODI": 82,
+        "T20I": 98
+      }
+    },
+    {
+      "id": "ind_gill",
+      "name": "Shubman Gill",
+      "shortName": "S. Gill",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "OFF_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 87,
+        "ODI": 92,
+        "T20I": 86
+      }
+    },
+    {
+      "id": "ind_pant",
+      "name": "Rishabh Pant",
+      "shortName": "R. Pant",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "WICKETKEEPER_BATTER",
+      "isWicketKeeper": true,
+      "battingHand": "LEFT_HAND",
+      "bowlingStyle": "RIGHT_ARM_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 93,
+        "ODI": 88,
+        "T20I": 89
+      }
+    },
+    {
+      "id": "ind_jadeja",
+      "name": "Ravindra Jadeja",
+      "shortName": "R. Jadeja",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "ALL_ROUNDER",
+      "isWicketKeeper": false,
+      "battingHand": "LEFT_HAND",
+      "bowlingStyle": "SLOW_LEFT_ARM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 95,
+        "ODI": 89,
+        "T20I": 86
+      }
+    },
+    {
+      "id": "ind_kuldeep",
+      "name": "Kuldeep Yadav",
+      "shortName": "K. Yadav",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "LEFT_HAND",
+      "bowlingStyle": "LEFT_ARM_WRIST_SPIN",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 88,
+        "ODI": 94,
+        "T20I": 93
+      }
+    },
+    {
+      "id": "ind_pujara",
+      "name": "Cheteshwar Pujara",
+      "shortName": "C. Pujara",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "LEG_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": false,
+        "T20I": false
+      },
+      "ratings": {
+        "TEST": 86,
+        "ODI": 60,
+        "T20I": 50
+      }
+    },
+    {
+      "id": "aus_cummins",
+      "name": "Pat Cummins",
+      "shortName": "P. Cummins",
+      "countryId": "AUS",
+      "countryName": "Australia",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_FAST",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 97,
+        "ODI": 92,
+        "T20I": 88
+      }
+    },
+    {
+      "id": "aus_head",
+      "name": "Travis Head",
+      "shortName": "T. Head",
+      "countryId": "AUS",
+      "countryName": "Australia",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "LEFT_HAND",
+      "bowlingStyle": "OFF_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 91,
+        "ODI": 94,
+        "T20I": 96
+      }
+    },
+    {
+      "id": "aus_smith",
+      "name": "Steven Smith",
+      "shortName": "S. Smith",
+      "countryId": "AUS",
+      "countryName": "Australia",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "LEG_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 95,
+        "ODI": 89,
+        "T20I": 80
+      }
+    },
+    {
+      "id": "aus_starc",
+      "name": "Mitchell Starc",
+      "shortName": "M. Starc",
+      "countryId": "AUS",
+      "countryName": "Australia",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "LEFT_HAND",
+      "bowlingStyle": "LEFT_ARM_FAST",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 92,
+        "ODI": 95,
+        "T20I": 90
+      }
+    },
+    {
+      "id": "eng_root",
+      "name": "Joe Root",
+      "shortName": "J. Root",
+      "countryId": "ENG",
+      "countryName": "England",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "OFF_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": false
+      },
+      "ratings": {
+        "TEST": 97,
+        "ODI": 90,
+        "T20I": 78
+      }
+    },
+    {
+      "id": "eng_stokes",
+      "name": "Ben Stokes",
+      "shortName": "B. Stokes",
+      "countryId": "ENG",
+      "countryName": "England",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "ALL_ROUNDER",
+      "isWicketKeeper": false,
+      "battingHand": "LEFT_HAND",
+      "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 92,
+        "ODI": 89,
+        "T20I": 88
+      }
+    },
+    {
+      "id": "eng_buttler",
+      "name": "Jos Buttler",
+      "shortName": "J. Buttler",
+      "countryId": "ENG",
+      "countryName": "England",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "WICKETKEEPER_BATTER",
+      "isWicketKeeper": true,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": false,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 78,
+        "ODI": 92,
+        "T20I": 96
+      }
+    },
+    {
+      "id": "legend_sachin",
+      "name": "Sachin Tendulkar",
+      "shortName": "S. Tendulkar",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "LEGEND",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "LEG_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 99,
+        "ODI": 99,
+        "T20I": 88
+      }
+    },
+    {
+      "id": "legend_warne",
+      "name": "Shane Warne",
+      "shortName": "S. Warne",
+      "countryId": "AUS",
+      "countryName": "Australia",
+      "gender": "MALE",
+      "status": "LEGEND",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "LEG_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": false
+      },
+      "ratings": {
+        "TEST": 99,
+        "ODI": 96,
+        "T20I": 85
+      }
+    },
+    {
+      "id": "legend_lara",
+      "name": "Brian Lara",
+      "shortName": "B. Lara",
+      "countryId": "WIN",
+      "countryName": "West Indies",
+      "gender": "MALE",
+      "status": "LEGEND",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "LEFT_HAND",
+      "bowlingStyle": "LEG_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": false
+      },
+      "ratings": {
+        "TEST": 99,
+        "ODI": 95,
+        "T20I": 86
+      }
+    },
+    {
+      "id": "legend_wasim",
+      "name": "Wasim Akram",
+      "shortName": "W. Akram",
+      "countryId": "PAK",
+      "countryName": "Pakistan",
+      "gender": "MALE",
+      "status": "LEGEND",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "LEFT_HAND",
+      "bowlingStyle": "LEFT_ARM_FAST",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": false
+      },
+      "ratings": {
+        "TEST": 99,
+        "ODI": 99,
+        "T20I": 88
+      }
+    },
+    {
+      "id": "legend_dhoni",
+      "name": "MS Dhoni",
+      "shortName": "MS Dhoni",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "RETIRED",
+      "role": "WICKETKEEPER_BATTER",
+      "isWicketKeeper": true,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 88,
+        "ODI": 97,
+        "T20I": 92
+      }
+    },
+    {
+      "id": "wom_smriti",
+      "name": "Smriti Mandhana",
+      "shortName": "S. Mandhana",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "FEMALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "LEFT_HAND",
+      "bowlingStyle": "RIGHT_ARM_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 92,
+        "ODI": 96,
+        "T20I": 95
+      }
+    },
+    {
+      "id": "wom_perry",
+      "name": "Ellyse Perry",
+      "shortName": "E. Perry",
+      "countryId": "AUS",
+      "countryName": "Australia",
+      "gender": "FEMALE",
+      "status": "ACTIVE",
+      "role": "ALL_ROUNDER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 98,
+        "ODI": 97,
+        "T20I": 94
+      }
+    },
+    {
+      "id": "nam_erasmus",
+      "name": "Gerhard Erasmus",
+      "shortName": "G. Erasmus",
+      "countryId": "NAM",
+      "countryName": "Namibia",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "ALL_ROUNDER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "OFF_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": false,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 68,
+        "ODI": 84,
+        "T20I": 86
+      }
+    },
+    {
+      "id": "usa_monank",
+      "name": "Monank Patel",
+      "shortName": "M. Patel",
+      "countryId": "USA",
+      "countryName": "United States",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "WICKETKEEPER_BATTER",
+      "isWicketKeeper": true,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "SLOW_LEFT_ARM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": false,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 65,
+        "ODI": 82,
+        "T20I": 85
+      }
+    },
+    {
+      "id": "ind_jaiswal",
+      "name": "Yashasvi Jaiswal",
+      "shortName": "Y. Jaiswal",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "LEFT_HAND",
+      "bowlingStyle": "LEG_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 94,
+        "ODI": 88,
+        "T20I": 92
+      }
+    },
+    {
+      "id": "ind_rahane",
+      "name": "Ajinkya Rahane",
+      "shortName": "A. Rahane",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": false,
+        "T20I": false
+      },
+      "ratings": {
+        "TEST": 87,
+        "ODI": 75,
+        "T20I": 70
+      }
+    },
+    {
+      "id": "ind_shiraz",
+      "name": "Mohammed Siraj",
+      "shortName": "M. Siraj",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_FAST",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 90,
+        "ODI": 93,
+        "T20I": 84
+      }
+    },
+    {
+      "id": "ind_shami",
+      "name": "Mohammed Shami",
+      "shortName": "M. Shami",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_FAST",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 93,
+        "ODI": 96,
+        "T20I": 85
+      }
+    },
+    {
+      "id": "ind_arshdeep",
+      "name": "Arshdeep Singh",
+      "shortName": "A. Singh",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "LEFT_HAND",
+      "bowlingStyle": "LEFT_ARM_FAST_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": false,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 75,
+        "ODI": 84,
+        "T20I": 95
+      }
+    },
+    {
+      "id": "ind_axar",
+      "name": "Axar Patel",
+      "shortName": "A. Patel",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "ALL_ROUNDER",
+      "isWicketKeeper": false,
+      "battingHand": "LEFT_HAND",
+      "bowlingStyle": "SLOW_LEFT_ARM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 89,
+        "ODI": 87,
+        "T20I": 91
+      }
+    },
+    {
+      "id": "ind_hardik",
+      "name": "Hardik Pandya",
+      "shortName": "H. Pandya",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "ALL_ROUNDER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": false,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 70,
+        "ODI": 91,
+        "T20I": 96
+      }
+    },
+    {
+      "id": "ind_rinku",
+      "name": "Rinku Singh",
+      "shortName": "R. Singh",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "LEFT_HAND",
+      "bowlingStyle": "OFF_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": false,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 72,
+        "ODI": 82,
+        "T20I": 93
+      }
+    },
+    {
+      "id": "ind_sanju",
+      "name": "Sanju Samson",
+      "shortName": "S. Samson",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "WICKETKEEPER_BATTER",
+      "isWicketKeeper": true,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": false,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 74,
+        "ODI": 86,
+        "T20I": 93
+      }
+    },
+    {
+      "id": "aus_marsh",
+      "name": "Mitchell Marsh",
+      "shortName": "M. Marsh",
+      "countryId": "AUS",
+      "countryName": "Australia",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "ALL_ROUNDER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 86,
+        "ODI": 91,
+        "T20I": 94
+      }
+    },
+    {
+      "id": "aus_labuschagne",
+      "name": "Marnus Labuschagne",
+      "shortName": "M. Labuschagne",
+      "countryId": "AUS",
+      "countryName": "Australia",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "LEG_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": false
+      },
+      "ratings": {
+        "TEST": 92,
+        "ODI": 85,
+        "T20I": 74
+      }
+    },
+    {
+      "id": "aus_hazlewood",
+      "name": "Josh Hazlewood",
+      "shortName": "J. Hazlewood",
+      "countryId": "AUS",
+      "countryName": "Australia",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 94,
+        "ODI": 93,
+        "T20I": 90
+      }
+    },
+    {
+      "id": "aus_lyon",
+      "name": "Nathan Lyon",
+      "shortName": "N. Lyon",
+      "countryId": "AUS",
+      "countryName": "Australia",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "OFF_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": false,
+        "T20I": false
+      },
+      "ratings": {
+        "TEST": 96,
+        "ODI": 72,
+        "T20I": 68
+      }
+    },
+    {
+      "id": "aus_carey",
+      "name": "Alex Carey",
+      "shortName": "A. Carey",
+      "countryId": "AUS",
+      "countryName": "Australia",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "WICKETKEEPER_BATTER",
+      "isWicketKeeper": true,
+      "battingHand": "LEFT_HAND",
+      "bowlingStyle": "OFF_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 88,
+        "ODI": 86,
+        "T20I": 80
+      }
+    },
+    {
+      "id": "aus_inglis",
+      "name": "Josh Inglis",
+      "shortName": "J. Inglis",
+      "countryId": "AUS",
+      "countryName": "Australia",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "WICKETKEEPER_BATTER",
+      "isWicketKeeper": true,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 78,
+        "ODI": 86,
+        "T20I": 93
+      }
+    },
+    {
+      "id": "aus_maxwell",
+      "name": "Glenn Maxwell",
+      "shortName": "G. Maxwell",
+      "countryId": "AUS",
+      "countryName": "Australia",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "ALL_ROUNDER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "OFF_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": false,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 74,
+        "ODI": 92,
+        "T20I": 96
+      }
+    },
+    {
+      "id": "aus_zampa",
+      "name": "Adam Zampa",
+      "shortName": "A. Zampa",
+      "countryId": "AUS",
+      "countryName": "Australia",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "LEG_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": false,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 70,
+        "ODI": 93,
+        "T20I": 95
+      }
+    },
+    {
+      "id": "aus_stoinis",
+      "name": "Marcus Stoinis",
+      "shortName": "M. Stoinis",
+      "countryId": "AUS",
+      "countryName": "Australia",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "ALL_ROUNDER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": false,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 70,
+        "ODI": 84,
+        "T20I": 91
+      }
+    },
+    {
+      "id": "eng_brook",
+      "name": "Harry Brook",
+      "shortName": "H. Brook",
+      "countryId": "ENG",
+      "countryName": "England",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 94,
+        "ODI": 89,
+        "T20I": 92
+      }
+    },
+    {
+      "id": "eng_crawley",
+      "name": "Zak Crawley",
+      "shortName": "Z. Crawley",
+      "countryId": "ENG",
+      "countryName": "England",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "OFF_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": false,
+        "T20I": false
+      },
+      "ratings": {
+        "TEST": 86,
+        "ODI": 78,
+        "T20I": 76
+      }
+    },
+    {
+      "id": "eng_duckett",
+      "name": "Ben Duckett",
+      "shortName": "B. Duckett",
+      "countryId": "ENG",
+      "countryName": "England",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "LEFT_HAND",
+      "bowlingStyle": "RIGHT_ARM_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 89,
+        "ODI": 85,
+        "T20I": 84
+      }
+    },
+    {
+      "id": "eng_archer",
+      "name": "Jofra Archer",
+      "shortName": "J. Archer",
+      "countryId": "ENG",
+      "countryName": "England",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_FAST",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 88,
+        "ODI": 92,
+        "T20I": 95
+      }
+    },
+    {
+      "id": "eng_rashid",
+      "name": "Adil Rashid",
+      "shortName": "A. Rashid",
+      "countryId": "ENG",
+      "countryName": "England",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "LEG_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": false,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 75,
+        "ODI": 93,
+        "T20I": 96
+      }
+    },
+    {
+      "id": "eng_wood",
+      "name": "Mark Wood",
+      "shortName": "M. Wood",
+      "countryId": "ENG",
+      "countryName": "England",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_FAST",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 90,
+        "ODI": 88,
+        "T20I": 90
+      }
+    },
+    {
+      "id": "eng_woakes",
+      "name": "Chris Woakes",
+      "shortName": "C. Woakes",
+      "countryId": "ENG",
+      "countryName": "England",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "ALL_ROUNDER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 90,
+        "ODI": 87,
+        "T20I": 82
+      }
+    },
+    {
+      "id": "rsa_bavuma",
+      "name": "Temba Bavuma",
+      "shortName": "T. Bavuma",
+      "countryId": "RSA",
+      "countryName": "South Africa",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 88,
+        "ODI": 87,
+        "T20I": 78
+      }
+    },
+    {
+      "id": "rsa_markram",
+      "name": "Aiden Markram",
+      "shortName": "A. Markram",
+      "countryId": "RSA",
+      "countryName": "South Africa",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "OFF_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 88,
+        "ODI": 90,
+        "T20I": 92
+      }
+    },
+    {
+      "id": "rsa_klaasen",
+      "name": "Heinrich Klaasen",
+      "shortName": "H. Klaasen",
+      "countryId": "RSA",
+      "countryName": "South Africa",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "WICKETKEEPER_BATTER",
+      "isWicketKeeper": true,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "OFF_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": false,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 75,
+        "ODI": 95,
+        "T20I": 98
+      }
+    },
+    {
+      "id": "rsa_miller",
+      "name": "David Miller",
+      "shortName": "D. Miller",
+      "countryId": "RSA",
+      "countryName": "South Africa",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "LEFT_HAND",
+      "bowlingStyle": "RIGHT_ARM_OFF_BREAK",
+      "isValidBowlingStyleEnum": false,
+      "formatEligibility": {
+        "TEST": false,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 70,
+        "ODI": 91,
+        "T20I": 94
+      }
+    },
+    {
+      "id": "rsa_rabada",
+      "name": "Kagiso Rabada",
+      "shortName": "K. Rabada",
+      "countryId": "RSA",
+      "countryName": "South Africa",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_FAST",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 96,
+        "ODI": 94,
+        "T20I": 93
+      }
+    },
+    {
+      "id": "rsa_jansen",
+      "name": "Marco Jansen",
+      "shortName": "M. Jansen",
+      "countryId": "RSA",
+      "countryName": "South Africa",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "ALL_ROUNDER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "LEFT_ARM_FAST",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 89,
+        "ODI": 88,
+        "T20I": 89
+      }
+    },
+    {
+      "id": "rsa_maharaj",
+      "name": "Keshav Maharaj",
+      "shortName": "K. Maharaj",
+      "countryId": "RSA",
+      "countryName": "South Africa",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "SLOW_LEFT_ARM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 91,
+        "ODI": 90,
+        "T20I": 88
+      }
+    },
+    {
+      "id": "rsa_nortje",
+      "name": "Anrich Nortje",
+      "shortName": "A. Nortje",
+      "countryId": "RSA",
+      "countryName": "South Africa",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_FAST",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 87,
+        "ODI": 88,
+        "T20I": 94
+      }
+    },
+    {
+      "id": "pak_babar",
+      "name": "Babar Azam",
+      "shortName": "B. Azam",
+      "countryId": "PAK",
+      "countryName": "Pakistan",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "OFF_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 91,
+        "ODI": 96,
+        "T20I": 92
+      }
+    },
+    {
+      "id": "pak_rizwan",
+      "name": "Mohammad Rizwan",
+      "shortName": "M. Rizwan",
+      "countryId": "PAK",
+      "countryName": "Pakistan",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "WICKETKEEPER_BATTER",
+      "isWicketKeeper": true,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 89,
+        "ODI": 92,
+        "T20I": 94
+      }
+    },
+    {
+      "id": "pak_shaheen",
+      "name": "Shaheen Shah Afridi",
+      "shortName": "S. Afridi",
+      "countryId": "PAK",
+      "countryName": "Pakistan",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "LEFT_HAND",
+      "bowlingStyle": "LEFT_ARM_FAST",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 91,
+        "ODI": 94,
+        "T20I": 94
+      }
+    },
+    {
+      "id": "pak_naseem",
+      "name": "Naseem Shah",
+      "shortName": "N. Shah",
+      "countryId": "PAK",
+      "countryName": "Pakistan",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_FAST",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 89,
+        "ODI": 91,
+        "T20I": 92
+      }
+    },
+    {
+      "id": "pak_shan",
+      "name": "Shan Masood",
+      "shortName": "S. Masood",
+      "countryId": "PAK",
+      "countryName": "Pakistan",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "LEFT_HAND",
+      "bowlingStyle": "RIGHT_ARM_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": false,
+        "T20I": false
+      },
+      "ratings": {
+        "TEST": 86,
+        "ODI": 79,
+        "T20I": 75
+      }
+    },
+    {
+      "id": "pak_rauf",
+      "name": "Haris Rauf",
+      "shortName": "H. Rauf",
+      "countryId": "PAK",
+      "countryName": "Pakistan",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_FAST",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": false,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 72,
+        "ODI": 90,
+        "T20I": 93
+      }
+    },
+    {
+      "id": "pak_agha",
+      "name": "Agha Salman",
+      "shortName": "A. Salman",
+      "countryId": "PAK",
+      "countryName": "Pakistan",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "ALL_ROUNDER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "OFF_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 86,
+        "ODI": 83,
+        "T20I": 81
+      }
+    },
+    {
+      "id": "nzl_williamson",
+      "name": "Kane Williamson",
+      "shortName": "K. Williamson",
+      "countryId": "NZL",
+      "countryName": "New Zealand",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BATTER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "OFF_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 96,
+        "ODI": 94,
+        "T20I": 88
+      }
+    },
+    {
+      "id": "nzl_latham",
+      "name": "Tom Latham",
+      "shortName": "T. Latham",
+      "countryId": "NZL",
+      "countryName": "New Zealand",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "WICKETKEEPER_BATTER",
+      "isWicketKeeper": true,
+      "battingHand": "LEFT_HAND",
+      "bowlingStyle": "RIGHT_ARM_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 89,
+        "ODI": 87,
+        "T20I": 78
+      }
+    },
+    {
+      "id": "nzl_mitchell",
+      "name": "Daryl Mitchell",
+      "shortName": "D. Mitchell",
+      "countryId": "NZL",
+      "countryName": "New Zealand",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "ALL_ROUNDER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 90,
+        "ODI": 92,
+        "T20I": 90
+      }
+    },
+    {
+      "id": "nzl_santner",
+      "name": "Mitchell Santner",
+      "shortName": "M. Santner",
+      "countryId": "NZL",
+      "countryName": "New Zealand",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "ALL_ROUNDER",
+      "isWicketKeeper": false,
+      "battingHand": "LEFT_HAND",
+      "bowlingStyle": "SLOW_LEFT_ARM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 85,
+        "ODI": 89,
+        "T20I": 94
+      }
+    },
+    {
+      "id": "nzl_henry",
+      "name": "Matt Henry",
+      "shortName": "M. Henry",
+      "countryId": "NZL",
+      "countryName": "New Zealand",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 92,
+        "ODI": 91,
+        "T20I": 86
+      }
+    },
+    {
+      "id": "nzl_boult",
+      "name": "Trent Boult",
+      "shortName": "T. Boult",
+      "countryId": "NZL",
+      "countryName": "New Zealand",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "LEFT_ARM_FAST_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 90,
+        "ODI": 93,
+        "T20I": 93
+      }
+    },
+    {
+      "id": "afg_gurbaz",
+      "name": "Rahmanullah Gurbaz",
+      "shortName": "R. Gurbaz",
+      "countryId": "AFG",
+      "countryName": "Afghanistan",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "WICKETKEEPER_BATTER",
+      "isWicketKeeper": true,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "RIGHT_ARM_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 75,
+        "ODI": 89,
+        "T20I": 94
+      }
+    },
+    {
+      "id": "afg_farooqi",
+      "name": "Fazalhaq Farooqi",
+      "shortName": "F. Farooqi",
+      "countryId": "AFG",
+      "countryName": "Afghanistan",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "LEFT_ARM_FAST_MEDIUM",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 76,
+        "ODI": 90,
+        "T20I": 94
+      }
+    },
+    {
+      "id": "afg_nabi",
+      "name": "Mohammad Nabi",
+      "shortName": "M. Nabi",
+      "countryId": "AFG",
+      "countryName": "Afghanistan",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "ALL_ROUNDER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "OFF_BREAK",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 80,
+        "ODI": 88,
+        "T20I": 90
+      }
+    },
+    {
+      "id": "afg_noor",
+      "name": "Noor Ahmad",
+      "shortName": "N. Ahmad",
+      "countryId": "AFG",
+      "countryName": "Afghanistan",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "role": "BOWLER",
+      "isWicketKeeper": false,
+      "battingHand": "RIGHT_HAND",
+      "bowlingStyle": "LEFT_ARM_WRIST_SPIN",
+      "isValidBowlingStyleEnum": true,
+      "formatEligibility": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "ratings": {
+        "TEST": 75,
+        "ODI": 86,
+        "T20I": 92
+      }
+    }
+  ]
+}

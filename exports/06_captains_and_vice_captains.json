@@ -1,0 +1,888 @@
+{
+  "exportedAt": "2026-11-02T18:59:16.916Z",
+  "leadershipByCountry": [
+    {
+      "countryId": "IND",
+      "countryName": "India",
+      "formats": {
+        "TEST": {
+          "captain": {
+            "id": "ind_rohit",
+            "name": "Rohit Sharma",
+            "role": "BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 95,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": true
+          },
+          "viceCaptain": {
+            "id": "ind_bumrah",
+            "name": "Jasprit Bumrah",
+            "role": "BOWLER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 88,
+            "formatEligible": true,
+            "flaggedIsViceCaptainInDb": true
+          },
+          "wicketKeeper": {
+            "id": "ind_pant",
+            "name": "Rishabh Pant",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "isActualWicketKeeper": true
+          }
+        },
+        "ODI": {
+          "captain": {
+            "id": "ind_rohit",
+            "name": "Rohit Sharma",
+            "role": "BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 95,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": true
+          },
+          "viceCaptain": {
+            "id": "ind_gill",
+            "name": "Shubman Gill",
+            "role": "BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsViceCaptainInDb": false
+          },
+          "wicketKeeper": {
+            "id": "ind_pant",
+            "name": "Rishabh Pant",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "isActualWicketKeeper": true
+          }
+        },
+        "T20I": {
+          "captain": {
+            "id": "ind_surya",
+            "name": "Suryakumar Yadav",
+            "role": "BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 90,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": false
+          },
+          "viceCaptain": {
+            "id": "ind_hardik",
+            "name": "Hardik Pandya",
+            "role": "ALL_ROUNDER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsViceCaptainInDb": false
+          },
+          "wicketKeeper": {
+            "id": "ind_pant",
+            "name": "Rishabh Pant",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "isActualWicketKeeper": true
+          }
+        }
+      }
+    },
+    {
+      "countryId": "AUS",
+      "countryName": "Australia",
+      "formats": {
+        "TEST": {
+          "captain": {
+            "id": "aus_cummins",
+            "name": "Pat Cummins",
+            "role": "BOWLER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 98,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": true
+          },
+          "viceCaptain": {
+            "id": "aus_head",
+            "name": "Travis Head",
+            "role": "BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsViceCaptainInDb": false
+          },
+          "wicketKeeper": {
+            "id": "aus_carey",
+            "name": "Alex Carey",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "isActualWicketKeeper": true
+          }
+        },
+        "ODI": {
+          "captain": {
+            "id": "aus_cummins",
+            "name": "Pat Cummins",
+            "role": "BOWLER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 98,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": true
+          },
+          "viceCaptain": {
+            "id": "aus_head",
+            "name": "Travis Head",
+            "role": "BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsViceCaptainInDb": false
+          },
+          "wicketKeeper": {
+            "id": "aus_carey",
+            "name": "Alex Carey",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "isActualWicketKeeper": true
+          }
+        },
+        "T20I": {
+          "captain": {
+            "id": "aus_marsh",
+            "name": "Mitchell Marsh",
+            "role": "ALL_ROUNDER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": false
+          },
+          "viceCaptain": {
+            "id": "aus_head",
+            "name": "Travis Head",
+            "role": "BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsViceCaptainInDb": false
+          },
+          "wicketKeeper": {
+            "id": "aus_carey",
+            "name": "Alex Carey",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "isActualWicketKeeper": true
+          }
+        }
+      }
+    },
+    {
+      "countryId": "ENG",
+      "countryName": "England",
+      "formats": {
+        "TEST": {
+          "captain": {
+            "id": "eng_stokes",
+            "name": "Ben Stokes",
+            "role": "ALL_ROUNDER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 98,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": true
+          },
+          "viceCaptain": {
+            "id": "eng_stokes",
+            "name": "Ben Stokes",
+            "role": "ALL_ROUNDER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 98,
+            "formatEligible": true,
+            "flaggedIsViceCaptainInDb": false
+          },
+          "wicketKeeper": {
+            "id": "eng_brook",
+            "name": "Harry Brook",
+            "role": "BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "isActualWicketKeeper": false
+          }
+        },
+        "ODI": {
+          "captain": {
+            "id": "eng_buttler",
+            "name": "Jos Buttler",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": false
+          },
+          "viceCaptain": {
+            "id": "eng_stokes",
+            "name": "Ben Stokes",
+            "role": "ALL_ROUNDER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 98,
+            "formatEligible": true,
+            "flaggedIsViceCaptainInDb": false
+          },
+          "wicketKeeper": {
+            "id": "eng_buttler",
+            "name": "Jos Buttler",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "isActualWicketKeeper": true
+          }
+        },
+        "T20I": {
+          "captain": {
+            "id": "eng_buttler",
+            "name": "Jos Buttler",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": false
+          },
+          "viceCaptain": {
+            "id": "eng_stokes",
+            "name": "Ben Stokes",
+            "role": "ALL_ROUNDER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 98,
+            "formatEligible": true,
+            "flaggedIsViceCaptainInDb": false
+          },
+          "wicketKeeper": {
+            "id": "eng_buttler",
+            "name": "Jos Buttler",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "isActualWicketKeeper": true
+          }
+        }
+      }
+    },
+    {
+      "countryId": "RSA",
+      "countryName": "South Africa",
+      "formats": {
+        "TEST": {
+          "captain": {
+            "id": "rsa_bavuma",
+            "name": "Temba Bavuma",
+            "role": "BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": false
+          },
+          "viceCaptain": {
+            "id": "rsa_markram",
+            "name": "Aiden Markram",
+            "role": "BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsViceCaptainInDb": false
+          },
+          "wicketKeeper": {
+            "id": "rsa_rabada",
+            "name": "Kagiso Rabada",
+            "role": "BOWLER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "isActualWicketKeeper": false
+          }
+        },
+        "ODI": {
+          "captain": {
+            "id": "rsa_bavuma",
+            "name": "Temba Bavuma",
+            "role": "BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": false
+          },
+          "viceCaptain": {
+            "id": "rsa_markram",
+            "name": "Aiden Markram",
+            "role": "BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsViceCaptainInDb": false
+          },
+          "wicketKeeper": {
+            "id": "rsa_klaasen",
+            "name": "Heinrich Klaasen",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "isActualWicketKeeper": true
+          }
+        },
+        "T20I": {
+          "captain": {
+            "id": "rsa_markram",
+            "name": "Aiden Markram",
+            "role": "BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": false
+          },
+          "viceCaptain": {
+            "id": "rsa_markram",
+            "name": "Aiden Markram",
+            "role": "BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsViceCaptainInDb": false
+          },
+          "wicketKeeper": {
+            "id": "rsa_klaasen",
+            "name": "Heinrich Klaasen",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "isActualWicketKeeper": true
+          }
+        }
+      }
+    },
+    {
+      "countryId": "NZL",
+      "countryName": "New Zealand",
+      "formats": {
+        "TEST": {
+          "captain": {
+            "id": "nzl_williamson",
+            "name": "Kane Williamson",
+            "role": "BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": false
+          },
+          "viceCaptain": {
+            "id": "nzl_latham",
+            "name": "Tom Latham",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsViceCaptainInDb": false
+          },
+          "wicketKeeper": {
+            "id": "nzl_latham",
+            "name": "Tom Latham",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "isActualWicketKeeper": true
+          }
+        },
+        "ODI": {
+          "captain": {
+            "id": "nzl_williamson",
+            "name": "Kane Williamson",
+            "role": "BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": false
+          },
+          "viceCaptain": {
+            "id": "nzl_latham",
+            "name": "Tom Latham",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsViceCaptainInDb": false
+          },
+          "wicketKeeper": {
+            "id": "nzl_latham",
+            "name": "Tom Latham",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "isActualWicketKeeper": true
+          }
+        },
+        "T20I": {
+          "captain": {
+            "id": "nzl_williamson",
+            "name": "Kane Williamson",
+            "role": "BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": false
+          },
+          "viceCaptain": {
+            "id": "nzl_latham",
+            "name": "Tom Latham",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsViceCaptainInDb": false
+          },
+          "wicketKeeper": {
+            "id": "nzl_latham",
+            "name": "Tom Latham",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "isActualWicketKeeper": true
+          }
+        }
+      }
+    },
+    {
+      "countryId": "PAK",
+      "countryName": "Pakistan",
+      "formats": {
+        "TEST": {
+          "captain": {
+            "id": "pak_shan",
+            "name": "Shan Masood",
+            "role": "BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": false
+          },
+          "viceCaptain": {
+            "id": "pak_babar",
+            "name": "Babar Azam",
+            "role": "BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsViceCaptainInDb": false
+          },
+          "wicketKeeper": {
+            "id": "pak_rizwan",
+            "name": "Mohammad Rizwan",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "isActualWicketKeeper": true
+          }
+        },
+        "ODI": {
+          "captain": {
+            "id": "pak_rizwan",
+            "name": "Mohammad Rizwan",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": false
+          },
+          "viceCaptain": {
+            "id": "pak_babar",
+            "name": "Babar Azam",
+            "role": "BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsViceCaptainInDb": false
+          },
+          "wicketKeeper": {
+            "id": "pak_rizwan",
+            "name": "Mohammad Rizwan",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "isActualWicketKeeper": true
+          }
+        },
+        "T20I": {
+          "captain": {
+            "id": "pak_rizwan",
+            "name": "Mohammad Rizwan",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": false
+          },
+          "viceCaptain": {
+            "id": "pak_babar",
+            "name": "Babar Azam",
+            "role": "BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsViceCaptainInDb": false
+          },
+          "wicketKeeper": {
+            "id": "pak_rizwan",
+            "name": "Mohammad Rizwan",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "isActualWicketKeeper": true
+          }
+        }
+      }
+    },
+    {
+      "countryId": "WIN",
+      "countryName": "West Indies",
+      "formats": {
+        "TEST": {
+          "captain": {
+            "id": "legend_lara",
+            "name": "Brian Lara",
+            "role": "BATTER",
+            "status": "LEGEND",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": false
+          },
+          "viceCaptain": null,
+          "wicketKeeper": null
+        },
+        "ODI": {
+          "captain": {
+            "id": "legend_lara",
+            "name": "Brian Lara",
+            "role": "BATTER",
+            "status": "LEGEND",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": false
+          },
+          "viceCaptain": null,
+          "wicketKeeper": null
+        },
+        "T20I": {
+          "captain": {
+            "id": "legend_lara",
+            "name": "Brian Lara",
+            "role": "BATTER",
+            "status": "LEGEND",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": false,
+            "flaggedIsCaptainInDb": false
+          },
+          "viceCaptain": null,
+          "wicketKeeper": null
+        }
+      }
+    },
+    {
+      "countryId": "SRI",
+      "countryName": "Sri Lanka",
+      "formats": {
+        "TEST": {
+          "captain": null,
+          "viceCaptain": null,
+          "wicketKeeper": null
+        },
+        "ODI": {
+          "captain": null,
+          "viceCaptain": null,
+          "wicketKeeper": null
+        },
+        "T20I": {
+          "captain": null,
+          "viceCaptain": null,
+          "wicketKeeper": null
+        }
+      }
+    },
+    {
+      "countryId": "AFG",
+      "countryName": "Afghanistan",
+      "formats": {
+        "TEST": {
+          "captain": {
+            "id": "afg_gurbaz",
+            "name": "Rahmanullah Gurbaz",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": false
+          },
+          "viceCaptain": {
+            "id": "afg_farooqi",
+            "name": "Fazalhaq Farooqi",
+            "role": "BOWLER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsViceCaptainInDb": false
+          },
+          "wicketKeeper": {
+            "id": "afg_gurbaz",
+            "name": "Rahmanullah Gurbaz",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "isActualWicketKeeper": true
+          }
+        },
+        "ODI": {
+          "captain": {
+            "id": "afg_gurbaz",
+            "name": "Rahmanullah Gurbaz",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": false
+          },
+          "viceCaptain": {
+            "id": "afg_farooqi",
+            "name": "Fazalhaq Farooqi",
+            "role": "BOWLER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsViceCaptainInDb": false
+          },
+          "wicketKeeper": {
+            "id": "afg_gurbaz",
+            "name": "Rahmanullah Gurbaz",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "isActualWicketKeeper": true
+          }
+        },
+        "T20I": {
+          "captain": {
+            "id": "afg_gurbaz",
+            "name": "Rahmanullah Gurbaz",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsCaptainInDb": false
+          },
+          "viceCaptain": {
+            "id": "afg_farooqi",
+            "name": "Fazalhaq Farooqi",
+            "role": "BOWLER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "leadership": 75,
+            "formatEligible": true,
+            "flaggedIsViceCaptainInDb": false
+          },
+          "wicketKeeper": {
+            "id": "afg_gurbaz",
+            "name": "Rahmanullah Gurbaz",
+            "role": "WICKETKEEPER_BATTER",
+            "status": "ACTIVE",
+            "gender": "MALE",
+            "isActualWicketKeeper": true
+          }
+        }
+      }
+    },
+    {
+      "countryId": "BAN",
+      "countryName": "Bangladesh",
+      "formats": {
+        "TEST": {
+          "captain": null,
+          "viceCaptain": null,
+          "wicketKeeper": null
+        },
+        "ODI": {
+          "captain": null,
+          "viceCaptain": null,
+          "wicketKeeper": null
+        },
+        "T20I": {
+          "captain": null,
+          "viceCaptain": null,
+          "wicketKeeper": null
+        }
+      }
+    },
+    {
+      "countryId": "IRE",
+      "countryName": "Ireland",
+      "formats": {
+        "TEST": {
+          "captain": null,
+          "viceCaptain": null,
+          "wicketKeeper": null
+        },
+        "ODI": {
+          "captain": null,
+          "viceCaptain": null,
+          "wicketKeeper": null
+        },
+        "T20I": {
+          "captain": null,
+          "viceCaptain": null,
+          "wicketKeeper": null
+        }
+      }
+    },
+    {
+      "countryId": "ZIM",
+      "countryName": "Zimbabwe",
+      "formats": {
+        "TEST": {
+          "captain": null,
+          "viceCaptain": null,
+          "wicketKeeper": null
+        },
+        "ODI": {
+          "captain": null,
+          "viceCaptain": null,
+          "wicketKeeper": null
+        },
+        "T20I": {
+          "captain": null,
+          "viceCaptain": null,
+          "wicketKeeper": null
+        }
+      }
+    }
+  ],
+  "playersWithLeadershipFlagsInDb": [
+    {
+      "id": "ind_rohit",
+      "name": "Rohit Sharma",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "isCaptain": true,
+      "isViceCaptain": false,
+      "leadershipAttribute": 95
+    },
+    {
+      "id": "ind_bumrah",
+      "name": "Jasprit Bumrah",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "isCaptain": false,
+      "isViceCaptain": true,
+      "leadershipAttribute": 88
+    },
+    {
+      "id": "aus_cummins",
+      "name": "Pat Cummins",
+      "countryId": "AUS",
+      "countryName": "Australia",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "isCaptain": true,
+      "isViceCaptain": false,
+      "leadershipAttribute": 98
+    },
+    {
+      "id": "eng_stokes",
+      "name": "Ben Stokes",
+      "countryId": "ENG",
+      "countryName": "England",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "isCaptain": true,
+      "isViceCaptain": false,
+      "leadershipAttribute": 98
+    },
+    {
+      "id": "wom_smriti",
+      "name": "Smriti Mandhana",
+      "countryId": "IND",
+      "countryName": "India",
+      "gender": "FEMALE",
+      "status": "ACTIVE",
+      "isCaptain": false,
+      "isViceCaptain": true,
+      "leadershipAttribute": 75
+    },
+    {
+      "id": "nam_erasmus",
+      "name": "Gerhard Erasmus",
+      "countryId": "NAM",
+      "countryName": "Namibia",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "isCaptain": true,
+      "isViceCaptain": false,
+      "leadershipAttribute": 94
+    },
+    {
+      "id": "usa_monank",
+      "name": "Monank Patel",
+      "countryId": "USA",
+      "countryName": "United States",
+      "gender": "MALE",
+      "status": "ACTIVE",
+      "isCaptain": true,
+      "isViceCaptain": false,
+      "leadershipAttribute": 90
+    }
+  ]
+}

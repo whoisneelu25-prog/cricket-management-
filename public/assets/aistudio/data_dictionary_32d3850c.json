@@ -1,0 +1,63 @@
+{
+  "dataset_name": "International Cricket Master Player & Lineup Dataset (2025–2026)",
+  "version": "2026-11-03",
+  "encoding": "UTF-8",
+  "date_format": "ISO-8601 (YYYY-MM-DD)",
+  "null_policy": "Explicit null (JSON) or empty string (CSV) when a field or sub-statistic is unavailable or unverified. Never guessed or fabricated.",
+  "standardized_player_roles": [
+    "Batter",
+    "Batting All-rounder",
+    "Bowling All-rounder",
+    "Fast Bowler",
+    "Fast-medium Bowler",
+    "Left-arm Spinner",
+    "Leg Spinner",
+    "Medium Pacer",
+    "Middle-order Batter",
+    "Off Spinner",
+    "Opening Batter",
+    "Spin Bowler",
+    "Top-order Batter",
+    "Wicketkeeper Batter"
+  ],
+  "selection_category_groups": {
+    "A": "Active international players (First-choice & Regular internationals)",
+    "B": "Current squad members",
+    "C": "Recently selected / Emerging players",
+    "D": "Reserve, travelling reserve, and injury replacement players",
+    "E": "Available in national selection pool but not recently selected",
+    "F": "Retired or inactive historical players (not selectable)"
+  },
+  "selection_pool_categories": [
+    "First-choice player",
+    "Regular international player",
+    "Current squad member",
+    "Reserve player",
+    "Emerging player",
+    "Recently selected player",
+    "Returning player",
+    "Unavailable or injured",
+    "Retired or inactive"
+  ],
+  "files": {
+    "countries/countries.json": "Metadata for the 21 core men's international teams (12 Full Members + 9 Associate Members) plus expandable opponent entries.",
+    "players/all_players.json": "Master biographical, role, debut, status, and selection metadata for all 597 unique international players.",
+    "players/all_players.csv": "Flat CSV export of players/all_players.json with identical 27 columns.",
+    "players/player_format_statistics.json": "Format-independent Test, ODI, and T20I career statistics (as of 2026-11-03) and separate 2025–2026 period tracking.",
+    "players/player_availability.json": "Current national selection availability, active/retired status, and injury/unavailability notes for all 597 players.",
+    "squads/test_squads.json": "Independent Test squads for all 12 Full Member nations with role breakdowns, captains, vice-captains, and reserves.",
+    "squads/odi_squads.json": "Independent ODI squads for all 20 ODI-status nations (12 Full Members + 8 CWC League 2 Associates).",
+    "squads/t20i_squads.json": "Independent T20I squads for all 21 core nations.",
+    "squads/selection_pools.json": "1,294 country-and-format selection pool records classifying every player across the 9 standardized selection categories.",
+    "matches/test_matches.json": "67 completed men's Test match records within 1 Jan 2025 – 3 Nov 2026.",
+    "matches/odi_matches.json": "244 completed men's ODI match records within 1 Jan 2025 – 3 Nov 2026.",
+    "matches/t20i_matches.json": "264 completed men's T20I match records within 1 Jan 2025 – 3 Nov 2026.",
+    "matches/test_lineups.json": "15 fully verified Test match lineup records (30 team Playing XIs in 1–11 batting order).",
+    "matches/odi_lineups.json": "20 fully verified ODI match lineup records (40 team Playing XIs in 1–11 batting order).",
+    "matches/t20i_lineups.json": "24 fully verified T20I match lineup records (48 team Playing XIs in 1–11 batting order).",
+    "captains/format_captains.json": "53 format-specific captain and vice-captain records across all 21 countries, including 2025–2026 transitions.",
+    "summaries/country_coverage.json": "Per-country player, match, lineup, and selection pool counts across all 21 core nations.",
+    "summaries/format_coverage.json": "Per-format aggregate counts for Test, ODI, and T20I.",
+    "summaries/missing_data_report.json": "Explicit documentation of incomplete fields, <50 match countries/formats, and unresolved source conflicts."
+  }
+}

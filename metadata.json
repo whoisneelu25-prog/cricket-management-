@@ -1,0 +1,6 @@
+{
+  "name": "International Cricket Manager",
+  "description": "A deep, realistic international cricket management and captaincy simulation game. Manage your nation, control tactical decisions on match day, and build a lasting legacy.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

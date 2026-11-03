@@ -1,0 +1,2926 @@
+{
+  "exportedAt": "2026-11-02T18:59:16.919Z",
+  "playingXIsByCountry": [
+    {
+      "countryId": "IND",
+      "countryName": "India",
+      "formats": {
+        "TEST": {
+          "count": 11,
+          "isCompleteXI": true,
+          "captainId": "ind_rohit",
+          "viceCaptainId": "ind_bumrah",
+          "wicketKeeperId": "ind_pant",
+          "playingXIIds": [
+            "ind_rohit",
+            "ind_pant",
+            "legend_sachin",
+            "ind_jaiswal",
+            "ind_virat",
+            "wom_smriti",
+            "ind_jadeja",
+            "ind_axar",
+            "ind_bumrah",
+            "ind_shami",
+            "ind_shiraz"
+          ],
+          "bowlingRotationIds": [
+            "ind_jadeja",
+            "ind_axar",
+            "ind_bumrah",
+            "ind_shami",
+            "ind_shiraz"
+          ],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "ind_rohit",
+              "name": "Rohit Sharma",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 88,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 2,
+              "id": "ind_pant",
+              "name": "Rishabh Pant",
+              "role": "WICKETKEEPER_BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 93,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": true
+            },
+            {
+              "battingPosition": 3,
+              "id": "legend_sachin",
+              "name": "Sachin Tendulkar",
+              "role": "BATTER",
+              "status": "LEGEND",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 99,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 4,
+              "id": "ind_jaiswal",
+              "name": "Yashasvi Jaiswal",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 94,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 5,
+              "id": "ind_virat",
+              "name": "Virat Kohli",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 92,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 6,
+              "id": "wom_smriti",
+              "name": "Smriti Mandhana",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "FEMALE",
+              "formatEligible": true,
+              "rating": 92,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 7,
+              "id": "ind_jadeja",
+              "name": "Ravindra Jadeja",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 95,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 8,
+              "id": "ind_axar",
+              "name": "Axar Patel",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 89,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 9,
+              "id": "ind_bumrah",
+              "name": "Jasprit Bumrah",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 97,
+              "isCaptain": false,
+              "isViceCaptain": true,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 10,
+              "id": "ind_shami",
+              "name": "Mohammed Shami",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 93,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 11,
+              "id": "ind_shiraz",
+              "name": "Mohammed Siraj",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 90,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        },
+        "ODI": {
+          "count": 11,
+          "isCompleteXI": true,
+          "captainId": "ind_rohit",
+          "viceCaptainId": "ind_gill",
+          "wicketKeeperId": "ind_pant",
+          "playingXIIds": [
+            "ind_rohit",
+            "ind_pant",
+            "legend_sachin",
+            "ind_virat",
+            "wom_smriti",
+            "ind_gill",
+            "ind_hardik",
+            "ind_jadeja",
+            "ind_bumrah",
+            "ind_shami",
+            "ind_kuldeep"
+          ],
+          "bowlingRotationIds": [
+            "ind_hardik",
+            "ind_jadeja",
+            "ind_bumrah",
+            "ind_shami",
+            "ind_kuldeep"
+          ],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "ind_rohit",
+              "name": "Rohit Sharma",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 93,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 2,
+              "id": "ind_pant",
+              "name": "Rishabh Pant",
+              "role": "WICKETKEEPER_BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 88,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": true
+            },
+            {
+              "battingPosition": 3,
+              "id": "legend_sachin",
+              "name": "Sachin Tendulkar",
+              "role": "BATTER",
+              "status": "LEGEND",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 99,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 4,
+              "id": "ind_virat",
+              "name": "Virat Kohli",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 96,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 5,
+              "id": "wom_smriti",
+              "name": "Smriti Mandhana",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "FEMALE",
+              "formatEligible": true,
+              "rating": 96,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 6,
+              "id": "ind_gill",
+              "name": "Shubman Gill",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 92,
+              "isCaptain": false,
+              "isViceCaptain": true,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 7,
+              "id": "ind_hardik",
+              "name": "Hardik Pandya",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 91,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 8,
+              "id": "ind_jadeja",
+              "name": "Ravindra Jadeja",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 89,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 9,
+              "id": "ind_bumrah",
+              "name": "Jasprit Bumrah",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 96,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 10,
+              "id": "ind_shami",
+              "name": "Mohammed Shami",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 96,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 11,
+              "id": "ind_kuldeep",
+              "name": "Kuldeep Yadav",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 94,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        },
+        "T20I": {
+          "count": 11,
+          "isCompleteXI": true,
+          "captainId": "ind_surya",
+          "viceCaptainId": "ind_hardik",
+          "wicketKeeperId": "ind_pant",
+          "playingXIIds": [
+            "ind_surya",
+            "ind_pant",
+            "wom_smriti",
+            "ind_virat",
+            "ind_rinku",
+            "ind_jaiswal",
+            "ind_hardik",
+            "ind_axar",
+            "ind_bumrah",
+            "ind_arshdeep",
+            "ind_kuldeep"
+          ],
+          "bowlingRotationIds": [
+            "ind_hardik",
+            "ind_axar",
+            "ind_bumrah",
+            "ind_arshdeep",
+            "ind_kuldeep"
+          ],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "ind_surya",
+              "name": "Suryakumar Yadav",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 98,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 2,
+              "id": "ind_pant",
+              "name": "Rishabh Pant",
+              "role": "WICKETKEEPER_BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 89,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": true
+            },
+            {
+              "battingPosition": 3,
+              "id": "wom_smriti",
+              "name": "Smriti Mandhana",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "FEMALE",
+              "formatEligible": true,
+              "rating": 95,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 4,
+              "id": "ind_virat",
+              "name": "Virat Kohli",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 93,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 5,
+              "id": "ind_rinku",
+              "name": "Rinku Singh",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 93,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 6,
+              "id": "ind_jaiswal",
+              "name": "Yashasvi Jaiswal",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 92,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 7,
+              "id": "ind_hardik",
+              "name": "Hardik Pandya",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 96,
+              "isCaptain": false,
+              "isViceCaptain": true,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 8,
+              "id": "ind_axar",
+              "name": "Axar Patel",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 91,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 9,
+              "id": "ind_bumrah",
+              "name": "Jasprit Bumrah",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 98,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 10,
+              "id": "ind_arshdeep",
+              "name": "Arshdeep Singh",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 95,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 11,
+              "id": "ind_kuldeep",
+              "name": "Kuldeep Yadav",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 93,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "countryId": "AUS",
+      "countryName": "Australia",
+      "formats": {
+        "TEST": {
+          "count": 11,
+          "isCompleteXI": true,
+          "captainId": "aus_cummins",
+          "viceCaptainId": "aus_head",
+          "wicketKeeperId": "aus_carey",
+          "playingXIIds": [
+            "aus_cummins",
+            "aus_carey",
+            "aus_smith",
+            "aus_labuschagne",
+            "aus_head",
+            "wom_perry",
+            "aus_marsh",
+            "legend_warne",
+            "aus_lyon",
+            "aus_hazlewood",
+            "aus_starc"
+          ],
+          "bowlingRotationIds": [
+            "aus_cummins",
+            "wom_perry",
+            "aus_marsh",
+            "legend_warne",
+            "aus_lyon",
+            "aus_hazlewood",
+            "aus_starc"
+          ],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "aus_cummins",
+              "name": "Pat Cummins",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 97,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 2,
+              "id": "aus_carey",
+              "name": "Alex Carey",
+              "role": "WICKETKEEPER_BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 88,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": true
+            },
+            {
+              "battingPosition": 3,
+              "id": "aus_smith",
+              "name": "Steven Smith",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 95,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 4,
+              "id": "aus_labuschagne",
+              "name": "Marnus Labuschagne",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 92,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 5,
+              "id": "aus_head",
+              "name": "Travis Head",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 91,
+              "isCaptain": false,
+              "isViceCaptain": true,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 6,
+              "id": "wom_perry",
+              "name": "Ellyse Perry",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "FEMALE",
+              "formatEligible": true,
+              "rating": 98,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 7,
+              "id": "aus_marsh",
+              "name": "Mitchell Marsh",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 86,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 8,
+              "id": "legend_warne",
+              "name": "Shane Warne",
+              "role": "BOWLER",
+              "status": "LEGEND",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 99,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 9,
+              "id": "aus_lyon",
+              "name": "Nathan Lyon",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 96,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 10,
+              "id": "aus_hazlewood",
+              "name": "Josh Hazlewood",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 94,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 11,
+              "id": "aus_starc",
+              "name": "Mitchell Starc",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 92,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        },
+        "ODI": {
+          "count": 11,
+          "isCompleteXI": true,
+          "captainId": "aus_cummins",
+          "viceCaptainId": "aus_head",
+          "wicketKeeperId": "aus_carey",
+          "playingXIIds": [
+            "aus_cummins",
+            "aus_carey",
+            "aus_head",
+            "aus_smith",
+            "aus_labuschagne",
+            "wom_perry",
+            "aus_maxwell",
+            "legend_warne",
+            "aus_starc",
+            "aus_hazlewood",
+            "aus_zampa"
+          ],
+          "bowlingRotationIds": [
+            "aus_cummins",
+            "wom_perry",
+            "aus_maxwell",
+            "legend_warne",
+            "aus_starc",
+            "aus_hazlewood",
+            "aus_zampa"
+          ],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "aus_cummins",
+              "name": "Pat Cummins",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 92,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 2,
+              "id": "aus_carey",
+              "name": "Alex Carey",
+              "role": "WICKETKEEPER_BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 86,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": true
+            },
+            {
+              "battingPosition": 3,
+              "id": "aus_head",
+              "name": "Travis Head",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 94,
+              "isCaptain": false,
+              "isViceCaptain": true,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 4,
+              "id": "aus_smith",
+              "name": "Steven Smith",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 89,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 5,
+              "id": "aus_labuschagne",
+              "name": "Marnus Labuschagne",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 85,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 6,
+              "id": "wom_perry",
+              "name": "Ellyse Perry",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "FEMALE",
+              "formatEligible": true,
+              "rating": 97,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 7,
+              "id": "aus_maxwell",
+              "name": "Glenn Maxwell",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 92,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 8,
+              "id": "legend_warne",
+              "name": "Shane Warne",
+              "role": "BOWLER",
+              "status": "LEGEND",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 96,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 9,
+              "id": "aus_starc",
+              "name": "Mitchell Starc",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 95,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 10,
+              "id": "aus_hazlewood",
+              "name": "Josh Hazlewood",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 93,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 11,
+              "id": "aus_zampa",
+              "name": "Adam Zampa",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 93,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        },
+        "T20I": {
+          "count": 11,
+          "isCompleteXI": true,
+          "captainId": "aus_marsh",
+          "viceCaptainId": "aus_head",
+          "wicketKeeperId": "aus_carey",
+          "playingXIIds": [
+            "aus_marsh",
+            "aus_carey",
+            "aus_head",
+            "aus_smith",
+            "aus_maxwell",
+            "wom_perry",
+            "aus_zampa",
+            "aus_starc",
+            "aus_hazlewood",
+            "aus_cummins",
+            "aus_inglis"
+          ],
+          "bowlingRotationIds": [
+            "aus_marsh",
+            "aus_maxwell",
+            "wom_perry",
+            "aus_zampa",
+            "aus_starc",
+            "aus_hazlewood",
+            "aus_cummins"
+          ],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "aus_marsh",
+              "name": "Mitchell Marsh",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 94,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 2,
+              "id": "aus_carey",
+              "name": "Alex Carey",
+              "role": "WICKETKEEPER_BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 80,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": true
+            },
+            {
+              "battingPosition": 3,
+              "id": "aus_head",
+              "name": "Travis Head",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 96,
+              "isCaptain": false,
+              "isViceCaptain": true,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 4,
+              "id": "aus_smith",
+              "name": "Steven Smith",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 80,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 5,
+              "id": "aus_maxwell",
+              "name": "Glenn Maxwell",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 96,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 6,
+              "id": "wom_perry",
+              "name": "Ellyse Perry",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "FEMALE",
+              "formatEligible": true,
+              "rating": 94,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 7,
+              "id": "aus_zampa",
+              "name": "Adam Zampa",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 95,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 8,
+              "id": "aus_starc",
+              "name": "Mitchell Starc",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 90,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 9,
+              "id": "aus_hazlewood",
+              "name": "Josh Hazlewood",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 90,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 10,
+              "id": "aus_cummins",
+              "name": "Pat Cummins",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 88,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 11,
+              "id": "aus_inglis",
+              "name": "Josh Inglis",
+              "role": "WICKETKEEPER_BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 93,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "countryId": "ENG",
+      "countryName": "England",
+      "formats": {
+        "TEST": {
+          "count": 8,
+          "isCompleteXI": false,
+          "captainId": "eng_stokes",
+          "viceCaptainId": "eng_stokes",
+          "wicketKeeperId": "eng_brook",
+          "playingXIIds": [
+            "eng_stokes",
+            "eng_brook",
+            "eng_root",
+            "eng_duckett",
+            "eng_crawley",
+            "eng_woakes",
+            "eng_wood",
+            "eng_archer"
+          ],
+          "bowlingRotationIds": [
+            "eng_stokes",
+            "eng_woakes",
+            "eng_wood",
+            "eng_archer"
+          ],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "eng_stokes",
+              "name": "Ben Stokes",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 92,
+              "isCaptain": true,
+              "isViceCaptain": true,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 2,
+              "id": "eng_brook",
+              "name": "Harry Brook",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 94,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": true
+            },
+            {
+              "battingPosition": 3,
+              "id": "eng_root",
+              "name": "Joe Root",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 97,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 4,
+              "id": "eng_duckett",
+              "name": "Ben Duckett",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 89,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 5,
+              "id": "eng_crawley",
+              "name": "Zak Crawley",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 86,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 6,
+              "id": "eng_woakes",
+              "name": "Chris Woakes",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 90,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 7,
+              "id": "eng_wood",
+              "name": "Mark Wood",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 90,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 8,
+              "id": "eng_archer",
+              "name": "Jofra Archer",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 88,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        },
+        "ODI": {
+          "count": 9,
+          "isCompleteXI": false,
+          "captainId": "eng_buttler",
+          "viceCaptainId": "eng_stokes",
+          "wicketKeeperId": "eng_buttler",
+          "playingXIIds": [
+            "eng_buttler",
+            "eng_root",
+            "eng_brook",
+            "eng_duckett",
+            "eng_stokes",
+            "eng_woakes",
+            "eng_rashid",
+            "eng_archer",
+            "eng_wood"
+          ],
+          "bowlingRotationIds": [
+            "eng_stokes",
+            "eng_woakes",
+            "eng_rashid",
+            "eng_archer",
+            "eng_wood"
+          ],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "eng_buttler",
+              "name": "Jos Buttler",
+              "role": "WICKETKEEPER_BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 92,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": true
+            },
+            {
+              "battingPosition": 2,
+              "id": "eng_root",
+              "name": "Joe Root",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 90,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 3,
+              "id": "eng_brook",
+              "name": "Harry Brook",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 89,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 4,
+              "id": "eng_duckett",
+              "name": "Ben Duckett",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 85,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 5,
+              "id": "eng_stokes",
+              "name": "Ben Stokes",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 89,
+              "isCaptain": false,
+              "isViceCaptain": true,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 6,
+              "id": "eng_woakes",
+              "name": "Chris Woakes",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 87,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 7,
+              "id": "eng_rashid",
+              "name": "Adil Rashid",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 93,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 8,
+              "id": "eng_archer",
+              "name": "Jofra Archer",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 92,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 9,
+              "id": "eng_wood",
+              "name": "Mark Wood",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 88,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        },
+        "T20I": {
+          "count": 8,
+          "isCompleteXI": false,
+          "captainId": "eng_buttler",
+          "viceCaptainId": "eng_stokes",
+          "wicketKeeperId": "eng_buttler",
+          "playingXIIds": [
+            "eng_buttler",
+            "eng_brook",
+            "eng_duckett",
+            "eng_stokes",
+            "eng_woakes",
+            "eng_rashid",
+            "eng_archer",
+            "eng_wood"
+          ],
+          "bowlingRotationIds": [
+            "eng_stokes",
+            "eng_woakes",
+            "eng_rashid",
+            "eng_archer",
+            "eng_wood"
+          ],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "eng_buttler",
+              "name": "Jos Buttler",
+              "role": "WICKETKEEPER_BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 96,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": true
+            },
+            {
+              "battingPosition": 2,
+              "id": "eng_brook",
+              "name": "Harry Brook",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 92,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 3,
+              "id": "eng_duckett",
+              "name": "Ben Duckett",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 84,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 4,
+              "id": "eng_stokes",
+              "name": "Ben Stokes",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 88,
+              "isCaptain": false,
+              "isViceCaptain": true,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 5,
+              "id": "eng_woakes",
+              "name": "Chris Woakes",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 82,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 6,
+              "id": "eng_rashid",
+              "name": "Adil Rashid",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 96,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 7,
+              "id": "eng_archer",
+              "name": "Jofra Archer",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 95,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 8,
+              "id": "eng_wood",
+              "name": "Mark Wood",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 90,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "countryId": "RSA",
+      "countryName": "South Africa",
+      "formats": {
+        "TEST": {
+          "count": 6,
+          "isCompleteXI": false,
+          "captainId": "rsa_bavuma",
+          "viceCaptainId": "rsa_markram",
+          "wicketKeeperId": "rsa_rabada",
+          "playingXIIds": [
+            "rsa_bavuma",
+            "rsa_rabada",
+            "rsa_markram",
+            "rsa_jansen",
+            "rsa_maharaj",
+            "rsa_nortje"
+          ],
+          "bowlingRotationIds": [
+            "rsa_rabada",
+            "rsa_jansen",
+            "rsa_maharaj",
+            "rsa_nortje"
+          ],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "rsa_bavuma",
+              "name": "Temba Bavuma",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 88,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 2,
+              "id": "rsa_rabada",
+              "name": "Kagiso Rabada",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 96,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": true
+            },
+            {
+              "battingPosition": 3,
+              "id": "rsa_markram",
+              "name": "Aiden Markram",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 88,
+              "isCaptain": false,
+              "isViceCaptain": true,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 4,
+              "id": "rsa_jansen",
+              "name": "Marco Jansen",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 89,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 5,
+              "id": "rsa_maharaj",
+              "name": "Keshav Maharaj",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 91,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 6,
+              "id": "rsa_nortje",
+              "name": "Anrich Nortje",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 87,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        },
+        "ODI": {
+          "count": 8,
+          "isCompleteXI": false,
+          "captainId": "rsa_bavuma",
+          "viceCaptainId": "rsa_markram",
+          "wicketKeeperId": "rsa_klaasen",
+          "playingXIIds": [
+            "rsa_bavuma",
+            "rsa_klaasen",
+            "rsa_miller",
+            "rsa_markram",
+            "rsa_jansen",
+            "rsa_rabada",
+            "rsa_maharaj",
+            "rsa_nortje"
+          ],
+          "bowlingRotationIds": [
+            "rsa_jansen",
+            "rsa_rabada",
+            "rsa_maharaj",
+            "rsa_nortje"
+          ],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "rsa_bavuma",
+              "name": "Temba Bavuma",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 87,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 2,
+              "id": "rsa_klaasen",
+              "name": "Heinrich Klaasen",
+              "role": "WICKETKEEPER_BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 95,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": true
+            },
+            {
+              "battingPosition": 3,
+              "id": "rsa_miller",
+              "name": "David Miller",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 91,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 4,
+              "id": "rsa_markram",
+              "name": "Aiden Markram",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 90,
+              "isCaptain": false,
+              "isViceCaptain": true,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 5,
+              "id": "rsa_jansen",
+              "name": "Marco Jansen",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 88,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 6,
+              "id": "rsa_rabada",
+              "name": "Kagiso Rabada",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 94,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 7,
+              "id": "rsa_maharaj",
+              "name": "Keshav Maharaj",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 90,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 8,
+              "id": "rsa_nortje",
+              "name": "Anrich Nortje",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 88,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        },
+        "T20I": {
+          "count": 8,
+          "isCompleteXI": false,
+          "captainId": "rsa_markram",
+          "viceCaptainId": "rsa_markram",
+          "wicketKeeperId": "rsa_klaasen",
+          "playingXIIds": [
+            "rsa_markram",
+            "rsa_klaasen",
+            "rsa_miller",
+            "rsa_bavuma",
+            "rsa_jansen",
+            "rsa_nortje",
+            "rsa_rabada",
+            "rsa_maharaj"
+          ],
+          "bowlingRotationIds": [
+            "rsa_jansen",
+            "rsa_nortje",
+            "rsa_rabada",
+            "rsa_maharaj"
+          ],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "rsa_markram",
+              "name": "Aiden Markram",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 92,
+              "isCaptain": true,
+              "isViceCaptain": true,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 2,
+              "id": "rsa_klaasen",
+              "name": "Heinrich Klaasen",
+              "role": "WICKETKEEPER_BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 98,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": true
+            },
+            {
+              "battingPosition": 3,
+              "id": "rsa_miller",
+              "name": "David Miller",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 94,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 4,
+              "id": "rsa_bavuma",
+              "name": "Temba Bavuma",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 78,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 5,
+              "id": "rsa_jansen",
+              "name": "Marco Jansen",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 89,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 6,
+              "id": "rsa_nortje",
+              "name": "Anrich Nortje",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 94,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 7,
+              "id": "rsa_rabada",
+              "name": "Kagiso Rabada",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 93,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 8,
+              "id": "rsa_maharaj",
+              "name": "Keshav Maharaj",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 88,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "countryId": "NZL",
+      "countryName": "New Zealand",
+      "formats": {
+        "TEST": {
+          "count": 6,
+          "isCompleteXI": false,
+          "captainId": "nzl_williamson",
+          "viceCaptainId": "nzl_latham",
+          "wicketKeeperId": "nzl_latham",
+          "playingXIIds": [
+            "nzl_williamson",
+            "nzl_latham",
+            "nzl_mitchell",
+            "nzl_santner",
+            "nzl_henry",
+            "nzl_boult"
+          ],
+          "bowlingRotationIds": [
+            "nzl_mitchell",
+            "nzl_santner",
+            "nzl_henry",
+            "nzl_boult"
+          ],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "nzl_williamson",
+              "name": "Kane Williamson",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 96,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 2,
+              "id": "nzl_latham",
+              "name": "Tom Latham",
+              "role": "WICKETKEEPER_BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 89,
+              "isCaptain": false,
+              "isViceCaptain": true,
+              "isWicketKeeper": true
+            },
+            {
+              "battingPosition": 3,
+              "id": "nzl_mitchell",
+              "name": "Daryl Mitchell",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 90,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 4,
+              "id": "nzl_santner",
+              "name": "Mitchell Santner",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 85,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 5,
+              "id": "nzl_henry",
+              "name": "Matt Henry",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 92,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 6,
+              "id": "nzl_boult",
+              "name": "Trent Boult",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 90,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        },
+        "ODI": {
+          "count": 6,
+          "isCompleteXI": false,
+          "captainId": "nzl_williamson",
+          "viceCaptainId": "nzl_latham",
+          "wicketKeeperId": "nzl_latham",
+          "playingXIIds": [
+            "nzl_williamson",
+            "nzl_latham",
+            "nzl_mitchell",
+            "nzl_santner",
+            "nzl_boult",
+            "nzl_henry"
+          ],
+          "bowlingRotationIds": [
+            "nzl_mitchell",
+            "nzl_santner",
+            "nzl_boult",
+            "nzl_henry"
+          ],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "nzl_williamson",
+              "name": "Kane Williamson",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 94,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 2,
+              "id": "nzl_latham",
+              "name": "Tom Latham",
+              "role": "WICKETKEEPER_BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 87,
+              "isCaptain": false,
+              "isViceCaptain": true,
+              "isWicketKeeper": true
+            },
+            {
+              "battingPosition": 3,
+              "id": "nzl_mitchell",
+              "name": "Daryl Mitchell",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 92,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 4,
+              "id": "nzl_santner",
+              "name": "Mitchell Santner",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 89,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 5,
+              "id": "nzl_boult",
+              "name": "Trent Boult",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 93,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 6,
+              "id": "nzl_henry",
+              "name": "Matt Henry",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 91,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        },
+        "T20I": {
+          "count": 6,
+          "isCompleteXI": false,
+          "captainId": "nzl_williamson",
+          "viceCaptainId": "nzl_latham",
+          "wicketKeeperId": "nzl_latham",
+          "playingXIIds": [
+            "nzl_williamson",
+            "nzl_latham",
+            "nzl_santner",
+            "nzl_mitchell",
+            "nzl_boult",
+            "nzl_henry"
+          ],
+          "bowlingRotationIds": [
+            "nzl_santner",
+            "nzl_mitchell",
+            "nzl_boult",
+            "nzl_henry"
+          ],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "nzl_williamson",
+              "name": "Kane Williamson",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 88,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 2,
+              "id": "nzl_latham",
+              "name": "Tom Latham",
+              "role": "WICKETKEEPER_BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 78,
+              "isCaptain": false,
+              "isViceCaptain": true,
+              "isWicketKeeper": true
+            },
+            {
+              "battingPosition": 3,
+              "id": "nzl_santner",
+              "name": "Mitchell Santner",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 94,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 4,
+              "id": "nzl_mitchell",
+              "name": "Daryl Mitchell",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 90,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 5,
+              "id": "nzl_boult",
+              "name": "Trent Boult",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 93,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 6,
+              "id": "nzl_henry",
+              "name": "Matt Henry",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 86,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "countryId": "PAK",
+      "countryName": "Pakistan",
+      "formats": {
+        "TEST": {
+          "count": 7,
+          "isCompleteXI": false,
+          "captainId": "pak_shan",
+          "viceCaptainId": "pak_babar",
+          "wicketKeeperId": "pak_rizwan",
+          "playingXIIds": [
+            "pak_shan",
+            "pak_rizwan",
+            "pak_babar",
+            "pak_agha",
+            "legend_wasim",
+            "pak_shaheen",
+            "pak_naseem"
+          ],
+          "bowlingRotationIds": [
+            "pak_agha",
+            "legend_wasim",
+            "pak_shaheen",
+            "pak_naseem"
+          ],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "pak_shan",
+              "name": "Shan Masood",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 86,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 2,
+              "id": "pak_rizwan",
+              "name": "Mohammad Rizwan",
+              "role": "WICKETKEEPER_BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 89,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": true
+            },
+            {
+              "battingPosition": 3,
+              "id": "pak_babar",
+              "name": "Babar Azam",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 91,
+              "isCaptain": false,
+              "isViceCaptain": true,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 4,
+              "id": "pak_agha",
+              "name": "Agha Salman",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 86,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 5,
+              "id": "legend_wasim",
+              "name": "Wasim Akram",
+              "role": "BOWLER",
+              "status": "LEGEND",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 99,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 6,
+              "id": "pak_shaheen",
+              "name": "Shaheen Shah Afridi",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 91,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 7,
+              "id": "pak_naseem",
+              "name": "Naseem Shah",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 89,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        },
+        "ODI": {
+          "count": 7,
+          "isCompleteXI": false,
+          "captainId": "pak_rizwan",
+          "viceCaptainId": "pak_babar",
+          "wicketKeeperId": "pak_rizwan",
+          "playingXIIds": [
+            "pak_rizwan",
+            "pak_babar",
+            "pak_agha",
+            "legend_wasim",
+            "pak_shaheen",
+            "pak_naseem",
+            "pak_rauf"
+          ],
+          "bowlingRotationIds": [
+            "pak_agha",
+            "legend_wasim",
+            "pak_shaheen",
+            "pak_naseem",
+            "pak_rauf"
+          ],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "pak_rizwan",
+              "name": "Mohammad Rizwan",
+              "role": "WICKETKEEPER_BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 92,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": true
+            },
+            {
+              "battingPosition": 2,
+              "id": "pak_babar",
+              "name": "Babar Azam",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 96,
+              "isCaptain": false,
+              "isViceCaptain": true,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 3,
+              "id": "pak_agha",
+              "name": "Agha Salman",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 83,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 4,
+              "id": "legend_wasim",
+              "name": "Wasim Akram",
+              "role": "BOWLER",
+              "status": "LEGEND",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 99,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 5,
+              "id": "pak_shaheen",
+              "name": "Shaheen Shah Afridi",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 94,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 6,
+              "id": "pak_naseem",
+              "name": "Naseem Shah",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 91,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 7,
+              "id": "pak_rauf",
+              "name": "Haris Rauf",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 90,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        },
+        "T20I": {
+          "count": 6,
+          "isCompleteXI": false,
+          "captainId": "pak_rizwan",
+          "viceCaptainId": "pak_babar",
+          "wicketKeeperId": "pak_rizwan",
+          "playingXIIds": [
+            "pak_rizwan",
+            "pak_babar",
+            "pak_agha",
+            "pak_shaheen",
+            "pak_rauf",
+            "pak_naseem"
+          ],
+          "bowlingRotationIds": [
+            "pak_agha",
+            "pak_shaheen",
+            "pak_rauf",
+            "pak_naseem"
+          ],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "pak_rizwan",
+              "name": "Mohammad Rizwan",
+              "role": "WICKETKEEPER_BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 94,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": true
+            },
+            {
+              "battingPosition": 2,
+              "id": "pak_babar",
+              "name": "Babar Azam",
+              "role": "BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 92,
+              "isCaptain": false,
+              "isViceCaptain": true,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 3,
+              "id": "pak_agha",
+              "name": "Agha Salman",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 81,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 4,
+              "id": "pak_shaheen",
+              "name": "Shaheen Shah Afridi",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 94,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 5,
+              "id": "pak_rauf",
+              "name": "Haris Rauf",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 93,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 6,
+              "id": "pak_naseem",
+              "name": "Naseem Shah",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 92,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "countryId": "WIN",
+      "countryName": "West Indies",
+      "formats": {
+        "TEST": {
+          "count": 1,
+          "isCompleteXI": false,
+          "captainId": "legend_lara",
+          "viceCaptainId": "",
+          "wicketKeeperId": "",
+          "playingXIIds": [
+            "legend_lara"
+          ],
+          "bowlingRotationIds": [],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "legend_lara",
+              "name": "Brian Lara",
+              "role": "BATTER",
+              "status": "LEGEND",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 99,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        },
+        "ODI": {
+          "count": 1,
+          "isCompleteXI": false,
+          "captainId": "legend_lara",
+          "viceCaptainId": "",
+          "wicketKeeperId": "",
+          "playingXIIds": [
+            "legend_lara"
+          ],
+          "bowlingRotationIds": [],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "legend_lara",
+              "name": "Brian Lara",
+              "role": "BATTER",
+              "status": "LEGEND",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 95,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        },
+        "T20I": {
+          "count": 1,
+          "isCompleteXI": false,
+          "captainId": "legend_lara",
+          "viceCaptainId": "",
+          "wicketKeeperId": "",
+          "playingXIIds": [
+            "legend_lara"
+          ],
+          "bowlingRotationIds": [],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "legend_lara",
+              "name": "Brian Lara",
+              "role": "BATTER",
+              "status": "LEGEND",
+              "gender": "MALE",
+              "formatEligible": false,
+              "rating": 86,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "countryId": "SRI",
+      "countryName": "Sri Lanka",
+      "formats": {
+        "TEST": {
+          "count": 0,
+          "isCompleteXI": false,
+          "captainId": "",
+          "viceCaptainId": "",
+          "wicketKeeperId": "",
+          "playingXIIds": [],
+          "bowlingRotationIds": [],
+          "lineup": []
+        },
+        "ODI": {
+          "count": 0,
+          "isCompleteXI": false,
+          "captainId": "",
+          "viceCaptainId": "",
+          "wicketKeeperId": "",
+          "playingXIIds": [],
+          "bowlingRotationIds": [],
+          "lineup": []
+        },
+        "T20I": {
+          "count": 0,
+          "isCompleteXI": false,
+          "captainId": "",
+          "viceCaptainId": "",
+          "wicketKeeperId": "",
+          "playingXIIds": [],
+          "bowlingRotationIds": [],
+          "lineup": []
+        }
+      }
+    },
+    {
+      "countryId": "AFG",
+      "countryName": "Afghanistan",
+      "formats": {
+        "TEST": {
+          "count": 4,
+          "isCompleteXI": false,
+          "captainId": "afg_gurbaz",
+          "viceCaptainId": "afg_farooqi",
+          "wicketKeeperId": "afg_gurbaz",
+          "playingXIIds": [
+            "afg_gurbaz",
+            "afg_nabi",
+            "afg_farooqi",
+            "afg_noor"
+          ],
+          "bowlingRotationIds": [
+            "afg_nabi",
+            "afg_farooqi",
+            "afg_noor"
+          ],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "afg_gurbaz",
+              "name": "Rahmanullah Gurbaz",
+              "role": "WICKETKEEPER_BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 75,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": true
+            },
+            {
+              "battingPosition": 2,
+              "id": "afg_nabi",
+              "name": "Mohammad Nabi",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 80,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 3,
+              "id": "afg_farooqi",
+              "name": "Fazalhaq Farooqi",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 76,
+              "isCaptain": false,
+              "isViceCaptain": true,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 4,
+              "id": "afg_noor",
+              "name": "Noor Ahmad",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 75,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        },
+        "ODI": {
+          "count": 4,
+          "isCompleteXI": false,
+          "captainId": "afg_gurbaz",
+          "viceCaptainId": "afg_farooqi",
+          "wicketKeeperId": "afg_gurbaz",
+          "playingXIIds": [
+            "afg_gurbaz",
+            "afg_nabi",
+            "afg_farooqi",
+            "afg_noor"
+          ],
+          "bowlingRotationIds": [
+            "afg_nabi",
+            "afg_farooqi",
+            "afg_noor"
+          ],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "afg_gurbaz",
+              "name": "Rahmanullah Gurbaz",
+              "role": "WICKETKEEPER_BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 89,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": true
+            },
+            {
+              "battingPosition": 2,
+              "id": "afg_nabi",
+              "name": "Mohammad Nabi",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 88,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 3,
+              "id": "afg_farooqi",
+              "name": "Fazalhaq Farooqi",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 90,
+              "isCaptain": false,
+              "isViceCaptain": true,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 4,
+              "id": "afg_noor",
+              "name": "Noor Ahmad",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 86,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        },
+        "T20I": {
+          "count": 4,
+          "isCompleteXI": false,
+          "captainId": "afg_gurbaz",
+          "viceCaptainId": "afg_farooqi",
+          "wicketKeeperId": "afg_gurbaz",
+          "playingXIIds": [
+            "afg_gurbaz",
+            "afg_nabi",
+            "afg_farooqi",
+            "afg_noor"
+          ],
+          "bowlingRotationIds": [
+            "afg_nabi",
+            "afg_farooqi",
+            "afg_noor"
+          ],
+          "lineup": [
+            {
+              "battingPosition": 1,
+              "id": "afg_gurbaz",
+              "name": "Rahmanullah Gurbaz",
+              "role": "WICKETKEEPER_BATTER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 94,
+              "isCaptain": true,
+              "isViceCaptain": false,
+              "isWicketKeeper": true
+            },
+            {
+              "battingPosition": 2,
+              "id": "afg_nabi",
+              "name": "Mohammad Nabi",
+              "role": "ALL_ROUNDER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 90,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 3,
+              "id": "afg_farooqi",
+              "name": "Fazalhaq Farooqi",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 94,
+              "isCaptain": false,
+              "isViceCaptain": true,
+              "isWicketKeeper": false
+            },
+            {
+              "battingPosition": 4,
+              "id": "afg_noor",
+              "name": "Noor Ahmad",
+              "role": "BOWLER",
+              "status": "ACTIVE",
+              "gender": "MALE",
+              "formatEligible": true,
+              "rating": 92,
+              "isCaptain": false,
+              "isViceCaptain": false,
+              "isWicketKeeper": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "countryId": "BAN",
+      "countryName": "Bangladesh",
+      "formats": {
+        "TEST": {
+          "count": 0,
+          "isCompleteXI": false,
+          "captainId": "",
+          "viceCaptainId": "",
+          "wicketKeeperId": "",
+          "playingXIIds": [],
+          "bowlingRotationIds": [],
+          "lineup": []
+        },
+        "ODI": {
+          "count": 0,
+          "isCompleteXI": false,
+          "captainId": "",
+          "viceCaptainId": "",
+          "wicketKeeperId": "",
+          "playingXIIds": [],
+          "bowlingRotationIds": [],
+          "lineup": []
+        },
+        "T20I": {
+          "count": 0,
+          "isCompleteXI": false,
+          "captainId": "",
+          "viceCaptainId": "",
+          "wicketKeeperId": "",
+          "playingXIIds": [],
+          "bowlingRotationIds": [],
+          "lineup": []
+        }
+      }
+    },
+    {
+      "countryId": "IRE",
+      "countryName": "Ireland",
+      "formats": {
+        "TEST": {
+          "count": 0,
+          "isCompleteXI": false,
+          "captainId": "",
+          "viceCaptainId": "",
+          "wicketKeeperId": "",
+          "playingXIIds": [],
+          "bowlingRotationIds": [],
+          "lineup": []
+        },
+        "ODI": {
+          "count": 0,
+          "isCompleteXI": false,
+          "captainId": "",
+          "viceCaptainId": "",
+          "wicketKeeperId": "",
+          "playingXIIds": [],
+          "bowlingRotationIds": [],
+          "lineup": []
+        },
+        "T20I": {
+          "count": 0,
+          "isCompleteXI": false,
+          "captainId": "",
+          "viceCaptainId": "",
+          "wicketKeeperId": "",
+          "playingXIIds": [],
+          "bowlingRotationIds": [],
+          "lineup": []
+        }
+      }
+    },
+    {
+      "countryId": "ZIM",
+      "countryName": "Zimbabwe",
+      "formats": {
+        "TEST": {
+          "count": 0,
+          "isCompleteXI": false,
+          "captainId": "",
+          "viceCaptainId": "",
+          "wicketKeeperId": "",
+          "playingXIIds": [],
+          "bowlingRotationIds": [],
+          "lineup": []
+        },
+        "ODI": {
+          "count": 0,
+          "isCompleteXI": false,
+          "captainId": "",
+          "viceCaptainId": "",
+          "wicketKeeperId": "",
+          "playingXIIds": [],
+          "bowlingRotationIds": [],
+          "lineup": []
+        },
+        "T20I": {
+          "count": 0,
+          "isCompleteXI": false,
+          "captainId": "",
+          "viceCaptainId": "",
+          "wicketKeeperId": "",
+          "playingXIIds": [],
+          "bowlingRotationIds": [],
+          "lineup": []
+        }
+      }
+    }
+  ]
+}

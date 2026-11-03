@@ -1,0 +1,1424 @@
+{
+  "generatedAt": "2026-11-02T18:59:16.907Z",
+  "summary": {
+    "totalRegisteredCountries": 12,
+    "totalPlayerCountriesInDb": 14,
+    "totalPlayers": 75,
+    "coreInternationalPlayers": 25,
+    "additionalSquadMembers": 50,
+    "activeMalePlayers": 68,
+    "activeFemalePlayers": 2,
+    "retiredPlayers": 1,
+    "legendPlayers": 4,
+    "totalIssuesFound": 103,
+    "highSeverityCount": 86,
+    "mediumSeverityCount": 10,
+    "lowSeverityCount": 7,
+    "byCategory": {
+      "duplicatePlayers": 0,
+      "missingPlayers": 30,
+      "countryAssignments": 9,
+      "formatLineupInconsistencies": 54,
+      "schemaAnomalies": 2,
+      "tourSquadIssues": 8
+    }
+  },
+  "countryRosterAudit": [
+    {
+      "countryId": "IND",
+      "countryName": "India",
+      "inInternationalTeamsTable": true,
+      "totalPlayersInDb": 21,
+      "activeMenCount": 18,
+      "activeWomenCount": 1,
+      "legendsCount": 1,
+      "retiredCount": 1,
+      "eligibleCounts": {
+        "TEST": 16,
+        "ODI": 19,
+        "T20I": 19
+      },
+      "activeMenEligibleCounts": {
+        "TEST": 13,
+        "ODI": 16,
+        "T20I": 16
+      },
+      "canFieldFullActiveMenXI": {
+        "TEST": true,
+        "ODI": true,
+        "T20I": true
+      },
+      "status": "COMPLETE"
+    },
+    {
+      "countryId": "AUS",
+      "countryName": "Australia",
+      "inInternationalTeamsTable": true,
+      "totalPlayersInDb": 15,
+      "activeMenCount": 13,
+      "activeWomenCount": 1,
+      "legendsCount": 1,
+      "retiredCount": 0,
+      "eligibleCounts": {
+        "TEST": 12,
+        "ODI": 14,
+        "T20I": 12
+      },
+      "activeMenEligibleCounts": {
+        "TEST": 10,
+        "ODI": 12,
+        "T20I": 11
+      },
+      "canFieldFullActiveMenXI": {
+        "TEST": false,
+        "ODI": true,
+        "T20I": true
+      },
+      "status": "INCOMPLETE_SQUAD"
+    },
+    {
+      "countryId": "ENG",
+      "countryName": "England",
+      "inInternationalTeamsTable": true,
+      "totalPlayersInDb": 10,
+      "activeMenCount": 10,
+      "activeWomenCount": 0,
+      "legendsCount": 0,
+      "retiredCount": 0,
+      "eligibleCounts": {
+        "TEST": 8,
+        "ODI": 9,
+        "T20I": 8
+      },
+      "activeMenEligibleCounts": {
+        "TEST": 8,
+        "ODI": 9,
+        "T20I": 8
+      },
+      "canFieldFullActiveMenXI": {
+        "TEST": false,
+        "ODI": false,
+        "T20I": false
+      },
+      "status": "INCOMPLETE_SQUAD"
+    },
+    {
+      "countryId": "RSA",
+      "countryName": "South Africa",
+      "inInternationalTeamsTable": true,
+      "totalPlayersInDb": 8,
+      "activeMenCount": 8,
+      "activeWomenCount": 0,
+      "legendsCount": 0,
+      "retiredCount": 0,
+      "eligibleCounts": {
+        "TEST": 6,
+        "ODI": 8,
+        "T20I": 8
+      },
+      "activeMenEligibleCounts": {
+        "TEST": 6,
+        "ODI": 8,
+        "T20I": 8
+      },
+      "canFieldFullActiveMenXI": {
+        "TEST": false,
+        "ODI": false,
+        "T20I": false
+      },
+      "status": "INCOMPLETE_SQUAD"
+    },
+    {
+      "countryId": "NZL",
+      "countryName": "New Zealand",
+      "inInternationalTeamsTable": true,
+      "totalPlayersInDb": 6,
+      "activeMenCount": 6,
+      "activeWomenCount": 0,
+      "legendsCount": 0,
+      "retiredCount": 0,
+      "eligibleCounts": {
+        "TEST": 6,
+        "ODI": 6,
+        "T20I": 6
+      },
+      "activeMenEligibleCounts": {
+        "TEST": 6,
+        "ODI": 6,
+        "T20I": 6
+      },
+      "canFieldFullActiveMenXI": {
+        "TEST": false,
+        "ODI": false,
+        "T20I": false
+      },
+      "status": "INCOMPLETE_SQUAD"
+    },
+    {
+      "countryId": "PAK",
+      "countryName": "Pakistan",
+      "inInternationalTeamsTable": true,
+      "totalPlayersInDb": 8,
+      "activeMenCount": 7,
+      "activeWomenCount": 0,
+      "legendsCount": 1,
+      "retiredCount": 0,
+      "eligibleCounts": {
+        "TEST": 7,
+        "ODI": 7,
+        "T20I": 6
+      },
+      "activeMenEligibleCounts": {
+        "TEST": 6,
+        "ODI": 6,
+        "T20I": 6
+      },
+      "canFieldFullActiveMenXI": {
+        "TEST": false,
+        "ODI": false,
+        "T20I": false
+      },
+      "status": "INCOMPLETE_SQUAD"
+    },
+    {
+      "countryId": "WIN",
+      "countryName": "West Indies",
+      "inInternationalTeamsTable": true,
+      "totalPlayersInDb": 1,
+      "activeMenCount": 0,
+      "activeWomenCount": 0,
+      "legendsCount": 1,
+      "retiredCount": 0,
+      "eligibleCounts": {
+        "TEST": 1,
+        "ODI": 1,
+        "T20I": 0
+      },
+      "activeMenEligibleCounts": {
+        "TEST": 0,
+        "ODI": 0,
+        "T20I": 0
+      },
+      "canFieldFullActiveMenXI": {
+        "TEST": false,
+        "ODI": false,
+        "T20I": false
+      },
+      "status": "INCOMPLETE_SQUAD"
+    },
+    {
+      "countryId": "SRI",
+      "countryName": "Sri Lanka",
+      "inInternationalTeamsTable": true,
+      "totalPlayersInDb": 0,
+      "activeMenCount": 0,
+      "activeWomenCount": 0,
+      "legendsCount": 0,
+      "retiredCount": 0,
+      "eligibleCounts": {
+        "TEST": 0,
+        "ODI": 0,
+        "T20I": 0
+      },
+      "activeMenEligibleCounts": {
+        "TEST": 0,
+        "ODI": 0,
+        "T20I": 0
+      },
+      "canFieldFullActiveMenXI": {
+        "TEST": false,
+        "ODI": false,
+        "T20I": false
+      },
+      "status": "EMPTY_ROSTER"
+    },
+    {
+      "countryId": "AFG",
+      "countryName": "Afghanistan",
+      "inInternationalTeamsTable": true,
+      "totalPlayersInDb": 4,
+      "activeMenCount": 4,
+      "activeWomenCount": 0,
+      "legendsCount": 0,
+      "retiredCount": 0,
+      "eligibleCounts": {
+        "TEST": 4,
+        "ODI": 4,
+        "T20I": 4
+      },
+      "activeMenEligibleCounts": {
+        "TEST": 4,
+        "ODI": 4,
+        "T20I": 4
+      },
+      "canFieldFullActiveMenXI": {
+        "TEST": false,
+        "ODI": false,
+        "T20I": false
+      },
+      "status": "INCOMPLETE_SQUAD"
+    },
+    {
+      "countryId": "BAN",
+      "countryName": "Bangladesh",
+      "inInternationalTeamsTable": true,
+      "totalPlayersInDb": 0,
+      "activeMenCount": 0,
+      "activeWomenCount": 0,
+      "legendsCount": 0,
+      "retiredCount": 0,
+      "eligibleCounts": {
+        "TEST": 0,
+        "ODI": 0,
+        "T20I": 0
+      },
+      "activeMenEligibleCounts": {
+        "TEST": 0,
+        "ODI": 0,
+        "T20I": 0
+      },
+      "canFieldFullActiveMenXI": {
+        "TEST": false,
+        "ODI": false,
+        "T20I": false
+      },
+      "status": "EMPTY_ROSTER"
+    },
+    {
+      "countryId": "IRE",
+      "countryName": "Ireland",
+      "inInternationalTeamsTable": true,
+      "totalPlayersInDb": 0,
+      "activeMenCount": 0,
+      "activeWomenCount": 0,
+      "legendsCount": 0,
+      "retiredCount": 0,
+      "eligibleCounts": {
+        "TEST": 0,
+        "ODI": 0,
+        "T20I": 0
+      },
+      "activeMenEligibleCounts": {
+        "TEST": 0,
+        "ODI": 0,
+        "T20I": 0
+      },
+      "canFieldFullActiveMenXI": {
+        "TEST": false,
+        "ODI": false,
+        "T20I": false
+      },
+      "status": "EMPTY_ROSTER"
+    },
+    {
+      "countryId": "ZIM",
+      "countryName": "Zimbabwe",
+      "inInternationalTeamsTable": true,
+      "totalPlayersInDb": 0,
+      "activeMenCount": 0,
+      "activeWomenCount": 0,
+      "legendsCount": 0,
+      "retiredCount": 0,
+      "eligibleCounts": {
+        "TEST": 0,
+        "ODI": 0,
+        "T20I": 0
+      },
+      "activeMenEligibleCounts": {
+        "TEST": 0,
+        "ODI": 0,
+        "T20I": 0
+      },
+      "canFieldFullActiveMenXI": {
+        "TEST": false,
+        "ODI": false,
+        "T20I": false
+      },
+      "status": "EMPTY_ROSTER"
+    },
+    {
+      "countryId": "NAM",
+      "countryName": "Namibia",
+      "inInternationalTeamsTable": false,
+      "totalPlayersInDb": 1,
+      "activeMenCount": 1,
+      "activeWomenCount": 0,
+      "legendsCount": 0,
+      "retiredCount": 0,
+      "eligibleCounts": {
+        "TEST": 0,
+        "ODI": 1,
+        "T20I": 1
+      },
+      "activeMenEligibleCounts": {
+        "TEST": 0,
+        "ODI": 1,
+        "T20I": 1
+      },
+      "canFieldFullActiveMenXI": {
+        "TEST": false,
+        "ODI": false,
+        "T20I": false
+      },
+      "status": "UNREGISTERED_COUNTRY"
+    },
+    {
+      "countryId": "USA",
+      "countryName": "United States",
+      "inInternationalTeamsTable": false,
+      "totalPlayersInDb": 1,
+      "activeMenCount": 1,
+      "activeWomenCount": 0,
+      "legendsCount": 0,
+      "retiredCount": 0,
+      "eligibleCounts": {
+        "TEST": 0,
+        "ODI": 1,
+        "T20I": 1
+      },
+      "activeMenEligibleCounts": {
+        "TEST": 0,
+        "ODI": 1,
+        "T20I": 1
+      },
+      "canFieldFullActiveMenXI": {
+        "TEST": false,
+        "ODI": false,
+        "T20I": false
+      },
+      "status": "UNREGISTERED_COUNTRY"
+    }
+  ],
+  "duplicatePlayers": [],
+  "missingPlayers": [
+    {
+      "id": "missing_full_squad_AUS",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "AUS",
+      "title": "Australia (AUS) has only 13 active male players (needs 15-20 per format)",
+      "details": "Australia has 15 total players (13 active male, 1 legends, 0 retired, 1 female). Active male eligible counts: TEST=10, ODI=12, T20I=11.",
+      "recommendation": "Expand Australia's active men's player pool so each format (TEST, ODI, T20I) has at least 15-18 eligible active players."
+    },
+    {
+      "id": "missing_xi_AUS_TEST",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "AUS",
+      "format": "TEST",
+      "title": "Australia (AUS) cannot field 11 active male players in TEST (only 10 available)",
+      "details": "A standard cricket Playing XI requires 11 players, plus reserves. Currently Australia only has 10 active male players eligible for TEST (short by 1 players just for a starting XI).",
+      "recommendation": "Add 5 more TEST-eligible active players for Australia."
+    },
+    {
+      "id": "missing_full_squad_ENG",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "ENG",
+      "title": "England (ENG) has only 10 active male players (needs 15-20 per format)",
+      "details": "England has 10 total players (10 active male, 0 legends, 0 retired, 0 female). Active male eligible counts: TEST=8, ODI=9, T20I=8.",
+      "recommendation": "Expand England's active men's player pool so each format (TEST, ODI, T20I) has at least 15-18 eligible active players."
+    },
+    {
+      "id": "missing_xi_ENG_TEST",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "ENG",
+      "format": "TEST",
+      "title": "England (ENG) cannot field 11 active male players in TEST (only 8 available)",
+      "details": "A standard cricket Playing XI requires 11 players, plus reserves. Currently England only has 8 active male players eligible for TEST (short by 3 players just for a starting XI).",
+      "recommendation": "Add 7 more TEST-eligible active players for England."
+    },
+    {
+      "id": "missing_xi_ENG_ODI",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "ENG",
+      "format": "ODI",
+      "title": "England (ENG) cannot field 11 active male players in ODI (only 9 available)",
+      "details": "A standard cricket Playing XI requires 11 players, plus reserves. Currently England only has 9 active male players eligible for ODI (short by 2 players just for a starting XI).",
+      "recommendation": "Add 6 more ODI-eligible active players for England."
+    },
+    {
+      "id": "missing_xi_ENG_T20I",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "ENG",
+      "format": "T20I",
+      "title": "England (ENG) cannot field 11 active male players in T20I (only 8 available)",
+      "details": "A standard cricket Playing XI requires 11 players, plus reserves. Currently England only has 8 active male players eligible for T20I (short by 3 players just for a starting XI).",
+      "recommendation": "Add 7 more T20I-eligible active players for England."
+    },
+    {
+      "id": "missing_full_squad_RSA",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "RSA",
+      "title": "South Africa (RSA) has only 8 active male players (needs 15-20 per format)",
+      "details": "South Africa has 8 total players (8 active male, 0 legends, 0 retired, 0 female). Active male eligible counts: TEST=6, ODI=8, T20I=8.",
+      "recommendation": "Expand South Africa's active men's player pool so each format (TEST, ODI, T20I) has at least 15-18 eligible active players."
+    },
+    {
+      "id": "missing_xi_RSA_TEST",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "RSA",
+      "format": "TEST",
+      "title": "South Africa (RSA) cannot field 11 active male players in TEST (only 6 available)",
+      "details": "A standard cricket Playing XI requires 11 players, plus reserves. Currently South Africa only has 6 active male players eligible for TEST (short by 5 players just for a starting XI).",
+      "recommendation": "Add 9 more TEST-eligible active players for South Africa."
+    },
+    {
+      "id": "missing_xi_RSA_ODI",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "RSA",
+      "format": "ODI",
+      "title": "South Africa (RSA) cannot field 11 active male players in ODI (only 8 available)",
+      "details": "A standard cricket Playing XI requires 11 players, plus reserves. Currently South Africa only has 8 active male players eligible for ODI (short by 3 players just for a starting XI).",
+      "recommendation": "Add 7 more ODI-eligible active players for South Africa."
+    },
+    {
+      "id": "missing_xi_RSA_T20I",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "RSA",
+      "format": "T20I",
+      "title": "South Africa (RSA) cannot field 11 active male players in T20I (only 8 available)",
+      "details": "A standard cricket Playing XI requires 11 players, plus reserves. Currently South Africa only has 8 active male players eligible for T20I (short by 3 players just for a starting XI).",
+      "recommendation": "Add 7 more T20I-eligible active players for South Africa."
+    },
+    {
+      "id": "missing_full_squad_NZL",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "NZL",
+      "title": "New Zealand (NZL) has only 6 active male players (needs 15-20 per format)",
+      "details": "New Zealand has 6 total players (6 active male, 0 legends, 0 retired, 0 female). Active male eligible counts: TEST=6, ODI=6, T20I=6.",
+      "recommendation": "Expand New Zealand's active men's player pool so each format (TEST, ODI, T20I) has at least 15-18 eligible active players."
+    },
+    {
+      "id": "missing_xi_NZL_TEST",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "NZL",
+      "format": "TEST",
+      "title": "New Zealand (NZL) cannot field 11 active male players in TEST (only 6 available)",
+      "details": "A standard cricket Playing XI requires 11 players, plus reserves. Currently New Zealand only has 6 active male players eligible for TEST (short by 5 players just for a starting XI).",
+      "recommendation": "Add 9 more TEST-eligible active players for New Zealand."
+    },
+    {
+      "id": "missing_xi_NZL_ODI",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "NZL",
+      "format": "ODI",
+      "title": "New Zealand (NZL) cannot field 11 active male players in ODI (only 6 available)",
+      "details": "A standard cricket Playing XI requires 11 players, plus reserves. Currently New Zealand only has 6 active male players eligible for ODI (short by 5 players just for a starting XI).",
+      "recommendation": "Add 9 more ODI-eligible active players for New Zealand."
+    },
+    {
+      "id": "missing_xi_NZL_T20I",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "NZL",
+      "format": "T20I",
+      "title": "New Zealand (NZL) cannot field 11 active male players in T20I (only 6 available)",
+      "details": "A standard cricket Playing XI requires 11 players, plus reserves. Currently New Zealand only has 6 active male players eligible for T20I (short by 5 players just for a starting XI).",
+      "recommendation": "Add 9 more T20I-eligible active players for New Zealand."
+    },
+    {
+      "id": "missing_full_squad_PAK",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "PAK",
+      "title": "Pakistan (PAK) has only 7 active male players (needs 15-20 per format)",
+      "details": "Pakistan has 8 total players (7 active male, 1 legends, 0 retired, 0 female). Active male eligible counts: TEST=6, ODI=6, T20I=6.",
+      "recommendation": "Expand Pakistan's active men's player pool so each format (TEST, ODI, T20I) has at least 15-18 eligible active players."
+    },
+    {
+      "id": "missing_xi_PAK_TEST",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "PAK",
+      "format": "TEST",
+      "title": "Pakistan (PAK) cannot field 11 active male players in TEST (only 6 available)",
+      "details": "A standard cricket Playing XI requires 11 players, plus reserves. Currently Pakistan only has 6 active male players eligible for TEST (short by 5 players just for a starting XI).",
+      "recommendation": "Add 9 more TEST-eligible active players for Pakistan."
+    },
+    {
+      "id": "missing_xi_PAK_ODI",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "PAK",
+      "format": "ODI",
+      "title": "Pakistan (PAK) cannot field 11 active male players in ODI (only 6 available)",
+      "details": "A standard cricket Playing XI requires 11 players, plus reserves. Currently Pakistan only has 6 active male players eligible for ODI (short by 5 players just for a starting XI).",
+      "recommendation": "Add 9 more ODI-eligible active players for Pakistan."
+    },
+    {
+      "id": "missing_xi_PAK_T20I",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "PAK",
+      "format": "T20I",
+      "title": "Pakistan (PAK) cannot field 11 active male players in T20I (only 6 available)",
+      "details": "A standard cricket Playing XI requires 11 players, plus reserves. Currently Pakistan only has 6 active male players eligible for T20I (short by 5 players just for a starting XI).",
+      "recommendation": "Add 9 more T20I-eligible active players for Pakistan."
+    },
+    {
+      "id": "missing_full_squad_WIN",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "WIN",
+      "title": "West Indies (WIN) has only 0 active male players (needs 15-20 per format)",
+      "details": "West Indies has 1 total players (0 active male, 1 legends, 0 retired, 0 female). Active male eligible counts: TEST=0, ODI=0, T20I=0.",
+      "recommendation": "Expand West Indies's active men's player pool so each format (TEST, ODI, T20I) has at least 15-18 eligible active players."
+    },
+    {
+      "id": "missing_xi_WIN_TEST",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "WIN",
+      "format": "TEST",
+      "title": "West Indies (WIN) cannot field 11 active male players in TEST (only 0 available)",
+      "details": "A standard cricket Playing XI requires 11 players, plus reserves. Currently West Indies only has 0 active male players eligible for TEST (short by 11 players just for a starting XI).",
+      "recommendation": "Add 15 more TEST-eligible active players for West Indies."
+    },
+    {
+      "id": "missing_xi_WIN_ODI",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "WIN",
+      "format": "ODI",
+      "title": "West Indies (WIN) cannot field 11 active male players in ODI (only 0 available)",
+      "details": "A standard cricket Playing XI requires 11 players, plus reserves. Currently West Indies only has 0 active male players eligible for ODI (short by 11 players just for a starting XI).",
+      "recommendation": "Add 15 more ODI-eligible active players for West Indies."
+    },
+    {
+      "id": "missing_xi_WIN_T20I",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "WIN",
+      "format": "T20I",
+      "title": "West Indies (WIN) cannot field 11 active male players in T20I (only 0 available)",
+      "details": "A standard cricket Playing XI requires 11 players, plus reserves. Currently West Indies only has 0 active male players eligible for T20I (short by 11 players just for a starting XI).",
+      "recommendation": "Add 15 more T20I-eligible active players for West Indies."
+    },
+    {
+      "id": "missing_entire_roster_SRI",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "SRI",
+      "title": "Sri Lanka (SRI) has 0 players in the database",
+      "details": "Sri Lanka is registered as an official playable nation in INTERNATIONAL_TEAMS, but has 0 players in ALL_PLAYERS. Selecting Sri Lanka results in empty squads and crashes/empty lineups in match simulation.",
+      "recommendation": "Add at least 18-25 active international players across Test, ODI, and T20I formats for Sri Lanka."
+    },
+    {
+      "id": "missing_full_squad_AFG",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "AFG",
+      "title": "Afghanistan (AFG) has only 4 active male players (needs 15-20 per format)",
+      "details": "Afghanistan has 4 total players (4 active male, 0 legends, 0 retired, 0 female). Active male eligible counts: TEST=4, ODI=4, T20I=4.",
+      "recommendation": "Expand Afghanistan's active men's player pool so each format (TEST, ODI, T20I) has at least 15-18 eligible active players."
+    },
+    {
+      "id": "missing_xi_AFG_TEST",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "AFG",
+      "format": "TEST",
+      "title": "Afghanistan (AFG) cannot field 11 active male players in TEST (only 4 available)",
+      "details": "A standard cricket Playing XI requires 11 players, plus reserves. Currently Afghanistan only has 4 active male players eligible for TEST (short by 7 players just for a starting XI).",
+      "recommendation": "Add 11 more TEST-eligible active players for Afghanistan."
+    },
+    {
+      "id": "missing_xi_AFG_ODI",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "AFG",
+      "format": "ODI",
+      "title": "Afghanistan (AFG) cannot field 11 active male players in ODI (only 4 available)",
+      "details": "A standard cricket Playing XI requires 11 players, plus reserves. Currently Afghanistan only has 4 active male players eligible for ODI (short by 7 players just for a starting XI).",
+      "recommendation": "Add 11 more ODI-eligible active players for Afghanistan."
+    },
+    {
+      "id": "missing_xi_AFG_T20I",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "AFG",
+      "format": "T20I",
+      "title": "Afghanistan (AFG) cannot field 11 active male players in T20I (only 4 available)",
+      "details": "A standard cricket Playing XI requires 11 players, plus reserves. Currently Afghanistan only has 4 active male players eligible for T20I (short by 7 players just for a starting XI).",
+      "recommendation": "Add 11 more T20I-eligible active players for Afghanistan."
+    },
+    {
+      "id": "missing_entire_roster_BAN",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "BAN",
+      "title": "Bangladesh (BAN) has 0 players in the database",
+      "details": "Bangladesh is registered as an official playable nation in INTERNATIONAL_TEAMS, but has 0 players in ALL_PLAYERS. Selecting Bangladesh results in empty squads and crashes/empty lineups in match simulation.",
+      "recommendation": "Add at least 18-25 active international players across Test, ODI, and T20I formats for Bangladesh."
+    },
+    {
+      "id": "missing_entire_roster_IRE",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "IRE",
+      "title": "Ireland (IRE) has 0 players in the database",
+      "details": "Ireland is registered as an official playable nation in INTERNATIONAL_TEAMS, but has 0 players in ALL_PLAYERS. Selecting Ireland results in empty squads and crashes/empty lineups in match simulation.",
+      "recommendation": "Add at least 18-25 active international players across Test, ODI, and T20I formats for Ireland."
+    },
+    {
+      "id": "missing_entire_roster_ZIM",
+      "category": "MISSING_PLAYER",
+      "severity": "HIGH",
+      "countryId": "ZIM",
+      "title": "Zimbabwe (ZIM) has 0 players in the database",
+      "details": "Zimbabwe is registered as an official playable nation in INTERNATIONAL_TEAMS, but has 0 players in ALL_PLAYERS. Selecting Zimbabwe results in empty squads and crashes/empty lineups in match simulation.",
+      "recommendation": "Add at least 18-25 active international players across Test, ODI, and T20I formats for Zimbabwe."
+    }
+  ],
+  "incorrectCountryAssignments": [
+    {
+      "id": "unregistered_country_nam_erasmus",
+      "category": "COUNTRY_ASSIGNMENT",
+      "severity": "HIGH",
+      "countryId": "NAM",
+      "playerId": "nam_erasmus",
+      "title": "Player 'Gerhard Erasmus' assigned to unregistered country 'NAM' (Namibia)",
+      "details": "'NAM' (Namibia) is assigned to player 'Gerhard Erasmus' (nam_erasmus), but 'NAM' does not exist in INTERNATIONAL_TEAMS (which only defines the 12 Full Member nations). As a result, 'Gerhard Erasmus' cannot be filtered by country in DatabaseView or managed as a team.",
+      "recommendation": "Either add Associate nations (NAM - Namibia) to INTERNATIONAL_TEAMS or separate Associate teams into a dedicated registry included in country filters."
+    },
+    {
+      "id": "unregistered_country_usa_monank",
+      "category": "COUNTRY_ASSIGNMENT",
+      "severity": "HIGH",
+      "countryId": "USA",
+      "playerId": "usa_monank",
+      "title": "Player 'Monank Patel' assigned to unregistered country 'USA' (United States)",
+      "details": "'USA' (United States) is assigned to player 'Monank Patel' (usa_monank), but 'USA' does not exist in INTERNATIONAL_TEAMS (which only defines the 12 Full Member nations). As a result, 'Monank Patel' cannot be filtered by country in DatabaseView or managed as a team.",
+      "recommendation": "Either add Associate nations (USA - United States) to INTERNATIONAL_TEAMS or separate Associate teams into a dedicated registry included in country filters."
+    },
+    {
+      "id": "pool_contamination_legend_sachin",
+      "category": "COUNTRY_ASSIGNMENT",
+      "severity": "HIGH",
+      "countryId": "IND",
+      "playerId": "legend_sachin",
+      "title": "Non-eligible player 'Sachin Tendulkar' (LEGEND, MALE) mixed into active IND men's national pool",
+      "details": "getPlayersByCountry('IND') filters only by countryId without checking status === 'ACTIVE' and gender === 'MALE'. Consequently, 'Sachin Tendulkar' (LEGEND, MALE) is automatically pulled into IND's active men's national squad and Playing XI.",
+      "recommendation": "Filter getPlayersByCountry / getFormatEligiblePlayers by status === 'ACTIVE' and gender === 'MALE' for men's international career squads, keeping Legends, Retired players, and Women's players in separate pools."
+    },
+    {
+      "id": "pool_contamination_legend_warne",
+      "category": "COUNTRY_ASSIGNMENT",
+      "severity": "HIGH",
+      "countryId": "AUS",
+      "playerId": "legend_warne",
+      "title": "Non-eligible player 'Shane Warne' (LEGEND, MALE) mixed into active AUS men's national pool",
+      "details": "getPlayersByCountry('AUS') filters only by countryId without checking status === 'ACTIVE' and gender === 'MALE'. Consequently, 'Shane Warne' (LEGEND, MALE) is automatically pulled into AUS's active men's national squad and Playing XI.",
+      "recommendation": "Filter getPlayersByCountry / getFormatEligiblePlayers by status === 'ACTIVE' and gender === 'MALE' for men's international career squads, keeping Legends, Retired players, and Women's players in separate pools."
+    },
+    {
+      "id": "pool_contamination_legend_lara",
+      "category": "COUNTRY_ASSIGNMENT",
+      "severity": "HIGH",
+      "countryId": "WIN",
+      "playerId": "legend_lara",
+      "title": "Non-eligible player 'Brian Lara' (LEGEND, MALE) mixed into active WIN men's national pool",
+      "details": "getPlayersByCountry('WIN') filters only by countryId without checking status === 'ACTIVE' and gender === 'MALE'. Consequently, 'Brian Lara' (LEGEND, MALE) is automatically pulled into WIN's active men's national squad and Playing XI.",
+      "recommendation": "Filter getPlayersByCountry / getFormatEligiblePlayers by status === 'ACTIVE' and gender === 'MALE' for men's international career squads, keeping Legends, Retired players, and Women's players in separate pools."
+    },
+    {
+      "id": "pool_contamination_legend_wasim",
+      "category": "COUNTRY_ASSIGNMENT",
+      "severity": "HIGH",
+      "countryId": "PAK",
+      "playerId": "legend_wasim",
+      "title": "Non-eligible player 'Wasim Akram' (LEGEND, MALE) mixed into active PAK men's national pool",
+      "details": "getPlayersByCountry('PAK') filters only by countryId without checking status === 'ACTIVE' and gender === 'MALE'. Consequently, 'Wasim Akram' (LEGEND, MALE) is automatically pulled into PAK's active men's national squad and Playing XI.",
+      "recommendation": "Filter getPlayersByCountry / getFormatEligiblePlayers by status === 'ACTIVE' and gender === 'MALE' for men's international career squads, keeping Legends, Retired players, and Women's players in separate pools."
+    },
+    {
+      "id": "pool_contamination_legend_dhoni",
+      "category": "COUNTRY_ASSIGNMENT",
+      "severity": "HIGH",
+      "countryId": "IND",
+      "playerId": "legend_dhoni",
+      "title": "Non-eligible player 'MS Dhoni' (RETIRED, MALE) mixed into active IND men's national pool",
+      "details": "getPlayersByCountry('IND') filters only by countryId without checking status === 'ACTIVE' and gender === 'MALE'. Consequently, 'MS Dhoni' (RETIRED, MALE) is automatically pulled into IND's active men's national squad and Playing XI.",
+      "recommendation": "Filter getPlayersByCountry / getFormatEligiblePlayers by status === 'ACTIVE' and gender === 'MALE' for men's international career squads, keeping Legends, Retired players, and Women's players in separate pools."
+    },
+    {
+      "id": "pool_contamination_wom_smriti",
+      "category": "COUNTRY_ASSIGNMENT",
+      "severity": "HIGH",
+      "countryId": "IND",
+      "playerId": "wom_smriti",
+      "title": "Non-eligible player 'Smriti Mandhana' (ACTIVE, FEMALE) mixed into active IND men's national pool",
+      "details": "getPlayersByCountry('IND') filters only by countryId without checking status === 'ACTIVE' and gender === 'MALE'. Consequently, 'Smriti Mandhana' (ACTIVE, FEMALE) is automatically pulled into IND's active men's national squad and Playing XI.",
+      "recommendation": "Filter getPlayersByCountry / getFormatEligiblePlayers by status === 'ACTIVE' and gender === 'MALE' for men's international career squads, keeping Legends, Retired players, and Women's players in separate pools."
+    },
+    {
+      "id": "pool_contamination_wom_perry",
+      "category": "COUNTRY_ASSIGNMENT",
+      "severity": "HIGH",
+      "countryId": "AUS",
+      "playerId": "wom_perry",
+      "title": "Non-eligible player 'Ellyse Perry' (ACTIVE, FEMALE) mixed into active AUS men's national pool",
+      "details": "getPlayersByCountry('AUS') filters only by countryId without checking status === 'ACTIVE' and gender === 'MALE'. Consequently, 'Ellyse Perry' (ACTIVE, FEMALE) is automatically pulled into AUS's active men's national squad and Playing XI.",
+      "recommendation": "Filter getPlayersByCountry / getFormatEligiblePlayers by status === 'ACTIVE' and gender === 'MALE' for men's international career squads, keeping Legends, Retired players, and Women's players in separate pools."
+    }
+  ],
+  "formatLineupInconsistencies": [
+    {
+      "id": "non_active_in_xi_IND_TEST_legend_sachin",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "IND",
+      "format": "TEST",
+      "playerId": "legend_sachin",
+      "title": "Sachin Tendulkar (LEGEND, MALE) is auto-selected in India's current TEST Playing XI",
+      "details": "Because Sachin Tendulkar has a high TEST rating (99), getDefaultFormatSquadConfig includes them in India's active TEST Playing XI despite status='LEGEND' and gender='MALE'.",
+      "recommendation": "Exclude LEGEND, RETIRED, and FEMALE players from default active men's national Playing XIs."
+    },
+    {
+      "id": "non_active_in_xi_IND_TEST_wom_smriti",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "IND",
+      "format": "TEST",
+      "playerId": "wom_smriti",
+      "title": "Smriti Mandhana (ACTIVE, FEMALE) is auto-selected in India's current TEST Playing XI",
+      "details": "Because Smriti Mandhana has a high TEST rating (92), getDefaultFormatSquadConfig includes them in India's active TEST Playing XI despite status='ACTIVE' and gender='FEMALE'.",
+      "recommendation": "Exclude LEGEND, RETIRED, and FEMALE players from default active men's national Playing XIs."
+    },
+    {
+      "id": "non_active_in_xi_IND_ODI_legend_sachin",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "IND",
+      "format": "ODI",
+      "playerId": "legend_sachin",
+      "title": "Sachin Tendulkar (LEGEND, MALE) is auto-selected in India's current ODI Playing XI",
+      "details": "Because Sachin Tendulkar has a high ODI rating (99), getDefaultFormatSquadConfig includes them in India's active ODI Playing XI despite status='LEGEND' and gender='MALE'.",
+      "recommendation": "Exclude LEGEND, RETIRED, and FEMALE players from default active men's national Playing XIs."
+    },
+    {
+      "id": "non_active_in_xi_IND_ODI_wom_smriti",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "IND",
+      "format": "ODI",
+      "playerId": "wom_smriti",
+      "title": "Smriti Mandhana (ACTIVE, FEMALE) is auto-selected in India's current ODI Playing XI",
+      "details": "Because Smriti Mandhana has a high ODI rating (96), getDefaultFormatSquadConfig includes them in India's active ODI Playing XI despite status='ACTIVE' and gender='FEMALE'.",
+      "recommendation": "Exclude LEGEND, RETIRED, and FEMALE players from default active men's national Playing XIs."
+    },
+    {
+      "id": "non_active_in_xi_IND_T20I_wom_smriti",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "IND",
+      "format": "T20I",
+      "playerId": "wom_smriti",
+      "title": "Smriti Mandhana (ACTIVE, FEMALE) is auto-selected in India's current T20I Playing XI",
+      "details": "Because Smriti Mandhana has a high T20I rating (95), getDefaultFormatSquadConfig includes them in India's active T20I Playing XI despite status='ACTIVE' and gender='FEMALE'.",
+      "recommendation": "Exclude LEGEND, RETIRED, and FEMALE players from default active men's national Playing XIs."
+    },
+    {
+      "id": "non_active_in_xi_AUS_TEST_wom_perry",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "AUS",
+      "format": "TEST",
+      "playerId": "wom_perry",
+      "title": "Ellyse Perry (ACTIVE, FEMALE) is auto-selected in Australia's current TEST Playing XI",
+      "details": "Because Ellyse Perry has a high TEST rating (98), getDefaultFormatSquadConfig includes them in Australia's active TEST Playing XI despite status='ACTIVE' and gender='FEMALE'.",
+      "recommendation": "Exclude LEGEND, RETIRED, and FEMALE players from default active men's national Playing XIs."
+    },
+    {
+      "id": "non_active_in_xi_AUS_TEST_legend_warne",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "AUS",
+      "format": "TEST",
+      "playerId": "legend_warne",
+      "title": "Shane Warne (LEGEND, MALE) is auto-selected in Australia's current TEST Playing XI",
+      "details": "Because Shane Warne has a high TEST rating (99), getDefaultFormatSquadConfig includes them in Australia's active TEST Playing XI despite status='LEGEND' and gender='MALE'.",
+      "recommendation": "Exclude LEGEND, RETIRED, and FEMALE players from default active men's national Playing XIs."
+    },
+    {
+      "id": "bowler_opening_batting_AUS_TEST_aus_cummins",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "MEDIUM",
+      "countryId": "AUS",
+      "format": "TEST",
+      "playerId": "aus_cummins",
+      "title": "Specialist Bowler 'Pat Cummins' is placed at #1 (Opener) in Australia's TEST Batting Order",
+      "details": "Because getDefaultFormatSquadConfig pushes captainId ('aus_cummins') into selectedXI[0] and sets battingOrder = [...finalXI], bowler captains like 'Pat Cummins' open the batting at #1!",
+      "recommendation": "Sort battingOrder by batting role and technique/timing (Batters & WK in top 6, All-Rounders at 6-8, Specialist Bowlers at 8-11) instead of using insertion order."
+    },
+    {
+      "id": "non_active_in_xi_AUS_ODI_wom_perry",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "AUS",
+      "format": "ODI",
+      "playerId": "wom_perry",
+      "title": "Ellyse Perry (ACTIVE, FEMALE) is auto-selected in Australia's current ODI Playing XI",
+      "details": "Because Ellyse Perry has a high ODI rating (97), getDefaultFormatSquadConfig includes them in Australia's active ODI Playing XI despite status='ACTIVE' and gender='FEMALE'.",
+      "recommendation": "Exclude LEGEND, RETIRED, and FEMALE players from default active men's national Playing XIs."
+    },
+    {
+      "id": "non_active_in_xi_AUS_ODI_legend_warne",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "AUS",
+      "format": "ODI",
+      "playerId": "legend_warne",
+      "title": "Shane Warne (LEGEND, MALE) is auto-selected in Australia's current ODI Playing XI",
+      "details": "Because Shane Warne has a high ODI rating (96), getDefaultFormatSquadConfig includes them in Australia's active ODI Playing XI despite status='LEGEND' and gender='MALE'.",
+      "recommendation": "Exclude LEGEND, RETIRED, and FEMALE players from default active men's national Playing XIs."
+    },
+    {
+      "id": "bowler_opening_batting_AUS_ODI_aus_cummins",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "MEDIUM",
+      "countryId": "AUS",
+      "format": "ODI",
+      "playerId": "aus_cummins",
+      "title": "Specialist Bowler 'Pat Cummins' is placed at #1 (Opener) in Australia's ODI Batting Order",
+      "details": "Because getDefaultFormatSquadConfig pushes captainId ('aus_cummins') into selectedXI[0] and sets battingOrder = [...finalXI], bowler captains like 'Pat Cummins' open the batting at #1!",
+      "recommendation": "Sort battingOrder by batting role and technique/timing (Batters & WK in top 6, All-Rounders at 6-8, Specialist Bowlers at 8-11) instead of using insertion order."
+    },
+    {
+      "id": "non_active_in_xi_AUS_T20I_wom_perry",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "AUS",
+      "format": "T20I",
+      "playerId": "wom_perry",
+      "title": "Ellyse Perry (ACTIVE, FEMALE) is auto-selected in Australia's current T20I Playing XI",
+      "details": "Because Ellyse Perry has a high T20I rating (94), getDefaultFormatSquadConfig includes them in Australia's active T20I Playing XI despite status='ACTIVE' and gender='FEMALE'.",
+      "recommendation": "Exclude LEGEND, RETIRED, and FEMALE players from default active men's national Playing XIs."
+    },
+    {
+      "id": "incomplete_xi_ENG_TEST",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "ENG",
+      "format": "TEST",
+      "title": "England TEST Playing XI has only 8/11 players",
+      "details": "getDefaultFormatSquadConfig('ENG', 'TEST') produces a Playing XI of length 8 (Ben Stokes, Harry Brook, Joe Root, Ben Duckett, Zak Crawley, Chris Woakes, Mark Wood, Jofra Archer).",
+      "recommendation": "Populate England's TEST player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "non_wk_assigned_ENG_TEST",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "MEDIUM",
+      "countryId": "ENG",
+      "format": "TEST",
+      "playerId": "eng_brook",
+      "title": "England TEST designated Wicketkeeper 'Harry Brook' is a BATTER (not a Wicketkeeper)",
+      "details": "No eligible wicketkeeper was found for England in TEST, so getDefaultWicketKeeperId fell back to squad[2] ('Harry Brook', role=BATTER).",
+      "recommendation": "Add a specialist WICKETKEEPER_BATTER for England in TEST."
+    },
+    {
+      "id": "incomplete_xi_ENG_ODI",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "ENG",
+      "format": "ODI",
+      "title": "England ODI Playing XI has only 9/11 players",
+      "details": "getDefaultFormatSquadConfig('ENG', 'ODI') produces a Playing XI of length 9 (Jos Buttler, Joe Root, Harry Brook, Ben Duckett, Ben Stokes, Chris Woakes, Adil Rashid, Jofra Archer, Mark Wood).",
+      "recommendation": "Populate England's ODI player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "incomplete_xi_ENG_T20I",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "ENG",
+      "format": "T20I",
+      "title": "England T20I Playing XI has only 8/11 players",
+      "details": "getDefaultFormatSquadConfig('ENG', 'T20I') produces a Playing XI of length 8 (Jos Buttler, Harry Brook, Ben Duckett, Ben Stokes, Chris Woakes, Adil Rashid, Jofra Archer, Mark Wood).",
+      "recommendation": "Populate England's T20I player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "incomplete_xi_RSA_TEST",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "RSA",
+      "format": "TEST",
+      "title": "South Africa TEST Playing XI has only 6/11 players",
+      "details": "getDefaultFormatSquadConfig('RSA', 'TEST') produces a Playing XI of length 6 (Temba Bavuma, Kagiso Rabada, Aiden Markram, Marco Jansen, Keshav Maharaj, Anrich Nortje).",
+      "recommendation": "Populate South Africa's TEST player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "non_wk_assigned_RSA_TEST",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "MEDIUM",
+      "countryId": "RSA",
+      "format": "TEST",
+      "playerId": "rsa_rabada",
+      "title": "South Africa TEST designated Wicketkeeper 'Kagiso Rabada' is a BOWLER (not a Wicketkeeper)",
+      "details": "No eligible wicketkeeper was found for South Africa in TEST, so getDefaultWicketKeeperId fell back to squad[2] ('Kagiso Rabada', role=BOWLER).",
+      "recommendation": "Add a specialist WICKETKEEPER_BATTER for South Africa in TEST."
+    },
+    {
+      "id": "bowler_opening_batting_RSA_TEST_rsa_rabada",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "MEDIUM",
+      "countryId": "RSA",
+      "format": "TEST",
+      "playerId": "rsa_rabada",
+      "title": "Specialist Bowler 'Kagiso Rabada' is placed at #2 (Opener) in South Africa's TEST Batting Order",
+      "details": "Because getDefaultFormatSquadConfig pushes captainId ('rsa_bavuma') into selectedXI[0] and sets battingOrder = [...finalXI], bowler captains like 'Kagiso Rabada' open the batting at #1!",
+      "recommendation": "Sort battingOrder by batting role and technique/timing (Batters & WK in top 6, All-Rounders at 6-8, Specialist Bowlers at 8-11) instead of using insertion order."
+    },
+    {
+      "id": "incomplete_xi_RSA_ODI",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "RSA",
+      "format": "ODI",
+      "title": "South Africa ODI Playing XI has only 8/11 players",
+      "details": "getDefaultFormatSquadConfig('RSA', 'ODI') produces a Playing XI of length 8 (Temba Bavuma, Heinrich Klaasen, David Miller, Aiden Markram, Marco Jansen, Kagiso Rabada, Keshav Maharaj, Anrich Nortje).",
+      "recommendation": "Populate South Africa's ODI player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "incomplete_xi_RSA_T20I",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "RSA",
+      "format": "T20I",
+      "title": "South Africa T20I Playing XI has only 8/11 players",
+      "details": "getDefaultFormatSquadConfig('RSA', 'T20I') produces a Playing XI of length 8 (Aiden Markram, Heinrich Klaasen, David Miller, Temba Bavuma, Marco Jansen, Anrich Nortje, Kagiso Rabada, Keshav Maharaj).",
+      "recommendation": "Populate South Africa's T20I player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "incomplete_xi_NZL_TEST",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "NZL",
+      "format": "TEST",
+      "title": "New Zealand TEST Playing XI has only 6/11 players",
+      "details": "getDefaultFormatSquadConfig('NZL', 'TEST') produces a Playing XI of length 6 (Kane Williamson, Tom Latham, Daryl Mitchell, Mitchell Santner, Matt Henry, Trent Boult).",
+      "recommendation": "Populate New Zealand's TEST player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "incomplete_xi_NZL_ODI",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "NZL",
+      "format": "ODI",
+      "title": "New Zealand ODI Playing XI has only 6/11 players",
+      "details": "getDefaultFormatSquadConfig('NZL', 'ODI') produces a Playing XI of length 6 (Kane Williamson, Tom Latham, Daryl Mitchell, Mitchell Santner, Trent Boult, Matt Henry).",
+      "recommendation": "Populate New Zealand's ODI player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "incomplete_xi_NZL_T20I",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "NZL",
+      "format": "T20I",
+      "title": "New Zealand T20I Playing XI has only 6/11 players",
+      "details": "getDefaultFormatSquadConfig('NZL', 'T20I') produces a Playing XI of length 6 (Kane Williamson, Tom Latham, Mitchell Santner, Daryl Mitchell, Trent Boult, Matt Henry).",
+      "recommendation": "Populate New Zealand's T20I player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "identical_xi_all_formats_NZL",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "MEDIUM",
+      "countryId": "NZL",
+      "title": "New Zealand uses the exact same player set across TEST, ODI, and T20I",
+      "details": "All three formats for New Zealand resolve to the exact same 6 players because there are no format-differentiated squad members in the pool.",
+      "recommendation": "Add format specialists (red-ball Test specialists vs white-ball ODI/T20I specialists) for New Zealand."
+    },
+    {
+      "id": "incomplete_xi_PAK_TEST",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "PAK",
+      "format": "TEST",
+      "title": "Pakistan TEST Playing XI has only 7/11 players",
+      "details": "getDefaultFormatSquadConfig('PAK', 'TEST') produces a Playing XI of length 7 (Shan Masood, Mohammad Rizwan, Babar Azam, Agha Salman, Wasim Akram, Shaheen Shah Afridi, Naseem Shah).",
+      "recommendation": "Populate Pakistan's TEST player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "non_active_in_xi_PAK_TEST_legend_wasim",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "PAK",
+      "format": "TEST",
+      "playerId": "legend_wasim",
+      "title": "Wasim Akram (LEGEND, MALE) is auto-selected in Pakistan's current TEST Playing XI",
+      "details": "Because Wasim Akram has a high TEST rating (99), getDefaultFormatSquadConfig includes them in Pakistan's active TEST Playing XI despite status='LEGEND' and gender='MALE'.",
+      "recommendation": "Exclude LEGEND, RETIRED, and FEMALE players from default active men's national Playing XIs."
+    },
+    {
+      "id": "incomplete_xi_PAK_ODI",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "PAK",
+      "format": "ODI",
+      "title": "Pakistan ODI Playing XI has only 7/11 players",
+      "details": "getDefaultFormatSquadConfig('PAK', 'ODI') produces a Playing XI of length 7 (Mohammad Rizwan, Babar Azam, Agha Salman, Wasim Akram, Shaheen Shah Afridi, Naseem Shah, Haris Rauf).",
+      "recommendation": "Populate Pakistan's ODI player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "non_active_in_xi_PAK_ODI_legend_wasim",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "PAK",
+      "format": "ODI",
+      "playerId": "legend_wasim",
+      "title": "Wasim Akram (LEGEND, MALE) is auto-selected in Pakistan's current ODI Playing XI",
+      "details": "Because Wasim Akram has a high ODI rating (99), getDefaultFormatSquadConfig includes them in Pakistan's active ODI Playing XI despite status='LEGEND' and gender='MALE'.",
+      "recommendation": "Exclude LEGEND, RETIRED, and FEMALE players from default active men's national Playing XIs."
+    },
+    {
+      "id": "incomplete_xi_PAK_T20I",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "PAK",
+      "format": "T20I",
+      "title": "Pakistan T20I Playing XI has only 6/11 players",
+      "details": "getDefaultFormatSquadConfig('PAK', 'T20I') produces a Playing XI of length 6 (Mohammad Rizwan, Babar Azam, Agha Salman, Shaheen Shah Afridi, Haris Rauf, Naseem Shah).",
+      "recommendation": "Populate Pakistan's T20I player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "incomplete_xi_WIN_TEST",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "WIN",
+      "format": "TEST",
+      "title": "West Indies TEST Playing XI has only 1/11 players",
+      "details": "getDefaultFormatSquadConfig('WIN', 'TEST') produces a Playing XI of length 1 (Brian Lara).",
+      "recommendation": "Populate West Indies's TEST player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "non_active_in_xi_WIN_TEST_legend_lara",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "WIN",
+      "format": "TEST",
+      "playerId": "legend_lara",
+      "title": "Brian Lara (LEGEND, MALE) is auto-selected in West Indies's current TEST Playing XI",
+      "details": "Because Brian Lara has a high TEST rating (99), getDefaultFormatSquadConfig includes them in West Indies's active TEST Playing XI despite status='LEGEND' and gender='MALE'.",
+      "recommendation": "Exclude LEGEND, RETIRED, and FEMALE players from default active men's national Playing XIs."
+    },
+    {
+      "id": "incomplete_xi_WIN_ODI",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "WIN",
+      "format": "ODI",
+      "title": "West Indies ODI Playing XI has only 1/11 players",
+      "details": "getDefaultFormatSquadConfig('WIN', 'ODI') produces a Playing XI of length 1 (Brian Lara).",
+      "recommendation": "Populate West Indies's ODI player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "non_active_in_xi_WIN_ODI_legend_lara",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "WIN",
+      "format": "ODI",
+      "playerId": "legend_lara",
+      "title": "Brian Lara (LEGEND, MALE) is auto-selected in West Indies's current ODI Playing XI",
+      "details": "Because Brian Lara has a high ODI rating (95), getDefaultFormatSquadConfig includes them in West Indies's active ODI Playing XI despite status='LEGEND' and gender='MALE'.",
+      "recommendation": "Exclude LEGEND, RETIRED, and FEMALE players from default active men's national Playing XIs."
+    },
+    {
+      "id": "incomplete_xi_WIN_T20I",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "WIN",
+      "format": "T20I",
+      "title": "West Indies T20I Playing XI has only 1/11 players",
+      "details": "getDefaultFormatSquadConfig('WIN', 'T20I') produces a Playing XI of length 1 (Brian Lara).",
+      "recommendation": "Populate West Indies's T20I player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "non_active_in_xi_WIN_T20I_legend_lara",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "WIN",
+      "format": "T20I",
+      "playerId": "legend_lara",
+      "title": "Brian Lara (LEGEND, MALE) is auto-selected in West Indies's current T20I Playing XI",
+      "details": "Because Brian Lara has a high T20I rating (86), getDefaultFormatSquadConfig includes them in West Indies's active T20I Playing XI despite status='LEGEND' and gender='MALE'.",
+      "recommendation": "Exclude LEGEND, RETIRED, and FEMALE players from default active men's national Playing XIs."
+    },
+    {
+      "id": "ineligible_captain_WIN_T20I",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "WIN",
+      "format": "T20I",
+      "playerId": "legend_lara",
+      "title": "West Indies T20I Captain 'Brian Lara' is marked ineligible for T20I",
+      "details": "getDefaultCaptainId('WIN', 'T20I') selects 'Brian Lara' (legend_lara), whose formatEligibility.T20I is false, and forces them into the T20I squad and Playing XI.",
+      "recommendation": "Ensure getDefaultCaptainId only selects from players eligible for T20I."
+    },
+    {
+      "id": "identical_xi_all_formats_WIN",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "MEDIUM",
+      "countryId": "WIN",
+      "title": "West Indies uses the exact same player set across TEST, ODI, and T20I",
+      "details": "All three formats for West Indies resolve to the exact same 1 players because there are no format-differentiated squad members in the pool.",
+      "recommendation": "Add format specialists (red-ball Test specialists vs white-ball ODI/T20I specialists) for West Indies."
+    },
+    {
+      "id": "incomplete_xi_SRI_TEST",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "SRI",
+      "format": "TEST",
+      "title": "Sri Lanka TEST Playing XI has only 0/11 players",
+      "details": "getDefaultFormatSquadConfig('SRI', 'TEST') produces a Playing XI of length 0 (none).",
+      "recommendation": "Populate Sri Lanka's TEST player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "incomplete_xi_SRI_ODI",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "SRI",
+      "format": "ODI",
+      "title": "Sri Lanka ODI Playing XI has only 0/11 players",
+      "details": "getDefaultFormatSquadConfig('SRI', 'ODI') produces a Playing XI of length 0 (none).",
+      "recommendation": "Populate Sri Lanka's ODI player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "incomplete_xi_SRI_T20I",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "SRI",
+      "format": "T20I",
+      "title": "Sri Lanka T20I Playing XI has only 0/11 players",
+      "details": "getDefaultFormatSquadConfig('SRI', 'T20I') produces a Playing XI of length 0 (none).",
+      "recommendation": "Populate Sri Lanka's T20I player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "incomplete_xi_AFG_TEST",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "AFG",
+      "format": "TEST",
+      "title": "Afghanistan TEST Playing XI has only 4/11 players",
+      "details": "getDefaultFormatSquadConfig('AFG', 'TEST') produces a Playing XI of length 4 (Rahmanullah Gurbaz, Mohammad Nabi, Fazalhaq Farooqi, Noor Ahmad).",
+      "recommendation": "Populate Afghanistan's TEST player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "incomplete_xi_AFG_ODI",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "AFG",
+      "format": "ODI",
+      "title": "Afghanistan ODI Playing XI has only 4/11 players",
+      "details": "getDefaultFormatSquadConfig('AFG', 'ODI') produces a Playing XI of length 4 (Rahmanullah Gurbaz, Mohammad Nabi, Fazalhaq Farooqi, Noor Ahmad).",
+      "recommendation": "Populate Afghanistan's ODI player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "incomplete_xi_AFG_T20I",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "AFG",
+      "format": "T20I",
+      "title": "Afghanistan T20I Playing XI has only 4/11 players",
+      "details": "getDefaultFormatSquadConfig('AFG', 'T20I') produces a Playing XI of length 4 (Rahmanullah Gurbaz, Mohammad Nabi, Fazalhaq Farooqi, Noor Ahmad).",
+      "recommendation": "Populate Afghanistan's T20I player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "identical_xi_all_formats_AFG",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "MEDIUM",
+      "countryId": "AFG",
+      "title": "Afghanistan uses the exact same player set across TEST, ODI, and T20I",
+      "details": "All three formats for Afghanistan resolve to the exact same 4 players because there are no format-differentiated squad members in the pool.",
+      "recommendation": "Add format specialists (red-ball Test specialists vs white-ball ODI/T20I specialists) for Afghanistan."
+    },
+    {
+      "id": "incomplete_xi_BAN_TEST",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "BAN",
+      "format": "TEST",
+      "title": "Bangladesh TEST Playing XI has only 0/11 players",
+      "details": "getDefaultFormatSquadConfig('BAN', 'TEST') produces a Playing XI of length 0 (none).",
+      "recommendation": "Populate Bangladesh's TEST player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "incomplete_xi_BAN_ODI",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "BAN",
+      "format": "ODI",
+      "title": "Bangladesh ODI Playing XI has only 0/11 players",
+      "details": "getDefaultFormatSquadConfig('BAN', 'ODI') produces a Playing XI of length 0 (none).",
+      "recommendation": "Populate Bangladesh's ODI player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "incomplete_xi_BAN_T20I",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "BAN",
+      "format": "T20I",
+      "title": "Bangladesh T20I Playing XI has only 0/11 players",
+      "details": "getDefaultFormatSquadConfig('BAN', 'T20I') produces a Playing XI of length 0 (none).",
+      "recommendation": "Populate Bangladesh's T20I player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "incomplete_xi_IRE_TEST",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "IRE",
+      "format": "TEST",
+      "title": "Ireland TEST Playing XI has only 0/11 players",
+      "details": "getDefaultFormatSquadConfig('IRE', 'TEST') produces a Playing XI of length 0 (none).",
+      "recommendation": "Populate Ireland's TEST player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "incomplete_xi_IRE_ODI",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "IRE",
+      "format": "ODI",
+      "title": "Ireland ODI Playing XI has only 0/11 players",
+      "details": "getDefaultFormatSquadConfig('IRE', 'ODI') produces a Playing XI of length 0 (none).",
+      "recommendation": "Populate Ireland's ODI player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "incomplete_xi_IRE_T20I",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "IRE",
+      "format": "T20I",
+      "title": "Ireland T20I Playing XI has only 0/11 players",
+      "details": "getDefaultFormatSquadConfig('IRE', 'T20I') produces a Playing XI of length 0 (none).",
+      "recommendation": "Populate Ireland's T20I player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "incomplete_xi_ZIM_TEST",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "ZIM",
+      "format": "TEST",
+      "title": "Zimbabwe TEST Playing XI has only 0/11 players",
+      "details": "getDefaultFormatSquadConfig('ZIM', 'TEST') produces a Playing XI of length 0 (none).",
+      "recommendation": "Populate Zimbabwe's TEST player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "incomplete_xi_ZIM_ODI",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "ZIM",
+      "format": "ODI",
+      "title": "Zimbabwe ODI Playing XI has only 0/11 players",
+      "details": "getDefaultFormatSquadConfig('ZIM', 'ODI') produces a Playing XI of length 0 (none).",
+      "recommendation": "Populate Zimbabwe's ODI player pool so a valid 11-player lineup is always generated."
+    },
+    {
+      "id": "incomplete_xi_ZIM_T20I",
+      "category": "FORMAT_LINEUP_INCONSISTENCY",
+      "severity": "HIGH",
+      "countryId": "ZIM",
+      "format": "T20I",
+      "title": "Zimbabwe T20I Playing XI has only 0/11 players",
+      "details": "getDefaultFormatSquadConfig('ZIM', 'T20I') produces a Playing XI of length 0 (none).",
+      "recommendation": "Populate Zimbabwe's T20I player pool so a valid 11-player lineup is always generated."
+    }
+  ],
+  "schemaAndTourAnomalies": [
+    {
+      "id": "typo_player_id_ind_shiraz",
+      "category": "DATA_SCHEMA_ANOMALY",
+      "severity": "LOW",
+      "countryId": "IND",
+      "playerId": "ind_shiraz",
+      "title": "Typo in Player ID 'ind_shiraz' for Mohammed Siraj",
+      "details": "Mohammed Siraj's player ID is spelled 'ind_shiraz' in src/data/squads.ts and src/data/tours.ts.",
+      "recommendation": "Normalize ID to 'ind_siraj' across squads.ts and tours.ts."
+    },
+    {
+      "id": "invalid_bowling_style_rsa_miller",
+      "category": "DATA_SCHEMA_ANOMALY",
+      "severity": "MEDIUM",
+      "countryId": "RSA",
+      "playerId": "rsa_miller",
+      "title": "Invalid BowlingStyle 'RIGHT_ARM_OFF_BREAK' on player 'David Miller' (rsa_miller)",
+      "details": "'RIGHT_ARM_OFF_BREAK' is not a valid member of the BowlingStyle union in src/types/cricket.ts (expected 'OFF_BREAK' instead of 'RIGHT_ARM_OFF_BREAK').",
+      "recommendation": "Replace 'RIGHT_ARM_OFF_BREAK' with 'OFF_BREAK' in src/data/squads.ts."
+    },
+    {
+      "id": "undersized_tour_squad_tour_bgt_2026_27",
+      "category": "TOUR_SQUAD_ISSUE",
+      "severity": "MEDIUM",
+      "title": "Announced Tour Squad for 'Border-Gavaskar Trophy (India tour of Australia)' has only 12 players (requires 15-20)",
+      "details": "Tour 'tour_bgt_2026_27' has squadAnnounced=true, but tourSquadIds only lists 12 players (ind_rohit, ind_jaiswal, ind_gill, ind_virat, ind_pant, ind_rahane, ind_jadeja, ind_bumrah, ind_shiraz, ind_shami, ind_kuldeep, ind_axar).",
+      "recommendation": "Expand initial announced tourSquadIds to 15-18 players."
+    },
+    {
+      "id": "empty_upcoming_tour_squad_tour_ashes_2027",
+      "category": "TOUR_SQUAD_ISSUE",
+      "severity": "LOW",
+      "title": "Upcoming Tour 'The Ashes Series (England tour of Australia)' has an empty tourSquadIds array (0 players)",
+      "details": "Tour 'tour_ashes_2027' (2027-01-14 to 2027-02-28) currently has tourSquadIds: [] awaiting selection prior to deadline 2027-01-05.",
+      "recommendation": "Provide a default provisional 15-player touring squad or auto-populate on deadline if the user has not manually selected one."
+    },
+    {
+      "id": "empty_upcoming_tour_squad_tour_sa_ind_2027",
+      "category": "TOUR_SQUAD_ISSUE",
+      "severity": "LOW",
+      "title": "Upcoming Tour 'South Africa Tour of India (Multi-Format Bilateral Series)' has an empty tourSquadIds array (0 players)",
+      "details": "Tour 'tour_sa_ind_2027' (2027-03-05 to 2027-04-10) currently has tourSquadIds: [] awaiting selection prior to deadline 2027-02-24.",
+      "recommendation": "Provide a default provisional 15-player touring squad or auto-populate on deadline if the user has not manually selected one."
+    },
+    {
+      "id": "empty_upcoming_tour_squad_tour_pak_aus_2027",
+      "category": "TOUR_SQUAD_ISSUE",
+      "severity": "LOW",
+      "title": "Upcoming Tour 'Pakistan Tour of Australia (Bilateral Test & ODI Tour)' has an empty tourSquadIds array (0 players)",
+      "details": "Tour 'tour_pak_aus_2027' (2027-04-15 to 2027-05-18) currently has tourSquadIds: [] awaiting selection prior to deadline 2027-04-01.",
+      "recommendation": "Provide a default provisional 15-player touring squad or auto-populate on deadline if the user has not manually selected one."
+    },
+    {
+      "id": "empty_upcoming_tour_squad_tour_wtc_final_2027",
+      "category": "TOUR_SQUAD_ISSUE",
+      "severity": "LOW",
+      "title": "Upcoming Tour 'ICC World Test Championship Final (Lord’s)' has an empty tourSquadIds array (0 players)",
+      "details": "Tour 'tour_wtc_final_2027' (2027-06-10 to 2027-06-15) currently has tourSquadIds: [] awaiting selection prior to deadline 2027-05-25.",
+      "recommendation": "Provide a default provisional 15-player touring squad or auto-populate on deadline if the user has not manually selected one."
+    },
+    {
+      "id": "empty_upcoming_tour_squad_tour_eng_ind_pataudi",
+      "category": "TOUR_SQUAD_ISSUE",
+      "severity": "LOW",
+      "title": "Upcoming Tour 'Anthony de Mello Trophy (India Tour of England)' has an empty tourSquadIds array (0 players)",
+      "details": "Tour 'tour_eng_ind_pataudi' (2027-07-02 to 2027-08-15) currently has tourSquadIds: [] awaiting selection prior to deadline 2027-06-20.",
+      "recommendation": "Provide a default provisional 15-player touring squad or auto-populate on deadline if the user has not manually selected one."
+    },
+    {
+      "id": "empty_upcoming_tour_squad_tour_cwc_2027",
+      "category": "TOUR_SQUAD_ISSUE",
+      "severity": "LOW",
+      "title": "Upcoming Tour 'ICC Men’s Cricket World Cup 2027 (Southern Africa)' has an empty tourSquadIds array (0 players)",
+      "details": "Tour 'tour_cwc_2027' (2027-10-01 to 2027-11-15) currently has tourSquadIds: [] awaiting selection prior to deadline 2027-09-10.",
+      "recommendation": "Provide a default provisional 15-player touring squad or auto-populate on deadline if the user has not manually selected one."
+    },
+    {
+      "id": "tournament_team_no_players_wtc_2025_SRI",
+      "category": "TOUR_SQUAD_ISSUE",
+      "severity": "HIGH",
+      "countryId": "SRI",
+      "format": "TEST",
+      "title": "Tournament participant 'Sri Lanka' (SRI) in 'ICC World Test Championship' has 0 players in DB",
+      "details": "Sri Lanka is an active participant in 'ICC World Test Championship' (TEST), but has 0 players in ALL_PLAYERS.",
+      "recommendation": "Add full player rosters for all tournament-participating nations (SRI)."
+    }
+  ]
+}
