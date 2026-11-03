@@ -120,3 +120,4 @@ export const FAMOUS_COACH_PRESETS: CoachPreset[] = [
     perkDescription: '+15% maximum boundary clear rate in death overs and powerplays.',
   },
 ];
+
