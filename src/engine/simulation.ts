@@ -30,10 +30,12 @@ export interface DeliveryContext {
   dayNumber?: number; // 1-5 for Test
   sessionNumber?: number; // 1-3 for Test
   seed?: number;
+  strikerBallsFaced?: number;
+  strikerRunsScored?: number;
 }
 
 // Deterministic Mulberry32 PRNG for reproducible test runs
-function mulberry32(a: number) {
+export function mulberry32(a: number) {
   return function () {
     let t = (a += 0x6d2b79f5);
     t = Math.imul(t ^ (t >>> 15), t | 1);
@@ -201,9 +203,9 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
 
   // 2. Ball Age & New Ball Availability (Test Cricket after 80 overs)
   // Innings over count: overNumber
-  const isNewBall = format === 'TEST' && (overNumber < 15 || (overNumber % 80 < 15 && overNumber >= 80));
+  const isNewBall = format === 'TEST' && (overNumber < 12 || (overNumber % 80 < 12 && overNumber >= 80));
   if (isNewBall && !isSpin) {
-    dynamicPaceBonus += 0.20; // New ball swings and seams more
+    dynamicPaceBonus += 0.06; // New ball offers subtle seam and swing while true bounce aids strokeplay
   }
 
   // 3. Powerplay & Fielding Restrictions Influence
@@ -395,21 +397,52 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
   }
 
   // 7. Wicket Calculation
-  let baseWicketProb = 0.028;
-  if (format === 'TEST') baseWicketProb = 0.023;
-  else if (format === 'ODI') baseWicketProb = 0.027;
-  else if (format === 'T20I') baseWicketProb = 0.040;
+  const isTailender = striker.role === 'BOWLER';
+  const ballsFaced = ctx.strikerBallsFaced || 0;
+
+  // Realistic Settled Batter Mechanic (Cricket Management 2026 Engine):
+  // When a batter gets their eye in, early vulnerability reduces, but concentration lapses remain
+  let settledDiscount = 1.0;
+  if (ballsFaced >= 50) {
+    settledDiscount = 0.72; // Set batter, well adjusted to conditions
+  } else if (ballsFaced >= 20) {
+    settledDiscount = 0.84; // Getting settled
+  } else if (ballsFaced < 8) {
+    settledDiscount = 1.18; // Early ball vulnerability before eye is in
+  }
+
+  // Base wicket probability per delivery
+  // Calibrated so Test matches realistically average 85-115 overs and 280-420 runs per innings
+  let baseWicketProb = 0.018;
+  if (format === 'TEST') {
+    baseWicketProb = isTailender ? 0.038 : 0.0152;
+  } else if (format === 'ODI') {
+    baseWicketProb = isTailender ? 0.042 : 0.019;
+  } else if (format === 'T20I') {
+    baseWicketProb = isTailender ? 0.055 : 0.033;
+  }
 
   // Skill disparity: +bowlerSkill -batterMatchupSkill
-  const skillDelta = (bowlerSkill + pitchBowlerBoost * 25 - batterMatchupSkill) / 200;
-  let finalWicketProb = baseWicketProb * (1 + skillDelta + bowlerFormMod - batterFormMod) * aggressionWicketRisk;
+  // High defensive and temperament attributes protect top batters against dismissals
+  const defenseProtection = (striker.attributes.defense * 0.40 + striker.attributes.temperament * 0.35 + striker.attributes.shotSelection * 0.25) / 100;
+  const skillDelta = (bowlerSkill + pitchBowlerBoost * 25 - batterMatchupSkill) / 220;
+  let finalWicketProb = baseWicketProb * (1 + skillDelta + bowlerFormMod - batterFormMod) * aggressionWicketRisk * settledDiscount;
+
+  if (format === 'TEST') {
+    if (!isTailender) {
+      finalWicketProb *= Math.max(0.70, 1.15 - defenseProtection * 0.40);
+    }
+    // Day 4 & Day 5 wear and tear increases wicket chances (cracks, uneven bounce, heavy spin)
+    if (dayNumber === 4) finalWicketProb *= 1.18;
+    if (dayNumber === 5) finalWicketProb *= 1.35;
+  }
 
   // Field preset impact on wicket taking
-  if (fieldPreset === 'ATTACKING_SLIPS') finalWicketProb *= 1.25;
-  if (fieldPreset === 'DEFENSIVE_BOUNDARY') finalWicketProb *= 0.85;
+  if (fieldPreset === 'ATTACKING_SLIPS') finalWicketProb *= 1.20;
+  if (fieldPreset === 'DEFENSIVE_BOUNDARY') finalWicketProb *= 0.82;
 
   const rollWicket = activeRandom();
-  if (rollWicket < Math.min(0.24, Math.max(0.004, finalWicketProb))) {
+  if (rollWicket < Math.min(0.20, Math.max(0.003, finalWicketProb))) {
     // Choose realistic dismissal type
     let dismissalType: DismissalType = 'CAUGHT';
     const rollDismissal = activeRandom();
@@ -419,8 +452,8 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
       else if (rollDismissal < 0.86) dismissalType = 'BOWLED';
       else dismissalType = 'STUMPED';
     } else {
-      if (rollDismissal < 0.52) dismissalType = 'CAUGHT';
-      else if (rollDismissal < 0.74) dismissalType = 'BOWLED';
+      if (rollDismissal < 0.54) dismissalType = 'CAUGHT';
+      else if (rollDismissal < 0.76) dismissalType = 'BOWLED';
       else if (rollDismissal < 0.94) dismissalType = 'LBW';
       else dismissalType = 'RUN_OUT';
     }
@@ -498,12 +531,28 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
   let probTwo = 0.075 * (striker.attributes.fitness / 85);
   let probOne = 0.34 * aggressionRunFactor;
 
-  // In Test cricket, dot balls are much more frequent (~60–70%)
+  // Format Pacing Calibration (Realistic International Totals)
   if (format === 'TEST') {
-    probSix *= 0.20;
-    probFour *= 0.65;
-    probOne *= 0.55;
-    probTwo *= 0.55;
+    // 3.3 - 3.9 RPO baseline in Tests (scores between 280 - 450 across 85 - 120 overs)
+    probSix = 0.009 * boundaryMultiplier;
+    probFour = 0.070 * boundaryMultiplier * (ballsFaced >= 15 ? 1.15 : 0.95);
+    probThree = 0.008;
+    probTwo = 0.050 * (striker.attributes.fitness / 85);
+    probOne = 0.255 * aggressionRunFactor;
+  } else if (format === 'ODI') {
+    // 5.4 - 6.5 RPO baseline in ODIs (270-340 totals)
+    probSix = 0.026 * boundaryMultiplier;
+    probFour = 0.092 * boundaryMultiplier;
+    probThree = 0.012;
+    probTwo = 0.062 * (striker.attributes.fitness / 85);
+    probOne = 0.33 * aggressionRunFactor;
+  } else if (format === 'T20I') {
+    // 8.2 - 10.2 RPO baseline in T20Is (165-205 totals)
+    probSix = 0.065 * boundaryMultiplier;
+    probFour = 0.140 * boundaryMultiplier;
+    probThree = 0.010;
+    probTwo = 0.075 * (striker.attributes.fitness / 85);
+    probOne = 0.355 * aggressionRunFactor;
   }
 
   const totalRunsProb = probSix + probFour + probThree + probTwo + probOne;

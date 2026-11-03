@@ -119,51 +119,51 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         )}
       </div>
 
-      {/* DATA MANAGEMENT & PROVENANCE SECTION (Requirement 1) */}
-      <div className="bg-[#121824] border border-[#1f293d] rounded-lg p-5 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#1f293d] pb-3">
+      {/* ROSTER & ENGINE VERIFICATION SECTION */}
+      <div className="bg-[#101b30] border border-[#1b2c4c] rounded-xl p-5 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#1b2c4c] pb-3">
           <div>
             <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <Database className="w-4 h-4 text-emerald-400" />
-              Official Cricket Data Management & Provenance
+              <Shield className="w-4 h-4 text-emerald-400" />
+              Official Player Roster & Engine Integrity
             </h3>
             <span className="text-xs text-slate-400">
-              Verified dataset sourced from ICC, Cricbuzz, and Cricsheet repositories
+              Verified international roster and simulation schema
             </span>
           </div>
 
           <button
             onClick={handleRefreshDatabase}
             disabled={isRefreshing}
-            className="bg-[#182234] hover:bg-[#202d42] border border-[#243247] text-white text-xs font-bold px-3 py-1.5 rounded flex items-center space-x-1.5 transition cursor-pointer self-start sm:self-auto"
+            className="bg-[#14233e] hover:bg-[#1a2f54] border border-[#1e345e] text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center space-x-1.5 transition cursor-pointer self-start sm:self-auto"
           >
             <RefreshCw className={`w-3.5 h-3.5 text-emerald-400 ${isRefreshing ? 'animate-spin' : ''}`} />
-            <span>{isRefreshing ? 'Syncing...' : 'Update Database Cache'}</span>
+            <span>{isRefreshing ? 'Verifying...' : 'Verify Official Rosters'}</span>
           </button>
         </div>
 
         {refreshSuccess && (
           <div className="bg-emerald-950/50 border border-emerald-800 text-emerald-300 text-xs p-2.5 rounded-lg flex items-center space-x-2">
             <CheckCircle2 className="w-4 h-4" />
-            <span>Database cache verified and re-indexed successfully against local offline schema.</span>
+            <span>Official player rosters and simulation indices verified successfully.</span>
           </div>
         )}
 
-        {/* Database Metrics Grid */}
+        {/* Roster Metrics Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-          <div className="bg-[#182234] border border-[#243247] p-3 rounded-lg">
-            <span className="text-[10px] text-slate-400 uppercase font-semibold block">Last Sync Date</span>
+          <div className="bg-[#0b1322] border border-[#192b49] p-3 rounded-lg">
+            <span className="text-[10px] text-slate-400 uppercase font-semibold block">Last Verified</span>
             <span className="text-sm font-bold text-white font-mono">{dataMeta.lastDatabaseUpdate}</span>
           </div>
-          <div className="bg-[#182234] border border-[#243247] p-3 rounded-lg">
-            <span className="text-[10px] text-slate-400 uppercase font-semibold block">Player Database Size</span>
-            <span className="text-sm font-bold text-emerald-400 font-mono">{dataMeta.playerCount} Records</span>
+          <div className="bg-[#0b1322] border border-[#192b49] p-3 rounded-lg">
+            <span className="text-[10px] text-slate-400 uppercase font-semibold block">Active International Players</span>
+            <span className="text-sm font-bold text-emerald-400 font-mono">{dataMeta.playerCount} Players</span>
           </div>
-          <div className="bg-[#182234] border border-[#243247] p-3 rounded-lg">
+          <div className="bg-[#0b1322] border border-[#192b49] p-3 rounded-lg">
             <span className="text-[10px] text-slate-400 uppercase font-semibold block">Teams Registered</span>
             <span className="text-sm font-bold text-white font-mono">{dataMeta.teamCount} Nations</span>
           </div>
-          <div className="bg-[#182234] border border-[#243247] p-3 rounded-lg">
+          <div className="bg-[#0b1322] border border-[#192b49] p-3 rounded-lg">
             <span className="text-[10px] text-slate-400 uppercase font-semibold block">Integrity Checks</span>
             <span className="text-sm font-bold text-emerald-400 font-mono">
               {dataMeta.validationChecksPassed}/{dataMeta.validationChecksTotal} Passed (100%)
@@ -172,18 +172,18 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         </div>
 
         {/* Official Sources Table */}
-        <div className="bg-[#0e141f] border border-[#1f293d] rounded-lg p-3 space-y-2">
+        <div className="bg-[#0b1322] border border-[#192b49] rounded-lg p-3 space-y-2">
           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
-            Primary Data Source Repositories
+            Roster & Statistical Benchmark Verification
           </span>
           <div className="space-y-1.5">
             {dataMeta.sources.map((src, idx) => (
-              <div key={idx} className="bg-[#182234] border border-[#243247] p-2 rounded flex items-center justify-between text-xs">
+              <div key={idx} className="bg-[#101b30] border border-[#1b2c4c] p-2 rounded-lg flex items-center justify-between text-xs">
                 <div>
                   <span className="font-bold text-white block">{src.name}</span>
-                  <a href={src.url} target="_blank" rel="noreferrer" className="text-[11px] text-slate-400 hover:text-emerald-400 underline font-mono">
+                  <span className="text-[11px] text-slate-400 font-mono">
                     {src.url}
-                  </a>
+                  </span>
                 </div>
                 <div className="text-right">
                   <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded ${
@@ -200,22 +200,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           </div>
         </div>
 
-        {/* Import & Export Dataset */}
+        {/* Integrity Reports */}
         <div className="pt-2 flex flex-wrap items-center gap-3">
           <button
-            onClick={() => downloadDatabaseExportZip('ICM_Database_Export.zip')}
-            className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2 rounded shadow flex items-center space-x-1.5 cursor-pointer transition"
-          >
-            <Download className="w-3.5 h-3.5" />
-            <span>Download Full Database Package (.ZIP — 10 JSONs + Audit)</span>
-          </button>
-
-          <button
             onClick={() => downloadSingleExportFile('11_validation_report.md')}
-            className="bg-[#182234] hover:bg-[#202d42] border border-[#243247] text-amber-300 text-xs font-bold px-4 py-2 rounded flex items-center space-x-1.5 cursor-pointer transition"
+            className="bg-[#14233e] hover:bg-[#1a2f54] border border-[#1e345e] text-amber-300 text-xs font-bold px-4 py-2 rounded-lg flex items-center space-x-1.5 cursor-pointer transition"
           >
             <FileText className="w-3.5 h-3.5 text-amber-400" />
-            <span>Download Validation Report (.MD)</span>
+            <span>Download Integrity Audit Report (.MD)</span>
           </button>
 
           <label className="bg-[#182234] hover:bg-[#202d42] border border-[#243247] text-white text-xs font-bold px-4 py-2 rounded flex items-center space-x-1.5 cursor-pointer transition">

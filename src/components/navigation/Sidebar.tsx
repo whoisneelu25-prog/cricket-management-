@@ -1,22 +1,15 @@
 import React from 'react';
 import {
   LayoutDashboard,
-  Users,
   UserCheck,
-  Database,
   Calendar,
   Radio,
   Trophy,
-  BarChart3,
-  TrendingUp,
   Newspaper,
-  Award,
   Settings,
   ChevronLeft,
   ChevronRight,
   Briefcase,
-  Flame,
-  Dumbbell
 } from 'lucide-react';
 import { MainNavigationTab } from '../../store/careerStore';
 
@@ -34,6 +27,7 @@ interface NavItem {
   icon: React.ComponentType<{ className?: string }>;
   badge?: string;
   badgeColor?: string;
+  matchTabs?: MainNavigationTab[];
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -43,35 +37,49 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isCollapsed,
   onToggleCollapse,
 }) => {
+  // Streamlined 7 Core Operational Hubs (No clutter, No database in menu)
   const navItems: NavItem[] = [
-    { id: 'DASHBOARD', label: 'Home Dashboard', icon: LayoutDashboard },
-    { id: 'MY_TEAM', label: 'My Team', icon: Users },
-    { id: 'SQUAD_MANAGEMENT', label: 'Squad & Lineup', icon: UserCheck },
-    { id: 'PLAYER_DEVELOPMENT', label: 'Player Development', icon: Dumbbell },
-    { id: 'TOURS', label: 'Bilateral Tours', icon: Briefcase },
-    { id: 'RIVALRIES', label: 'Ashes & Rivalries', icon: Flame },
-    { id: 'MATCH_CENTRE', label: 'Match Centre', icon: Radio, badge: isMatchActive ? 'LIVE' : undefined, badgeColor: 'bg-rose-600' },
-    { id: 'FIXTURES', label: 'Calendar & Fixtures', icon: Calendar },
+    { id: 'DASHBOARD', label: 'Dashboard', icon: LayoutDashboard },
+    {
+      id: 'SQUAD_MANAGEMENT',
+      label: 'Squad & Lineup',
+      icon: UserCheck,
+      matchTabs: ['SQUAD_MANAGEMENT', 'MY_TEAM', 'PLAYER_DEVELOPMENT'],
+    },
+    {
+      id: 'MATCH_CENTRE',
+      label: 'Match Centre',
+      icon: Radio,
+      badge: isMatchActive ? 'LIVE' : undefined,
+      badgeColor: 'bg-rose-500',
+    },
+    {
+      id: 'TOURS',
+      label: 'Tours & Series',
+      icon: Briefcase,
+      matchTabs: ['TOURS', 'RIVALRIES'],
+    },
     { id: 'TOURNAMENTS', label: 'Tournaments & WTC', icon: Trophy },
-    { id: 'PLAYER_DATABASE', label: 'Player Database', icon: Database },
-    { id: 'RANKINGS', label: 'ICC Rankings', icon: TrendingUp },
-    { id: 'STATISTICS', label: 'Statistics & Records', icon: BarChart3 },
-    { id: 'NEWS', label: 'News Centre', icon: Newspaper },
-    { id: 'CAREER_HISTORY', label: 'Career & Honours', icon: Award },
-    { id: 'SETTINGS', label: 'Settings & Saves', icon: Settings },
+    { id: 'FIXTURES', label: 'Calendar & Fixtures', icon: Calendar },
+    {
+      id: 'NEWS',
+      label: 'News & Records',
+      icon: Newspaper,
+      matchTabs: ['NEWS', 'RANKINGS', 'STATISTICS', 'CAREER_HISTORY'],
+    },
   ];
 
   return (
     <aside
-      className={`bg-[#0e131d] border-r border-[#1f293d] flex flex-col transition-all duration-200 select-none ${
+      className={`bg-[#090f1d] border-r border-[#152542] flex flex-col transition-all duration-200 select-none ${
         isCollapsed ? 'w-16' : 'w-56 md:w-64'
       }`}
     >
       {/* Brand Header */}
-      <div className="h-14 border-b border-[#1f293d] flex items-center justify-between px-3.5">
+      <div className="h-14 bg-[#080d1a] border-b border-[#152542] flex items-center justify-between px-3.5">
         {!isCollapsed && (
-          <div className="flex items-center space-x-2 overflow-hidden">
-            <div className="w-7 h-7 rounded bg-emerald-600 flex items-center justify-center font-black text-white text-xs tracking-wider shadow">
+          <div className="flex items-center space-x-2.5 overflow-hidden">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center font-black text-white text-xs tracking-wider shadow-md border border-emerald-400/30">
               ICM
             </div>
             <div className="flex flex-col">
@@ -79,13 +87,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 Cricket Manager
               </span>
               <span className="text-[10px] text-emerald-400 font-mono tracking-tight font-medium">
-                PRO EDITION
+                PRO 2026
               </span>
             </div>
           </div>
         )}
         {isCollapsed && (
-          <div className="w-8 h-8 rounded bg-emerald-600 flex items-center justify-center font-black text-white text-xs mx-auto shadow">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center font-black text-white text-xs mx-auto shadow-md border border-emerald-400/30">
             ICM
           </div>
         )}
@@ -93,17 +101,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <button
           onClick={onToggleCollapse}
           aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          className="text-slate-400 hover:text-white p-1 rounded hover:bg-[#182234] transition hidden md:block"
+          className="text-slate-400 hover:text-white p-1 rounded-md hover:bg-[#14233c] transition hidden md:block"
         >
           {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
         </button>
       </div>
 
-      {/* Nav List */}
+      {/* Primary Nav List (Streamlined & Clean) */}
       <nav className="flex-1 py-3 px-2 space-y-1 overflow-y-auto">
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = activeTab === item.id;
+          const isActive =
+            activeTab === item.id || (item.matchTabs && item.matchTabs.includes(activeTab));
 
           return (
             <button
@@ -111,17 +120,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
               onClick={() => onSelectTab(item.id)}
               title={isCollapsed ? item.label : undefined}
               aria-label={item.label}
-              className={`w-full flex items-center rounded text-xs font-medium transition cursor-pointer group ${
-                isCollapsed ? 'justify-center p-2.5' : 'px-3 py-2 space-x-3'
+              className={`w-full flex items-center rounded-lg text-xs font-medium transition cursor-pointer group ${
+                isCollapsed ? 'justify-center p-2.5' : 'px-3 py-2.5 space-x-3'
               } ${
                 isActive
-                  ? 'bg-emerald-600 text-white font-semibold shadow'
-                  : 'text-slate-400 hover:text-slate-100 hover:bg-[#182234]'
+                  ? 'bg-gradient-to-r from-emerald-950/70 via-[#10243d] to-sky-950/40 text-emerald-300 font-semibold border-l-2 border-emerald-400 shadow-sm'
+                  : 'text-slate-400 hover:text-slate-100 hover:bg-[#111e35]'
               }`}
             >
               <Icon
                 className={`w-4 h-4 flex-shrink-0 ${
-                  isActive ? 'text-white' : 'text-slate-400 group-hover:text-emerald-400'
+                  isActive ? 'text-emerald-400' : 'text-slate-400 group-hover:text-emerald-400'
                 }`}
               />
               {!isCollapsed && (
@@ -141,12 +150,35 @@ export const Sidebar: React.FC<SidebarProps> = ({
         })}
       </nav>
 
+      {/* Settings Action Button */}
+      <div className="px-2 pb-2">
+        <button
+          onClick={() => onSelectTab('SETTINGS')}
+          title={isCollapsed ? 'Settings & Saves' : undefined}
+          aria-label="Settings & Saves"
+          className={`w-full flex items-center rounded-lg text-xs font-medium transition cursor-pointer group ${
+            isCollapsed ? 'justify-center p-2.5' : 'px-3 py-2 space-x-3'
+          } ${
+            activeTab === 'SETTINGS'
+              ? 'bg-[#10243d] text-emerald-300 font-semibold border-l-2 border-emerald-400'
+              : 'text-slate-400 hover:text-slate-100 hover:bg-[#111e35]'
+          }`}
+        >
+          <Settings
+            className={`w-4 h-4 flex-shrink-0 ${
+              activeTab === 'SETTINGS' ? 'text-emerald-400' : 'text-slate-400 group-hover:text-emerald-400'
+            }`}
+          />
+          {!isCollapsed && <span className="truncate text-left flex-1">Settings & Saves</span>}
+        </button>
+      </div>
+
       {/* Footer Info */}
-      <div className="p-3 border-t border-[#1f293d] text-[11px] text-slate-500 text-center">
+      <div className="p-3 border-t border-[#152542] text-[11px] text-slate-500 text-center">
         {!isCollapsed ? (
-          <p className="truncate">International Cricket Manager v4.0</p>
+          <p className="truncate text-slate-400 font-mono text-[10px]">ICM Pro Edition • 2026 Engine</p>
         ) : (
-          <span className="font-mono text-[10px]">v4</span>
+          <span className="font-mono text-[10px] text-emerald-400">2026</span>
         )}
       </div>
     </aside>

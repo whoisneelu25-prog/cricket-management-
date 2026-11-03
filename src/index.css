@@ -2,16 +2,19 @@
 
 @layer base {
   :root {
-    --bg-dark: #0a0e14;
-    --bg-surface: #121824;
-    --bg-card: #182234;
-    --border-subtle: #243247;
-    --accent-green: #10b981;
+    --bg-dark: #070c18;
+    --bg-surface: #0c1527;
+    --bg-card: #101b30;
+    --border-subtle: #172847;
+    --border-highlight: #1e3a66;
+    --accent-emerald: #10b981;
+    --accent-blue: #0284c7;
+    --accent-sky: #38bdf8;
     --accent-gold: #f59e0b;
   }
 
   body {
-    background-color: #0b0f17;
+    background-color: #070c18;
     color: #e2e8f0;
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     overflow-x: hidden;
@@ -24,21 +27,21 @@
   }
 }
 
-/* Custom crisp scrollbars for sports management dense tables */
+/* Custom crisp scrollbars for sports management tables */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #081020;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 3px;
+  background: #1b2e50;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #254070;
 }

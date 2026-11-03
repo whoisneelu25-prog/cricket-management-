@@ -33,7 +33,6 @@ import { Sidebar } from './components/navigation/Sidebar';
 import { DashboardView } from './components/dashboard/DashboardView';
 import { SquadView } from './components/squad/SquadView';
 import { MyTeamView } from './components/team/MyTeamView';
-import { DatabaseView } from './components/database/DatabaseView';
 import { FixturesView } from './components/fixtures/FixturesView';
 import { MatchCentreView } from './components/match/MatchCentreView';
 import { TournamentsView } from './components/tournaments/TournamentsView';
@@ -332,10 +331,6 @@ export default function App() {
         onNewCareer={() => setViewState('NEW_CAREER')}
         onContinueCareer={() => setViewState('IN_GAME')}
         onQuickMatch={handleStartQuickMatch}
-        onOpenDatabase={() => {
-          handleStartQuickMatch();
-          setActiveTab('PLAYER_DATABASE');
-        }}
         savedCareer={career}
       />
     );
@@ -356,7 +351,7 @@ export default function App() {
   }
 
   return (
-    <div className="flex h-screen bg-[#0b0f17] text-slate-200 overflow-hidden select-none font-sans">
+    <div className="flex h-screen bg-[#070c18] text-slate-200 overflow-hidden select-none font-sans">
       {/* Sidebar Navigation */}
       <Sidebar
         activeTab={activeTab}
@@ -376,7 +371,7 @@ export default function App() {
         />
 
         {/* Scrollable Workspace */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 bg-[#0b0f17]">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 bg-[#070c18]">
           {activeTab === 'DASHBOARD' && career && (
             <DashboardView
               career={career}
@@ -476,10 +471,6 @@ export default function App() {
               onAdvanceToNextMatch={handleAdvanceToNextMatch}
               onOpenTourSelection={(tourId) => setSelectedTourIdForModal(tourId)}
             />
-          )}
-
-          {activeTab === 'PLAYER_DATABASE' && (
-            <DatabaseView onSelectPlayer={(p) => setSelectedPlayer(p)} />
           )}
 
           {activeTab === 'TOURNAMENTS' && (

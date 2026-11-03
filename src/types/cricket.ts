@@ -628,8 +628,10 @@ export interface CareerSave {
     name: string;
     nationality: string;
     preferredFormat: MatchFormat;
-    coachingExperience: 'CLUB' | 'DOMESTIC' | 'INTERNATIONAL';
-    managementStyle: 'TACTICAL' | 'MAN_MANAGER' | 'AGGRESSIVE' | 'ANALYTICAL';
+    coachingExperience: 'CLUB' | 'DOMESTIC' | 'INTERNATIONAL' | 'FRANCHISE' | 'ACADEMY';
+    managementStyle: 'TACTICAL' | 'MAN_MANAGER' | 'AGGRESSIVE' | 'ANALYTICAL' | 'FITNESS' | 'DISCIPLINARIAN';
+    coachArchetype?: string;
+    coachPerk?: string;
     difficulty: 'BEGINNER' | 'NORMAL' | 'PROFESSIONAL' | 'EXPERT';
     reputation: number;
     boardConfidence: number;

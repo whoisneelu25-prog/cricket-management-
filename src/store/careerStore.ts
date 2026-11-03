@@ -45,7 +45,6 @@ export type MainNavigationTab =
   | 'MATCH_CENTRE'
   | 'FIXTURES'
   | 'TOURNAMENTS'
-  | 'PLAYER_DATABASE'
   | 'RANKINGS'
   | 'STATISTICS'
   | 'NEWS'
@@ -79,8 +78,10 @@ export function createNewCareerSave(
   managerName: string,
   teamId: string,
   preferredFormat: MatchFormat = 'TEST',
-  coachingExperience: 'CLUB' | 'DOMESTIC' | 'INTERNATIONAL' = 'INTERNATIONAL',
-  managementStyle: 'TACTICAL' | 'MAN_MANAGER' | 'AGGRESSIVE' | 'ANALYTICAL' = 'TACTICAL'
+  coachingExperience: 'CLUB' | 'DOMESTIC' | 'INTERNATIONAL' | 'FRANCHISE' | 'ACADEMY' = 'INTERNATIONAL',
+  managementStyle: 'TACTICAL' | 'MAN_MANAGER' | 'AGGRESSIVE' | 'ANALYTICAL' | 'FITNESS' | 'DISCIPLINARIAN' = 'TACTICAL',
+  coachArchetype?: string,
+  coachPerk?: string
 ): CareerSave {
   const team = INTERNATIONAL_TEAMS.find((t) => t.id === teamId) || INTERNATIONAL_TEAMS[0];
   const { events, userMatches, worldMatches } = buildInternationalCalendar(teamId);
@@ -103,6 +104,8 @@ export function createNewCareerSave(
       preferredFormat,
       coachingExperience,
       managementStyle,
+      coachArchetype,
+      coachPerk,
       difficulty: 'NORMAL',
       reputation: 85,
       boardConfidence: 85,

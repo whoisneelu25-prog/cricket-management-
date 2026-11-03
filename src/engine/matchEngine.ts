@@ -14,7 +14,7 @@ import {
 } from '../types/cricket';
 import { ALL_PLAYERS } from '../data/squads';
 import { INTERNATIONAL_TEAMS } from '../data/teams';
-import { simulateDelivery, setSimulationSeed } from './simulation';
+import { simulateDelivery, setSimulationSeed, mulberry32 } from './simulation';
 import { applyBallToInnings, isInningsComplete, getMaxOversPerBowler } from './rules';
 
 /**
@@ -391,8 +391,9 @@ export function stepMatchBall(matchInput: Match): Match {
 
   let match = matchInput;
   if (match.status === 'SCHEDULED' || match.status === 'TOSS') {
-    const tossWinnerId = Math.random() > 0.5 ? match.homeTeamId : match.awayTeamId;
-    const tossChoice = Math.random() > 0.4 ? 'BAT' : 'BOWL';
+    const tossRand = match.seed ? mulberry32(match.seed) : Math.random;
+    const tossWinnerId = tossRand() > 0.5 ? match.homeTeamId : match.awayTeamId;
+    const tossChoice = tossRand() > 0.4 ? 'BAT' : 'BOWL';
     const battingFirstId =
       (tossWinnerId === match.homeTeamId && tossChoice === 'BAT') ||
       (tossWinnerId === match.awayTeamId && tossChoice === 'BOWL')
@@ -650,8 +651,13 @@ export function stepMatchBall(matchInput: Match): Match {
   const tactics = isUserBatting ? match.userTactics : match.aiTactics;
   const bowlingTactics = isUserBatting ? match.aiTactics : match.userTactics;
 
-  // Total deliveries counter for deterministic PRNG
+  const strikerScore = currentInnings.batters.find((b) => b.playerId === striker.id);
+  const strikerBallsFaced = strikerScore ? strikerScore.balls : 0;
+  const strikerRunsScored = strikerScore ? strikerScore.runs : 0;
+
+  // Total deliveries counter for deterministic PRNG (incorporating innings index so each innings simulates uniquely)
   const deliveryIndex =
+    match.currentInningsIndex * 10000 +
     currentInnings.completedOvers * 6 +
     currentInnings.ballsInCurrentOver +
     currentInnings.extras.wides +
@@ -677,6 +683,8 @@ export function stepMatchBall(matchInput: Match): Match {
     dayNumber: match.dayNumber,
     sessionNumber: match.sessionNumber,
     seed: ballSeed,
+    strikerBallsFaced,
+    strikerRunsScored,
   });
 
   const nameMap: Record<string, string> = {};
@@ -924,8 +932,9 @@ export function simulateFullMatch(match: Match): Match {
 
   // Initialize match if SCHEDULED or TOSS
   if (current.status === 'SCHEDULED' || current.status === 'TOSS') {
-    const tossWinnerId = Math.random() > 0.5 ? current.homeTeamId : current.awayTeamId;
-    const tossChoice = Math.random() > 0.4 ? 'BAT' : 'BOWL';
+    const tossRand = current.seed ? mulberry32(current.seed) : Math.random;
+    const tossWinnerId = tossRand() > 0.5 ? current.homeTeamId : current.awayTeamId;
+    const tossChoice = tossRand() > 0.4 ? 'BAT' : 'BOWL';
     const battingFirstId =
       (tossWinnerId === current.homeTeamId && tossChoice === 'BAT') ||
       (tossWinnerId === current.awayTeamId && tossChoice === 'BOWL')
@@ -968,11 +977,22 @@ export function simulateFullMatch(match: Match): Match {
   }
 
   let iterations = 0;
-  const maxIterations = current.format === 'TEST' ? 2200 : 700;
+  const maxIterations = current.format === 'TEST' ? 3500 : 700;
 
   while (current.status !== 'COMPLETED' && current.status !== 'DRAW' && iterations < maxIterations) {
     current = stepMatchBall(current);
     iterations++;
+  }
+
+  // Fallback for Test cricket if maximum time/overs are exhausted
+  if (current.format === 'TEST' && (current.status === 'IN_PROGRESS' || current.dayNumber > 5)) {
+    const res = computeMatchResult(current);
+    current = {
+      ...current,
+      status: current.innings.length >= 2 && current.innings[current.innings.length - 1].isCompleted ? 'COMPLETED' : 'DRAW',
+      resultText: current.innings.length >= 2 && current.innings[current.innings.length - 1].isCompleted ? res.resultText : 'Match Drawn (Time Expired on Day 5)',
+      playerOfTheMatch: res.potm,
+    };
   }
 
   // Ensure result text is set
