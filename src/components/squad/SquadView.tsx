@@ -203,9 +203,19 @@ export const SquadView: React.FC<SquadViewProps> = ({
 
             <div className="space-y-1.5">
               {playingXI.map((player, index) => {
-                const isCap = player.id === formatConfig.captainId;
-                const isVC = player.id === formatConfig.viceCaptainId;
-                const isWK = player.id === formatConfig.wicketKeeperId || player.isWicketKeeper;
+                const designatedCapId = formatConfig.captainId && playingXI.some((p) => p.id === formatConfig.captainId)
+                  ? formatConfig.captainId
+                  : playingXI[0]?.id;
+                const designatedVCId = formatConfig.viceCaptainId && playingXI.some((p) => p.id === formatConfig.viceCaptainId)
+                  ? formatConfig.viceCaptainId
+                  : (playingXI[1]?.id || playingXI[0]?.id);
+                const designatedWkId = formatConfig.wicketKeeperId && playingXI.some((p) => p.id === formatConfig.wicketKeeperId)
+                  ? formatConfig.wicketKeeperId
+                  : playingXI.find((p) => p.isWicketKeeper || p.role === 'WICKETKEEPER_BATTER')?.id;
+
+                const isCap = player.id === designatedCapId;
+                const isVC = player.id === designatedVCId && !isCap;
+                const isWK = player.id === designatedWkId;
                 const rating = selectedFormat === 'TEST' ? player.testRating : selectedFormat === 'ODI' ? player.odiRating : player.t20Rating;
 
                 return (

@@ -424,3 +424,4 @@ export const PlayerDevelopmentView: React.FC<PlayerDevelopmentViewProps> = ({
     </div>
   );
 };
+

@@ -20,6 +20,10 @@ import {
   announceTourSquad,
   assignPlayerTrainingFocus,
   applyUserMatchResult,
+  updateSquadXI,
+  setFormatCaptain,
+  setFormatViceCaptain,
+  setFormatWicketKeeper,
 } from './store/careerStore';
 import { TrainingFocus } from './engine/playerDevelopmentEngine';
 import { INTERNATIONAL_TEAMS } from './data/teams';
@@ -50,7 +54,8 @@ import {
   stepMatchOver,
   stepMatchInnings,
   simulateFullMatch,
-  createInitialInningsState
+  createInitialInningsState,
+  declareInnings,
 } from './engine/matchEngine';
 
 export default function App() {
@@ -146,6 +151,21 @@ export default function App() {
     updateActiveMatch(next);
   };
 
+  const handleDeclareInnings = () => {
+    if (!activeMatch) return;
+    const next = declareInnings(activeMatch);
+    updateActiveMatch(next);
+  };
+
+  const handleFollowOnDecision = (enforce: boolean) => {
+    if (!activeMatch) return;
+    const next = {
+      ...activeMatch,
+      followOnEnforced: enforce,
+    };
+    updateActiveMatch(next);
+  };
+
   const handleUpdateTactics = (
     battingAggression: BattingAggression,
     bowlingTactic: BowlingTactic,
@@ -219,94 +239,28 @@ export default function App() {
   // Format-Specific Squad Management Updates
   const handleUpdateSquadXI = (format: MatchFormat, xiIds: string[]) => {
     if (!career) return;
-    const currentConfig = career.formatSquads?.[format] || {
-      format,
-      squadPlayerIds: xiIds,
-      playingXI: xiIds,
-      battingOrder: xiIds,
-      captainId: xiIds[0] || '',
-      viceCaptainId: xiIds[1] || '',
-      wicketKeeperId: xiIds[2] || '',
-      bowlingRotation: [],
-    };
-
-    const nextCareer: CareerSave = {
-      ...career,
-      formatSquads: {
-        ...career.formatSquads,
-        [format]: {
-          ...currentConfig,
-          playingXI: xiIds,
-          battingOrder: xiIds,
-        },
-      },
-      customSquadXI: {
-        ...career.customSquadXI,
-        [format]: xiIds,
-        battingOrder: xiIds,
-      },
-      savedAt: new Date().toISOString(),
-    };
+    const nextCareer = updateSquadXI(career, format, xiIds);
     setCareer(nextCareer);
     saveCareerToStorage(nextCareer);
   };
 
   const handleSetCaptain = (format: MatchFormat, playerId: string) => {
     if (!career) return;
-    const currentConfig = career.formatSquads?.[format];
-    if (!currentConfig) return;
-
-    const nextCareer: CareerSave = {
-      ...career,
-      formatSquads: {
-        ...career.formatSquads,
-        [format]: {
-          ...currentConfig,
-          captainId: playerId,
-        },
-      },
-      savedAt: new Date().toISOString(),
-    };
+    const nextCareer = setFormatCaptain(career, format, playerId);
     setCareer(nextCareer);
     saveCareerToStorage(nextCareer);
   };
 
   const handleSetViceCaptain = (format: MatchFormat, playerId: string) => {
     if (!career) return;
-    const currentConfig = career.formatSquads?.[format];
-    if (!currentConfig) return;
-
-    const nextCareer: CareerSave = {
-      ...career,
-      formatSquads: {
-        ...career.formatSquads,
-        [format]: {
-          ...currentConfig,
-          viceCaptainId: playerId,
-        },
-      },
-      savedAt: new Date().toISOString(),
-    };
+    const nextCareer = setFormatViceCaptain(career, format, playerId);
     setCareer(nextCareer);
     saveCareerToStorage(nextCareer);
   };
 
   const handleSetWicketKeeper = (format: MatchFormat, playerId: string) => {
     if (!career) return;
-    const currentConfig = career.formatSquads?.[format];
-    if (!currentConfig) return;
-
-    const nextCareer: CareerSave = {
-      ...career,
-      formatSquads: {
-        ...career.formatSquads,
-        [format]: {
-          ...currentConfig,
-          wicketKeeperId: playerId,
-        },
-      },
-      savedAt: new Date().toISOString(),
-    };
+    const nextCareer = setFormatWicketKeeper(career, format, playerId);
     setCareer(nextCareer);
     saveCareerToStorage(nextCareer);
   };
@@ -507,6 +461,8 @@ export default function App() {
               onChangeBowler={handleChangeBowler}
               onStartMatchWithToss={handleStartMatchWithToss}
               onSelectPlayer={(p) => setSelectedPlayer(p)}
+              onDeclareInnings={handleDeclareInnings}
+              onFollowOnDecision={handleFollowOnDecision}
             />
           )}
 

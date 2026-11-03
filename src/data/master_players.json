@@ -26572,7 +26572,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -26596,11 +26596,11 @@
       "againstSpin": 82,
       "consistency": 81,
       "temperament": 80,
-      "pace": 25,
+      "pace": 85,
       "swing": 20,
-      "seam": 20,
+      "seam": 82,
       "spin": 20,
-      "accuracy": 55,
+      "accuracy": 84,
       "variation": 50,
       "control": 55,
       "deathBowling": 40,
@@ -26613,7 +26613,8 @@
       "leadership": 72,
       "mentalStrength": 81,
       "currentForm": 82,
-      "potential": 85
+      "potential": 85,
+      "bounce": 82
     },
     "stats": {
       "TEST": {
@@ -27330,7 +27331,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -27354,11 +27355,11 @@
       "againstSpin": 82,
       "consistency": 81,
       "temperament": 80,
-      "pace": 25,
+      "pace": 84,
       "swing": 20,
-      "seam": 20,
+      "seam": 80,
       "spin": 20,
-      "accuracy": 55,
+      "accuracy": 78,
       "variation": 50,
       "control": 55,
       "deathBowling": 40,
@@ -27371,7 +27372,8 @@
       "leadership": 72,
       "mentalStrength": 81,
       "currentForm": 82,
-      "potential": 85
+      "potential": 85,
+      "bounce": 86
     },
     "stats": {
       "TEST": {
@@ -28544,9 +28546,9 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
-    "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
+    "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
       "TEST": true,
       "ODI": false,
@@ -28572,7 +28574,7 @@
       "swing": 20,
       "seam": 20,
       "spin": 20,
-      "accuracy": 55,
+      "accuracy": 82,
       "variation": 50,
       "control": 55,
       "deathBowling": 40,
@@ -28585,7 +28587,9 @@
       "leadership": 72,
       "mentalStrength": 81,
       "currentForm": 82,
-      "potential": 85
+      "potential": 85,
+      "turn": 84,
+      "drift": 82
     },
     "stats": {
       "TEST": {
@@ -28695,9 +28699,9 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
-    "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
+    "bowlingStyle": "RIGHT_ARM_FAST",
     "formatEligibility": {
       "TEST": false,
       "ODI": false,
@@ -28719,11 +28723,11 @@
       "againstSpin": 82,
       "consistency": 81,
       "temperament": 80,
-      "pace": 25,
+      "pace": 95,
       "swing": 20,
-      "seam": 20,
+      "seam": 82,
       "spin": 20,
-      "accuracy": 55,
+      "accuracy": 80,
       "variation": 50,
       "control": 55,
       "deathBowling": 40,
@@ -28736,7 +28740,8 @@
       "leadership": 72,
       "mentalStrength": 81,
       "currentForm": 82,
-      "potential": 85
+      "potential": 85,
+      "bounce": 90
     },
     "stats": {
       "TEST": {
@@ -29755,9 +29760,9 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
-    "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
+    "bowlingStyle": "RIGHT_ARM_FAST",
     "formatEligibility": {
       "TEST": true,
       "ODI": true,
@@ -29779,11 +29784,11 @@
       "againstSpin": 82,
       "consistency": 81,
       "temperament": 80,
-      "pace": 25,
+      "pace": 88,
       "swing": 20,
-      "seam": 20,
+      "seam": 84,
       "spin": 20,
-      "accuracy": 55,
+      "accuracy": 82,
       "variation": 50,
       "control": 55,
       "deathBowling": 40,
@@ -29796,7 +29801,8 @@
       "leadership": 72,
       "mentalStrength": 81,
       "currentForm": 82,
-      "potential": 85
+      "potential": 85,
+      "bounce": 90
     },
     "stats": {
       "TEST": {
@@ -29906,7 +29912,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -29930,11 +29936,11 @@
       "againstSpin": 82,
       "consistency": 81,
       "temperament": 80,
-      "pace": 25,
+      "pace": 82,
       "swing": 20,
-      "seam": 20,
+      "seam": 78,
       "spin": 20,
-      "accuracy": 55,
+      "accuracy": 78,
       "variation": 50,
       "control": 55,
       "deathBowling": 40,
@@ -29947,7 +29953,8 @@
       "leadership": 72,
       "mentalStrength": 81,
       "currentForm": 82,
-      "potential": 85
+      "potential": 85,
+      "bounce": 80
     },
     "stats": {
       "TEST": {
@@ -31422,9 +31429,9 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "ALL_ROUNDER",
     "battingHand": "RIGHT_HAND",
-    "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
+    "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
       "TEST": false,
       "ODI": false,
@@ -31450,7 +31457,7 @@
       "swing": 20,
       "seam": 20,
       "spin": 20,
-      "accuracy": 55,
+      "accuracy": 82,
       "variation": 50,
       "control": 55,
       "deathBowling": 40,
@@ -31463,7 +31470,9 @@
       "leadership": 72,
       "mentalStrength": 81,
       "currentForm": 82,
-      "potential": 85
+      "potential": 85,
+      "turn": 80,
+      "drift": 78
     },
     "stats": {
       "TEST": {
@@ -31725,7 +31734,7 @@
     "dob": "1993-06-26",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "ALL_ROUNDER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "RIGHT_ARM_MEDIUM",
     "formatEligibility": {
@@ -31749,11 +31758,11 @@
       "againstSpin": 82,
       "consistency": 81,
       "temperament": 80,
-      "pace": 25,
+      "pace": 68,
       "swing": 20,
-      "seam": 20,
+      "seam": 70,
       "spin": 20,
-      "accuracy": 55,
+      "accuracy": 74,
       "variation": 50,
       "control": 55,
       "deathBowling": 40,
@@ -32332,9 +32341,9 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
-    "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
+    "bowlingStyle": "LEG_BREAK",
     "formatEligibility": {
       "TEST": false,
       "ODI": false,
@@ -32360,7 +32369,7 @@
       "swing": 20,
       "seam": 20,
       "spin": 20,
-      "accuracy": 55,
+      "accuracy": 80,
       "variation": 50,
       "control": 55,
       "deathBowling": 40,
@@ -32373,7 +32382,9 @@
       "leadership": 72,
       "mentalStrength": 81,
       "currentForm": 82,
-      "potential": 85
+      "potential": 85,
+      "turn": 86,
+      "drift": 80
     },
     "stats": {
       "TEST": {
@@ -32787,9 +32798,9 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
-    "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
+    "bowlingStyle": "LEG_BREAK",
     "formatEligibility": {
       "TEST": false,
       "ODI": false,
@@ -32815,7 +32826,7 @@
       "swing": 20,
       "seam": 20,
       "spin": 20,
-      "accuracy": 55,
+      "accuracy": 78,
       "variation": 50,
       "control": 55,
       "deathBowling": 40,
@@ -32828,7 +32839,9 @@
       "leadership": 72,
       "mentalStrength": 81,
       "currentForm": 82,
-      "potential": 85
+      "potential": 85,
+      "turn": 82,
+      "drift": 78
     },
     "stats": {
       "TEST": {

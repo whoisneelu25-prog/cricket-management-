@@ -1,5 +1,5 @@
 import { CareerSave, Match, NewsArticle, TournamentTableEntry, TournamentEdition, RivalryCompetition } from '../types/cricket';
-import { simulateFullMatch } from './matchEngine';
+import { simulateFullMatch, applyMatchStatsToPlayers } from './matchEngine';
 import { updateTourSeriesStandings } from './tourEngine';
 import { recordMatchInTournament, createWTCFinalMatch } from './tournamentEngine';
 import { processSquadTrainingDay, TrainingFocus } from './playerDevelopmentEngine';
@@ -45,6 +45,7 @@ export function simulateWorldMatchesUntil(
       // Simulate this world match using the realistic engine
       const completed = simulateFullMatch(match);
       simulatedMatches.push(completed);
+      applyMatchStatsToPlayers(completed, updatedCareer);
 
       // Create news article for the world match
       const winnerName = completed.status === 'COMPLETED'

@@ -261,3 +261,4 @@ export function applyMatchWorkload(player: Player, format: MatchFormat): Player 
   p.workloadFatigue = Math.min(100, (p.workloadFatigue || 15) + fatigueGain);
   return p;
 }
+

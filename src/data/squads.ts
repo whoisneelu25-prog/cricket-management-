@@ -18,20 +18,34 @@ export const ALL_PLAYERS: Player[] = (masterPlayersJson as Player[]);
 
 const SQUADS_MAP = masterSquadsJson as Record<string, Record<MatchFormat, FormatSquadConfig>>;
 
-export function getPlayersByCountry(countryId: string): Player[] {
+export function getPlayersByCountry(countryId: string, activeMenOnly: boolean = true): Player[] {
   const normalizedId = countryId === 'SRI' ? 'SL' : countryId === 'WIN' ? 'WI' : countryId;
-  return ALL_PLAYERS.filter((p) => p.countryId === normalizedId || p.countryId === countryId);
+  return ALL_PLAYERS.filter((p) => {
+    const match = p.countryId === normalizedId || p.countryId === countryId;
+    if (!match) return false;
+    if (activeMenOnly) {
+      return p.status === 'ACTIVE' && p.gender === 'MALE';
+    }
+    return true;
+  });
+}
+
+export function getAllPlayersByCountry(countryId: string): Player[] {
+  return getPlayersByCountry(countryId, false);
 }
 
 export function getFormatEligiblePlayers(countryId: string, format: MatchFormat): Player[] {
-  const pool = getPlayersByCountry(countryId);
-  return pool.filter((p) => p.formatEligibility[format] && p.status === 'ACTIVE');
+  const pool = getPlayersByCountry(countryId, true);
+  return pool.filter((p) => p.formatEligibility[format] && p.status === 'ACTIVE' && p.gender === 'MALE');
 }
 
 export function getDefaultCaptainId(countryId: string, format: MatchFormat = 'TEST'): string {
   const normalizedId = countryId === 'SRI' ? 'SL' : countryId === 'WIN' ? 'WI' : countryId;
   const cfg = SQUADS_MAP[normalizedId]?.[format];
-  if (cfg && cfg.captainId) return cfg.captainId;
+  if (cfg && cfg.captainId) {
+    const p = ALL_PLAYERS.find((x) => x.id === cfg.captainId);
+    if (p && p.status === 'ACTIVE' && p.gender === 'MALE') return cfg.captainId;
+  }
   const pool = getFormatEligiblePlayers(normalizedId, format);
   return pool[0]?.id || '';
 }
@@ -39,7 +53,10 @@ export function getDefaultCaptainId(countryId: string, format: MatchFormat = 'TE
 export function getDefaultViceCaptainId(countryId: string, format: MatchFormat = 'TEST'): string {
   const normalizedId = countryId === 'SRI' ? 'SL' : countryId === 'WIN' ? 'WI' : countryId;
   const cfg = SQUADS_MAP[normalizedId]?.[format];
-  if (cfg && cfg.viceCaptainId) return cfg.viceCaptainId;
+  if (cfg && cfg.viceCaptainId) {
+    const p = ALL_PLAYERS.find((x) => x.id === cfg.viceCaptainId);
+    if (p && p.status === 'ACTIVE' && p.gender === 'MALE') return cfg.viceCaptainId;
+  }
   const pool = getFormatEligiblePlayers(normalizedId, format);
   return pool[1]?.id || pool[0]?.id || '';
 }
@@ -47,7 +64,10 @@ export function getDefaultViceCaptainId(countryId: string, format: MatchFormat =
 export function getDefaultWicketKeeperId(countryId: string, format: MatchFormat = 'TEST'): string {
   const normalizedId = countryId === 'SRI' ? 'SL' : countryId === 'WIN' ? 'WI' : countryId;
   const cfg = SQUADS_MAP[normalizedId]?.[format];
-  if (cfg && cfg.wicketKeeperId) return cfg.wicketKeeperId;
+  if (cfg && cfg.wicketKeeperId) {
+    const p = ALL_PLAYERS.find((x) => x.id === cfg.wicketKeeperId);
+    if (p && p.status === 'ACTIVE' && p.gender === 'MALE') return cfg.wicketKeeperId;
+  }
   const pool = getFormatEligiblePlayers(normalizedId, format);
   const wk = pool.find((p) => p.isWicketKeeper || p.role === 'WICKETKEEPER_BATTER');
   return wk ? wk.id : (pool[2]?.id || pool[0]?.id || '');
@@ -57,7 +77,13 @@ export function getDefaultPlayingXI(countryId: string, format: MatchFormat = 'TE
   const normalizedId = countryId === 'SRI' ? 'SL' : countryId === 'WIN' ? 'WI' : countryId;
   const cfg = SQUADS_MAP[normalizedId]?.[format];
   if (cfg && cfg.playingXI && cfg.playingXI.length >= 11) {
-    return cfg.playingXI;
+    const allActive = cfg.playingXI.every((id) => {
+      const p = ALL_PLAYERS.find((x) => x.id === id);
+      return p && p.status === 'ACTIVE' && p.gender === 'MALE';
+    });
+    if (allActive) {
+      return cfg.playingXI;
+    }
   }
   const pool = getFormatEligiblePlayers(normalizedId, format);
   return pool.slice(0, 11).map((p) => p.id);
@@ -65,10 +91,35 @@ export function getDefaultPlayingXI(countryId: string, format: MatchFormat = 'TE
 
 export function getDefaultFormatSquadConfig(countryId: string, format: MatchFormat): FormatSquadConfig {
   const normalizedId = countryId === 'SRI' ? 'SL' : countryId === 'WIN' ? 'WI' : countryId;
-  const cfg = SQUADS_MAP[normalizedId]?.[format];
-  if (cfg) return cfg;
-
   const pool = getFormatEligiblePlayers(normalizedId, format);
+  const poolIds = new Set(pool.map((p) => p.id));
+  const cfg = SQUADS_MAP[normalizedId]?.[format];
+
+  if (cfg && cfg.playingXI && cfg.playingXI.length >= 11) {
+    const sanitizedXI = cfg.playingXI.filter((id) => poolIds.has(id));
+    if (sanitizedXI.length === 11) {
+      const capInXI = sanitizedXI.includes(cfg.captainId);
+      const capId = capInXI ? cfg.captainId : sanitizedXI[0];
+      const vcInXI = sanitizedXI.includes(cfg.viceCaptainId);
+      const vcId = vcInXI ? cfg.viceCaptainId : (sanitizedXI[1] || sanitizedXI[0]);
+      const wk = pool.find((x) => sanitizedXI.includes(x.id) && (x.isWicketKeeper || x.role === 'WICKETKEEPER_BATTER'));
+      const wkInXI = sanitizedXI.includes(cfg.wicketKeeperId);
+      const wkId = wk ? wk.id : (wkInXI ? cfg.wicketKeeperId : sanitizedXI[2]);
+
+      return {
+        ...cfg,
+        playingXI: sanitizedXI,
+        battingOrder: cfg.battingOrder && cfg.battingOrder.length === 11 && cfg.battingOrder.every((id) => poolIds.has(id))
+          ? cfg.battingOrder
+          : sanitizedXI,
+        captainId: capId,
+        viceCaptainId: vcId,
+        wicketKeeperId: wkId,
+        squadPlayerIds: (cfg.squadPlayerIds || []).filter((id) => poolIds.has(id)),
+      };
+    }
+  }
+
   const xi = pool.slice(0, 11).map((p) => p.id);
   const squad = pool.slice(0, 18).map((p) => p.id);
 
@@ -79,7 +130,7 @@ export function getDefaultFormatSquadConfig(countryId: string, format: MatchForm
     battingOrder: xi,
     captainId: pool[0]?.id || '',
     viceCaptainId: pool[1]?.id || '',
-    wicketKeeperId: pool.find((p) => p.isWicketKeeper)?.id || pool[2]?.id || '',
+    wicketKeeperId: pool.find((p) => p.isWicketKeeper || p.role === 'WICKETKEEPER_BATTER')?.id || pool[2]?.id || '',
     bowlingRotation: xi.filter((id) => {
       const p = ALL_PLAYERS.find((x) => x.id === id);
       return p && (p.role === 'BOWLER' || p.role === 'ALL_ROUNDER');

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Check, Shield, Users, AlertCircle, Award, Sparkles } from 'lucide-react';
-import { Player, Tour } from '../../types/cricket';
+import { Player, Tour, MatchFormat } from '../../types/cricket';
 import { getPlayersByCountry } from '../../data/squads';
 
 interface TourSelectionModalProps {
@@ -18,14 +18,53 @@ export const TourSelectionModal: React.FC<TourSelectionModalProps> = ({
   onClose,
   onConfirm,
 }) => {
-  const nationalPool = getPlayersByCountry(countryId);
+  // Always active male players only for men's international touring squads
+  const nationalPool = getPlayersByCountry(countryId, true);
 
-  // Prepopulate with tour's existing squad or top 16 players
+  const tourFormats: MatchFormat[] = tour.formats || (Object.keys(tour.series || {}) as MatchFormat[]);
+
+  const getTourRating = (p: Player) => {
+    const ratings = tourFormats.map((fmt) => {
+      if (fmt === 'TEST') return p.testRating || 75;
+      if (fmt === 'ODI') return p.odiRating || 75;
+      return p.t20Rating || 75;
+    });
+    return ratings.length > 0 ? Math.max(...ratings) : p.testRating || 75;
+  };
+
+  const getRecommendedSquadIds = (): string[] => {
+    // Sort pool by highest tour rating
+    const sorted = [...nationalPool].sort((a, b) => getTourRating(b) - getTourRating(a));
+    const keepers = sorted.filter((p) => p.isWicketKeeper || p.role === 'WICKETKEEPER_BATTER');
+    const batters = sorted.filter((p) => p.role === 'BATTER');
+    const allRounders = sorted.filter((p) => p.role === 'ALL_ROUNDER');
+    const bowlers = sorted.filter((p) => p.role === 'BOWLER');
+
+    const squad: string[] = [];
+    // Top 2 keepers
+    keepers.slice(0, 2).forEach((p) => squad.push(p.id));
+    // Top 5 batters
+    batters.slice(0, 5).forEach((p) => { if (!squad.includes(p.id)) squad.push(p.id); });
+    // Top 3 all-rounders
+    allRounders.slice(0, 3).forEach((p) => { if (!squad.includes(p.id)) squad.push(p.id); });
+    // Top 6 bowlers
+    bowlers.slice(0, 6).forEach((p) => { if (!squad.includes(p.id)) squad.push(p.id); });
+
+    // If still under 16, fill with highest rated remaining
+    for (const p of sorted) {
+      if (squad.length >= 16) break;
+      if (!squad.includes(p.id)) squad.push(p.id);
+    }
+    return squad;
+  };
+
+  // Prepopulate with tour's existing squad or smart recommended squad
   const [selectedIds, setSelectedIds] = useState<string[]>(() => {
     if (tour.tourSquadIds && tour.tourSquadIds.length >= 11) {
-      return [...tour.tourSquadIds];
+      const valid = tour.tourSquadIds.filter((id) => nationalPool.some((p) => p.id === id));
+      if (valid.length >= 11) return valid;
     }
-    return nationalPool.slice(0, 16).map((p) => p.id);
+    return getRecommendedSquadIds();
   });
 
   const [roleFilter, setRoleFilter] = useState<'ALL' | 'BATTER' | 'BOWLER' | 'ALL_ROUNDER' | 'WICKETKEEPER_BATTER'>('ALL');
@@ -44,13 +83,24 @@ export const TourSelectionModal: React.FC<TourSelectionModalProps> = ({
     }
   };
 
+  const handleAutoSelect = () => {
+    setSelectedIds(getRecommendedSquadIds());
+  };
+
   const selectedPlayers = nationalPool.filter((p) => selectedIds.includes(p.id));
   const wkCount = selectedPlayers.filter((p) => p.isWicketKeeper || p.role === 'WICKETKEEPER_BATTER').length;
   const batterCount = selectedPlayers.filter((p) => p.role === 'BATTER').length;
   const allRounderCount = selectedPlayers.filter((p) => p.role === 'ALL_ROUNDER').length;
   const bowlerCount = selectedPlayers.filter((p) => p.role === 'BOWLER').length;
 
-  const filteredPool = nationalPool.filter((p) => {
+  const sortedPool = [...nationalPool].sort((a, b) => {
+    const aSel = selectedIds.includes(a.id) ? 1 : 0;
+    const bSel = selectedIds.includes(b.id) ? 1 : 0;
+    if (aSel !== bSel) return bSel - aSel;
+    return getTourRating(b) - getTourRating(a);
+  });
+
+  const filteredPool = sortedPool.filter((p) => {
     if (roleFilter !== 'ALL' && p.role !== roleFilter) return false;
     return true;
   });
@@ -101,12 +151,22 @@ export const TourSelectionModal: React.FC<TourSelectionModalProps> = ({
             </div>
           </div>
 
-          {wkCount === 0 && (
-            <div className="flex items-center space-x-1.5 text-rose-400 bg-rose-950/40 border border-rose-800/60 px-2.5 py-1 rounded">
-              <AlertCircle className="w-3.5 h-3.5" />
-              <span>Must include at least 1 Wicketkeeper</span>
-            </div>
-          )}
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={handleAutoSelect}
+              className="px-2.5 py-1 rounded bg-[#182234] hover:bg-[#243247] border border-[#2e3e57] text-[11px] font-bold text-amber-300 transition cursor-pointer flex items-center space-x-1"
+            >
+              <Sparkles className="w-3 h-3 text-amber-400" />
+              <span>Auto-Select Best 16</span>
+            </button>
+
+            {wkCount === 0 && (
+              <div className="flex items-center space-x-1.5 text-rose-400 bg-rose-950/40 border border-rose-800/60 px-2.5 py-1 rounded">
+                <AlertCircle className="w-3.5 h-3.5" />
+                <span>Must include at least 1 Wicketkeeper</span>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Role Filters */}

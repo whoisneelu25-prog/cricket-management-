@@ -28,38 +28,40 @@
         "PLY_IND_046"
       ],
       "playingXI": [
+        "PLY_IND_030",
         "PLY_IND_046",
-        "PLY_IND_012",
-        "PLY_IND_032",
         "PLY_IND_038",
-        "PLY_IND_013",
+        "PLY_IND_044",
+        "PLY_IND_029",
+        "PLY_IND_012",
         "PLY_IND_027",
-        "PLY_IND_006",
         "PLY_IND_045",
-        "PLY_IND_002",
+        "PLY_IND_011",
         "PLY_IND_018",
-        "PLY_IND_023"
+        "PLY_IND_002"
       ],
       "battingOrder": [
+        "PLY_IND_030",
         "PLY_IND_046",
-        "PLY_IND_012",
-        "PLY_IND_032",
         "PLY_IND_038",
-        "PLY_IND_013",
+        "PLY_IND_044",
+        "PLY_IND_029",
+        "PLY_IND_012",
         "PLY_IND_027",
-        "PLY_IND_006",
         "PLY_IND_045",
-        "PLY_IND_002",
+        "PLY_IND_011",
         "PLY_IND_018",
-        "PLY_IND_023"
+        "PLY_IND_002"
       ],
-      "captainId": "PLY_IND_038",
-      "viceCaptainId": "PLY_IND_029",
-      "wicketKeeperId": "PLY_IND_010",
+      "captainId": "PLY_IND_030",
+      "viceCaptainId": "PLY_IND_011",
+      "wicketKeeperId": "PLY_IND_029",
       "bowlingRotation": [
+        "PLY_IND_011",
+        "PLY_IND_018",
+        "PLY_IND_002",
         "PLY_IND_027",
-        "PLY_IND_045",
-        "PLY_IND_018"
+        "PLY_IND_045"
       ]
     },
     "ODI": {
@@ -97,37 +99,37 @@
         "PLY_IND_038",
         "PLY_IND_044",
         "PLY_IND_037",
-        "PLY_IND_004",
         "PLY_IND_012",
         "PLY_IND_008",
         "PLY_IND_027",
-        "PLY_IND_017",
+        "PLY_IND_004",
         "PLY_IND_014",
-        "PLY_IND_042"
+        "PLY_IND_011",
+        "PLY_IND_018"
       ],
       "battingOrder": [
         "PLY_IND_030",
         "PLY_IND_038",
         "PLY_IND_044",
         "PLY_IND_037",
-        "PLY_IND_004",
         "PLY_IND_012",
         "PLY_IND_008",
         "PLY_IND_027",
-        "PLY_IND_017",
-        "PLY_IND_014",
-        "PLY_IND_042"
-      ],
-      "captainId": "PLY_IND_038",
-      "viceCaptainId": "PLY_IND_037",
-      "wicketKeeperId": "PLY_IND_010",
-      "bowlingRotation": [
         "PLY_IND_004",
+        "PLY_IND_014",
+        "PLY_IND_011",
+        "PLY_IND_018"
+      ],
+      "captainId": "PLY_IND_030",
+      "viceCaptainId": "PLY_IND_038",
+      "wicketKeeperId": "PLY_IND_012",
+      "bowlingRotation": [
+        "PLY_IND_011",
+        "PLY_IND_018",
         "PLY_IND_008",
         "PLY_IND_027",
-        "PLY_IND_017",
-        "PLY_IND_014",
-        "PLY_IND_042"
+        "PLY_IND_004",
+        "PLY_IND_014"
       ]
     },
     "T20I": {
@@ -177,41 +179,40 @@
       ],
       "playingXI": [
         "PLY_IND_001",
-        "PLY_IND_038",
+        "PLY_IND_033",
         "PLY_IND_039",
         "PLY_IND_041",
-        "PLY_IND_033",
-        "PLY_IND_036",
+        "PLY_IND_008",
+        "PLY_IND_028",
         "PLY_IND_004",
         "PLY_IND_009",
         "PLY_IND_014",
-        "PLY_IND_042",
+        "PLY_IND_003",
         "PLY_IND_011"
       ],
       "battingOrder": [
         "PLY_IND_001",
-        "PLY_IND_038",
+        "PLY_IND_033",
         "PLY_IND_039",
         "PLY_IND_041",
-        "PLY_IND_033",
-        "PLY_IND_036",
+        "PLY_IND_008",
+        "PLY_IND_028",
         "PLY_IND_004",
         "PLY_IND_009",
         "PLY_IND_014",
-        "PLY_IND_042",
+        "PLY_IND_003",
         "PLY_IND_011"
       ],
-      "captainId": "PLY_IND_037",
-      "viceCaptainId": "PLY_IND_041",
-      "wicketKeeperId": "PLY_IND_010",
+      "captainId": "PLY_IND_039",
+      "viceCaptainId": "PLY_IND_004",
+      "wicketKeeperId": "PLY_IND_033",
       "bowlingRotation": [
-        "PLY_IND_001",
-        "PLY_IND_041",
-        "PLY_IND_004",
+        "PLY_IND_011",
+        "PLY_IND_003",
         "PLY_IND_009",
-        "PLY_IND_014",
-        "PLY_IND_042",
-        "PLY_IND_011"
+        "PLY_IND_008",
+        "PLY_IND_004",
+        "PLY_IND_014"
       ]
     }
   },
@@ -239,7 +240,7 @@
         "PLY_AUS_037"
       ],
       "playingXI": [
-        "PLY_AUS_038",
+        "PLY_AUS_007",
         "PLY_AUS_019",
         "PLY_AUS_007",
         "PLY_AUS_034",
@@ -252,7 +253,7 @@
         "PLY_AUS_014"
       ],
       "battingOrder": [
-        "PLY_AUS_038",
+        "PLY_AUS_007",
         "PLY_AUS_019",
         "PLY_AUS_007",
         "PLY_AUS_034",
@@ -451,7 +452,7 @@
         "PLY_ENG_023",
         "PLY_ENG_013",
         "PLY_ENG_008",
-        "PLY_ENG_003",
+        "PLY_ENG_023",
         "PLY_ENG_012",
         "PLY_ENG_007",
         "PLY_ENG_016",
@@ -464,7 +465,7 @@
         "PLY_ENG_023",
         "PLY_ENG_013",
         "PLY_ENG_008",
-        "PLY_ENG_003",
+        "PLY_ENG_023",
         "PLY_ENG_012",
         "PLY_ENG_007",
         "PLY_ENG_016",
@@ -1011,7 +1012,7 @@
       "playingXI": [
         "PLY_NZL_027",
         "PLY_NZL_007",
-        "PLY_NZL_014",
+        "PLY_NZL_023",
         "PLY_NZL_023",
         "PLY_NZL_006",
         "PLY_NZL_026",
@@ -1024,7 +1025,7 @@
       "battingOrder": [
         "PLY_NZL_027",
         "PLY_NZL_007",
-        "PLY_NZL_014",
+        "PLY_NZL_023",
         "PLY_NZL_023",
         "PLY_NZL_006",
         "PLY_NZL_026",
@@ -1069,7 +1070,7 @@
       "playingXI": [
         "PLY_NZL_028",
         "PLY_NZL_023",
-        "PLY_NZL_014",
+        "PLY_NZL_028",
         "PLY_NZL_006",
         "PLY_NZL_027",
         "PLY_NZL_009",
@@ -1082,7 +1083,7 @@
       "battingOrder": [
         "PLY_NZL_028",
         "PLY_NZL_023",
-        "PLY_NZL_014",
+        "PLY_NZL_028",
         "PLY_NZL_006",
         "PLY_NZL_027",
         "PLY_NZL_009",
@@ -3314,7 +3315,7 @@
       ],
       "playingXI": [
         "PLY_CAN_019",
-        "PLY_CAN_012",
+        "PLY_CAN_013",
         "PLY_CAN_014",
         "PLY_CAN_005",
         "PLY_CAN_005",
@@ -3327,7 +3328,7 @@
       ],
       "battingOrder": [
         "PLY_CAN_019",
-        "PLY_CAN_012",
+        "PLY_CAN_013",
         "PLY_CAN_014",
         "PLY_CAN_005",
         "PLY_CAN_005",
@@ -3372,7 +3373,7 @@
       "playingXI": [
         "PLY_CAN_019",
         "PLY_CAN_007",
-        "PLY_CAN_012",
+        "PLY_CAN_013",
         "PLY_CAN_013",
         "PLY_CAN_005",
         "PLY_CAN_005",
@@ -3385,7 +3386,7 @@
       "battingOrder": [
         "PLY_CAN_019",
         "PLY_CAN_007",
-        "PLY_CAN_012",
+        "PLY_CAN_013",
         "PLY_CAN_013",
         "PLY_CAN_005",
         "PLY_CAN_005",

@@ -262,3 +262,4 @@ export const RivalriesView: React.FC<RivalriesViewProps> = ({ career, onNavigate
     </div>
   );
 };
+

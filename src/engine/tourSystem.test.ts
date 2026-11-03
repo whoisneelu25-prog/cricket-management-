@@ -155,7 +155,7 @@ test('5. Simulate an Ashes series and verify winner or drawn-series retention ru
 
   // Case A: Drawn series 2-2 with 1 draw -> Australia retains the Ashes
   const drawnMatches: Match[] = matches.map((m, idx) => {
-    const mock = { ...m, status: 'COMPLETED' as const };
+    const mock: Match = { ...m, status: 'COMPLETED' };
     if (idx === 0 || idx === 1) {
       // AUS wins
       mock.innings = [
@@ -286,6 +286,10 @@ test('7. WTC matches points & PCT calculation (12 pts win, PCT formula)', () => 
     awayCaptainId: '',
     homeWicketKeeperId: '',
     awayWicketKeeperId: '',
+    userTeamId: 'IND',
+    isUserMatch: false,
+    userTactics: { battingAggression: 'BALANCED', bowlingTactic: 'BALANCED_CONTAIN', fieldPreset: 'BALANCED_STANDARD' },
+    aiTactics: { battingAggression: 'BALANCED', bowlingTactic: 'BALANCED_CONTAIN', fieldPreset: 'BALANCED_STANDARD' },
   };
 
   const updatedWTC = recordMatchInTournament(wtcEdition, mockTestMatch);

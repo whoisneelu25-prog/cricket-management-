@@ -184,6 +184,10 @@ export type DismissalType =
   | 'RUN_OUT'
   | 'STUMPED'
   | 'HIT_WICKET'
+  | 'OBSTRUCTING_FIELD'
+  | 'HIT_BALL_TWICE'
+  | 'RETIRED_OUT'
+  | 'TIMED_OUT'
   | 'NOT_OUT';
 
 export interface Dismissal {
@@ -395,6 +399,14 @@ export interface Match {
   isUserMatch: boolean;
   userTactics: MatchTactics;
   aiTactics: MatchTactics;
+  oversBowledToday?: number;
+  followOnEnforced?: boolean;
+  followOnOffered?: boolean;
+  isFollowOnEligible?: boolean;
+  superOverInnings?: InningsState[];
+  superOverPlayed?: boolean;
+  statsRecorded?: boolean;
+  seed?: number;
 }
 
 export interface TournamentTableEntry {
@@ -463,6 +475,7 @@ export interface Tour {
   competitionType?: 'BILATERAL' | 'ASHES' | 'BORDER_GAVASKAR' | 'TRI_SERIES' | 'ICC_TOURNAMENT';
   trophyHolder?: string;
   retainedTrophy?: boolean;
+  formats?: MatchFormat[];
   series: {
     TEST?: { matchCount: number; matchesPlayed: number; homeWins: number; awayWins: number; draws: number };
     ODI?: { matchCount: number; matchesPlayed: number; homeWins: number; awayWins: number; ties: number };

@@ -373,3 +373,4 @@ export const INITIAL_TOURNAMENT_EDITIONS: TournamentEdition[] = [
     ],
   },
 ];
+

@@ -13,7 +13,11 @@ import {
   ChevronRight,
   Flame,
   CheckCircle,
-  Coins
+  Coins,
+  Clock,
+  Flag,
+  AlertCircle,
+  Users,
 } from 'lucide-react';
 import {
   Match,
@@ -27,6 +31,7 @@ import { INTERNATIONAL_TEAMS } from '../../data/teams';
 import { ALL_PLAYERS } from '../../data/squads';
 import { ScorecardModal } from './ScorecardModal';
 import { getPlayerById } from '../../engine/matchEngine';
+import { getPowerplayPhase, getMaxOversPerBowler } from '../../engine/rules';
 
 interface MatchCentreViewProps {
   match: Match;
@@ -38,6 +43,8 @@ interface MatchCentreViewProps {
   onChangeBowler: (bowlerId: string) => void;
   onStartMatchWithToss: (choice: 'BAT' | 'BOWL') => void;
   onSelectPlayer: (player: Player) => void;
+  onDeclareInnings?: () => void;
+  onFollowOnDecision?: (enforce: boolean) => void;
 }
 
 export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
@@ -50,6 +57,8 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
   onChangeBowler,
   onStartMatchWithToss,
   onSelectPlayer,
+  onDeclareInnings,
+  onFollowOnDecision,
 }) => {
   const [showScorecard, setShowScorecard] = useState(false);
   const [isAutoPlaying, setIsAutoPlaying] = useState(false);
@@ -60,7 +69,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
   const awayTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.awayTeamId);
 
   const currentInnings = match.innings[match.currentInningsIndex] || match.innings[0];
-  const isMatchFinished = match.status === 'COMPLETED';
+  const isMatchFinished = match.status === 'COMPLETED' || match.status === 'DRAW';
 
   // Auto-play loop for smooth broadcast simulation
   useEffect(() => {
@@ -93,8 +102,8 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
   // Striker and Non-Striker
   const striker = currentInnings?.batters.find((b) => b.isCurrentStriker);
   const nonStriker = currentInnings?.batters.find((b) => b.isCurrentNonStriker);
-  
-  // Safely resolve active bowler even between overs before first ball
+
+  // Active bowler
   const foundBowler = currentInnings?.bowlers.find((b) => b.playerId === currentInnings?.currentBowlerId);
   const currentBowlerPlayer = currentInnings?.currentBowlerId ? getPlayerById(currentInnings.currentBowlerId) : null;
   const activeBowler = foundBowler || (currentBowlerPlayer ? {
@@ -117,12 +126,13 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
     : [];
 
   const isUserBatting = currentInnings?.battingTeamId === match.userTeamId;
+  const isUserBowling = currentInnings?.bowlingTeamId === match.userTeamId;
 
   // Run Rate calculation
   const totalBallsBowled = currentInnings ? currentInnings.completedOvers * 6 + currentInnings.ballsInCurrentOver : 0;
   const currentRunRate = totalBallsBowled > 0 ? ((currentInnings!.totalRuns / totalBallsBowled) * 6).toFixed(2) : '0.00';
 
-  // Required Run Rate (if chasing in 2nd innings)
+  // Required Run Rate (if chasing in limited overs)
   let requiredRunRate: string | null = null;
   if (currentInnings?.targetRuns && match.format !== 'TEST') {
     const maxBalls = match.format === 'T20I' ? 120 : 300;
@@ -134,6 +144,27 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
       requiredRunRate = runsNeeded <= 0 ? '0.00' : '99.9';
     }
   }
+
+  // Powerplay phase for white ball
+  const ppInfo = currentInnings ? getPowerplayPhase(match.format, currentInnings.completedOvers) : null;
+
+  // Maximum quota per bowler
+  const maxOversPerBowler = getMaxOversPerBowler(match.format);
+
+  // Filter eligible bowlers for user bowling change (exclude current bowler and bowlers at max quota)
+  const availableBowlersForChange = bowlingXI.map((id) => {
+    const p = getPlayerById(id);
+    const figures = currentInnings?.bowlers.find((b) => b.playerId === id);
+    const oversBowled = figures ? figures.overs : 0;
+    const isExhausted = oversBowled >= maxOversPerBowler;
+    const isCurrent = id === currentInnings?.currentBowlerId;
+    return {
+      player: p,
+      oversBowled,
+      isExhausted,
+      isCurrent,
+    };
+  });
 
   // Coin Toss View if match not yet started
   if (match.status === 'SCHEDULED' || match.status === 'TOSS') {
@@ -170,6 +201,68 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
           </div>
         </div>
 
+        {/* Confirmed Playing XIs Preview */}
+        <div className="mb-6 bg-[#0e141f] border border-[#1f293d] rounded-lg p-3 text-left">
+          <div className="flex items-center justify-between border-b border-[#1f293d] pb-2 mb-2">
+            <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center space-x-1.5">
+              <Users className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Confirmed Match Lineups</span>
+            </span>
+            <span className="text-[10px] text-slate-400 font-mono">11 Players per side</span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div>
+              <div className="text-[11px] font-bold text-emerald-400 mb-1 flex items-center justify-between">
+                <span>{homeTeam?.name} XI</span>
+                <span className="text-[10px] text-slate-500 font-mono font-normal">Batting Order</span>
+              </div>
+              <div className="space-y-0.5">
+                {(match.homeXI || []).map((id, idx) => {
+                  const p = getPlayerById(id);
+                  const isC = id === match.homeCaptainId;
+                  const isWk = id === match.homeWicketKeeperId;
+                  return (
+                    <div key={id} className="text-[11px] text-slate-300 flex items-center justify-between py-0.5 border-b border-[#182234]">
+                      <span className="truncate">
+                        <span className="text-slate-500 font-mono mr-1">{idx + 1}.</span>
+                        {p.shortName}
+                        {isC && <span className="ml-1 text-[9px] bg-amber-950 text-amber-300 px-1 rounded font-bold">C</span>}
+                        {isWk && <span className="ml-1 text-[9px] bg-sky-950 text-sky-300 px-1 rounded font-bold">WK</span>}
+                      </span>
+                      <span className="text-[10px] text-slate-500 font-mono shrink-0 ml-1">{p.role.replace('_', ' ')}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div>
+              <div className="text-[11px] font-bold text-slate-300 mb-1 flex items-center justify-between">
+                <span>{awayTeam?.name} XI</span>
+                <span className="text-[10px] text-slate-500 font-mono font-normal">Batting Order</span>
+              </div>
+              <div className="space-y-0.5">
+                {(match.awayXI || []).map((id, idx) => {
+                  const p = getPlayerById(id);
+                  const isC = id === match.awayCaptainId;
+                  const isWk = id === match.awayWicketKeeperId;
+                  return (
+                    <div key={id} className="text-[11px] text-slate-300 flex items-center justify-between py-0.5 border-b border-[#182234]">
+                      <span className="truncate">
+                        <span className="text-slate-500 font-mono mr-1">{idx + 1}.</span>
+                        {p.shortName}
+                        {isC && <span className="ml-1 text-[9px] bg-amber-950 text-amber-300 px-1 rounded font-bold">C</span>}
+                        {isWk && <span className="ml-1 text-[9px] bg-sky-950 text-sky-300 px-1 rounded font-bold">WK</span>}
+                      </span>
+                      <span className="text-[10px] text-slate-500 font-mono shrink-0 ml-1">{p.role.replace('_', ' ')}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="space-y-3">
           <p className="text-xs text-slate-300 font-medium">
             As Captain, you have won the toss! Choose your match strategy:
@@ -194,15 +287,39 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
     );
   }
 
+  // Session name in Test cricket
+  const sessionLabel =
+    match.sessionNumber === 1
+      ? 'Morning Session'
+      : match.sessionNumber === 2
+      ? 'Afternoon Session'
+      : 'Evening Session';
+
   return (
     <div className="space-y-4 select-none animate-in fade-in duration-150">
       {/* 1. Broadcast Match Header */}
       <div className="bg-[#121824] border border-[#1f293d] rounded-lg p-4 sm:p-5 shadow-lg">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#1f293d] gap-2">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 flex-wrap gap-y-1">
             <span className="text-xs font-bold uppercase tracking-wider bg-emerald-950 text-emerald-400 border border-emerald-800/40 px-2 py-0.5 rounded font-mono">
               {match.format}
             </span>
+
+            {/* Test Cricket Day & Session HUD */}
+            {match.format === 'TEST' && (
+              <span className="text-xs font-bold bg-[#182234] text-amber-300 border border-amber-800/40 px-2 py-0.5 rounded font-mono flex items-center space-x-1">
+                <Clock className="w-3 h-3" />
+                <span>Day {match.dayNumber} • {sessionLabel} ({match.oversBowledToday || 0}/90 Ov)</span>
+              </span>
+            )}
+
+            {/* White-ball Powerplay HUD */}
+            {ppInfo && ppInfo.phase !== 'NONE' && (
+              <span className="text-[11px] font-bold bg-blue-950 text-blue-300 border border-blue-800/40 px-2 py-0.5 rounded font-mono">
+                {ppInfo.description}
+              </span>
+            )}
+
             <span className="text-xs text-slate-300 font-medium">
               {match.seriesName || 'International Bilateral Series'}
             </span>
@@ -237,11 +354,16 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                 <span className="text-base sm:text-lg font-mono text-slate-400 font-bold">
                   ({currentInnings?.completedOvers}.{currentInnings?.ballsInCurrentOver} ov)
                 </span>
+                {currentInnings?.isDeclared && (
+                  <span className="text-xs bg-amber-950 text-amber-400 border border-amber-800 px-2 py-0.5 rounded font-bold font-mono">
+                    d
+                  </span>
+                )}
               </div>
 
               <div className="flex items-center space-x-3 text-xs mt-1">
                 <span className="font-bold text-emerald-400">
-                  {currentInnings?.battingTeamName} Batting
+                  {currentInnings?.battingTeamName} ({currentInnings?.inningsNumber}{currentInnings?.inningsNumber === 1 ? 'st' : currentInnings?.inningsNumber === 2 ? 'nd' : currentInnings?.inningsNumber === 3 ? 'rd' : 'th'} Inn)
                 </span>
                 <span className="text-slate-500">•</span>
                 <span className="text-slate-300 font-mono">
@@ -269,7 +391,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                 <h4 className="text-sm font-bold text-white mt-0.5">{match.resultText}</h4>
                 {match.playerOfTheMatch && (
                   <span className="text-[11px] text-amber-400 block mt-1 font-mono">
-                    POTM: {match.playerOfTheMatch.playerName}
+                    POTM: {match.playerOfTheMatch.playerName} ({match.playerOfTheMatch.reason})
                   </span>
                 )}
                 <button
@@ -286,9 +408,29 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                   <span className="text-base font-bold font-mono text-white">{currentInnings.targetRuns}</span>
                 </div>
                 <p className="text-xs text-emerald-400 mt-1 font-semibold">
-                  Need {Math.max(0, currentInnings.targetRuns - currentInnings.totalRuns)} runs from{' '}
-                  {Math.max(0, (match.format === 'T20I' ? 120 : 300) - totalBallsBowled)} balls
+                  Need {Math.max(0, currentInnings.targetRuns - currentInnings.totalRuns)} runs
+                  {match.format !== 'TEST' && (
+                    <span> from {Math.max(0, (match.format === 'T20I' ? 120 : 300) - totalBallsBowled)} balls</span>
+                  )}
                 </p>
+              </div>
+            ) : match.format === 'TEST' && match.currentInningsIndex === 1 && match.innings[0] ? (
+              <div className="text-right text-xs">
+                <span className="text-slate-400 uppercase font-medium block">1st Innings Deficit</span>
+                <span className="text-slate-200 mt-0.5 font-bold font-mono">
+                  {currentInnings.totalRuns < match.innings[0].totalRuns
+                    ? `Trail by ${match.innings[0].totalRuns - currentInnings.totalRuns} runs`
+                    : `Lead by ${currentInnings.totalRuns - match.innings[0].totalRuns} runs`}
+                </span>
+              </div>
+            ) : match.format === 'TEST' && match.currentInningsIndex === 2 && match.innings[1] ? (
+              <div className="text-right text-xs">
+                <span className="text-slate-400 uppercase font-medium block">Lead / Deficit</span>
+                <span className="text-slate-200 mt-0.5 font-bold font-mono">
+                  {match.followOnEnforced
+                    ? `Trail by ${Math.max(0, match.innings[0].totalRuns - (match.innings[1].totalRuns + currentInnings.totalRuns))} runs`
+                    : `Overall Lead: ${match.innings[0].totalRuns + currentInnings.totalRuns - match.innings[1].totalRuns} runs`}
+                </span>
               </div>
             ) : (
               <div className="text-right text-xs">
@@ -300,6 +442,35 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
             )}
           </div>
         </div>
+
+        {/* Follow-On Decision Prompt Card for Test Cricket */}
+        {match.format === 'TEST' && match.isFollowOnEligible && match.followOnEnforced === undefined && isUserBatting && (
+          <div className="mt-4 p-3.5 bg-amber-950/70 border border-amber-600/60 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in">
+            <div className="space-y-0.5">
+              <span className="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+                <AlertCircle className="w-4 h-4 text-amber-400" />
+                Follow-On Opportunity (Lead ≥ 200 Runs)
+              </span>
+              <p className="text-xs text-slate-300">
+                Opponent has finished their 1st innings trailing by {match.innings[0].totalRuns - match.innings[1].totalRuns} runs. You can enforce the follow-on or bat again.
+              </p>
+            </div>
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={() => onFollowOnDecision && onFollowOnDecision(true)}
+                className="bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs px-3.5 py-1.5 rounded transition cursor-pointer"
+              >
+                Enforce Follow-On
+              </button>
+              <button
+                onClick={() => onFollowOnDecision && onFollowOnDecision(false)}
+                className="bg-[#182234] hover:bg-[#202d42] text-slate-200 border border-[#243247] font-bold text-xs px-3.5 py-1.5 rounded transition cursor-pointer"
+              >
+                Bat Again
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Recent Balls Strip */}
         <div className="mt-4 pt-3 border-t border-[#1f293d] flex items-center justify-between">
@@ -318,6 +489,12 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
               } else if (ball.extras.noBalls > 0) {
                 badgeColor = 'bg-amber-950 text-amber-300 border-amber-800';
                 label = 'Nb';
+              } else if (ball.extras.byes > 0) {
+                badgeColor = 'bg-blue-950 text-blue-300 border-blue-800';
+                label = `B${ball.extras.byes}`;
+              } else if (ball.extras.legByes > 0) {
+                badgeColor = 'bg-blue-950 text-blue-300 border-blue-800';
+                label = `Lb${ball.extras.legByes}`;
               } else if (ball.isWicket) {
                 badgeColor = 'bg-rose-900 text-rose-200 border-rose-700 font-black';
                 label = 'W';
@@ -351,11 +528,22 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
         <div className="lg:col-span-7 bg-[#121824] border border-[#1f293d] rounded-lg p-4">
           <h3 className="text-xs uppercase font-bold text-slate-400 tracking-wider mb-2.5 flex items-center justify-between">
             <span>Batters at the Crease</span>
-            <span className="text-[10px] text-emerald-400 font-mono">* On Strike</span>
+            <div className="flex items-center space-x-2">
+              {match.format === 'TEST' && isUserBatting && !isMatchFinished && onDeclareInnings && (
+                <button
+                  onClick={onDeclareInnings}
+                  className="bg-amber-600/90 hover:bg-amber-500 text-white font-bold text-[10px] px-2.5 py-0.5 rounded transition cursor-pointer flex items-center space-x-1"
+                >
+                  <Flag className="w-3 h-3" />
+                  <span>Declare Innings</span>
+                </button>
+              )}
+              <span className="text-[10px] text-emerald-400 font-mono">* On Strike</span>
+            </div>
           </h3>
 
           <div className="space-y-2">
-            {[striker, nonStriker].map((batter, idx) => {
+            {[striker, nonStriker].map((batter) => {
               if (!batter) return null;
               return (
                 <div
@@ -398,20 +586,18 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                 Current Bowler
               </h3>
               {/* Bowler change dropdown for user if bowling */}
-              {!isUserBatting && !isMatchFinished && (
+              {isUserBowling && !isMatchFinished && (
                 <select
                   value={currentInnings?.currentBowlerId}
                   onChange={(e) => onChangeBowler(e.target.value)}
-                  className="bg-[#182234] border border-[#243247] text-[11px] text-slate-200 rounded px-2 py-0.5 focus:outline-hidden"
+                  className="bg-[#182234] border border-[#243247] text-[11px] text-slate-200 rounded px-2 py-0.5 focus:outline-hidden cursor-pointer"
                 >
-                  {bowlingXI.map((id) => {
-                    const p = getPlayerById(id);
-                    return (
-                      <option key={id} value={id}>
-                        Change: {p.shortName}
-                      </option>
-                    );
-                  })}
+                  {availableBowlersForChange.map(({ player, oversBowled, isExhausted, isCurrent }) => (
+                    <option key={player.id} value={player.id} disabled={isExhausted || isCurrent}>
+                      {player.shortName} ({oversBowled}/{maxOversPerBowler === Infinity ? '∞' : maxOversPerBowler} ov)
+                      {isCurrent ? ' [Current]' : isExhausted ? ' [Quota Done]' : ''}
+                    </option>
+                  ))}
                 </select>
               )}
             </div>
@@ -421,7 +607,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                 <div>
                   <h4 className="font-bold text-white text-sm font-sans">{activeBowler.playerName}</h4>
                   <span className="text-[10px] text-slate-400 font-sans">
-                    {activeBowler.overs}.{activeBowler.ballsThisOver} Overs Bowled
+                    {activeBowler.overs}.{activeBowler.ballsThisOver} Overs Bowled (Quota: {maxOversPerBowler === Infinity ? 'Unlimited' : `${maxOversPerBowler} Max`})
                   </span>
                 </div>
 
@@ -430,7 +616,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                     <span className="text-emerald-400">{activeBowler.wickets}</span> - {activeBowler.runs}
                   </div>
                   <span className="text-[10px] text-slate-400">
-                    Econ: {activeBowler.economy.toFixed(2)} • Dots: {activeBowler.dots}
+                    Econ: {activeBowler.economy.toFixed(2)} • Maidens: {activeBowler.maidens} • Dots: {activeBowler.dots}
                   </span>
                 </div>
               </div>
@@ -446,7 +632,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
             {/* Captain's Tactical Orders (7 cols) */}
             <div className="md:col-span-7 space-y-3">
               <span className="text-[11px] uppercase font-bold tracking-wider text-slate-400 block flex items-center gap-1.5">
-                <Shield className="w-3.5 h-3.5 text-emerald-400" /> Captain’s Live Orders (User Team)
+                <Shield className="w-3.5 h-3.5 text-emerald-400" /> Captain’s Tactical Orders
               </span>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -462,7 +648,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                         match.userTactics.fieldPreset
                       )
                     }
-                    className="w-full bg-[#182234] border border-[#243247] text-xs text-white rounded p-1.5 focus:border-emerald-500"
+                    className="w-full bg-[#182234] border border-[#243247] text-xs text-white rounded p-1.5 focus:border-emerald-500 cursor-pointer"
                   >
                     <option value="BLOCK">Block / Stone-wall</option>
                     <option value="DEFENSIVE">Defensive Contain</option>
@@ -484,7 +670,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                         match.userTactics.fieldPreset
                       )
                     }
-                    className="w-full bg-[#182234] border border-[#243247] text-xs text-white rounded p-1.5 focus:border-emerald-500"
+                    className="w-full bg-[#182234] border border-[#243247] text-xs text-white rounded p-1.5 focus:border-emerald-500 cursor-pointer"
                   >
                     <option value="TIGHT_DEFENSIVE">Tight Good Length</option>
                     <option value="BALANCED_CONTAIN">Balanced Stump-to-Stump</option>
@@ -507,7 +693,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                         e.target.value as FieldPreset
                       )
                     }
-                    className="w-full bg-[#182234] border border-[#243247] text-xs text-white rounded p-1.5 focus:border-emerald-500"
+                    className="w-full bg-[#182234] border border-[#243247] text-xs text-white rounded p-1.5 focus:border-emerald-500 cursor-pointer"
                   >
                     <option value="BALANCED_STANDARD">Balanced Standard</option>
                     <option value="ATTACKING_SLIPS">Attacking Slips Cordon</option>
@@ -575,7 +761,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
         </div>
       )}
 
-      {/* 4. Live Ball-by-Ball Commentary Stream */}
+      {/* 4. Live Ball-by-Ball Commentary Feed */}
       <div className="bg-[#121824] border border-[#1f293d] rounded-lg p-4">
         <h3 className="text-xs uppercase font-bold text-slate-400 tracking-wider mb-3 flex items-center gap-2">
           <Activity className="w-3.5 h-3.5 text-emerald-400" />
