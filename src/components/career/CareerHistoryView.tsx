@@ -59,6 +59,20 @@ export const CareerHistoryView: React.FC<CareerHistoryViewProps> = ({ career }) 
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+          {(career.manager.trophies || []).map((trophy, idx) => (
+            <div
+              key={`mgr_${idx}`}
+              className="bg-emerald-950/30 border border-emerald-700/50 p-3.5 rounded-lg flex items-start space-x-3"
+            >
+              <div className="w-8 h-8 rounded bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center text-emerald-400 flex-shrink-0">
+                <Trophy className="w-4 h-4" />
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-white leading-tight">{trophy}</h4>
+                <span className="text-[10px] text-emerald-400 mt-0.5 block">Won Under Your Tenure</span>
+              </div>
+            </div>
+          ))}
           {team?.historicalAchievements.map((trophy, idx) => (
             <div
               key={idx}

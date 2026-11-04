@@ -355,6 +355,20 @@ export interface MatchTactics {
   fieldPreset: FieldPreset;
 }
 
+export type MatchStatus =
+  | 'SCHEDULED'
+  | 'AWAITING_SQUAD'
+  | 'AWAITING_XI'
+  | 'READY'
+  | 'TOSS'
+  | 'IN_PROGRESS'
+  | 'INNINGS_BREAK'
+  | 'COMPLETED'
+  | 'DRAW'
+  | 'TIE'
+  | 'ABANDONED'
+  | 'NO_RESULT';
+
 export interface Match {
   id: string;
   format: MatchFormat;
@@ -370,6 +384,7 @@ export interface Match {
   squadSelectionDeadline?: string; // Phase 1
   tourStatus?: 'UPCOMING' | 'IN_PROGRESS' | 'COMPLETED'; // Phase 1
   stage?: 'GROUP' | 'SUPER_EIGHT' | 'SEMI_FINAL' | 'FINAL' | 'LEAGUE';
+  groupId?: string;
   homeTeamId: string;
   awayTeamId: string;
   venue: string;
@@ -378,12 +393,14 @@ export interface Match {
   date?: string;
   dayNumber: number;
   sessionNumber: number;
-  status: 'SCHEDULED' | 'TOSS' | 'IN_PROGRESS' | 'INNINGS_BREAK' | 'COMPLETED' | 'DRAW' | 'TIE';
+  status: MatchStatus;
+  lineupConfirmed?: boolean;
   tossWinnerId?: string;
   tossChoice?: 'BAT' | 'BOWL';
   currentInningsIndex: number;
   innings: InningsState[];
   resultText?: string;
+  winnerTeamId?: string;
   playerOfTheMatch?: {
     playerId: string;
     playerName: string;
@@ -546,6 +563,57 @@ export interface TournamentGroup {
   table: TournamentTableEntry[];
 }
 
+export type AISelectionStrategy =
+  | 'BALANCED'
+  | 'AGGRESSIVE'
+  | 'YOUTH_FOCUS'
+  | 'EXPERIENCE_FIRST'
+  | 'SPIN_HEAVY'
+  | 'PACE_HEAVY';
+
+export interface AITeamManagementState {
+  teamId: string;
+  strategy: AISelectionStrategy;
+  formatSquads: {
+    TEST: FormatSquadConfig;
+    ODI: FormatSquadConfig;
+    T20I: FormatSquadConfig;
+  };
+  lastUpdatedDate?: string;
+  rotationCounter?: number;
+}
+
+export interface TeamRankingState {
+  teamId: string;
+  ratingPoints: {
+    TEST: number;
+    ODI: number;
+    T20I: number;
+  };
+  worldRankings: {
+    TEST: number;
+    ODI: number;
+    T20I: number;
+  };
+}
+
+export interface ArchivedMatchSummary {
+  id: string;
+  date: string;
+  format: MatchFormat;
+  seriesName?: string;
+  tournamentId?: string;
+  homeTeamId: string;
+  awayTeamId: string;
+  venue: string;
+  status: MatchStatus;
+  resultText: string;
+  winnerTeamId?: string;
+  inningsSummaries: Array<{ battingTeamId: string; totalRuns: number; wickets: number; overs: number }>;
+  playerOfTheMatch?: { playerId: string; playerName: string; reason: string };
+  isUserMatch: boolean;
+}
+
 export interface TournamentEdition {
   id: string;
   competitionType: TournamentCompetitionType;
@@ -557,15 +625,24 @@ export interface TournamentEdition {
   hostCountryId?: string;
   description: string;
   status: 'UPCOMING' | 'IN_PROGRESS' | 'COMPLETED';
+  currentStage?: 'GROUP' | 'SUPER_EIGHT' | 'SEMI_FINAL' | 'FINAL' | 'COMPLETED';
+  participatingTeamIds?: string[];
+  cutoffDate?: string;
+  penalties?: Record<string, number>;
   rules: {
     pointsForWin: number;
     pointsForTie: number;
     pointsForDraw: number;
     pointsForLoss: number;
     usePCT?: boolean; // For WTC
+    qualifiersPerGroup?: number;
+    totalQualifiers?: number;
+    hasSuperStage?: boolean;
   };
   table: TournamentTableEntry[];
   groups?: TournamentGroup[];
+  semiFinalMatchIds?: string[];
+  superStageMatchIds?: string[];
   finalistTeamIds?: [string, string];
   finalMatchId?: string;
   winnerTeamId?: string;
@@ -647,13 +724,26 @@ export interface CareerSave {
   currentDayIndex: number; // For progressive calendar timeline
   currentTourId: string;
   activeMatchId?: string;
+  seasonsGeneratedThroughYear?: number;
 
-  // Format-specific independent squads
+  // Format-specific independent squads (User-controlled team ONLY)
   formatSquads: {
     TEST: FormatSquadConfig;
     ODI: FormatSquadConfig;
     T20I: FormatSquadConfig;
   };
+
+  // Independent AI team management states for every non-user country
+  aiTeams?: Record<string, AITeamManagementState>;
+
+  // Live evolving ICC rankings & rating points per country
+  teamRankings?: Record<string, TeamRankingState>;
+
+  // Emerging academy/debutant players generated over multi-year careers
+  emergingPlayers?: Player[];
+
+  // Archived historical match summaries from older completed seasons
+  archivedMatches?: ArchivedMatchSummary[];
 
   // Deprecated backwards-compatible field
   customSquadXI?: {

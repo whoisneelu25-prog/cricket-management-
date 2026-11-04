@@ -16,7 +16,7 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { CareerSave, Player } from '../../types/cricket';
-import { ALL_PLAYERS, getPlayersByCountry } from '../../data/squads';
+import { getEffectivePlayersByCountry } from '../../data/squads';
 import {
   TrainingFocus,
   calculateOverallAbility,
@@ -43,30 +43,25 @@ export const PlayerDevelopmentView: React.FC<PlayerDevelopmentViewProps> = ({
   const [selectedPlayerForHistory, setSelectedPlayerForHistory] = useState<Player | null>(null);
   const [trainingFlashMessage, setTrainingFlashMessage] = useState<string | null>(null);
 
-  // Retrieve national players and merge with career.playerOverrides
-  const basePlayers = getPlayersByCountry(career.selectedTeamId);
-  const players: Player[] = basePlayers.map((p) => {
-    const override = career.playerOverrides?.[p.id];
-    const trainingFocus = (career.playerTrainingFocus?.[p.id] as TrainingFocus) || p.trainingFocus || getDefaultTrainingFocus(p);
-    if (!override) {
-      return {
-        ...p,
-        trainingFocus,
-        potential: p.potential || Math.min(96, calculateOverallAbility(p) + (p.age <= 23 ? 12 : p.age <= 28 ? 6 : 2)),
-        fitness: p.fitness ?? p.attributes.fitness ?? 85,
-        currentForm: p.currentForm ?? p.attributes.currentForm ?? 80,
-        workloadFatigue: p.workloadFatigue ?? 15,
-      };
-    }
+  // Retrieve effective national players for the user's country ONLY (includes academy debutants & excludes retired)
+  const effectivePool = getEffectivePlayersByCountry(career.selectedTeamId, career, true);
+  const players: Player[] = effectivePool.map((p) => {
+    const trainingFocus =
+      (career.playerTrainingFocus?.[p.id] as TrainingFocus) ||
+      p.trainingFocus ||
+      getDefaultTrainingFocus(p);
     return {
       ...p,
-      ...override,
       trainingFocus,
-      attributes: { ...p.attributes, ...(override.attributes || {}) },
-      potential: override.potential || p.potential || 85,
-      fitness: override.fitness ?? override.attributes?.fitness ?? p.fitness ?? 85,
-      currentForm: override.currentForm ?? override.attributes?.currentForm ?? p.currentForm ?? 80,
-      workloadFatigue: override.workloadFatigue ?? p.workloadFatigue ?? 15,
+      potential:
+        p.potential ||
+        Math.min(
+          96,
+          calculateOverallAbility(p) + (p.age <= 23 ? 12 : p.age <= 28 ? 6 : 2)
+        ),
+      fitness: p.fitness ?? p.attributes.fitness ?? 85,
+      currentForm: p.currentForm ?? p.attributes.currentForm ?? 80,
+      workloadFatigue: p.workloadFatigue ?? 15,
     };
   });
 
@@ -88,10 +83,11 @@ export const PlayerDevelopmentView: React.FC<PlayerDevelopmentViewProps> = ({
 
     const result = processSquadTrainingDay(players, assignments, false, career.currentDate);
 
-    // Update career state with changes
+    // Update career state with changes (preserving simulatedStats and all existing fields!)
     const updatedOverrides = { ...(career.playerOverrides || {}) };
     result.updatedPlayers.forEach((up) => {
       updatedOverrides[up.id] = {
+        ...(updatedOverrides[up.id] || {}),
         attributes: up.attributes,
         potential: up.potential,
         fitness: up.fitness,

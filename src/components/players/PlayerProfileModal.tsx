@@ -1,20 +1,28 @@
 import React, { useState } from 'react';
 import { X, Award, Shield, Zap, Activity, Heart, Star, Target } from 'lucide-react';
-import { Player, MatchFormat } from '../../types/cricket';
+import { CareerSave, Player, MatchFormat } from '../../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
+import { getCombinedFormatStats, getEffectivePlayer } from '../../data/squads';
 
 interface PlayerProfileModalProps {
   player: Player | null;
+  career?: CareerSave;
   onClose: () => void;
 }
 
-export const PlayerProfileModal: React.FC<PlayerProfileModalProps> = ({ player, onClose }) => {
+export const PlayerProfileModal: React.FC<PlayerProfileModalProps> = ({
+  player: rawPlayer,
+  career,
+  onClose,
+}) => {
   const [selectedFormat, setSelectedFormat] = useState<MatchFormat>('TEST');
 
-  if (!player) return null;
+  if (!rawPlayer) return null;
 
+  const player = getEffectivePlayer(rawPlayer, career) || rawPlayer;
   const team = INTERNATIONAL_TEAMS.find((t) => t.id === player.countryId);
-  const stats = player.stats[selectedFormat];
+  const stats = getCombinedFormatStats(player, selectedFormat);
+  const simMatches = player.simulatedStats?.[selectedFormat]?.matches || 0;
 
   // Helper for attribute bar color
   const getRatingColor = (val: number) => {
@@ -222,7 +230,12 @@ export const PlayerProfileModal: React.FC<PlayerProfileModalProps> = ({ player, 
           <div className="bg-[#151c2c] border border-[#243247] rounded-lg p-4">
             <div className="flex items-center justify-between border-b border-[#243247] pb-3 mb-4">
               <h3 className="text-xs uppercase font-bold tracking-wider text-slate-400 flex items-center gap-1.5">
-                <Award className="w-4 h-4 text-amber-400" /> Verified Career Statistics
+                <Award className="w-4 h-4 text-amber-400" /> Career Statistics
+                {simMatches > 0 && (
+                  <span className="text-[10px] font-mono bg-emerald-950 text-emerald-300 border border-emerald-800/50 px-1.5 py-0.5 rounded ml-1">
+                    +{simMatches} Simulated Career Matches Included
+                  </span>
+                )}
               </h3>
 
               {/* Format Switcher */}

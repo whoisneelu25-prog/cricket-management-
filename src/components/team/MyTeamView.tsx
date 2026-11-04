@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { CareerSave, Player, MatchFormat, FormatSquadConfig } from '../../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
-import { getPlayersByCountry } from '../../data/squads';
+import { getCombinedFormatStats, getEffectivePlayersByCountry } from '../../data/squads';
 
 interface MyTeamViewProps {
   career: CareerSave;
@@ -33,7 +33,7 @@ export const MyTeamView: React.FC<MyTeamViewProps> = ({
 }) => {
   const [activeFormat, setActiveFormat] = useState<MatchFormat>('TEST');
   const team = INTERNATIONAL_TEAMS.find((t) => t.id === career.selectedTeamId);
-  const nationalPool = getPlayersByCountry(career.selectedTeamId);
+  const nationalPool = getEffectivePlayersByCountry(career.selectedTeamId, career, true);
 
   // Active format squad config
   const formatConfig = career.formatSquads?.[activeFormat] || {
@@ -212,7 +212,7 @@ export const MyTeamView: React.FC<MyTeamViewProps> = ({
             </span>
             <h3 className="text-base font-bold text-white mt-1">{wicketKeeper?.name}</h3>
             <span className="text-xs text-slate-400 block mt-0.5 font-mono">
-              Catches: {wicketKeeper?.stats[activeFormat]?.catches || 0} • Stumpings: {wicketKeeper?.stats[activeFormat]?.stumpings || 0}
+              Catches: {wicketKeeper ? getCombinedFormatStats(wicketKeeper, activeFormat).catches : 0} • Stumpings: {wicketKeeper ? getCombinedFormatStats(wicketKeeper, activeFormat).stumpings : 0}
             </span>
           </div>
         </div>
@@ -280,7 +280,7 @@ export const MyTeamView: React.FC<MyTeamViewProps> = ({
                     <div className="flex items-center space-x-1">
                       <div className="w-12 h-1.5 bg-slate-800 rounded-full overflow-hidden">
                         <div
-                          className={`h-full ${player.workloadFatigue > 60 ? 'bg-rose-500' : player.workloadFatigue > 30 ? 'bg-amber-500' : 'bg-emerald-500'}`}
+                          className={`h-full ${(player.workloadFatigue || 0) > 60 ? 'bg-rose-500' : (player.workloadFatigue || 0) > 30 ? 'bg-amber-500' : 'bg-emerald-500'}`}
                           style={{ width: `${Math.min(100, player.workloadFatigue || 10)}%` }}
                         />
                       </div>

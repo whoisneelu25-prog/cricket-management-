@@ -6,9 +6,14 @@ import { INTERNATIONAL_TEAMS } from '../../data/teams';
 interface ScorecardModalProps {
   match: Match;
   onClose: () => void;
+  onReturnToDashboard?: () => void;
 }
 
-export const ScorecardModal: React.FC<ScorecardModalProps> = ({ match, onClose }) => {
+export const ScorecardModal: React.FC<ScorecardModalProps> = ({
+  match,
+  onClose,
+  onReturnToDashboard,
+}) => {
   const [activeInningsIdx, setActiveInningsIdx] = useState(0);
 
   const homeTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.homeTeamId);
@@ -180,6 +185,36 @@ export const ScorecardModal: React.FC<ScorecardModalProps> = ({ match, onClose }
                 </div>
               )}
 
+              {/* Partnerships (from Fall of Wickets + Unbroken Stand) */}
+              {(currentInnings.fallOfWickets.length > 0 || currentInnings.totalRuns > 0) && (
+                <div>
+                  <h3 className="text-xs uppercase font-bold text-sky-400 tracking-wider mb-2">
+                    Innings Partnerships
+                  </h3>
+                  <div className="flex flex-wrap gap-2 text-xs font-mono">
+                    {currentInnings.fallOfWickets.map((fow, i) => (
+                      <span
+                        key={i}
+                        className="bg-[#182234] border border-[#243247] px-2.5 py-1 rounded text-slate-300"
+                      >
+                        Wkt {fow.wicketNumber}: <strong className="text-white">{fow.partnershipRuns}</strong> ({fow.partnershipBalls}b, {fow.batterName})
+                      </span>
+                    ))}
+                    {currentInnings.wickets < 10 && (() => {
+                      const prevScore = currentInnings.fallOfWickets.length > 0
+                        ? currentInnings.fallOfWickets[currentInnings.fallOfWickets.length - 1].score
+                        : 0;
+                      const unbroken = Math.max(0, currentInnings.totalRuns - prevScore);
+                      return unbroken > 0 ? (
+                        <span className="bg-[#182234] border border-emerald-800/40 px-2.5 py-1 rounded text-emerald-300">
+                          Unbroken: <strong>{unbroken}*</strong>
+                        </span>
+                      ) : null;
+                    })()}
+                  </div>
+                </div>
+              )}
+
               {/* Player of the Match if complete */}
               {match.playerOfTheMatch && (
                 <div className="bg-emerald-950/40 border border-emerald-800/60 p-3 rounded flex items-center space-x-3">
@@ -208,12 +243,26 @@ export const ScorecardModal: React.FC<ScorecardModalProps> = ({ match, onClose }
         {/* Modal Footer */}
         <div className="bg-[#182234] border-t border-[#243247] p-3 sm:p-4 flex items-center justify-between text-xs text-slate-400">
           <span>Official ICC Match Protocol Scorecard</span>
-          <button
-            onClick={onClose}
-            className="bg-[#243247] hover:bg-[#334155] text-white px-4 py-1.5 rounded transition cursor-pointer font-medium"
-          >
-            Close Scorecard
-          </button>
+          <div className="flex items-center gap-2">
+            {onReturnToDashboard && (
+              <button
+                onClick={() => {
+                  onClose();
+                  onReturnToDashboard();
+                }}
+                className="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-1.5 rounded transition cursor-pointer font-bold flex items-center gap-1"
+              >
+                <span>Return to Dashboard</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            )}
+            <button
+              onClick={onClose}
+              className="bg-[#243247] hover:bg-[#334155] text-white px-4 py-1.5 rounded transition cursor-pointer font-medium"
+            >
+              Close Scorecard
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -1,49 +1,98 @@
-import React, { useState } from 'react';
-import { TrendingUp, Award, Shield, Users } from 'lucide-react';
-import { MatchFormat, Player } from '../../types/cricket';
+import React, { useState, useMemo } from 'react';
+import { TrendingUp } from 'lucide-react';
+import { CareerSave, MatchFormat, Player } from '../../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
-import { ALL_PLAYERS } from '../../data/squads';
+import { ALL_PLAYERS, getCombinedFormatStats, getEffectivePlayer } from '../../data/squads';
 
 interface RankingsViewProps {
+  career?: CareerSave;
   onSelectPlayer: (player: Player) => void;
 }
 
-export const RankingsView: React.FC<RankingsViewProps> = ({ onSelectPlayer }) => {
+export const RankingsView: React.FC<RankingsViewProps> = ({ career, onSelectPlayer }) => {
   const [format, setFormat] = useState<MatchFormat>('TEST');
   const [category, setCategory] = useState<'TEAMS' | 'BATTERS' | 'BOWLERS' | 'ALL_ROUNDERS'>('TEAMS');
 
-  // Sorted teams by format
-  const sortedTeams = [...INTERNATIONAL_TEAMS].sort((a, b) => {
-    return b.ratingPoints[format] - a.ratingPoints[format];
-  });
+  // Sorted teams by live career rankings if present, otherwise base ratingPoints
+  const sortedTeams = useMemo(() => {
+    const liveMap = career?.teamRankings;
+    if (liveMap && Object.keys(liveMap).length > 0) {
+      return Object.values(liveMap)
+        .sort(
+          (a, b) =>
+            a.worldRankings[format] - b.worldRankings[format] ||
+            b.ratingPoints[format] - a.ratingPoints[format]
+        )
+        .map((entry) => {
+          const base = INTERNATIONAL_TEAMS.find((t) => t.id === entry.teamId);
+          return {
+            id: entry.teamId,
+            name: base?.name || entry.teamId,
+            code: base?.code || entry.teamId,
+            flagEmoji: base?.flagEmoji || '🏏',
+            rating: entry.ratingPoints[format],
+            matchesPlayed: 0,
+          };
+        });
+    }
+    return [...INTERNATIONAL_TEAMS]
+      .sort((a, b) => b.ratingPoints[format] - a.ratingPoints[format])
+      .map((t) => ({
+        id: t.id,
+        name: t.name,
+        code: t.code,
+        flagEmoji: t.flagEmoji,
+        rating: t.ratingPoints[format],
+        matchesPlayed: 0,
+      }));
+  }, [career?.teamRankings, format]);
+
+  const effectivePlayers = useMemo(() => {
+    const combined = [...ALL_PLAYERS, ...(career?.emergingPlayers || [])];
+    return combined
+      .map((p) => getEffectivePlayer(p, career) || p)
+      .filter((p) => p.gender !== 'FEMALE' && p.status !== 'RETIRED');
+  }, [career]);
 
   // Sorted players by format and category
-  const topBatters = [...ALL_PLAYERS]
-    .filter((p) => p.role === 'BATTER' || p.role === 'WICKETKEEPER_BATTER')
-    .sort((a, b) => {
-      const rA = format === 'TEST' ? a.testRating : format === 'ODI' ? a.odiRating : a.t20Rating;
-      const rB = format === 'TEST' ? b.testRating : format === 'ODI' ? b.odiRating : b.t20Rating;
-      return rB - rA;
-    })
-    .slice(0, 10);
+  const topBatters = useMemo(
+    () =>
+      effectivePlayers
+        .filter((p) => p.role === 'BATTER' || p.role === 'WICKETKEEPER_BATTER')
+        .sort((a, b) => {
+          const rA = format === 'TEST' ? a.testRating : format === 'ODI' ? a.odiRating : a.t20Rating;
+          const rB = format === 'TEST' ? b.testRating : format === 'ODI' ? b.odiRating : b.t20Rating;
+          return rB - rA;
+        })
+        .slice(0, 12),
+    [effectivePlayers, format]
+  );
 
-  const topBowlers = [...ALL_PLAYERS]
-    .filter((p) => p.role === 'BOWLER')
-    .sort((a, b) => {
-      const rA = format === 'TEST' ? a.testRating : format === 'ODI' ? a.odiRating : a.t20Rating;
-      const rB = format === 'TEST' ? b.testRating : format === 'ODI' ? b.odiRating : b.t20Rating;
-      return rB - rA;
-    })
-    .slice(0, 10);
+  const topBowlers = useMemo(
+    () =>
+      effectivePlayers
+        .filter((p) => p.role === 'BOWLER')
+        .sort((a, b) => {
+          const rA = format === 'TEST' ? a.testRating : format === 'ODI' ? a.odiRating : a.t20Rating;
+          const rB = format === 'TEST' ? b.testRating : format === 'ODI' ? b.odiRating : b.t20Rating;
+          return rB - rA;
+        })
+        .slice(0, 12),
+    [effectivePlayers, format]
+  );
 
-  const topAllRounders = [...ALL_PLAYERS]
-    .filter((p) => p.role === 'ALL_ROUNDER')
-    .sort((a, b) => {
-      const rA = format === 'TEST' ? a.testRating : format === 'ODI' ? a.odiRating : a.t20Rating;
-      const rB = format === 'TEST' ? b.testRating : format === 'ODI' ? b.odiRating : b.t20Rating;
-      return rB - rA;
-    })
-    .slice(0, 10);
+  const topAllRounders = useMemo(
+    () =>
+      effectivePlayers
+        .filter((p) => p.role === 'ALL_ROUNDER')
+        .sort((a, b) => {
+          const rA = format === 'TEST' ? a.testRating : format === 'ODI' ? a.odiRating : a.t20Rating;
+          const rB = format === 'TEST' ? b.testRating : format === 'ODI' ? b.odiRating : b.t20Rating;
+          return rB - rA;
+        })
+        .slice(0, 12),
+    [effectivePlayers, format]
+  );
 
   return (
     <div className="space-y-4 select-none animate-in fade-in duration-150">
@@ -125,10 +174,10 @@ export const RankingsView: React.FC<RankingsViewProps> = ({ onSelectPlayer }) =>
                       <span className="text-[10px] text-slate-500 font-mono">({team.code})</span>
                     </td>
                     <td className="p-3 text-right font-bold text-emerald-400">
-                      {team.ratingPoints[format]}
+                      {team.rating}
                     </td>
                     <td className="p-3 text-right text-slate-400 font-sans">
-                      {idx < 2 ? 'Championship Leader' : 'Full Member'}
+                      {idx < 2 ? 'Championship Leader' : 'ICC Member'}
                     </td>
                   </tr>
                 ))}
@@ -151,7 +200,7 @@ export const RankingsView: React.FC<RankingsViewProps> = ({ onSelectPlayer }) =>
               <tbody className="divide-y divide-[#243247] font-mono">
                 {(category === 'BATTERS' ? topBatters : category === 'BOWLERS' ? topBowlers : topAllRounders).map((player, idx) => {
                   const rating = format === 'TEST' ? player.testRating : format === 'ODI' ? player.odiRating : player.t20Rating;
-                  const stats = player.stats[format];
+                  const stats = getCombinedFormatStats(player, format);
 
                   return (
                     <tr

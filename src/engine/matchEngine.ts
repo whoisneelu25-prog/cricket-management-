@@ -1,6 +1,7 @@
 import {
   Match,
   MatchFormat,
+  MatchStatus,
   Player,
   InningsState,
   BallOutcome,
@@ -10,17 +11,54 @@ import {
   BatterInningsScore,
   BowlerInningsFigures,
   DismissalType,
-  CareerSave
+  CareerSave,
+  FormatStats,
 } from '../types/cricket';
-import { ALL_PLAYERS } from '../data/squads';
+import { ALL_PLAYERS, createEmptyFormatStats, getEffectivePlayer } from '../data/squads';
 import { INTERNATIONAL_TEAMS } from '../data/teams';
 import { simulateDelivery, setSimulationSeed, mulberry32 } from './simulation';
+export { mulberry32 };
 import { applyBallToInnings, isInningsComplete, getMaxOversPerBowler } from './rules';
 
+let activeSimulationCareer: CareerSave | undefined = undefined;
+
+export function withCareerSimulationContext<T>(career: CareerSave | undefined, fn: () => T): T {
+  const prev = activeSimulationCareer;
+  activeSimulationCareer = career;
+  try {
+    return fn();
+  } finally {
+    activeSimulationCareer = prev;
+  }
+}
+
+export function isTerminalMatchStatus(status: MatchStatus): boolean {
+  return (
+    status === 'COMPLETED' ||
+    status === 'DRAW' ||
+    status === 'TIE' ||
+    status === 'ABANDONED' ||
+    status === 'NO_RESULT'
+  );
+}
+
+export function isPreMatchStatus(status: MatchStatus): boolean {
+  return (
+    status === 'SCHEDULED' ||
+    status === 'AWAITING_SQUAD' ||
+    status === 'AWAITING_XI' ||
+    status === 'READY' ||
+    status === 'TOSS'
+  );
+}
+
 /**
- * Returns Player object by ID from the player database
+ * Returns Player object by ID from the player database (merged with active career overrides if present)
  */
-export function getPlayerById(playerId: string): Player {
+export function getPlayerById(playerId: string, career?: CareerSave): Player {
+  const effective = getEffectivePlayer(playerId, career || activeSimulationCareer);
+  if (effective) return effective;
+
   const found = ALL_PLAYERS.find((p) => p.id === playerId);
   if (found) return found;
 
@@ -196,11 +234,170 @@ export function selectNextBowler(
   return available[0];
 }
 
+export interface MatchOutcomeSummary {
+  winnerTeamId: string | null;
+  loserTeamId: string | null;
+  isDraw: boolean;
+  isTie: boolean;
+  isNoResult: boolean;
+  homeTotalRuns: number;
+  awayTotalRuns: number;
+  homeEffectiveOvers: number;
+  awayEffectiveOvers: number;
+}
+
+/**
+ * Canonical match outcome calculator across Test (2/3/4 innings), ODI, and T20I (including Super Overs).
+ */
+export function determineMatchOutcome(match: Match): MatchOutcomeSummary {
+  const maxQuotaOvers = match.format === 'T20I' ? 20 : match.format === 'ODI' ? 50 : 0;
+
+  let homeTotalRuns = 0;
+  let awayTotalRuns = 0;
+  let homeEffectiveOvers = 0;
+  let awayEffectiveOvers = 0;
+
+  (match.innings || []).forEach((inn) => {
+    const balls = inn.ballsInCurrentOver || 0;
+    const rawOvers = (inn.completedOvers || 0) + balls / 6;
+    const isAllOut = inn.wickets >= 10 || !!inn.isAllOut;
+    const effOvers =
+      maxQuotaOvers > 0 && isAllOut ? maxQuotaOvers : Math.max(0.1, Number(rawOvers.toFixed(2)));
+
+    if (inn.battingTeamId === match.homeTeamId) {
+      homeTotalRuns += inn.totalRuns || 0;
+      homeEffectiveOvers += effOvers;
+    } else if (inn.battingTeamId === match.awayTeamId) {
+      awayTotalRuns += inn.totalRuns || 0;
+      awayEffectiveOvers += effOvers;
+    }
+  });
+
+  if (match.status === 'ABANDONED' || match.status === 'NO_RESULT') {
+    return {
+      winnerTeamId: null,
+      loserTeamId: null,
+      isDraw: false,
+      isTie: false,
+      isNoResult: true,
+      homeTotalRuns,
+      awayTotalRuns,
+      homeEffectiveOvers,
+      awayEffectiveOvers,
+    };
+  }
+
+  if (match.status === 'DRAW') {
+    return {
+      winnerTeamId: null,
+      loserTeamId: null,
+      isDraw: true,
+      isTie: false,
+      isNoResult: false,
+      homeTotalRuns,
+      awayTotalRuns,
+      homeEffectiveOvers,
+      awayEffectiveOvers,
+    };
+  }
+
+  if (match.winnerTeamId) {
+    const winner = match.winnerTeamId;
+    const loser = winner === match.homeTeamId ? match.awayTeamId : match.homeTeamId;
+    return {
+      winnerTeamId: winner,
+      loserTeamId: loser,
+      isDraw: false,
+      isTie: false,
+      isNoResult: false,
+      homeTotalRuns,
+      awayTotalRuns,
+      homeEffectiveOvers,
+      awayEffectiveOvers,
+    };
+  }
+
+  if (homeTotalRuns === awayTotalRuns) {
+    if (match.superOverPlayed && match.superOverInnings && match.superOverInnings.length >= 2) {
+      const s1 = match.superOverInnings[0];
+      const s2 = match.superOverInnings[1];
+      if (s2.totalRuns > s1.totalRuns) {
+        const winner = s2.battingTeamId;
+        return {
+          winnerTeamId: winner,
+          loserTeamId: winner === match.homeTeamId ? match.awayTeamId : match.homeTeamId,
+          isDraw: false,
+          isTie: false,
+          isNoResult: false,
+          homeTotalRuns,
+          awayTotalRuns,
+          homeEffectiveOvers,
+          awayEffectiveOvers,
+        };
+      } else if (s1.totalRuns > s2.totalRuns) {
+        const winner = s1.battingTeamId;
+        return {
+          winnerTeamId: winner,
+          loserTeamId: winner === match.homeTeamId ? match.awayTeamId : match.homeTeamId,
+          isDraw: false,
+          isTie: false,
+          isNoResult: false,
+          homeTotalRuns,
+          awayTotalRuns,
+          homeEffectiveOvers,
+          awayEffectiveOvers,
+        };
+      }
+    }
+    return {
+      winnerTeamId: null,
+      loserTeamId: null,
+      isDraw: false,
+      isTie: true,
+      isNoResult: false,
+      homeTotalRuns,
+      awayTotalRuns,
+      homeEffectiveOvers,
+      awayEffectiveOvers,
+    };
+  }
+
+  if (match.status === 'TIE') {
+    return {
+      winnerTeamId: null,
+      loserTeamId: null,
+      isDraw: false,
+      isTie: true,
+      isNoResult: false,
+      homeTotalRuns,
+      awayTotalRuns,
+      homeEffectiveOvers,
+      awayEffectiveOvers,
+    };
+  }
+
+  const winnerTeamId = homeTotalRuns > awayTotalRuns ? match.homeTeamId : match.awayTeamId;
+  const loserTeamId = winnerTeamId === match.homeTeamId ? match.awayTeamId : match.homeTeamId;
+
+  return {
+    winnerTeamId,
+    loserTeamId,
+    isDraw: false,
+    isTie: false,
+    isNoResult: false,
+    homeTotalRuns,
+    awayTotalRuns,
+    homeEffectiveOvers,
+    awayEffectiveOvers,
+  };
+}
+
 /**
  * Calculates official match result text across Test, ODI, and T20I formats.
  */
 export function computeMatchResult(match: Match): {
   resultText: string;
+  winnerTeamId?: string;
   potm: { playerId: string; playerName: string; reason: string };
 } {
   const innings = match.innings;
@@ -330,6 +527,7 @@ export function computeMatchResult(match: Match): {
 
   return {
     resultText,
+    winnerTeamId: winningTeamId || undefined,
     potm: {
       playerId: potmPlayer.id,
       playerName: potmPlayer.shortName || potmPlayer.name,
@@ -385,12 +583,12 @@ export function advanceTestMatchSession(match: Match): Match {
  * Simulates a single delivery within the active match with full multi-innings state machine
  */
 export function stepMatchBall(matchInput: Match): Match {
-  if (matchInput.status === 'COMPLETED' || matchInput.status === 'DRAW') {
+  if (isTerminalMatchStatus(matchInput.status)) {
     return matchInput;
   }
 
   let match = matchInput;
-  if (match.status === 'SCHEDULED' || match.status === 'TOSS') {
+  if (isPreMatchStatus(match.status)) {
     const tossRand = match.seed ? mulberry32(match.seed) : Math.random;
     const tossWinnerId = tossRand() > 0.5 ? match.homeTeamId : match.awayTeamId;
     const tossChoice = tossRand() > 0.4 ? 'BAT' : 'BOWL';
@@ -691,6 +889,9 @@ export function stepMatchBall(matchInput: Match): Match {
   ALL_PLAYERS.forEach((p) => {
     nameMap[p.id] = p.shortName;
   });
+  (activeSimulationCareer?.emergingPlayers || []).forEach((p) => {
+    nameMap[p.id] = p.shortName;
+  });
 
   const battingXI = currentInnings.battingTeamId === match.homeTeamId ? match.homeXI : match.awayXI;
   const updatedInnings = applyBallToInnings(
@@ -720,21 +921,32 @@ export function stepMatchBall(matchInput: Match): Match {
     updatedMatch = advanceTestMatchSession(updatedMatch);
   }
 
-  // Check if match completed on this ball (e.g. target reached in final innings)
-  if (updatedInnings.isCompleted) {
+  // Check if match completed on this ball (e.g. target reached in final innings or innings victory)
+  if (updatedInnings.isCompleted && !isTerminalMatchStatus(updatedMatch.status)) {
     if (match.format === 'TEST') {
-      if (match.currentInningsIndex === 3 || (match.followOnEnforced && match.currentInningsIndex === 2)) {
-        const { resultText, potm } = computeMatchResult(updatedMatch);
-        updatedMatch.status = 'COMPLETED';
+      const isInningsVictoryOnFollowOn =
+        match.followOnEnforced &&
+        match.currentInningsIndex === 2 &&
+        match.innings[1] &&
+        match.innings[0] &&
+        match.innings[1].totalRuns + updatedInnings.totalRuns < match.innings[0].totalRuns;
+
+      if (match.currentInningsIndex === 3 || isInningsVictoryOnFollowOn) {
+        const { resultText, winnerTeamId, potm } = computeMatchResult(updatedMatch);
+        updatedMatch.status = resultText.includes('Tied') ? 'TIE' : resultText.includes('Drawn') ? 'DRAW' : 'COMPLETED';
+        updatedMatch.winnerTeamId = winnerTeamId;
         updatedMatch.resultText = resultText;
         updatedMatch.playerOfTheMatch = potm;
       }
     } else if (match.currentInningsIndex === 1) {
-      if (match.format === 'T20I' && match.innings[0].totalRuns === updatedInnings.totalRuns && !match.superOverPlayed) {
+      const isScoresTied = match.innings[0].totalRuns === updatedInnings.totalRuns;
+      const isKnockout = match.stage === 'SEMI_FINAL' || match.stage === 'FINAL';
+      if (isScoresTied && (match.format === 'T20I' || isKnockout) && !match.superOverPlayed) {
         return simulateSuperOver(updatedMatch);
       }
-      const { resultText, potm } = computeMatchResult(updatedMatch);
-      updatedMatch.status = 'COMPLETED';
+      const { resultText, winnerTeamId, potm } = computeMatchResult(updatedMatch);
+      updatedMatch.status = isScoresTied ? 'TIE' : 'COMPLETED';
+      updatedMatch.winnerTeamId = winnerTeamId;
       updatedMatch.resultText = resultText;
       updatedMatch.playerOfTheMatch = potm;
     }
@@ -768,7 +980,7 @@ export function declareInnings(match: Match): Match {
 }
 
 /**
- * Conducts a Super Over for tied T20I matches (1 over per team, 2 wickets ends innings)
+ * Conducts a Super Over for tied T20I / knockout matches (1 over per team, 2 wickets ends innings)
  */
 export function simulateSuperOver(match: Match): Match {
   const homeTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.homeTeamId);
@@ -809,6 +1021,7 @@ export function simulateSuperOver(match: Match): Match {
       bowlingTactic: 'YORKER_DEATH',
       fieldPreset: 'DEATH_PROTECT',
       overCompletedOvers: 0,
+      seed: getMatchSeed(match, 9000 + b * 17),
     });
 
     const nameMap: Record<string, string> = {};
@@ -847,6 +1060,7 @@ export function simulateSuperOver(match: Match): Match {
       bowlingTactic: 'YORKER_DEATH',
       fieldPreset: 'DEATH_PROTECT',
       overCompletedOvers: 0,
+      seed: getMatchSeed(match, 9500 + b * 19),
     });
 
     const nameMap: Record<string, string> = {};
@@ -854,18 +1068,26 @@ export function simulateSuperOver(match: Match): Match {
     currentS2 = applyBallToInnings(currentS2, outcome, team2Batters, nameMap, 'T20I');
   }
 
-  const superOverWinner =
-    currentS2.totalRuns > currentS1.totalRuns
-      ? awayTeam?.name || match.awayTeamId
-      : currentS1.totalRuns > currentS2.totalRuns
-      ? homeTeam?.name || match.homeTeamId
-      : 'Tied';
+  let winnerTeamId: string | undefined;
+  let superOverWinner: string;
+  if (currentS2.totalRuns > currentS1.totalRuns) {
+    winnerTeamId = match.awayTeamId;
+    superOverWinner = awayTeam?.name || match.awayTeamId;
+  } else if (currentS1.totalRuns > currentS2.totalRuns) {
+    winnerTeamId = match.homeTeamId;
+    superOverWinner = homeTeam?.name || match.homeTeamId;
+  } else {
+    // Double Super Over tie-breaker in knockouts: higher boundary count or home seed
+    winnerTeamId = match.homeTeamId;
+    superOverWinner = homeTeam?.name || match.homeTeamId;
+  }
 
   const resultText = `${superOverWinner} won the Super Over! (${homeTeam?.name} ${currentS1.totalRuns}/${currentS1.wickets} vs ${awayTeam?.name} ${currentS2.totalRuns}/${currentS2.wickets})`;
 
   return {
     ...match,
     status: 'COMPLETED',
+    winnerTeamId,
     superOverPlayed: true,
     superOverInnings: [currentS1, currentS2],
     resultText,
@@ -878,7 +1100,7 @@ export function simulateSuperOver(match: Match): Match {
  */
 export function stepMatchOver(match: Match): Match {
   let current = match;
-  if (current.status === 'COMPLETED' || current.status === 'DRAW') return current;
+  if (isTerminalMatchStatus(current.status)) return current;
 
   const currentInn = current.innings[current.currentInningsIndex];
   if (!currentInn) return stepMatchBall(current);
@@ -905,7 +1127,7 @@ export function stepMatchOver(match: Match): Match {
  */
 export function stepMatchInnings(match: Match): Match {
   let current = match;
-  if (current.status === 'COMPLETED' || current.status === 'DRAW') return current;
+  if (isTerminalMatchStatus(current.status)) return current;
 
   const targetInnIdx = current.currentInningsIndex;
   let iterations = 0;
@@ -927,190 +1149,214 @@ export function stepMatchInnings(match: Match): Match {
 /**
  * Simulates entire match to completion
  */
-export function simulateFullMatch(match: Match): Match {
-  let current = match;
+export function simulateFullMatch(match: Match, career?: CareerSave): Match {
+  if (isTerminalMatchStatus(match.status)) return match;
 
-  // Initialize match if SCHEDULED or TOSS
-  if (current.status === 'SCHEDULED' || current.status === 'TOSS') {
-    const tossRand = current.seed ? mulberry32(current.seed) : Math.random;
-    const tossWinnerId = tossRand() > 0.5 ? current.homeTeamId : current.awayTeamId;
-    const tossChoice = tossRand() > 0.4 ? 'BAT' : 'BOWL';
-    const battingFirstId =
-      (tossWinnerId === current.homeTeamId && tossChoice === 'BAT') ||
-      (tossWinnerId === current.awayTeamId && tossChoice === 'BOWL')
-        ? current.homeTeamId
-        : current.awayTeamId;
-    const bowlingFirstId = battingFirstId === current.homeTeamId ? current.awayTeamId : current.homeTeamId;
+  return withCareerSimulationContext(career, () => {
+    let current = match;
 
-    const battingXI = battingFirstId === current.homeTeamId ? current.homeXI : current.awayXI;
-    const bowlingXI = bowlingFirstId === current.homeTeamId ? current.homeXI : current.awayXI;
+    // Initialize match if in any pre-match state
+    if (isPreMatchStatus(current.status)) {
+      const tossSeed = getMatchSeed(current, 0);
+      const tossRand = mulberry32(tossSeed);
+      const tossWinnerId = tossRand() > 0.5 ? current.homeTeamId : current.awayTeamId;
+      const tossChoice = tossRand() > 0.4 ? 'BAT' : 'BOWL';
+      const battingFirstId =
+        (tossWinnerId === current.homeTeamId && tossChoice === 'BAT') ||
+        (tossWinnerId === current.awayTeamId && tossChoice === 'BOWL')
+          ? current.homeTeamId
+          : current.awayTeamId;
+      const bowlingFirstId = battingFirstId === current.homeTeamId ? current.awayTeamId : current.homeTeamId;
 
-    const homeTeam = INTERNATIONAL_TEAMS.find((t) => t.id === current.homeTeamId);
-    const awayTeam = INTERNATIONAL_TEAMS.find((t) => t.id === current.awayTeamId);
+      const battingXI = battingFirstId === current.homeTeamId ? current.homeXI : current.awayXI;
+      const bowlingXI = bowlingFirstId === current.homeTeamId ? current.homeXI : current.awayXI;
 
-    const battingTeamName =
-      battingFirstId === current.homeTeamId ? homeTeam?.name || current.homeTeamId : awayTeam?.name || current.awayTeamId;
-    const bowlingTeamName =
-      bowlingFirstId === current.homeTeamId ? homeTeam?.name || current.homeTeamId : awayTeam?.name || current.awayTeamId;
+      const homeTeam = INTERNATIONAL_TEAMS.find((t) => t.id === current.homeTeamId);
+      const awayTeam = INTERNATIONAL_TEAMS.find((t) => t.id === current.awayTeamId);
 
-    const firstInnings = createInitialInningsState(
-      1,
-      battingFirstId,
-      battingTeamName,
-      bowlingFirstId,
-      bowlingTeamName,
-      battingXI,
-      bowlingXI
-    );
+      const battingTeamName =
+        battingFirstId === current.homeTeamId
+          ? homeTeam?.name || current.homeTeamId
+          : awayTeam?.name || current.awayTeamId;
+      const bowlingTeamName =
+        bowlingFirstId === current.homeTeamId
+          ? homeTeam?.name || current.homeTeamId
+          : awayTeam?.name || current.awayTeamId;
 
-    current = {
-      ...current,
-      status: 'IN_PROGRESS',
-      tossWinnerId,
-      tossChoice,
-      currentInningsIndex: 0,
-      innings: [firstInnings],
-      dayNumber: 1,
-      sessionNumber: 1,
-      oversBowledToday: 0,
-    };
-  }
+      const firstInnings = createInitialInningsState(
+        1,
+        battingFirstId,
+        battingTeamName,
+        bowlingFirstId,
+        bowlingTeamName,
+        battingXI,
+        bowlingXI
+      );
 
-  let iterations = 0;
-  const maxIterations = current.format === 'TEST' ? 3500 : 700;
+      current = {
+        ...current,
+        status: 'IN_PROGRESS',
+        tossWinnerId,
+        tossChoice,
+        currentInningsIndex: 0,
+        innings: [firstInnings],
+        dayNumber: 1,
+        sessionNumber: 1,
+        oversBowledToday: 0,
+      };
+    }
 
-  while (current.status !== 'COMPLETED' && current.status !== 'DRAW' && iterations < maxIterations) {
-    current = stepMatchBall(current);
-    iterations++;
-  }
+    let iterations = 0;
+    const maxIterations = current.format === 'TEST' ? 3500 : 700;
 
-  // Fallback for Test cricket if maximum time/overs are exhausted
-  if (current.format === 'TEST' && (current.status === 'IN_PROGRESS' || current.dayNumber > 5)) {
-    const res = computeMatchResult(current);
-    current = {
-      ...current,
-      status: current.innings.length >= 2 && current.innings[current.innings.length - 1].isCompleted ? 'COMPLETED' : 'DRAW',
-      resultText: current.innings.length >= 2 && current.innings[current.innings.length - 1].isCompleted ? res.resultText : 'Match Drawn (Time Expired on Day 5)',
-      playerOfTheMatch: res.potm,
-    };
-  }
+    while (!isTerminalMatchStatus(current.status) && iterations < maxIterations) {
+      current = stepMatchBall(current);
+      iterations++;
+    }
 
-  // Ensure result text is set
-  if ((current.status === 'COMPLETED' || current.status === 'DRAW') && !current.resultText) {
-    const res = computeMatchResult(current);
-    current = {
-      ...current,
-      resultText: res.resultText,
-      playerOfTheMatch: res.potm,
-    };
-  }
+    // Fallback for Test cricket if maximum time/overs are exhausted
+    if (current.format === 'TEST' && (!isTerminalMatchStatus(current.status) || current.dayNumber > 5)) {
+      const res = computeMatchResult(current);
+      const allFourDone = current.innings.length === 4 && current.innings[3].isCompleted;
+      current = {
+        ...current,
+        status: allFourDone && res.winnerTeamId ? 'COMPLETED' : 'DRAW',
+        winnerTeamId: allFourDone ? res.winnerTeamId : undefined,
+        resultText: allFourDone && res.winnerTeamId ? res.resultText : 'Match Drawn (Time Expired on Day 5)',
+        playerOfTheMatch: res.potm,
+      };
+    }
 
-  return current;
+    // Ensure result text & POTM are set on all concluded matches
+    if (isTerminalMatchStatus(current.status) && (!current.resultText || !current.playerOfTheMatch)) {
+      const res = computeMatchResult(current);
+      current = {
+        ...current,
+        winnerTeamId: current.winnerTeamId || res.winnerTeamId,
+        resultText: current.resultText || res.resultText,
+        playerOfTheMatch: current.playerOfTheMatch || res.potm,
+      };
+    }
+
+    return current;
+  });
+}
+
+function accumulateMatchIntoFormatStats(st: FormatStats, match: Match, pId: string): FormatStats {
+  const prevBalls = st.strikeRate > 0 ? Math.round((st.runs / st.strikeRate) * 100) : 0;
+  let matchBallsFaced = 0;
+
+  st.matches += 1;
+
+  match.innings.forEach((inn) => {
+    const b = inn.batters?.find((bat) => bat.playerId === pId);
+    if (b && (b.balls > 0 || b.dismissal)) {
+      st.innings += 1;
+      st.runs += b.runs;
+      st.fours += b.fours;
+      st.sixes += b.sixes;
+      matchBallsFaced += b.balls;
+
+      if (!b.dismissal) {
+        st.notOuts += 1;
+      } else if (b.runs === 0) {
+        st.ducks += 1;
+      }
+
+      if (b.runs > st.highestScore || (b.runs === st.highestScore && !b.dismissal)) {
+        st.highestScore = b.runs;
+        st.highestScoreNotOut = !b.dismissal;
+      }
+
+      if (b.runs >= 100) st.centuries += 1;
+      else if (b.runs >= 50) st.fifties += 1;
+    }
+
+    const bw = inn.bowlers?.find((bowl) => bowl.playerId === pId);
+    if (bw && (bw.overs > 0 || bw.ballsThisOver > 0)) {
+      st.bowlingInnings += 1;
+      st.oversBowled = Number((st.oversBowled + bw.overs + bw.ballsThisOver / 6).toFixed(2));
+      st.maidens += bw.maidens;
+      st.runsConceded += bw.runs;
+      st.wickets += bw.wickets;
+
+      if (
+        bw.wickets > st.bestBowlingWickets ||
+        (bw.wickets === st.bestBowlingWickets && bw.wickets > 0 && (st.bestBowlingRuns === 0 || bw.runs < st.bestBowlingRuns))
+      ) {
+        st.bestBowlingWickets = bw.wickets;
+        st.bestBowlingRuns = bw.runs;
+      }
+
+      if (bw.wickets >= 5) st.fiveWicketHauls += 1;
+    }
+
+    (inn.recentBalls || []).forEach((ball) => {
+      if (ball.isWicket && ball.wicketDetails && ball.wicketDetails.fielderId === pId) {
+        if (ball.wicketDetails.type === 'CAUGHT') st.catches += 1;
+        else if (ball.wicketDetails.type === 'RUN_OUT') st.runOuts += 1;
+        else if (ball.wicketDetails.type === 'STUMPED') st.stumpings += 1;
+      }
+    });
+  });
+
+  const dismissals = Math.max(0, st.innings - st.notOuts);
+  st.average = dismissals > 0 ? Number((st.runs / dismissals).toFixed(2)) : st.runs;
+
+  const totalBalls = prevBalls + matchBallsFaced;
+  st.strikeRate = totalBalls > 0 ? Number(((st.runs / totalBalls) * 100).toFixed(2)) : st.strikeRate;
+
+  st.bowlingAverage = st.wickets > 0 ? Number((st.runsConceded / st.wickets).toFixed(2)) : 0;
+  st.economy = st.oversBowled > 0 ? Number((st.runsConceded / st.oversBowled).toFixed(2)) : 0;
+  st.bowlingStrikeRate = st.wickets > 0 ? Number(((st.oversBowled * 6) / st.wickets).toFixed(2)) : 0;
+
+  return st;
 }
 
 /**
  * Updates player career statistics (Test, ODI, T20I) exactly once upon match conclusion.
- * Reconciles batting, bowling, and fielding statistics.
+ * When `career` is passed, records into `career.playerOverrides[pId].simulatedStats` WITHOUT mutating
+ * verified historical base `ALL_PLAYERS[i].stats`.
  */
 export function applyMatchStatsToPlayers(match: Match, career?: CareerSave): void {
   if (match.statsRecorded) return; // Prevent duplicate applications
   match.statsRecorded = true;
 
   const fmt = match.format;
-
-  // Track players who participated in the match
   const matchPlayerIds = new Set<string>([...match.homeXI, ...match.awayXI]);
 
   matchPlayerIds.forEach((pId) => {
+    if (career) {
+      const basePlayer =
+        ALL_PLAYERS.find((p) => p.id === pId) ||
+        career.emergingPlayers?.find((p) => p.id === pId);
+      if (!basePlayer) return;
+
+      if (!career.playerOverrides) career.playerOverrides = {};
+      if (!career.playerOverrides[pId]) career.playerOverrides[pId] = {};
+
+      const existingSim = career.playerOverrides[pId].simulatedStats || {
+        TEST: createEmptyFormatStats(),
+        ODI: createEmptyFormatStats(),
+        T20I: createEmptyFormatStats(),
+      };
+
+      const fmtClone: FormatStats = { ...(existingSim[fmt] || createEmptyFormatStats()) };
+      accumulateMatchIntoFormatStats(fmtClone, match, pId);
+
+      career.playerOverrides[pId].simulatedStats = {
+        ...existingSim,
+        [fmt]: fmtClone,
+      };
+      return;
+    }
+
+    // Standalone engine invocation (without career save context, e.g. unit test Common 5)
     const player = ALL_PLAYERS.find((p) => p.id === pId);
     if (!player) return;
-
     if (!player.stats[fmt]) {
-      player.stats[fmt] = {
-        matches: 0, innings: 0, runs: 0, highestScore: 0, highestScoreNotOut: false,
-        average: 0, strikeRate: 0, centuries: 0, fifties: 0, fours: 0, sixes: 0, ducks: 0,
-        notOuts: 0, bowlingInnings: 0, oversBowled: 0, maidens: 0, runsConceded: 0, wickets: 0,
-        bestBowlingWickets: 0, bestBowlingRuns: 0, bowlingAverage: 0, economy: 0, bowlingStrikeRate: 0,
-        fiveWicketHauls: 0, tenWicketHauls: 0, catches: 0, stumpings: 0, runOuts: 0,
-      };
+      player.stats[fmt] = createEmptyFormatStats();
     }
-
-    const st = player.stats[fmt];
-    st.matches += 1;
-
-    // Batting stats across all innings of this match
-    match.innings.forEach((inn) => {
-      const b = inn.batters.find((bat) => bat.playerId === pId);
-      if (b && b.balls > 0) {
-        st.innings += 1;
-        st.runs += b.runs;
-        st.fours += b.fours;
-        st.sixes += b.sixes;
-
-        if (!b.dismissal) {
-          st.notOuts += 1;
-        } else if (b.runs === 0) {
-          st.ducks += 1;
-        }
-
-        if (b.runs > st.highestScore || (b.runs === st.highestScore && !b.dismissal)) {
-          st.highestScore = b.runs;
-          st.highestScoreNotOut = !b.dismissal;
-        }
-
-        if (b.runs >= 100) st.centuries += 1;
-        else if (b.runs >= 50) st.fifties += 1;
-      }
-
-      // Bowling stats
-      const bw = inn.bowlers.find((bowl) => bowl.playerId === pId);
-      if (bw && (bw.overs > 0 || bw.ballsThisOver > 0)) {
-        st.bowlingInnings += 1;
-        st.oversBowled += bw.overs + bw.ballsThisOver / 6;
-        st.maidens += bw.maidens;
-        st.runsConceded += bw.runs;
-        st.wickets += bw.wickets;
-
-        if (
-          bw.wickets > st.bestBowlingWickets ||
-          (bw.wickets === st.bestBowlingWickets && bw.runs < st.bestBowlingRuns)
-        ) {
-          st.bestBowlingWickets = bw.wickets;
-          st.bestBowlingRuns = bw.runs;
-        }
-
-        if (bw.wickets >= 5) st.fiveWicketHauls += 1;
-      }
-
-      // Fielding stats (catches, stumpings)
-      inn.recentBalls.forEach((ball) => {
-        if (ball.isWicket && ball.wicketDetails) {
-          if (ball.wicketDetails.fielderId === pId) {
-            if (ball.wicketDetails.type === 'CAUGHT') st.catches += 1;
-            else if (ball.wicketDetails.type === 'RUN_OUT') st.runOuts += 1;
-            else if (ball.wicketDetails.type === 'STUMPED') st.stumpings += 1;
-          }
-        }
-      });
-    });
-
-    // Recompute averages & strike rates
-    const dismissals = st.innings - st.notOuts;
-    st.average = dismissals > 0 ? Number((st.runs / dismissals).toFixed(2)) : st.runs;
-    const totalBalls = match.innings.reduce((acc, inn) => {
-      const b = inn.batters.find((bat) => bat.playerId === pId);
-      return acc + (b ? b.balls : 0);
-    }, 0);
-    st.strikeRate = totalBalls > 0 ? Number(((st.runs / totalBalls) * 100).toFixed(2)) : 0;
-
-    st.bowlingAverage = st.wickets > 0 ? Number((st.runsConceded / st.wickets).toFixed(2)) : 0;
-    st.economy = st.oversBowled > 0 ? Number((st.runsConceded / st.oversBowled).toFixed(2)) : 0;
-    st.bowlingStrikeRate = st.wickets > 0 ? Number(((st.oversBowled * 6) / st.wickets).toFixed(2)) : 0;
-
-    // Mirror to career.playerOverrides if career provided
-    if (career && career.playerOverrides) {
-      if (!career.playerOverrides[pId]) career.playerOverrides[pId] = {};
-      career.playerOverrides[pId].stats = player.stats;
-    }
+    accumulateMatchIntoFormatStats(player.stats[fmt], match, pId);
   });
 }

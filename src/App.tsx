@@ -7,7 +7,6 @@ import {
   BattingAggression,
   BowlingTactic,
   FieldPreset,
-  FormatSquadConfig
 } from './types/cricket';
 import {
   MainNavigationTab,
@@ -15,6 +14,7 @@ import {
   saveCareerToStorage,
   clearCareerStorage,
   createNewCareerSave,
+  advanceCareerTime,
   advanceToNextMatchDate,
   takeSquadRestDay,
   announceTourSquad,
@@ -24,7 +24,13 @@ import {
   setFormatCaptain,
   setFormatViceCaptain,
   setFormatWicketKeeper,
+  confirmMatchPreparationLineup,
 } from './store/careerStore';
+import {
+  CalendarAdvanceMode,
+  CalendarAdvancementResult,
+  simulateWorldMatchesUntil,
+} from './engine/worldSimulation';
 import { TrainingFocus } from './engine/playerDevelopmentEngine';
 import { INTERNATIONAL_TEAMS } from './data/teams';
 import { ALL_PLAYERS } from './data/squads';
@@ -35,6 +41,8 @@ import { SquadView } from './components/squad/SquadView';
 import { MyTeamView } from './components/team/MyTeamView';
 import { FixturesView } from './components/fixtures/FixturesView';
 import { MatchCentreView } from './components/match/MatchCentreView';
+import { MatchPreparationModal } from './components/match/MatchPreparationModal';
+import { ScorecardModal } from './components/match/ScorecardModal';
 import { TournamentsView } from './components/tournaments/TournamentsView';
 import { RankingsView } from './components/rankings/RankingsView';
 import { StatisticsView } from './components/statistics/StatisticsView';
@@ -55,6 +63,9 @@ import {
   simulateFullMatch,
   createInitialInningsState,
   declareInnings,
+  isPreMatchStatus,
+  isTerminalMatchStatus,
+  withCareerSimulationContext,
 } from './engine/matchEngine';
 
 export default function App() {
@@ -63,6 +74,9 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<MainNavigationTab>('DASHBOARD');
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [selectedTourIdForModal, setSelectedTourIdForModal] = useState<string | null>(null);
+  const [prepMatchId, setPrepMatchId] = useState<string | null>(null);
+  const [inspectedScorecardMatch, setInspectedScorecardMatch] = useState<Match | null>(null);
+  const [calendarAlert, setCalendarAlert] = useState<CalendarAdvancementResult | null>(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [activeMatchId, setActiveMatchId] = useState<string | null>(null);
 
@@ -78,8 +92,13 @@ export default function App() {
         setViewState('IN_GAME');
       }
     } else if (autostart) {
-      // Auto-start with India for headless testing
-      const autoCareer = createNewCareerSave('Rahul Dravid', 'IND', 'TEST', 'INTERNATIONAL', 'TACTICAL');
+      const autoCareer = createNewCareerSave(
+        'Rahul Dravid',
+        'IND',
+        'TEST',
+        'INTERNATIONAL',
+        'TACTICAL'
+      );
       setCareer(autoCareer);
       saveCareerToStorage(autoCareer);
       setViewState('IN_GAME');
@@ -88,7 +107,13 @@ export default function App() {
 
   // Quick Match from Main Menu (sets up exhibition career)
   const handleStartQuickMatch = () => {
-    const quickCareer = createNewCareerSave('Head Coach', 'IND', 'T20I', 'INTERNATIONAL', 'AGGRESSIVE');
+    const quickCareer = createNewCareerSave(
+      'Head Coach',
+      'IND',
+      'T20I',
+      'INTERNATIONAL',
+      'AGGRESSIVE'
+    );
     quickCareer.saveName = 'Exhibition International Campaign';
     setCareer(quickCareer);
     saveCareerToStorage(quickCareer);
@@ -96,20 +121,27 @@ export default function App() {
     setActiveTab('DASHBOARD');
   };
 
-  // Active match resolution
-  const activeMatch = career?.fixtures.find((f) => f.id === activeMatchId) || career?.fixtures[0];
+  // Active match resolution (strictly user fixtures only!)
+  const activeMatch = career
+    ? (activeMatchId ? career.fixtures.find((f) => f.id === activeMatchId) : undefined) ||
+      career.fixtures.find((f) => f.status === 'IN_PROGRESS') ||
+      career.fixtures.find((f) => !isTerminalMatchStatus(f.status)) ||
+      career.fixtures[career.fixtures.length - 1]
+    : undefined;
 
   // Helper to update active match in career store
-  const updateActiveMatch = (updated: Match) => {
-    if (!career) return;
-    if (updated.status === 'COMPLETED' || updated.status === 'DRAW' || updated.status === 'TIE') {
-      const nextCareer = applyUserMatchResult(career, updated);
+  const updateActiveMatch = (updated: Match, baseCareer: CareerSave | null = career) => {
+    if (!baseCareer) return;
+    if (isTerminalMatchStatus(updated.status)) {
+      const nextCareer = applyUserMatchResult(baseCareer, updated);
       setCareer(nextCareer);
       saveCareerToStorage(nextCareer);
     } else {
-      const updatedFixtures = career.fixtures.map((f) => (f.id === updated.id ? updated : f));
+      const updatedFixtures = baseCareer.fixtures.map((f) =>
+        f.id === updated.id ? updated : f
+      );
       const nextCareer: CareerSave = {
-        ...career,
+        ...baseCareer,
         fixtures: updatedFixtures,
         savedAt: new Date().toISOString(),
       };
@@ -125,39 +157,47 @@ export default function App() {
     saveCareerToStorage(nextCareer);
   };
 
-  // Match Simulation Step Handlers
+  // Match Simulation Step Handlers (wrapped in career simulation context)
   const handleSimulateBall = () => {
-    if (!activeMatch) return;
-    const next = stepMatchBall(activeMatch);
+    if (!activeMatch || !career || isTerminalMatchStatus(activeMatch.status)) return;
+    const next = withCareerSimulationContext(career, () => stepMatchBall(activeMatch));
     updateActiveMatch(next);
   };
 
   const handleSimulateOver = () => {
-    if (!activeMatch) return;
-    const next = stepMatchOver(activeMatch);
+    if (!activeMatch || !career || isTerminalMatchStatus(activeMatch.status)) return;
+    const next = withCareerSimulationContext(career, () => stepMatchOver(activeMatch));
     updateActiveMatch(next);
   };
 
   const handleSimulateInnings = () => {
-    if (!activeMatch) return;
-    const next = stepMatchInnings(activeMatch);
+    if (!activeMatch || !career || isTerminalMatchStatus(activeMatch.status)) return;
+    const next = withCareerSimulationContext(career, () => stepMatchInnings(activeMatch));
     updateActiveMatch(next);
   };
 
   const handleSimulateMatch = () => {
-    if (!activeMatch) return;
-    const next = simulateFullMatch(activeMatch);
-    updateActiveMatch(next);
+    if (!activeMatch || !career || isTerminalMatchStatus(activeMatch.status)) return;
+    let workingCareer = career;
+    if (activeMatch.date && activeMatch.date > workingCareer.currentDate) {
+      workingCareer = simulateWorldMatchesUntil(workingCareer, activeMatch.date).updatedCareer;
+    }
+    const targetMatch =
+      workingCareer.fixtures.find((f) => f.id === activeMatch.id) || activeMatch;
+    const next = withCareerSimulationContext(workingCareer, () =>
+      simulateFullMatch(targetMatch)
+    );
+    updateActiveMatch(next, workingCareer);
   };
 
   const handleDeclareInnings = () => {
-    if (!activeMatch) return;
-    const next = declareInnings(activeMatch);
+    if (!activeMatch || !career || isTerminalMatchStatus(activeMatch.status)) return;
+    const next = withCareerSimulationContext(career, () => declareInnings(activeMatch));
     updateActiveMatch(next);
   };
 
   const handleFollowOnDecision = (enforce: boolean) => {
-    if (!activeMatch) return;
+    if (!activeMatch || isTerminalMatchStatus(activeMatch.status)) return;
     const next = {
       ...activeMatch,
       followOnEnforced: enforce,
@@ -170,7 +210,7 @@ export default function App() {
     bowlingTactic: BowlingTactic,
     fieldPreset: FieldPreset
   ) => {
-    if (!activeMatch) return;
+    if (!activeMatch || isTerminalMatchStatus(activeMatch.status)) return;
     const next: Match = {
       ...activeMatch,
       userTactics: {
@@ -198,33 +238,57 @@ export default function App() {
   };
 
   const handleStartMatchWithToss = (choice: 'BAT' | 'BOWL') => {
-    if (!activeMatch) return;
-    const userTeamId = career?.selectedTeamId || activeMatch.homeTeamId;
-    const opponentTeamId = activeMatch.homeTeamId === userTeamId ? activeMatch.awayTeamId : activeMatch.homeTeamId;
+    if (!activeMatch || !career) return;
+    // Never allow completed or non-user matches to be started
+    if (!isPreMatchStatus(activeMatch.status)) return;
+    if (
+      activeMatch.homeTeamId !== career.selectedTeamId &&
+      activeMatch.awayTeamId !== career.selectedTeamId
+    ) {
+      return;
+    }
+
+    // Sync world calendar up to match date if needed so global cricket progresses alongside
+    let workingCareer = career;
+    if (activeMatch.date && activeMatch.date > workingCareer.currentDate) {
+      workingCareer = simulateWorldMatchesUntil(workingCareer, activeMatch.date).updatedCareer;
+    }
+    const freshMatch =
+      workingCareer.fixtures.find((f) => f.id === activeMatch.id) || activeMatch;
+
+    const userTeamId = workingCareer.selectedTeamId;
+    const opponentTeamId =
+      freshMatch.homeTeamId === userTeamId ? freshMatch.awayTeamId : freshMatch.homeTeamId;
 
     const userTeam = INTERNATIONAL_TEAMS.find((t) => t.id === userTeamId);
     const oppTeam = INTERNATIONAL_TEAMS.find((t) => t.id === opponentTeamId);
 
     const battingTeamId = choice === 'BAT' ? userTeamId : opponentTeamId;
-    const battingTeamName = choice === 'BAT' ? userTeam?.name || 'Home' : oppTeam?.name || 'Away';
+    const battingTeamName =
+      choice === 'BAT' ? userTeam?.name || 'Home' : oppTeam?.name || 'Away';
     const bowlingTeamId = choice === 'BAT' ? opponentTeamId : userTeamId;
-    const bowlingTeamName = choice === 'BAT' ? oppTeam?.name || 'Away' : userTeam?.name || 'Home';
+    const bowlingTeamName =
+      choice === 'BAT' ? oppTeam?.name || 'Away' : userTeam?.name || 'Home';
 
-    const battingXI = battingTeamId === activeMatch.homeTeamId ? activeMatch.homeXI : activeMatch.awayXI;
-    const bowlingXI = bowlingTeamId === activeMatch.homeTeamId ? activeMatch.homeXI : activeMatch.awayXI;
+    const battingXI =
+      battingTeamId === freshMatch.homeTeamId ? freshMatch.homeXI : freshMatch.awayXI;
+    const bowlingXI =
+      bowlingTeamId === freshMatch.homeTeamId ? freshMatch.homeXI : freshMatch.awayXI;
 
-    const innings1 = createInitialInningsState(
-      1,
-      battingTeamId,
-      battingTeamName,
-      bowlingTeamId,
-      bowlingTeamName,
-      battingXI,
-      bowlingXI
+    const innings1 = withCareerSimulationContext(workingCareer, () =>
+      createInitialInningsState(
+        1,
+        battingTeamId,
+        battingTeamName,
+        bowlingTeamId,
+        bowlingTeamName,
+        battingXI,
+        bowlingXI
+      )
     );
 
     const startedMatch: Match = {
-      ...activeMatch,
+      ...freshMatch,
       status: 'IN_PROGRESS',
       tossWinnerId: userTeamId,
       tossChoice: choice,
@@ -232,10 +296,10 @@ export default function App() {
       innings: [innings1],
     };
 
-    updateActiveMatch(startedMatch);
+    updateActiveMatch(startedMatch, workingCareer);
   };
 
-  // Format-Specific Squad Management Updates
+  // Format-Specific Squad Management Updates (Single-Country Guarded in Store)
   const handleUpdateSquadXI = (format: MatchFormat, xiIds: string[]) => {
     if (!career) return;
     const nextCareer = updateSquadXI(career, format, xiIds);
@@ -264,12 +328,57 @@ export default function App() {
     saveCareerToStorage(nextCareer);
   };
 
-  // Calendar Progression Handler
-  const handleAdvanceToNextMatch = () => {
-    if (!career) return;
-    const nextCareer = advanceToNextMatchDate(career);
+  // Pre-Match Lineup Confirmation Handler
+  const handleConfirmMatchLineup = (
+    matchId: string,
+    lineup: {
+      playingXI: string[];
+      captainId: string;
+      wicketKeeperId: string;
+      bowlingRotation?: string[];
+    }
+  ): CareerSave => {
+    if (!career) throw new Error('No active career');
+    const nextCareer = confirmMatchPreparationLineup(career, matchId, lineup);
     setCareer(nextCareer);
     saveCareerToStorage(nextCareer);
+    return nextCareer;
+  };
+
+  const handleStartPreparedMatch = (
+    preparedCareer: CareerSave,
+    matchId: string,
+    needsAdvance: boolean
+  ) => {
+    let workingCareer = preparedCareer;
+    const targetMatch = workingCareer.fixtures.find((f) => f.id === matchId);
+    if (needsAdvance && targetMatch?.date && targetMatch.date > workingCareer.currentDate) {
+      const sim = simulateWorldMatchesUntil(workingCareer, targetMatch.date);
+      workingCareer = sim.updatedCareer;
+      setCareer(workingCareer);
+      saveCareerToStorage(workingCareer);
+    }
+    setPrepMatchId(null);
+    setActiveMatchId(matchId);
+    setActiveTab('MATCH_CENTRE');
+  };
+
+  // Controlled 4-Mode Calendar Advancement Handler
+  const handleAdvanceCalendar = (mode: CalendarAdvanceMode) => {
+    if (!career) return;
+    const result = advanceCareerTime(career, mode);
+    setCareer(result.updatedCareer);
+    saveCareerToStorage(result.updatedCareer);
+    setCalendarAlert(result);
+  };
+
+  // Legacy Advance to Next Match Date Handler (for FixturesView button)
+  const handleAdvanceToNextMatch = () => {
+    if (!career) return;
+    const result = advanceCareerTime(career, 'NEXT_MATCH');
+    setCareer(result.updatedCareer);
+    saveCareerToStorage(result.updatedCareer);
+    setCalendarAlert(result);
   };
 
   // Rest & Recovery Day Handler
@@ -323,6 +432,9 @@ export default function App() {
 
   // Selected tour for modal
   const activeTourForModal = career?.tours?.find((t) => t.id === selectedTourIdForModal);
+  const prepMatch = prepMatchId
+    ? career?.fixtures.find((f) => f.id === prepMatchId)
+    : undefined;
 
   // RENDER: VIEW STATES
   if (viewState === 'MAIN_MENU') {
@@ -342,6 +454,8 @@ export default function App() {
         onStartCareer={(newSave) => {
           setCareer(newSave);
           saveCareerToStorage(newSave);
+          setCalendarAlert(null);
+          setActiveMatchId(null);
           setViewState('IN_GAME');
           setActiveTab('DASHBOARD');
         }}
@@ -375,14 +489,19 @@ export default function App() {
           {activeTab === 'DASHBOARD' && career && (
             <DashboardView
               career={career}
+              calendarAlert={calendarAlert}
+              onDismissCalendarAlert={() => setCalendarAlert(null)}
               onNavigateToMatch={(matchId) => {
                 setActiveMatchId(matchId);
                 setActiveTab('MATCH_CENTRE');
               }}
+              onOpenMatchPreparation={(matchId) => setPrepMatchId(matchId)}
+              onInspectScorecard={(m) => setInspectedScorecardMatch(m)}
               onNavigateToSquad={() => setActiveTab('SQUAD_MANAGEMENT')}
               onNavigateToNews={() => setActiveTab('NEWS')}
+              onNavigateToTournaments={() => setActiveTab('TOURNAMENTS')}
               onSelectPlayer={(p) => setSelectedPlayer(p)}
-              onAdvanceToNextMatch={handleAdvanceToNextMatch}
+              onAdvanceCalendar={handleAdvanceCalendar}
               onRestSquadDay={handleRestSquadDay}
               onOpenTourSelection={(tourId) => setSelectedTourIdForModal(tourId)}
             />
@@ -426,9 +545,12 @@ export default function App() {
             <ToursView
               career={career}
               onNavigateToMatch={(matchId) => {
+                const isUserM = career.fixtures.some((f) => f.id === matchId);
+                if (!isUserM) return;
                 setActiveMatchId(matchId);
                 setActiveTab('MATCH_CENTRE');
               }}
+              onInspectScorecard={(m) => setInspectedScorecardMatch(m)}
               onOpenTourSelection={(tourId) => setSelectedTourIdForModal(tourId)}
               onUpdateSquadXI={handleUpdateSquadXI}
               onSelectPlayer={(p) => setSelectedPlayer(p)}
@@ -439,15 +561,19 @@ export default function App() {
             <RivalriesView
               career={career}
               onNavigateToMatch={(matchId) => {
+                const isUserM = career.fixtures.some((f) => f.id === matchId);
+                if (!isUserM) return;
                 setActiveMatchId(matchId);
                 setActiveTab('MATCH_CENTRE');
               }}
+              onInspectScorecard={(m) => setInspectedScorecardMatch(m)}
             />
           )}
 
           {activeTab === 'MATCH_CENTRE' && activeMatch && (
             <MatchCentreView
               match={activeMatch}
+              career={career || undefined}
               onSimulateBall={handleSimulateBall}
               onSimulateOver={handleSimulateOver}
               onSimulateInnings={handleSimulateInnings}
@@ -458,6 +584,12 @@ export default function App() {
               onSelectPlayer={(p) => setSelectedPlayer(p)}
               onDeclareInnings={handleDeclareInnings}
               onFollowOnDecision={handleFollowOnDecision}
+              onContinueToDashboard={() => setActiveTab('DASHBOARD')}
+              onPrepareNextMatch={(nextMatchId) => {
+                setActiveTab('DASHBOARD');
+                setPrepMatchId(nextMatchId);
+              }}
+              onOpenMatchPreparation={(matchId) => setPrepMatchId(matchId)}
             />
           )}
 
@@ -465,9 +597,13 @@ export default function App() {
             <FixturesView
               career={career}
               onSelectMatch={(matchId) => {
+                const isUserM = career.fixtures.some((f) => f.id === matchId);
+                if (!isUserM) return;
                 setActiveMatchId(matchId);
                 setActiveTab('MATCH_CENTRE');
               }}
+              onInspectScorecard={(m) => setInspectedScorecardMatch(m)}
+              onOpenMatchPreparation={(matchId) => setPrepMatchId(matchId)}
               onAdvanceToNextMatch={handleAdvanceToNextMatch}
               onOpenTourSelection={(tourId) => setSelectedTourIdForModal(tourId)}
             />
@@ -477,18 +613,26 @@ export default function App() {
             <TournamentsView
               career={career || undefined}
               onSelectMatch={(matchId) => {
+                if (!career?.fixtures.some((f) => f.id === matchId)) return;
                 setActiveMatchId(matchId);
                 setActiveTab('MATCH_CENTRE');
               }}
+              onInspectScorecard={(m) => setInspectedScorecardMatch(m)}
             />
           )}
 
           {activeTab === 'RANKINGS' && (
-            <RankingsView onSelectPlayer={(p) => setSelectedPlayer(p)} />
+            <RankingsView
+              career={career || undefined}
+              onSelectPlayer={(p) => setSelectedPlayer(p)}
+            />
           )}
 
           {activeTab === 'STATISTICS' && (
-            <StatisticsView onSelectPlayer={(p) => setSelectedPlayer(p)} />
+            <StatisticsView
+              career={career || undefined}
+              onSelectPlayer={(p) => setSelectedPlayer(p)}
+            />
           )}
 
           {activeTab === 'NEWS' && career && <NewsView news={career.news} />}
@@ -512,10 +656,30 @@ export default function App() {
         </main>
       </div>
 
+      {/* Global Pre-Match Preparation Modal */}
+      {prepMatch && career && (
+        <MatchPreparationModal
+          career={career}
+          match={prepMatch}
+          onClose={() => setPrepMatchId(null)}
+          onConfirmLineup={handleConfirmMatchLineup}
+          onStartPreparedMatch={handleStartPreparedMatch}
+        />
+      )}
+
+      {/* Global Scorecard Inspection Modal (User & AI Completed Matches) */}
+      {inspectedScorecardMatch && (
+        <ScorecardModal
+          match={inspectedScorecardMatch}
+          onClose={() => setInspectedScorecardMatch(null)}
+        />
+      )}
+
       {/* Global Player Profile Dialog Modal */}
       {selectedPlayer && (
         <PlayerProfileModal
           player={selectedPlayer}
+          career={career || undefined}
           onClose={() => setSelectedPlayer(null)}
         />
       )}

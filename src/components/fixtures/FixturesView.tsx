@@ -14,13 +14,17 @@ import {
   ChevronLeft,
   ChevronRight,
   Trophy,
+  FileText,
 } from 'lucide-react';
 import { CareerSave, Match, MatchFormat, CalendarEvent } from '../../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
+import { isPreMatchStatus, isTerminalMatchStatus } from '../../engine/matchEngine';
 
 interface FixturesViewProps {
   career: CareerSave;
   onSelectMatch: (matchId: string) => void;
+  onInspectScorecard?: (match: Match) => void;
+  onOpenMatchPreparation?: (matchId: string) => void;
   onAdvanceToNextMatch?: () => void;
   onOpenTourSelection?: (tourId: string) => void;
 }
@@ -38,6 +42,8 @@ export type CalendarViewType =
 export const FixturesView: React.FC<FixturesViewProps> = ({
   career,
   onSelectMatch,
+  onInspectScorecard,
+  onOpenMatchPreparation,
   onAdvanceToNextMatch,
   onOpenTourSelection,
 }) => {
@@ -62,10 +68,10 @@ export const FixturesView: React.FC<FixturesViewProps> = ({
     let list = [...allMatches];
 
     if (viewType === 'UPCOMING') {
-      list = list.filter((m) => m.status === 'SCHEDULED' || m.status === 'IN_PROGRESS');
+      list = list.filter((m) => isPreMatchStatus(m.status) || m.status === 'IN_PROGRESS');
       list.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
     } else if (viewType === 'COMPLETED') {
-      list = list.filter((m) => m.status === 'COMPLETED' || m.status === 'DRAW' || m.status === 'TIE');
+      list = list.filter((m) => isTerminalMatchStatus(m.status));
       list.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
     } else if (viewType === 'MONTHLY') {
       list = list.filter((m) => m.date && m.date.startsWith(selectedMonth));
@@ -172,21 +178,30 @@ export const FixturesView: React.FC<FixturesViewProps> = ({
       )}
 
       {viewType === 'ANNUAL' && (
-        <div className="flex items-center space-x-2 bg-[#121824] p-3 rounded-lg border border-[#1f293d]">
+        <div className="flex items-center space-x-2 bg-[#121824] p-3 rounded-lg border border-[#1f293d] overflow-x-auto">
           <span className="text-xs text-slate-400 font-semibold">Select Year:</span>
-          {['2026', '2027', '2028'].map((yr) => (
-            <button
-              key={yr}
-              onClick={() => setSelectedYear(yr)}
-              className={`px-3 py-1 rounded text-xs font-mono font-bold cursor-pointer transition ${
-                selectedYear === yr
-                  ? 'bg-emerald-600 text-white'
-                  : 'bg-[#182234] text-slate-400 hover:text-white border border-[#243247]'
-              }`}
-            >
-              Season {yr}
-            </button>
-          ))}
+          {Array.from(
+            new Set([
+              '2026',
+              '2027',
+              '2028',
+              ...allMatches.map((m) => (m.date || '').slice(0, 4)).filter((y) => y.length === 4),
+            ])
+          )
+            .sort()
+            .map((yr) => (
+              <button
+                key={yr}
+                onClick={() => setSelectedYear(yr)}
+                className={`px-3 py-1 rounded text-xs font-mono font-bold cursor-pointer transition ${
+                  selectedYear === yr
+                    ? 'bg-emerald-600 text-white'
+                    : 'bg-[#182234] text-slate-400 hover:text-white border border-[#243247]'
+                }`}
+              >
+                Season {yr}
+              </button>
+            ))}
         </div>
       )}
 
@@ -280,7 +295,7 @@ export const FixturesView: React.FC<FixturesViewProps> = ({
             filteredMatches.map((fixture) => {
               const homeTeam = INTERNATIONAL_TEAMS.find((t) => t.id === fixture.homeTeamId);
               const awayTeam = INTERNATIONAL_TEAMS.find((t) => t.id === fixture.awayTeamId);
-              const isCompleted = fixture.status === 'COMPLETED' || fixture.status === 'DRAW' || fixture.status === 'TIE';
+              const isCompleted = isTerminalMatchStatus(fixture.status);
               const isLive = fixture.status === 'IN_PROGRESS';
               const inn1 = fixture.innings[0];
               const inn2 = fixture.innings[1];
@@ -357,18 +372,35 @@ export const FixturesView: React.FC<FixturesViewProps> = ({
                     {/* Actions */}
                     <div className="flex items-center space-x-2 self-start md:self-center">
                       {isCompleted ? (
-                        <span className="text-xs font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-800/40 px-3 py-1.5 rounded flex items-center space-x-1.5">
-                          <CheckCircle2 className="w-3.5 h-3.5" />
-                          <span>Final Result</span>
-                        </span>
-                      ) : (
                         <button
-                          onClick={() => onSelectMatch(fixture.id)}
-                          className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3.5 py-2 rounded transition cursor-pointer flex items-center space-x-1.5 shadow"
+                          onClick={() => onInspectScorecard && onInspectScorecard(fixture)}
+                          className="text-xs font-bold text-emerald-300 bg-emerald-950/70 hover:bg-emerald-900/80 border border-emerald-700/50 px-3 py-1.5 rounded transition cursor-pointer flex items-center space-x-1.5"
                         >
-                          <Play className="w-3.5 h-3.5 fill-white" />
-                          <span>{isLive ? 'Resume Match' : 'Match Centre'}</span>
+                          <FileText className="w-3.5 h-3.5 text-emerald-400" />
+                          <span>View Scorecard</span>
                         </button>
+                      ) : isUserFixture ? (
+                        <div className="flex items-center gap-2">
+                          {!isLive && onOpenMatchPreparation && (
+                            <button
+                              onClick={() => onOpenMatchPreparation(fixture.id)}
+                              className="bg-[#182234] hover:bg-[#243247] text-sky-300 border border-sky-700/50 font-bold text-xs px-3 py-2 rounded transition cursor-pointer"
+                            >
+                              Prepare XI
+                            </button>
+                          )}
+                          <button
+                            onClick={() => onSelectMatch(fixture.id)}
+                            className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3.5 py-2 rounded transition cursor-pointer flex items-center space-x-1.5 shadow"
+                          >
+                            <Play className="w-3.5 h-3.5 fill-white" />
+                            <span>{isLive ? 'Resume Match' : 'Match Centre'}</span>
+                          </button>
+                        </div>
+                      ) : (
+                        <span className="text-xs font-mono text-slate-400 bg-[#182234] border border-[#243247] px-3 py-1.5 rounded">
+                          AI Fixture
+                        </span>
                       )}
                     </div>
                   </div>

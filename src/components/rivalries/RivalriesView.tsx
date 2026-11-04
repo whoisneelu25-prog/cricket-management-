@@ -11,17 +11,24 @@ import {
   Play,
   Flame,
   Info,
+  FileText,
 } from 'lucide-react';
 import { CareerSave, Match, RivalryCompetition } from '../../types/cricket';
 import { INITIAL_ASHES_COMPETITION, INITIAL_BGT_COMPETITION } from '../../data/tournamentData';
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
+import { isPreMatchStatus, isTerminalMatchStatus } from '../../engine/matchEngine';
 
 interface RivalriesViewProps {
   career: CareerSave;
   onNavigateToMatch?: (matchId: string) => void;
+  onInspectScorecard?: (match: Match) => void;
 }
 
-export const RivalriesView: React.FC<RivalriesViewProps> = ({ career, onNavigateToMatch }) => {
+export const RivalriesView: React.FC<RivalriesViewProps> = ({
+  career,
+  onNavigateToMatch,
+  onInspectScorecard,
+}) => {
   const [activeRivalry, setActiveRivalry] = useState<'ASHES' | 'BORDER_GAVASKAR'>('ASHES');
 
   const ashes: RivalryCompetition = career.ashes || INITIAL_ASHES_COMPETITION;
@@ -45,10 +52,8 @@ export const RivalriesView: React.FC<RivalriesViewProps> = ({ career, onNavigate
           (m.homeTeamId === currentComp.team2Id && m.awayTeamId === currentComp.team1Id)))
   );
 
-  const completedMatches = rivalryMatches.filter(
-    (m) => m.status === 'COMPLETED' || m.status === 'DRAW' || m.status === 'TIE'
-  );
-  const upcomingMatches = rivalryMatches.filter((m) => m.status === 'SCHEDULED');
+  const completedMatches = rivalryMatches.filter((m) => isTerminalMatchStatus(m.status));
+  const upcomingMatches = rivalryMatches.filter((m) => isPreMatchStatus(m.status));
 
   return (
     <div className="space-y-4 select-none animate-in fade-in duration-150">
@@ -167,8 +172,10 @@ export const RivalriesView: React.FC<RivalriesViewProps> = ({ career, onNavigate
 
           {rivalryMatches.length > 0 ? (
             <div className="space-y-2.5 max-h-96 overflow-y-auto pr-1">
-              {rivalryMatches.map((m, idx) => {
-                const isCompleted = m.status === 'COMPLETED' || m.status === 'DRAW' || m.status === 'TIE';
+              {rivalryMatches.map((m) => {
+                const isCompleted = isTerminalMatchStatus(m.status);
+                const isUserFixture =
+                  m.homeTeamId === career.selectedTeamId || m.awayTeamId === career.selectedTeamId;
                 return (
                   <div
                     key={m.id}
@@ -190,19 +197,25 @@ export const RivalriesView: React.FC<RivalriesViewProps> = ({ career, onNavigate
 
                     <div>
                       {isCompleted ? (
-                        <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/40">
-                          Finished
-                        </span>
+                        <button
+                          onClick={() => onInspectScorecard && onInspectScorecard(m)}
+                          className="text-[11px] font-bold text-emerald-300 bg-emerald-950/70 hover:bg-emerald-900/80 px-2.5 py-1 rounded border border-emerald-700/50 cursor-pointer flex items-center space-x-1"
+                        >
+                          <FileText className="w-3 h-3 text-emerald-400" />
+                          <span>Scorecard</span>
+                        </button>
+                      ) : isUserFixture && onNavigateToMatch ? (
+                        <button
+                          onClick={() => onNavigateToMatch(m.id)}
+                          className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-2.5 py-1 rounded transition cursor-pointer flex items-center space-x-1"
+                        >
+                          <Play className="w-3 h-3 fill-white" />
+                          <span>Play</span>
+                        </button>
                       ) : (
-                        onNavigateToMatch && (
-                          <button
-                            onClick={() => onNavigateToMatch(m.id)}
-                            className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-2.5 py-1 rounded transition cursor-pointer flex items-center space-x-1"
-                          >
-                            <Play className="w-3 h-3 fill-white" />
-                            <span>Play</span>
-                          </button>
-                        )
+                        <span className="text-[10px] font-mono text-slate-400 bg-[#121824] px-2 py-0.5 rounded border border-[#243247]">
+                          AI Test
+                        </span>
                       )}
                     </div>
                   </div>

@@ -2,21 +2,18 @@ import React, { useState } from 'react';
 import {
   Users,
   Shield,
-  Award,
   AlertTriangle,
   ArrowUp,
   ArrowDown,
-  CheckCircle,
   XCircle,
-  Filter,
-  Activity,
-  Heart,
   Search,
-  Sparkles,
-  Briefcase
+  Briefcase,
+  Lock,
+  Globe,
 } from 'lucide-react';
-import { CareerSave, Player, PlayerRole, MatchFormat, FormatSquadConfig } from '../../types/cricket';
-import { getPlayersByCountry } from '../../data/squads';
+import { CareerSave, Player, MatchFormat, FormatSquadConfig } from '../../types/cricket';
+import { INTERNATIONAL_TEAMS } from '../../data/teams';
+import { inspectNationalTeamSquad } from '../../store/careerStore';
 
 interface SquadViewProps {
   career: CareerSave;
@@ -37,23 +34,18 @@ export const SquadView: React.FC<SquadViewProps> = ({
   onSelectPlayer,
   onOpenTourSelection,
 }) => {
+  const [viewedCountryId, setViewedCountryId] = useState<string>(career.selectedTeamId);
   const [selectedFormat, setSelectedFormat] = useState<MatchFormat>('TEST');
   const [roleFilter, setRoleFilter] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const fullNationalPool = getPlayersByCountry(career.selectedTeamId);
+  const inspection = inspectNationalTeamSquad(career, viewedCountryId, selectedFormat);
+  const isReadOnly = inspection.isReadOnly;
+  const fullNationalPool = inspection.players;
+  const formatConfig: FormatSquadConfig = inspection.formatConfig;
 
-  // Format config
-  const formatConfig: FormatSquadConfig = career.formatSquads?.[selectedFormat] || {
-    format: selectedFormat,
-    squadPlayerIds: fullNationalPool.slice(0, 16).map((p) => p.id),
-    playingXI: fullNationalPool.slice(0, 11).map((p) => p.id),
-    battingOrder: fullNationalPool.slice(0, 11).map((p) => p.id),
-    captainId: fullNationalPool[0]?.id || '',
-    viceCaptainId: fullNationalPool[1]?.id || '',
-    wicketKeeperId: fullNationalPool[2]?.id || '',
-    bowlingRotation: [],
-  };
+  const viewedTeam = INTERNATIONAL_TEAMS.find((t) => t.id === viewedCountryId);
+  const aiStrategy = career.aiTeams?.[viewedCountryId]?.strategy || 'BALANCED';
 
   const currentXIIds = formatConfig.playingXI || [];
 
@@ -62,45 +54,50 @@ export const SquadView: React.FC<SquadViewProps> = ({
     .map((id) => fullNationalPool.find((p) => p.id === id))
     .filter((p): p is Player => p !== undefined);
 
-  // Reserves
-  const reserves = fullNationalPool.filter((p) => !currentXIIds.includes(p.id));
-
-  // Balance Warnings
+  // Balance Warnings (only shown for user's managed team)
   const warnings: string[] = [];
-  const wkInXI = playingXI.some(
-    (p) => p.id === formatConfig.wicketKeeperId || p.isWicketKeeper || p.role === 'WICKETKEEPER_BATTER'
-  );
-  if (!wkInXI) {
-    warnings.push('CRITICAL: No designated wicketkeeper selected in the Playing XI!');
+  if (!isReadOnly) {
+    const wkInXI = playingXI.some(
+      (p) =>
+        p.id === formatConfig.wicketKeeperId ||
+        p.isWicketKeeper ||
+        p.role === 'WICKETKEEPER_BATTER'
+    );
+    if (!wkInXI) {
+      warnings.push('CRITICAL: No designated wicketkeeper selected in the Playing XI!');
+    }
+
+    const bowlersInXI = playingXI.filter(
+      (p) => p.role === 'BOWLER' || p.role === 'ALL_ROUNDER'
+    );
+    if (bowlersInXI.length < 4) {
+      warnings.push(
+        'WARNING: Insufficient bowling options (fewer than 4 bowlers/all-rounders in XI).'
+      );
+    }
+
+    if (playingXI.length < 11) {
+      warnings.push(
+        `INCOMPLETE: You have only selected ${playingXI.length}/11 players for your match lineup.`
+      );
+    }
   }
 
-  const bowlersInXI = playingXI.filter((p) => p.role === 'BOWLER' || p.role === 'ALL_ROUNDER');
-  if (bowlersInXI.length < 4) {
-    warnings.push('WARNING: Insufficient bowling options (less than 4 bowlers/all-rounders in XI).');
-  }
-
-  if (playingXI.length < 11) {
-    warnings.push(`INCOMPLETE: You have only selected ${playingXI.length}/11 players for your match lineup.`);
-  }
-
-  // Handlers for XI adjustment
+  // Handlers for XI adjustment (strictly blocked when isReadOnly)
   const handleTogglePlayerInXI = (player: Player) => {
+    if (isReadOnly) return;
     if (currentXIIds.includes(player.id)) {
-      // Remove from XI
       const nextXI = currentXIIds.filter((id) => id !== player.id);
       onUpdateSquadXI(selectedFormat, nextXI);
     } else {
-      // Add to XI (max 11)
-      if (currentXIIds.length >= 11) {
-        alert('Playing XI already has 11 players. Remove a player before adding a new one.');
-        return;
-      }
+      if (currentXIIds.length >= 11) return;
       const nextXI = [...currentXIIds, player.id];
       onUpdateSquadXI(selectedFormat, nextXI);
     }
   };
 
   const handleMoveBattingOrder = (index: number, direction: 'UP' | 'DOWN') => {
+    if (isReadOnly) return;
     const newXI = [...currentXIIds];
     const targetIdx = direction === 'UP' ? index - 1 : index + 1;
     if (targetIdx < 0 || targetIdx >= newXI.length) return;
@@ -112,35 +109,73 @@ export const SquadView: React.FC<SquadViewProps> = ({
     onUpdateSquadXI(selectedFormat, newXI);
   };
 
-  // Filtered pool list for the selector
+  // Filtered pool list
   const filteredSquad = fullNationalPool.filter((p) => {
     if (roleFilter !== 'ALL' && p.role !== roleFilter) return false;
     if (searchQuery && !p.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
     return true;
   });
 
-  const activeTour = career.tours?.find((t) => t.status === 'IN_PROGRESS' || t.status === 'UPCOMING') || career.tours?.[0];
+  const activeTour = career.tours?.find(
+    (t) =>
+      (t.hostTeamId === career.selectedTeamId || t.visitingTeamId === career.selectedTeamId) &&
+      (t.status === 'IN_PROGRESS' || t.status === 'UPCOMING')
+  );
+
+  // Ordered countries: User's country first, then AI countries
+  const orderedTeams = [
+    ...INTERNATIONAL_TEAMS.filter((t) => t.id === career.selectedTeamId),
+    ...INTERNATIONAL_TEAMS.filter((t) => t.id !== career.selectedTeamId),
+  ];
 
   return (
     <div className="space-y-4 select-none animate-in fade-in duration-150">
-      {/* Top Controls: Format Selection & Tour Announcement Link */}
-      <div className="bg-[#121824] border border-[#1f293d] rounded-lg p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center space-x-2">
-            <span className="text-xs bg-emerald-950 text-emerald-400 font-bold border border-emerald-800 px-2 py-0.5 rounded font-mono uppercase">
-              Format Squad Manager
+      {/* Top Controls: Country Inspector Dropdown + Format Selection + Tour Announcement Link */}
+      <div className="bg-[#121824] border border-[#1f293d] rounded-lg p-4 sm:p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <div className="flex flex-wrap items-center gap-2">
+            <span
+              className={`text-xs font-bold border px-2 py-0.5 rounded font-mono uppercase ${
+                isReadOnly
+                  ? 'bg-sky-950 text-sky-300 border-sky-800/60'
+                  : 'bg-emerald-950 text-emerald-400 border-emerald-800'
+              }`}
+            >
+              {isReadOnly ? 'Read-Only AI Squad Inspector' : 'Format Squad Manager'}
             </span>
             <span className="text-xs text-slate-400">
-              Select independent lineup, captain & wicketkeeper for each format
+              {isReadOnly
+                ? `Inspecting AI-controlled ${viewedTeam?.name} (${aiStrategy.replace('_', ' ')})`
+                : 'Manage playing XI, batting order, captain & wicketkeeper for your nation'}
             </span>
           </div>
-          <h2 className="text-xl font-black text-white mt-1">
-            {career.selectedTeamId} National Team Selection & Batting Order
+          <h2 className="text-xl font-black text-white flex items-center gap-2">
+            <span>{viewedTeam?.flagEmoji}</span>
+            <span>{viewedTeam?.name || viewedCountryId} National Squad &amp; Lineup</span>
           </h2>
         </div>
 
-        <div className="flex items-center gap-3">
-          {activeTour && onOpenTourSelection && (
+        <div className="flex flex-wrap items-center gap-3">
+          {/* National Team Selector (User Team + Read-Only AI Nations) */}
+          <div className="flex items-center gap-2 bg-[#182234] border border-[#243247] px-2.5 py-1.5 rounded-lg">
+            <Globe className="w-3.5 h-3.5 text-sky-400 shrink-0" />
+            <select
+              value={viewedCountryId}
+              onChange={(e) => setViewedCountryId(e.target.value)}
+              aria-label="Inspect national squad"
+              className="bg-transparent text-xs font-bold text-white outline-none cursor-pointer"
+            >
+              {orderedTeams.map((t) => (
+                <option key={t.id} value={t.id} className="bg-[#121824] text-white">
+                  {t.id === career.selectedTeamId
+                    ? `${t.flagEmoji} ${t.name} (My Team — Managed)`
+                    : `${t.flagEmoji} ${t.name} (AI Controlled — Read-Only)`}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {!isReadOnly && activeTour && onOpenTourSelection && (
             <button
               onClick={() => onOpenTourSelection(activeTour.id)}
               className="bg-[#182234] hover:bg-[#243247] text-amber-300 border border-amber-600/40 text-xs font-bold px-3 py-2 rounded transition cursor-pointer flex items-center space-x-1.5"
@@ -169,7 +204,25 @@ export const SquadView: React.FC<SquadViewProps> = ({
         </div>
       </div>
 
-      {/* Warnings & Notices */}
+      {/* Read-Only AI Banner */}
+      {isReadOnly && (
+        <div className="bg-sky-950/40 border border-sky-700/50 text-sky-200 px-4 py-3 rounded-lg text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <Lock className="w-4 h-4 text-sky-400 shrink-0" />
+            <span>
+              <strong>AI-Controlled Nation (Read-Only):</strong> {viewedTeam?.name} is managed independently by AI selectors ({aiStrategy.replace('_', ' ')} philosophy). You can inspect their squads, captains, playing XIs, injuries, and player profiles, but cannot modify their selections.
+            </span>
+          </div>
+          <button
+            onClick={() => setViewedCountryId(career.selectedTeamId)}
+            className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded shrink-0 cursor-pointer"
+          >
+            Return to My Team ({career.selectedTeamId})
+          </button>
+        </div>
+      )}
+
+      {/* Warnings & Notices (User team only) */}
       {warnings.length > 0 && (
         <div className="space-y-1.5">
           {warnings.map((w, idx) => (
@@ -184,7 +237,7 @@ export const SquadView: React.FC<SquadViewProps> = ({
         </div>
       )}
 
-      {/* Main Grid: Playing XI & Order (Left 5 cols) vs Player Pool (Right 7 cols) */}
+      {/* Main Grid: Playing XI & Order (Left 6 cols) vs Player Pool (Right 6 cols) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         {/* Left: Active Match-Day Playing XI */}
         <div className="lg:col-span-6 bg-[#121824] border border-[#1f293d] rounded-lg p-4 space-y-3 flex flex-col justify-between">
@@ -193,30 +246,47 @@ export const SquadView: React.FC<SquadViewProps> = ({
               <div>
                 <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center space-x-1.5">
                   <Shield className="w-4 h-4 text-emerald-400" />
-                  <span>{selectedFormat} Playing XI ({playingXI.length}/11)</span>
+                  <span>
+                    {viewedTeam?.name} {selectedFormat} Playing XI ({playingXI.length}/11)
+                  </span>
                 </h3>
                 <span className="text-[11px] text-slate-400">
-                  Batting order determines entry to the crease
+                  {isReadOnly
+                    ? 'AI-selected match lineup & batting order'
+                    : 'Batting order determines entry to the crease'}
                 </span>
               </div>
             </div>
 
             <div className="space-y-1.5">
               {playingXI.map((player, index) => {
-                const designatedCapId = formatConfig.captainId && playingXI.some((p) => p.id === formatConfig.captainId)
-                  ? formatConfig.captainId
-                  : playingXI[0]?.id;
-                const designatedVCId = formatConfig.viceCaptainId && playingXI.some((p) => p.id === formatConfig.viceCaptainId)
-                  ? formatConfig.viceCaptainId
-                  : (playingXI[1]?.id || playingXI[0]?.id);
-                const designatedWkId = formatConfig.wicketKeeperId && playingXI.some((p) => p.id === formatConfig.wicketKeeperId)
-                  ? formatConfig.wicketKeeperId
-                  : playingXI.find((p) => p.isWicketKeeper || p.role === 'WICKETKEEPER_BATTER')?.id;
+                const designatedCapId =
+                  formatConfig.captainId &&
+                  playingXI.some((p) => p.id === formatConfig.captainId)
+                    ? formatConfig.captainId
+                    : playingXI[0]?.id;
+                const designatedVCId =
+                  formatConfig.viceCaptainId &&
+                  playingXI.some((p) => p.id === formatConfig.viceCaptainId)
+                    ? formatConfig.viceCaptainId
+                    : playingXI[1]?.id || playingXI[0]?.id;
+                const designatedWkId =
+                  formatConfig.wicketKeeperId &&
+                  playingXI.some((p) => p.id === formatConfig.wicketKeeperId)
+                    ? formatConfig.wicketKeeperId
+                    : playingXI.find(
+                        (p) => p.isWicketKeeper || p.role === 'WICKETKEEPER_BATTER'
+                      )?.id;
 
                 const isCap = player.id === designatedCapId;
                 const isVC = player.id === designatedVCId && !isCap;
                 const isWK = player.id === designatedWkId;
-                const rating = selectedFormat === 'TEST' ? player.testRating : selectedFormat === 'ODI' ? player.odiRating : player.t20Rating;
+                const rating =
+                  selectedFormat === 'TEST'
+                    ? player.testRating
+                    : selectedFormat === 'ODI'
+                    ? player.odiRating
+                    : player.t20Rating;
 
                 return (
                   <div
@@ -250,70 +320,90 @@ export const SquadView: React.FC<SquadViewProps> = ({
                               WK
                             </span>
                           )}
+                          {player.isInjured && (
+                            <span className="text-[9px] bg-rose-950 text-rose-300 border border-rose-800 font-bold px-1 rounded">
+                              INJ ({player.injuryDaysRemaining}d)
+                            </span>
+                          )}
                         </div>
                         <span className="text-[10px] text-slate-400 font-mono">
-                          {player.role.replace('_', ' ')} • {rating} RTG • Fatigue: {player.workloadFatigue || 10}%
+                          {player.role.replace('_', ' ')} • {rating} RTG • Form {player.currentForm ?? 80} • Fat {player.workloadFatigue || 10}%
                         </span>
                       </div>
                     </div>
 
-                    <div className="flex items-center space-x-1">
-                      {/* Reorder Buttons */}
-                      <button
-                        disabled={index === 0}
-                        onClick={() => handleMoveBattingOrder(index, 'UP')}
-                        className="p-1 text-slate-400 hover:text-white disabled:opacity-20 cursor-pointer disabled:cursor-not-allowed"
-                        title="Move Up"
-                      >
-                        <ArrowUp className="w-3.5 h-3.5" />
-                      </button>
-                      <button
-                        disabled={index === playingXI.length - 1}
-                        onClick={() => handleMoveBattingOrder(index, 'DOWN')}
-                        className="p-1 text-slate-400 hover:text-white disabled:opacity-20 cursor-pointer disabled:cursor-not-allowed"
-                        title="Move Down"
-                      >
-                        <ArrowDown className="w-3.5 h-3.5" />
-                      </button>
+                    {!isReadOnly ? (
+                      <div className="flex items-center space-x-1">
+                        {/* Reorder Buttons */}
+                        <button
+                          disabled={index === 0}
+                          onClick={() => handleMoveBattingOrder(index, 'UP')}
+                          className="p-1 text-slate-400 hover:text-white disabled:opacity-20 cursor-pointer disabled:cursor-not-allowed"
+                          title="Move Up"
+                        >
+                          <ArrowUp className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          disabled={index === playingXI.length - 1}
+                          onClick={() => handleMoveBattingOrder(index, 'DOWN')}
+                          className="p-1 text-slate-400 hover:text-white disabled:opacity-20 cursor-pointer disabled:cursor-not-allowed"
+                          title="Move Down"
+                        >
+                          <ArrowDown className="w-3.5 h-3.5" />
+                        </button>
 
-                      {/* Set C / VC / WK */}
-                      <button
-                        onClick={() => onSetCaptain(selectedFormat, player.id)}
-                        className={`text-[10px] px-1.5 py-0.5 rounded font-bold transition cursor-pointer ${
-                          isCap ? 'bg-amber-600 text-white' : 'bg-[#121824] text-slate-400 hover:text-white'
-                        }`}
-                        title="Make Format Captain"
-                      >
-                        C
-                      </button>
-                      <button
-                        onClick={() => onSetViceCaptain(selectedFormat, player.id)}
-                        className={`text-[10px] px-1.5 py-0.5 rounded font-bold transition cursor-pointer ${
-                          isVC ? 'bg-slate-500 text-white' : 'bg-[#121824] text-slate-400 hover:text-white'
-                        }`}
-                        title="Make Format Vice-Captain"
-                      >
-                        VC
-                      </button>
-                      <button
-                        onClick={() => onSetWicketKeeper(selectedFormat, player.id)}
-                        className={`text-[10px] px-1.5 py-0.5 rounded font-bold transition cursor-pointer ${
-                          isWK ? 'bg-sky-600 text-white' : 'bg-[#121824] text-slate-400 hover:text-white'
-                        }`}
-                        title="Make Designated Keeper"
-                      >
-                        WK
-                      </button>
+                        {/* Set C / VC / WK */}
+                        <button
+                          onClick={() => onSetCaptain(selectedFormat, player.id)}
+                          className={`text-[10px] px-1.5 py-0.5 rounded font-bold transition cursor-pointer ${
+                            isCap
+                              ? 'bg-amber-600 text-white'
+                              : 'bg-[#121824] text-slate-400 hover:text-white'
+                          }`}
+                          title="Make Format Captain"
+                        >
+                          C
+                        </button>
+                        <button
+                          onClick={() => onSetViceCaptain(selectedFormat, player.id)}
+                          className={`text-[10px] px-1.5 py-0.5 rounded font-bold transition cursor-pointer ${
+                            isVC
+                              ? 'bg-slate-500 text-white'
+                              : 'bg-[#121824] text-slate-400 hover:text-white'
+                          }`}
+                          title="Make Format Vice-Captain"
+                        >
+                          VC
+                        </button>
+                        <button
+                          onClick={() => onSetWicketKeeper(selectedFormat, player.id)}
+                          className={`text-[10px] px-1.5 py-0.5 rounded font-bold transition cursor-pointer ${
+                            isWK
+                              ? 'bg-sky-600 text-white'
+                              : 'bg-[#121824] text-slate-400 hover:text-white'
+                          }`}
+                          title="Make Designated Keeper"
+                        >
+                          WK
+                        </button>
 
-                      {/* Remove from XI */}
+                        {/* Remove from XI */}
+                        <button
+                          onClick={() => handleTogglePlayerInXI(player)}
+                          className="p-1 text-rose-400 hover:text-rose-300 cursor-pointer ml-1"
+                          title="Remove from XI"
+                        >
+                          <XCircle className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ) : (
                       <button
-                        onClick={() => handleTogglePlayerInXI(player)}
-                        className="p-1 text-rose-400 hover:text-rose-300 cursor-pointer ml-1"
-                        title="Remove from XI"
+                        onClick={() => onSelectPlayer(player)}
+                        className="text-[11px] bg-[#121824] hover:bg-[#243247] text-slate-300 px-2.5 py-1 rounded border border-[#243247] cursor-pointer"
                       >
-                        <XCircle className="w-4 h-4" />
+                        Profile
                       </button>
-                    </div>
+                    )}
                   </div>
                 );
               })}
@@ -321,16 +411,18 @@ export const SquadView: React.FC<SquadViewProps> = ({
           </div>
         </div>
 
-        {/* Right: National Squad Reserves Pool */}
+        {/* Right: National Squad Pool */}
         <div className="lg:col-span-6 bg-[#121824] border border-[#1f293d] rounded-lg p-4 space-y-3">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#1f293d] pb-2.5">
             <div>
               <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center space-x-1.5">
                 <Users className="w-4 h-4 text-emerald-400" />
-                <span>Available Player Pool</span>
+                <span>National Selection Pool ({fullNationalPool.length})</span>
               </h3>
               <span className="text-[11px] text-slate-400">
-                Click + to add to {selectedFormat} Playing XI
+                {isReadOnly
+                  ? `Click any ${viewedTeam?.name} player to inspect stats & attributes`
+                  : `Click + Add XI to select into ${selectedFormat} Playing XI`}
               </span>
             </div>
 
@@ -368,14 +460,19 @@ export const SquadView: React.FC<SquadViewProps> = ({
           <div className="max-h-[500px] overflow-y-auto space-y-1.5 pr-1">
             {filteredSquad.map((player) => {
               const inXI = currentXIIds.includes(player.id);
-              const rating = selectedFormat === 'TEST' ? player.testRating : selectedFormat === 'ODI' ? player.odiRating : player.t20Rating;
+              const rating =
+                selectedFormat === 'TEST'
+                  ? player.testRating
+                  : selectedFormat === 'ODI'
+                  ? player.odiRating
+                  : player.t20Rating;
 
               return (
                 <div
                   key={player.id}
                   className={`border rounded p-2 flex items-center justify-between transition ${
                     inXI
-                      ? 'bg-[#182234]/50 border-emerald-900/50 opacity-60'
+                      ? 'bg-[#182234]/50 border-emerald-900/50 opacity-75'
                       : 'bg-[#182234] border-[#243247] hover:border-slate-500'
                   }`}
                 >
@@ -390,27 +487,37 @@ export const SquadView: React.FC<SquadViewProps> = ({
                       <span className="text-[10px] bg-[#121824] text-slate-300 border border-[#243247] px-1 rounded font-mono">
                         {player.role.replace('_', ' ')}
                       </span>
+                      {player.isInjured && (
+                        <span className="text-[9px] bg-rose-950 text-rose-300 px-1 rounded font-bold">
+                          INJ ({player.injuryDaysRemaining}d)
+                        </span>
+                      )}
                     </div>
                     <span className="text-[10px] text-slate-400 font-mono block mt-0.5">
-                      Ratings: {player.testRating} Test / {player.odiRating} ODI / {player.t20Rating} T20 • Fatigue: {player.workloadFatigue || 10}%
+                      Age {player.age} • Ratings: {player.testRating} Test / {player.odiRating} ODI / {player.t20Rating} T20 • Fat: {player.workloadFatigue || 10}%
                     </span>
                   </div>
 
                   <div className="flex items-center space-x-2">
-                    <span className="text-xs font-mono font-bold text-emerald-400">
-                      {rating}
-                    </span>
+                    <span className="text-xs font-mono font-bold text-emerald-400">{rating}</span>
 
-                    <button
-                      onClick={() => handleTogglePlayerInXI(player)}
-                      className={`text-xs px-2 py-1 rounded font-bold transition cursor-pointer ${
-                        inXI
-                          ? 'bg-rose-950 text-rose-300 border border-rose-800 hover:bg-rose-900'
-                          : 'bg-emerald-600 text-white hover:bg-emerald-500'
-                      }`}
-                    >
-                      {inXI ? 'Remove' : '+ Add XI'}
-                    </button>
+                    {!isReadOnly ? (
+                      <button
+                        disabled={player.isInjured && !inXI}
+                        onClick={() => handleTogglePlayerInXI(player)}
+                        className={`text-xs px-2 py-1 rounded font-bold transition cursor-pointer disabled:opacity-30 ${
+                          inXI
+                            ? 'bg-rose-950 text-rose-300 border border-rose-800 hover:bg-rose-900'
+                            : 'bg-emerald-600 text-white hover:bg-emerald-500'
+                        }`}
+                      >
+                        {inXI ? 'Remove' : '+ Add XI'}
+                      </button>
+                    ) : (
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#121824] text-slate-400 border border-[#243247]">
+                        {inXI ? 'In AI XI' : 'Reserve'}
+                      </span>
+                    )}
                   </div>
                 </div>
               );

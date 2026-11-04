@@ -1,20 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { BarChart3, Award, Flame, Target } from 'lucide-react';
-import { MatchFormat, Player } from '../../types/cricket';
-import { ALL_PLAYERS } from '../../data/squads';
+import { CareerSave, MatchFormat, Player } from '../../types/cricket';
+import { ALL_PLAYERS, createEmptyFormatStats, getCombinedFormatStats, getEffectivePlayer } from '../../data/squads';
 
 interface StatisticsViewProps {
+  career?: CareerSave;
   onSelectPlayer: (player: Player) => void;
 }
 
-export const StatisticsView: React.FC<StatisticsViewProps> = ({ onSelectPlayer }) => {
+export const StatisticsView: React.FC<StatisticsViewProps> = ({ career, onSelectPlayer }) => {
   const [format, setFormat] = useState<MatchFormat>('TEST');
+  const [scope, setScope] = useState<'COMBINED' | 'SIMULATED'>('COMBINED');
 
-  // Calculate true statistical leaderboards
-  const mostRuns = [...ALL_PLAYERS].sort((a, b) => b.stats[format].runs - a.stats[format].runs).slice(0, 8);
-  const mostWickets = [...ALL_PLAYERS].sort((a, b) => b.stats[format].wickets - a.stats[format].wickets).slice(0, 8);
-  const highestScores = [...ALL_PLAYERS].sort((a, b) => b.stats[format].highestScore - a.stats[format].highestScore).slice(0, 8);
-  const mostCenturies = [...ALL_PLAYERS].sort((a, b) => b.stats[format].centuries - a.stats[format].centuries).slice(0, 8);
+  const entries = useMemo(() => {
+    const combined = [...ALL_PLAYERS, ...(career?.emergingPlayers || [])];
+    return combined
+      .filter((p) => p.gender !== 'FEMALE')
+      .map((p) => {
+        const eff = getEffectivePlayer(p, career) || p;
+        const st =
+          scope === 'SIMULATED'
+            ? eff.simulatedStats?.[format] || createEmptyFormatStats()
+            : getCombinedFormatStats(eff, format);
+        return { player: eff, st };
+      });
+  }, [career, format, scope]);
+
+  const mostRuns = useMemo(
+    () => [...entries].sort((a, b) => b.st.runs - a.st.runs).slice(0, 8),
+    [entries]
+  );
+  const mostWickets = useMemo(
+    () => [...entries].sort((a, b) => b.st.wickets - a.st.wickets).slice(0, 8),
+    [entries]
+  );
+  const highestScores = useMemo(
+    () => [...entries].sort((a, b) => b.st.highestScore - a.st.highestScore).slice(0, 8),
+    [entries]
+  );
+  const mostCenturies = useMemo(
+    () => [...entries].sort((a, b) => b.st.centuries - a.st.centuries).slice(0, 8),
+    [entries]
+  );
 
   return (
     <div className="space-y-4 select-none animate-in fade-in duration-150">
@@ -30,21 +57,46 @@ export const StatisticsView: React.FC<StatisticsViewProps> = ({ onSelectPlayer }
           </p>
         </div>
 
-        {/* Format Selector */}
-        <div className="flex items-center bg-[#182234] border border-[#243247] p-1 rounded space-x-1">
-          {(['TEST', 'ODI', 'T20I'] as MatchFormat[]).map((fmt) => (
+        {/* Scope + Format Selector */}
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center bg-[#182234] border border-[#243247] p-1 rounded space-x-1">
             <button
-              key={fmt}
-              onClick={() => setFormat(fmt)}
-              className={`px-3 py-1.5 rounded text-xs font-bold transition cursor-pointer ${
-                format === fmt
-                  ? 'bg-emerald-600 text-white shadow'
+              onClick={() => setScope('COMBINED')}
+              className={`px-2.5 py-1.5 rounded text-xs font-bold transition cursor-pointer ${
+                scope === 'COMBINED'
+                  ? 'bg-sky-600 text-white shadow'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              {fmt}
+              All-Time + Career
             </button>
-          ))}
+            <button
+              onClick={() => setScope('SIMULATED')}
+              className={`px-2.5 py-1.5 rounded text-xs font-bold transition cursor-pointer ${
+                scope === 'SIMULATED'
+                  ? 'bg-sky-600 text-white shadow'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              Active Career Only
+            </button>
+          </div>
+
+          <div className="flex items-center bg-[#182234] border border-[#243247] p-1 rounded space-x-1">
+            {(['TEST', 'ODI', 'T20I'] as MatchFormat[]).map((fmt) => (
+              <button
+                key={fmt}
+                onClick={() => setFormat(fmt)}
+                className={`px-3 py-1.5 rounded text-xs font-bold transition cursor-pointer ${
+                  format === fmt
+                    ? 'bg-emerald-600 text-white shadow'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                {fmt}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -54,13 +106,13 @@ export const StatisticsView: React.FC<StatisticsViewProps> = ({ onSelectPlayer }
         <div className="bg-[#121824] border border-[#1f293d] rounded-lg p-4">
           <div className="flex items-center justify-between border-b border-[#1f293d] pb-2.5 mb-3">
             <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
-              <Award className="w-4 h-4" /> Most Career Runs ({format})
+              <Award className="w-4 h-4" /> Most Runs ({format})
             </h3>
-            <span className="text-[10px] text-slate-400 font-mono">Top Batsmen</span>
+            <span className="text-[10px] text-slate-400 font-mono">Top Batters</span>
           </div>
 
           <div className="space-y-1.5">
-            {mostRuns.map((player, idx) => (
+            {mostRuns.map(({ player, st }, idx) => (
               <div
                 key={player.id}
                 onClick={() => onSelectPlayer(player)}
@@ -74,8 +126,8 @@ export const StatisticsView: React.FC<StatisticsViewProps> = ({ onSelectPlayer }
                   </div>
                 </div>
                 <div className="text-right font-mono">
-                  <span className="font-bold text-white block text-sm">{player.stats[format].runs}</span>
-                  <span className="text-[10px] text-emerald-400">Avg {player.stats[format].average.toFixed(1)}</span>
+                  <span className="font-bold text-white block text-sm">{st.runs}</span>
+                  <span className="text-[10px] text-emerald-400">Avg {st.average.toFixed(1)}</span>
                 </div>
               </div>
             ))}
@@ -86,13 +138,13 @@ export const StatisticsView: React.FC<StatisticsViewProps> = ({ onSelectPlayer }
         <div className="bg-[#121824] border border-[#1f293d] rounded-lg p-4">
           <div className="flex items-center justify-between border-b border-[#1f293d] pb-2.5 mb-3">
             <h3 className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-              <Target className="w-4 h-4" /> Most Career Wickets ({format})
+              <Target className="w-4 h-4" /> Most Wickets ({format})
             </h3>
             <span className="text-[10px] text-slate-400 font-mono">Top Bowlers</span>
           </div>
 
           <div className="space-y-1.5">
-            {mostWickets.map((player, idx) => (
+            {mostWickets.map(({ player, st }, idx) => (
               <div
                 key={player.id}
                 onClick={() => onSelectPlayer(player)}
@@ -106,8 +158,8 @@ export const StatisticsView: React.FC<StatisticsViewProps> = ({ onSelectPlayer }
                   </div>
                 </div>
                 <div className="text-right font-mono">
-                  <span className="font-bold text-white block text-sm">{player.stats[format].wickets}</span>
-                  <span className="text-[10px] text-amber-400">Avg {player.stats[format].bowlingAverage.toFixed(1)}</span>
+                  <span className="font-bold text-white block text-sm">{st.wickets}</span>
+                  <span className="text-[10px] text-amber-400">Avg {st.bowlingAverage.toFixed(1)}</span>
                 </div>
               </div>
             ))}
@@ -124,7 +176,7 @@ export const StatisticsView: React.FC<StatisticsViewProps> = ({ onSelectPlayer }
           </div>
 
           <div className="space-y-1.5">
-            {highestScores.map((player, idx) => (
+            {highestScores.map(({ player, st }, idx) => (
               <div
                 key={player.id}
                 onClick={() => onSelectPlayer(player)}
@@ -139,9 +191,9 @@ export const StatisticsView: React.FC<StatisticsViewProps> = ({ onSelectPlayer }
                 </div>
                 <div className="text-right font-mono">
                   <span className="font-bold text-white block text-sm">
-                    {player.stats[format].highestScore}{player.stats[format].highestScoreNotOut ? '*' : ''}
+                    {st.highestScore}{st.highestScoreNotOut ? '*' : ''}
                   </span>
-                  <span className="text-[10px] text-slate-400">SR {player.stats[format].strikeRate.toFixed(1)}</span>
+                  <span className="text-[10px] text-slate-400">SR {st.strikeRate.toFixed(1)}</span>
                 </div>
               </div>
             ))}
@@ -158,7 +210,7 @@ export const StatisticsView: React.FC<StatisticsViewProps> = ({ onSelectPlayer }
           </div>
 
           <div className="space-y-1.5">
-            {mostCenturies.map((player, idx) => (
+            {mostCenturies.map(({ player, st }, idx) => (
               <div
                 key={player.id}
                 onClick={() => onSelectPlayer(player)}
@@ -172,8 +224,8 @@ export const StatisticsView: React.FC<StatisticsViewProps> = ({ onSelectPlayer }
                   </div>
                 </div>
                 <div className="text-right font-mono">
-                  <span className="font-bold text-purple-400 block text-sm">{player.stats[format].centuries}</span>
-                  <span className="text-[10px] text-slate-400">Fifties: {player.stats[format].fifties}</span>
+                  <span className="font-bold text-purple-400 block text-sm">{st.centuries}</span>
+                  <span className="text-[10px] text-slate-400">Fifties: {st.fifties}</span>
                 </div>
               </div>
             ))}

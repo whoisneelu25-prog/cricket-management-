@@ -20,6 +20,7 @@ import {
   Users,
 } from 'lucide-react';
 import {
+  CareerSave,
   Match,
   MatchFormat,
   BattingAggression,
@@ -28,13 +29,15 @@ import {
   Player
 } from '../../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
-import { ALL_PLAYERS } from '../../data/squads';
+import { ALL_PLAYERS, getEffectivePlayer } from '../../data/squads';
 import { ScorecardModal } from './ScorecardModal';
-import { getPlayerById } from '../../engine/matchEngine';
+import { PostMatchSummaryView } from './PostMatchSummaryView';
+import { getPlayerById, isPreMatchStatus, isTerminalMatchStatus } from '../../engine/matchEngine';
 import { getPowerplayPhase, getMaxOversPerBowler } from '../../engine/rules';
 
 interface MatchCentreViewProps {
   match: Match;
+  career?: CareerSave;
   onSimulateBall: () => void;
   onSimulateOver: () => void;
   onSimulateInnings: () => void;
@@ -45,10 +48,14 @@ interface MatchCentreViewProps {
   onSelectPlayer: (player: Player) => void;
   onDeclareInnings?: () => void;
   onFollowOnDecision?: (enforce: boolean) => void;
+  onContinueToDashboard?: () => void;
+  onPrepareNextMatch?: (nextMatchId: string) => void;
+  onOpenMatchPreparation?: (matchId: string) => void;
 }
 
 export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
   match,
+  career,
   onSimulateBall,
   onSimulateOver,
   onSimulateInnings,
@@ -59,6 +66,9 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
   onSelectPlayer,
   onDeclareInnings,
   onFollowOnDecision,
+  onContinueToDashboard,
+  onPrepareNextMatch,
+  onOpenMatchPreparation,
 }) => {
   const [showScorecard, setShowScorecard] = useState(false);
   const [isAutoPlaying, setIsAutoPlaying] = useState(false);
@@ -69,7 +79,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
   const awayTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.awayTeamId);
 
   const currentInnings = match.innings[match.currentInningsIndex] || match.innings[0];
-  const isMatchFinished = match.status === 'COMPLETED' || match.status === 'DRAW';
+  const isMatchFinished = isTerminalMatchStatus(match.status);
 
   // Auto-play loop for smooth broadcast simulation
   useEffect(() => {
@@ -166,17 +176,37 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
     };
   });
 
+  // Dedicated Post-Match Completion Screen when match ends (Phase 5)
+  if (isMatchFinished) {
+    return (
+      <PostMatchSummaryView
+        match={match}
+        career={career}
+        onContinueToDashboard={() => onContinueToDashboard && onContinueToDashboard()}
+        onPrepareNextMatch={(nextId) => onPrepareNextMatch && onPrepareNextMatch(nextId)}
+        onSelectPlayer={onSelectPlayer}
+      />
+    );
+  }
+
   // Coin Toss View if match not yet started
-  if (match.status === 'SCHEDULED' || match.status === 'TOSS') {
+  if (isPreMatchStatus(match.status)) {
     return (
       <div className="bg-[#121824] border border-[#1f293d] rounded-lg p-6 sm:p-10 max-w-2xl mx-auto my-8 text-center select-none shadow-2xl animate-in zoom-in-95 duration-200">
         <div className="w-16 h-16 rounded-full bg-amber-500/10 border-2 border-amber-500/50 flex items-center justify-center mx-auto mb-4 text-amber-400">
           <Coins className="w-8 h-8" />
         </div>
 
-        <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded border border-emerald-800/40">
-          {match.format} International
-        </span>
+        <div className="flex items-center justify-center gap-2">
+          <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded border border-emerald-800/40">
+            {match.format} International
+          </span>
+          {match.lineupConfirmed && (
+            <span className="text-xs font-bold uppercase tracking-wider text-sky-300 bg-sky-950/80 px-2.5 py-1 rounded border border-sky-800/40">
+              Lineup READY
+            </span>
+          )}
+        </div>
 
         <h2 className="text-2xl font-black text-white mt-3">The Coin Toss & Match Debut</h2>
         <p className="text-xs text-slate-400 mt-1 max-w-md mx-auto">
@@ -187,7 +217,9 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
           <div className="text-center">
             <span className="text-4xl block mb-2">{homeTeam?.flagEmoji}</span>
             <h4 className="font-bold text-sm text-white">{homeTeam?.name}</h4>
-            <span className="text-[10px] text-slate-400 font-mono">Captain: {getPlayerById(match.homeCaptainId).shortName}</span>
+            <span className="text-[10px] text-slate-400 font-mono">
+              Captain: {(getEffectivePlayer(match.homeCaptainId, career) || getPlayerById(match.homeCaptainId)).shortName}
+            </span>
           </div>
 
           <span className="text-xs font-mono font-bold text-slate-400 bg-[#0d131f] px-3 py-1 rounded border border-[#243247]">
@@ -197,7 +229,9 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
           <div className="text-center">
             <span className="text-4xl block mb-2">{awayTeam?.flagEmoji}</span>
             <h4 className="font-bold text-sm text-white">{awayTeam?.name}</h4>
-            <span className="text-[10px] text-slate-400 font-mono">Captain: {getPlayerById(match.awayCaptainId).shortName}</span>
+            <span className="text-[10px] text-slate-400 font-mono">
+              Captain: {(getEffectivePlayer(match.awayCaptainId, career) || getPlayerById(match.awayCaptainId)).shortName}
+            </span>
           </div>
         </div>
 
@@ -208,7 +242,16 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
               <Users className="w-3.5 h-3.5 text-emerald-400" />
               <span>Confirmed Match Lineups</span>
             </span>
-            <span className="text-[10px] text-slate-400 font-mono">11 Players per side</span>
+            {onOpenMatchPreparation ? (
+              <button
+                onClick={() => onOpenMatchPreparation(match.id)}
+                className="text-[11px] text-emerald-400 hover:text-emerald-300 font-bold underline cursor-pointer"
+              >
+                Adjust Playing XI &amp; Prep
+              </button>
+            ) : (
+              <span className="text-[10px] text-slate-400 font-mono">11 Players per side</span>
+            )}
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
             <div>
@@ -218,7 +261,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
               </div>
               <div className="space-y-0.5">
                 {(match.homeXI || []).map((id, idx) => {
-                  const p = getPlayerById(id);
+                  const p = getEffectivePlayer(id, career) || getPlayerById(id);
                   const isC = id === match.homeCaptainId;
                   const isWk = id === match.homeWicketKeeperId;
                   return (
@@ -243,7 +286,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
               </div>
               <div className="space-y-0.5">
                 {(match.awayXI || []).map((id, idx) => {
-                  const p = getPlayerById(id);
+                  const p = getEffectivePlayer(id, career) || getPlayerById(id);
                   const isC = id === match.awayCaptainId;
                   const isWk = id === match.awayWicketKeeperId;
                   return (

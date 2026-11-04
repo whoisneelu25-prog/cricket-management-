@@ -13,14 +13,17 @@ import {
   ChevronRight,
   UserCheck,
   TrendingUp,
+  FileText,
 } from 'lucide-react';
 import { CareerSave, Match, MatchFormat, Player, Tour } from '../../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
-import { ALL_PLAYERS, getPlayersByCountry } from '../../data/squads';
+import { ALL_PLAYERS, getEffectivePlayer, getEffectivePlayersByCountry } from '../../data/squads';
+import { isTerminalMatchStatus } from '../../engine/matchEngine';
 
 interface ToursViewProps {
   career: CareerSave;
   onNavigateToMatch?: (matchId: string) => void;
+  onInspectScorecard?: (match: Match) => void;
   onOpenTourSelection?: (tourId: string) => void;
   onUpdateSquadXI?: (format: MatchFormat, xiPlayerIds: string[]) => void;
   onSelectPlayer?: (player: Player) => void;
@@ -29,6 +32,7 @@ interface ToursViewProps {
 export const ToursView: React.FC<ToursViewProps> = ({
   career,
   onNavigateToMatch,
+  onInspectScorecard,
   onOpenTourSelection,
   onUpdateSquadXI,
   onSelectPlayer,
@@ -57,7 +61,7 @@ export const ToursView: React.FC<ToursViewProps> = ({
   );
 
   // Available national squad players for playing XI adjustments
-  const nationalPlayers = getPlayersByCountry(career.selectedTeamId);
+  const nationalPlayers = getEffectivePlayersByCountry(career.selectedTeamId, career, true);
 
   return (
     <div className="space-y-4 select-none animate-in fade-in duration-150">
@@ -194,9 +198,11 @@ export const ToursView: React.FC<ToursViewProps> = ({
               </div>
 
               <div className="space-y-3">
-                {displayedMatches.map((m, idx) => {
-                  const isCompleted = m.status === 'COMPLETED' || m.status === 'DRAW' || m.status === 'TIE';
+                {displayedMatches.map((m) => {
+                  const isCompleted = isTerminalMatchStatus(m.status);
                   const isLive = m.status === 'IN_PROGRESS';
+                  const isUserFixture =
+                    m.homeTeamId === career.selectedTeamId || m.awayTeamId === career.selectedTeamId;
                   const inn1 = m.innings[0];
                   const inn2 = m.innings[1];
 
@@ -246,20 +252,25 @@ export const ToursView: React.FC<ToursViewProps> = ({
 
                         <div className="flex items-center space-x-2 self-start sm:self-center">
                           {isCompleted ? (
-                            <span className="text-[11px] font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-800/40 px-2.5 py-1 rounded flex items-center space-x-1">
-                              <CheckCircle2 className="w-3 h-3" />
-                              <span>Completed</span>
-                            </span>
+                            <button
+                              onClick={() => onInspectScorecard && onInspectScorecard(m)}
+                              className="text-[11px] font-bold text-emerald-300 bg-emerald-950/70 hover:bg-emerald-900/80 border border-emerald-700/50 px-2.5 py-1.5 rounded transition cursor-pointer flex items-center space-x-1"
+                            >
+                              <FileText className="w-3 h-3 text-emerald-400" />
+                              <span>View Scorecard</span>
+                            </button>
+                          ) : isUserFixture && onNavigateToMatch ? (
+                            <button
+                              onClick={() => onNavigateToMatch(m.id)}
+                              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3 py-1.5 rounded transition cursor-pointer flex items-center space-x-1"
+                            >
+                              <Play className="w-3 h-3 fill-white" />
+                              <span>{isLive ? 'Resume Match' : 'Match Centre'}</span>
+                            </button>
                           ) : (
-                            onNavigateToMatch && (
-                              <button
-                                onClick={() => onNavigateToMatch(m.id)}
-                                className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3 py-1.5 rounded transition cursor-pointer flex items-center space-x-1"
-                              >
-                                <Play className="w-3 h-3 fill-white" />
-                                <span>{isLive ? 'Resume Match' : 'Match Centre'}</span>
-                              </button>
-                            )
+                            <span className="text-[11px] font-mono text-slate-400 bg-[#121824] border border-[#243247] px-2.5 py-1 rounded">
+                              AI Fixture
+                            </span>
                           )}
                         </div>
                       </div>
@@ -292,7 +303,7 @@ export const ToursView: React.FC<ToursViewProps> = ({
               {activeTour.tourSquadIds && activeTour.tourSquadIds.length > 0 ? (
                 <div className="max-h-64 overflow-y-auto space-y-1.5 pr-1">
                   {activeTour.tourSquadIds.map((pId) => {
-                    const player = ALL_PLAYERS.find((p) => p.id === pId);
+                    const player = getEffectivePlayer(pId, career) || ALL_PLAYERS.find((p) => p.id === pId);
                     if (!player) return null;
                     const isWk = player.isWicketKeeper || player.role === 'WICKETKEEPER_BATTER';
                     return (

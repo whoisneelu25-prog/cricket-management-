@@ -2,7 +2,9 @@ import {
   Player,
   MatchFormat,
   FormatSquadConfig,
-  SupportStaff
+  FormatStats,
+  SupportStaff,
+  CareerSave,
 } from '../types/cricket';
 import { INTERNATIONAL_PLAYERS } from './players';
 import masterPlayersJson from './master_players.json';
@@ -36,7 +38,184 @@ export function getAllPlayersByCountry(countryId: string): Player[] {
 
 export function getFormatEligiblePlayers(countryId: string, format: MatchFormat): Player[] {
   const pool = getPlayersByCountry(countryId, true);
-  return pool.filter((p) => p.formatEligibility[format] && p.status === 'ACTIVE' && p.gender === 'MALE');
+  const eligible = pool.filter((p) => p.formatEligibility[format] && p.status === 'ACTIVE' && p.gender === 'MALE');
+  if (eligible.length >= 11) return eligible;
+  return pool;
+}
+
+export function createEmptyFormatStats(): FormatStats {
+  return {
+    matches: 0,
+    innings: 0,
+    runs: 0,
+    highestScore: 0,
+    highestScoreNotOut: false,
+    average: 0,
+    strikeRate: 0,
+    centuries: 0,
+    fifties: 0,
+    fours: 0,
+    sixes: 0,
+    ducks: 0,
+    notOuts: 0,
+    bowlingInnings: 0,
+    oversBowled: 0,
+    maidens: 0,
+    runsConceded: 0,
+    wickets: 0,
+    bestBowlingWickets: 0,
+    bestBowlingRuns: 0,
+    bowlingAverage: 0,
+    economy: 0,
+    bowlingStrikeRate: 0,
+    fiveWicketHauls: 0,
+    tenWicketHauls: 0,
+    catches: 0,
+    stumpings: 0,
+    runOuts: 0,
+  };
+}
+
+export function getCombinedFormatStats(player: Player, format: MatchFormat): FormatStats;
+export function getCombinedFormatStats(
+  base: FormatStats | undefined,
+  simulated: FormatStats | undefined
+): FormatStats;
+export function getCombinedFormatStats(
+  baseOrPlayer: FormatStats | Player | undefined,
+  simulatedOrFormat: FormatStats | MatchFormat | undefined
+): FormatStats {
+  let base: FormatStats | undefined;
+  let simulated: FormatStats | undefined;
+  if (
+    baseOrPlayer &&
+    typeof baseOrPlayer === 'object' &&
+    'stats' in baseOrPlayer &&
+    typeof simulatedOrFormat === 'string'
+  ) {
+    base = baseOrPlayer.stats?.[simulatedOrFormat];
+    simulated = baseOrPlayer.simulatedStats?.[simulatedOrFormat];
+  } else {
+    base = baseOrPlayer as FormatStats | undefined;
+    simulated = simulatedOrFormat as FormatStats | undefined;
+  }
+  const b = base || createEmptyFormatStats();
+  if (!simulated || simulated.matches === 0) return { ...b };
+
+  const matches = b.matches + simulated.matches;
+  const innings = b.innings + simulated.innings;
+  const runs = b.runs + simulated.runs;
+  const notOuts = b.notOuts + simulated.notOuts;
+  const dismissals = Math.max(0, innings - notOuts);
+  const average = dismissals > 0 ? Number((runs / dismissals).toFixed(2)) : runs;
+
+  const baseBalls = b.strikeRate > 0 ? Math.round((b.runs / b.strikeRate) * 100) : 0;
+  const simBalls = simulated.strikeRate > 0 ? Math.round((simulated.runs / simulated.strikeRate) * 100) : 0;
+  const totalBalls = baseBalls + simBalls;
+  const strikeRate = totalBalls > 0 ? Number(((runs / totalBalls) * 100).toFixed(2)) : b.strikeRate;
+
+  let highestScore = b.highestScore;
+  let highestScoreNotOut = b.highestScoreNotOut;
+  if (
+    simulated.highestScore > highestScore ||
+    (simulated.highestScore === highestScore && simulated.highestScoreNotOut)
+  ) {
+    highestScore = simulated.highestScore;
+    highestScoreNotOut = simulated.highestScoreNotOut;
+  }
+
+  const bowlingInnings = b.bowlingInnings + simulated.bowlingInnings;
+  const oversBowled = Number((b.oversBowled + simulated.oversBowled).toFixed(1));
+  const runsConceded = b.runsConceded + simulated.runsConceded;
+  const wickets = b.wickets + simulated.wickets;
+
+  let bestBowlingWickets = b.bestBowlingWickets;
+  let bestBowlingRuns = b.bestBowlingRuns;
+  if (
+    simulated.bestBowlingWickets > bestBowlingWickets ||
+    (simulated.bestBowlingWickets === bestBowlingWickets &&
+      simulated.bestBowlingWickets > 0 &&
+      (bestBowlingRuns === 0 || simulated.bestBowlingRuns < bestBowlingRuns))
+  ) {
+    bestBowlingWickets = simulated.bestBowlingWickets;
+    bestBowlingRuns = simulated.bestBowlingRuns;
+  }
+
+  return {
+    matches,
+    innings,
+    runs,
+    highestScore,
+    highestScoreNotOut,
+    average,
+    strikeRate,
+    centuries: b.centuries + simulated.centuries,
+    fifties: b.fifties + simulated.fifties,
+    fours: b.fours + simulated.fours,
+    sixes: b.sixes + simulated.sixes,
+    ducks: b.ducks + simulated.ducks,
+    notOuts,
+    bowlingInnings,
+    oversBowled,
+    maidens: b.maidens + simulated.maidens,
+    runsConceded,
+    wickets,
+    bestBowlingWickets,
+    bestBowlingRuns,
+    bowlingAverage: wickets > 0 ? Number((runsConceded / wickets).toFixed(2)) : 0,
+    economy: oversBowled > 0 ? Number((runsConceded / oversBowled).toFixed(2)) : 0,
+    bowlingStrikeRate: wickets > 0 ? Number(((oversBowled * 6) / wickets).toFixed(2)) : 0,
+    fiveWicketHauls: b.fiveWicketHauls + simulated.fiveWicketHauls,
+    tenWicketHauls: b.tenWicketHauls + simulated.tenWicketHauls,
+    catches: b.catches + simulated.catches,
+    stumpings: b.stumpings + simulated.stumpings,
+    runOuts: b.runOuts + simulated.runOuts,
+  };
+}
+
+export function getEffectivePlayer(playerOrId: Player | string, career?: CareerSave): Player | undefined {
+  let base: Player | undefined;
+  if (typeof playerOrId === 'string') {
+    base =
+      ALL_PLAYERS.find((p) => p.id === playerOrId) ||
+      career?.emergingPlayers?.find((p) => p.id === playerOrId);
+  } else {
+    base = playerOrId;
+  }
+  if (!base) return undefined;
+  if (!career) return base;
+
+  const ov = career.playerOverrides?.[base.id];
+  if (!ov) return base;
+
+  return {
+    ...base,
+    ...ov,
+    attributes: {
+      ...base.attributes,
+      ...(ov.attributes || {}),
+    },
+    stats: base.stats, // Always preserve verified historical stats untouched!
+    simulatedStats: ov.simulatedStats || base.simulatedStats,
+  };
+}
+
+export function getEffectivePlayersByCountry(
+  countryId: string,
+  career?: CareerSave,
+  activeMenOnly: boolean = true
+): Player[] {
+  const normalizedId = countryId === 'SRI' ? 'SL' : countryId === 'WIN' ? 'WI' : countryId;
+  const basePool = ALL_PLAYERS.filter(
+    (p) => (p.countryId === normalizedId || p.countryId === countryId) && p.gender === 'MALE'
+  );
+  const emerging = (career?.emergingPlayers || []).filter(
+    (p) => (p.countryId === normalizedId || p.countryId === countryId) && p.gender === 'MALE'
+  );
+
+  const combined = [...basePool, ...emerging].map((p) => getEffectivePlayer(p, career)!);
+  if (!activeMenOnly) return combined;
+  return combined.filter((p) => p.status === 'ACTIVE');
 }
 
 export function getDefaultCaptainId(countryId: string, format: MatchFormat = 'TEST'): string {
