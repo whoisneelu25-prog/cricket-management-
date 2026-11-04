@@ -41,7 +41,7 @@ import { CareerSave, Match } from '../types/cricket';
  * chronologically up to `targetDate`. Uses the exact same match engine (`simulateFullMatch` + `applyUserMatchResult`)
  * and world engine (`simulateWorldMatchesUntil`) as live gameplay!
  */
-function playCareerThroughDate(initialCareer: CareerSave, targetDate: string): CareerSave {
+export function playCareerThroughDate(initialCareer: CareerSave, targetDate: string): CareerSave {
   let career = initialCareer;
   let safety = 0;
 
@@ -67,7 +67,10 @@ function playCareerThroughDate(initialCareer: CareerSave, targetDate: string): C
     );
 
     if (!nextUserMatch) {
-      if (career.currentDate < targetDate) {
+      const hasPendingWorldMatches = career.worldFixtures.some(
+        (m) => isPreMatchStatus(m.status) && (m.date || '') <= targetDate
+      );
+      if (career.currentDate < targetDate || hasPendingWorldMatches) {
         career = simulateWorldMatchesUntil(career, targetDate).updatedCareer;
       }
       // Check once more in case tournament knockouts generated a new user match <= targetDate!
@@ -75,6 +78,12 @@ function playCareerThroughDate(initialCareer: CareerSave, targetDate: string): C
         (m) => isPreMatchStatus(m.status) && (m.date || '') <= targetDate
       );
       if (!newlyGeneratedUserMatch) {
+        const stillPendingWorld = career.worldFixtures.some(
+          (m) => isPreMatchStatus(m.status) && (m.date || '') <= targetDate
+        );
+        if (stillPendingWorld) {
+          career = simulateWorldMatchesUntil(career, targetDate).updatedCareer;
+        }
         break;
       }
       continue;

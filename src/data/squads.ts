@@ -48,11 +48,13 @@ export function createEmptyFormatStats(): FormatStats {
     matches: 0,
     innings: 0,
     runs: 0,
+    ballsFaced: 0,
     highestScore: 0,
     highestScoreNotOut: false,
     average: 0,
     strikeRate: 0,
     centuries: 0,
+    doubleCenturies: 0,
     fifties: 0,
     fours: 0,
     sixes: 0,
@@ -68,6 +70,7 @@ export function createEmptyFormatStats(): FormatStats {
     bowlingAverage: 0,
     economy: 0,
     bowlingStrikeRate: 0,
+    fourWicketHauls: 0,
     fiveWicketHauls: 0,
     tenWicketHauls: 0,
     catches: 0,
@@ -109,8 +112,18 @@ export function getCombinedFormatStats(
   const dismissals = Math.max(0, innings - notOuts);
   const average = dismissals > 0 ? Number((runs / dismissals).toFixed(2)) : runs;
 
-  const baseBalls = b.strikeRate > 0 ? Math.round((b.runs / b.strikeRate) * 100) : 0;
-  const simBalls = simulated.strikeRate > 0 ? Math.round((simulated.runs / simulated.strikeRate) * 100) : 0;
+  const baseBalls =
+    b.ballsFaced !== undefined
+      ? b.ballsFaced
+      : b.strikeRate > 0
+      ? Math.round((b.runs / b.strikeRate) * 100)
+      : 0;
+  const simBalls =
+    simulated.ballsFaced !== undefined
+      ? simulated.ballsFaced
+      : simulated.strikeRate > 0
+      ? Math.round((simulated.runs / simulated.strikeRate) * 100)
+      : 0;
   const totalBalls = baseBalls + simBalls;
   const strikeRate = totalBalls > 0 ? Number(((runs / totalBalls) * 100).toFixed(2)) : b.strikeRate;
 
@@ -145,11 +158,13 @@ export function getCombinedFormatStats(
     matches,
     innings,
     runs,
+    ballsFaced: totalBalls,
     highestScore,
     highestScoreNotOut,
     average,
     strikeRate,
     centuries: b.centuries + simulated.centuries,
+    doubleCenturies: (b.doubleCenturies || 0) + (simulated.doubleCenturies || 0),
     fifties: b.fifties + simulated.fifties,
     fours: b.fours + simulated.fours,
     sixes: b.sixes + simulated.sixes,
@@ -165,6 +180,7 @@ export function getCombinedFormatStats(
     bowlingAverage: wickets > 0 ? Number((runsConceded / wickets).toFixed(2)) : 0,
     economy: oversBowled > 0 ? Number((runsConceded / oversBowled).toFixed(2)) : 0,
     bowlingStrikeRate: wickets > 0 ? Number(((oversBowled * 6) / wickets).toFixed(2)) : 0,
+    fourWicketHauls: (b.fourWicketHauls || 0) + (simulated.fourWicketHauls || 0),
     fiveWicketHauls: b.fiveWicketHauls + simulated.fiveWicketHauls,
     tenWicketHauls: b.tenWicketHauls + simulated.tenWicketHauls,
     catches: b.catches + simulated.catches,

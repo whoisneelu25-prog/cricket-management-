@@ -28,8 +28,12 @@ import {
   processAIWorldDevelopment,
   processAnnualPlayerLifecycle,
   selectAIPlayingXIForMatch,
-  updateTeamRankingsAfterMatch,
 } from './aiTeamEngine';
+import {
+  updateTeamRankingsAfterMatch as updateRankingEngineAfterMatch,
+  computeAllPlayerRankings,
+  initializeDetailedTeamRankings,
+} from './rankingEngine';
 import { generateNextSeasonSchedule } from './calendarEngine';
 
 export interface WorldSimulationResult {
@@ -86,7 +90,7 @@ function cloneCareerForSim(career: CareerSave): CareerSave {
       : initializeAITeams(career.selectedTeamId, career),
     teamRankings: career.teamRankings
       ? JSON.parse(JSON.stringify(career.teamRankings))
-      : initializeTeamRankings(),
+      : initializeDetailedTeamRankings(),
     emergingPlayers: [...(career.emergingPlayers || [])],
     archivedMatches: [...(career.archivedMatches || [])],
     playerTrainingFocus: { ...(career.playerTrainingFocus || {}) },
@@ -127,12 +131,14 @@ function simulateSingleAIMatchOnDate(
 
   const preparedMatch: Match = {
     ...match,
-    homeXI: homeAICfg.playingXI,
+    homeXI: homeAICfg.battingOrder?.length === 11 ? homeAICfg.battingOrder : homeAICfg.playingXI,
     homeCaptainId: homeAICfg.captainId,
     homeWicketKeeperId: homeAICfg.wicketKeeperId,
-    awayXI: awayAICfg.playingXI,
+    homeBowlingOptions: homeAICfg.bowlingRotation,
+    awayXI: awayAICfg.battingOrder?.length === 11 ? awayAICfg.battingOrder : awayAICfg.playingXI,
     awayCaptainId: awayAICfg.captainId,
     awayWicketKeeperId: awayAICfg.wicketKeeperId,
+    awayBowlingOptions: awayAICfg.bowlingRotation,
   };
 
   const completed = simulateFullMatch(preparedMatch, updatedCareer);
@@ -143,8 +149,23 @@ function simulateSingleAIMatchOnDate(
   newsItems.push(...aiInjuryNews);
 
   // Live ICC Rankings update
-  const { updatedRankings, rankingNews } = updateTeamRankingsAfterMatch(updatedCareer, completed);
+  const { updatedRankings, rankingNews, notifications, snapshot } = updateRankingEngineAfterMatch(
+    updatedCareer,
+    completed
+  );
   updatedCareer.teamRankings = updatedRankings;
+  if (!updatedCareer.rankingHistory) updatedCareer.rankingHistory = [];
+  updatedCareer.rankingHistory.push(snapshot);
+  if (updatedCareer.rankingHistory.length > 60) {
+    updatedCareer.rankingHistory = updatedCareer.rankingHistory.slice(-60);
+  }
+  if (!updatedCareer.notifications) updatedCareer.notifications = [];
+  if (notifications && notifications.length > 0) {
+    updatedCareer.notifications.unshift(...notifications);
+    if (updatedCareer.notifications.length > 100) {
+      updatedCareer.notifications = updatedCareer.notifications.slice(0, 100);
+    }
+  }
   newsItems.push(...rankingNews);
 
   // Match report & player milestones (centuries / 5-wicket hauls)
@@ -294,9 +315,35 @@ export function simulateWorldMatchesUntil(
     }
 
     // Advance tournaments (group completion -> SF -> Final -> Champion) whenever matches finish or WTC cutoff hits
-    if (foundOnDate || cursorDate.endsWith('-06-01') || step === totalDays) {
+    if (foundOnDate || step === 0 || cursorDate.endsWith('-06-01') || step === totalDays) {
       const tourneyNews = synchronizeAndAdvanceTournaments(updatedCareer, cursorDate);
       generatedNews.push(...tourneyNews);
+
+      // If tournament synchronization generated an AI knockout fixture already due on/before cursorDate, simulate it immediately
+      let koCatchup = 0;
+      while (
+        koCatchup < 4 &&
+        updatedCareer.worldFixtures.some(
+          (wm) => isPreMatchStatus(wm.status) && wm.date && wm.date <= cursorDate
+        )
+      ) {
+        koCatchup++;
+        for (let i = 0; i < updatedCareer.worldFixtures.length; i++) {
+          const wm = updatedCareer.worldFixtures[i];
+          if (isPreMatchStatus(wm.status) && wm.date && wm.date <= cursorDate) {
+            const { completed, newsItems } = simulateSingleAIMatchOnDate(
+              updatedCareer,
+              wm,
+              cursorDate
+            );
+            updatedCareer.worldFixtures[i] = completed;
+            simulatedMatches.push(completed);
+            generatedNews.push(...newsItems);
+          }
+        }
+        const followUpNews = synchronizeAndAdvanceTournaments(updatedCareer, cursorDate);
+        generatedNews.push(...followUpNews);
+      }
     }
   }
 

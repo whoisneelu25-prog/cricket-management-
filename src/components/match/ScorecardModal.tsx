@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Award, FileText, ChevronRight } from 'lucide-react';
 import { Match, InningsState } from '../../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
+import { getPlayerById } from '../../engine/matchEngine';
 
 interface ScorecardModalProps {
   match: Match;
@@ -18,8 +19,72 @@ export const ScorecardModal: React.FC<ScorecardModalProps> = ({
 
   const homeTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.homeTeamId);
   const awayTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.awayTeamId);
+  const isTest = match.format === 'TEST';
 
-  const currentInnings = match.innings[activeInningsIdx] || match.innings[0];
+  const superOverList =
+    match.superOverPlayed && match.superOverInnings && match.superOverInnings.length > 0
+      ? match.superOverInnings
+      : [];
+  const allInningsTabs: Array<{ innings: InningsState; isSuperOver: boolean }> = [
+    ...match.innings.map((inn) => ({ innings: inn, isSuperOver: false })),
+    ...superOverList.map((inn) => ({ innings: inn, isSuperOver: true })),
+  ];
+
+  const activeEntry = allInningsTabs[activeInningsIdx] || allInningsTabs[0];
+  const currentInnings = activeEntry?.innings;
+  const isViewingSuperOver = Boolean(activeEntry?.isSuperOver);
+
+  // Test Match Totals, Lead/Deficit & Target Summary (strictly for TEST format)
+  const homeMatchRuns = isTest
+    ? match.innings
+        .filter((i) => i.battingTeamId === match.homeTeamId)
+        .reduce((s, i) => s + i.totalRuns, 0)
+    : 0;
+  const awayMatchRuns = isTest
+    ? match.innings
+        .filter((i) => i.battingTeamId === match.awayTeamId)
+        .reduce((s, i) => s + i.totalRuns, 0)
+    : 0;
+
+  const getTestLeadTargetSummary = (): string => {
+    if (!isTest || match.innings.length === 0) return '';
+    const inn1 = match.innings[0];
+    const inn2 = match.innings[1];
+    const inn3 = match.innings[2];
+    const inn4 = match.innings[3];
+    if (inn4) {
+      const rem = Math.max(0, (inn4.targetRuns || 0) - inn4.totalRuns);
+      return inn4.isCompleted
+        ? `4th Innings Target: ${inn4.targetRuns} (${inn4.battingTeamName} scored ${inn4.totalRuns}/${inn4.wickets})`
+        : `4th Innings Target: ${inn4.targetRuns} — ${inn4.battingTeamName} need ${rem} more runs`;
+    }
+    if (inn3) {
+      if (match.followOnEnforced) {
+        const diff = inn2.totalRuns + inn3.totalRuns - inn1.totalRuns;
+        return diff < 0
+          ? `${inn3.battingTeamName} (f/o) trail by ${Math.abs(diff)} runs`
+          : `${inn3.battingTeamName} (f/o) lead by ${diff} runs`;
+      }
+      const lead = inn1.totalRuns + inn3.totalRuns - inn2.totalRuns;
+      return lead >= 0
+        ? `${inn3.battingTeamName} overall lead: ${lead} runs`
+        : `${inn3.battingTeamName} trail by ${Math.abs(lead)} runs`;
+    }
+    if (inn2) {
+      const diff = inn2.totalRuns - inn1.totalRuns;
+      return diff >= 0
+        ? `${inn2.battingTeamName} 1st-innings lead: ${diff} runs`
+        : `${inn2.battingTeamName} trail by ${Math.abs(diff)} runs`;
+    }
+    return `${inn1.battingTeamName} 1st Innings: ${inn1.totalRuns}/${inn1.wickets}`;
+  };
+
+  const didNotBatNames =
+    currentInnings && !isViewingSuperOver
+      ? (currentInnings.battingTeamId === match.homeTeamId ? match.homeXI : match.awayXI)
+          .filter((id) => !currentInnings.batters.some((b) => b.playerId === id))
+          .map((id) => getPlayerById(id).shortName)
+      : [];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-xs select-none animate-in fade-in duration-150">
@@ -49,22 +114,65 @@ export const ScorecardModal: React.FC<ScorecardModalProps> = ({
           </button>
         </div>
 
-        {/* Innings Tabs */}
-        {match.innings.length > 0 && (
-          <div className="bg-[#151c2c] border-b border-[#243247] px-4 py-2 flex items-center space-x-2">
-            {match.innings.map((inn, idx) => (
-              <button
-                key={idx}
-                onClick={() => setActiveInningsIdx(idx)}
-                className={`px-3 py-1.5 rounded text-xs font-bold transition ${
-                  activeInningsIdx === idx
-                    ? 'bg-emerald-600 text-white shadow'
-                    : 'text-slate-400 hover:text-white hover:bg-[#1f293d]'
-                }`}
-              >
-                {inn.battingTeamName} ({inn.totalRuns}/{inn.wickets} in {inn.completedOvers}.{inn.ballsInCurrentOver} ov)
-              </button>
-            ))}
+        {/* Test Match Multi-Innings Totals, Lead/Target & Conditions Summary (TEST only) */}
+        {isTest && match.innings.length > 0 && (
+          <div className="bg-[#0e1525] border-b border-[#243247] px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-slate-300">
+                <strong className="text-white">{homeTeam?.name || match.homeTeamId} Total:</strong> {homeMatchRuns}
+              </span>
+              <span className="text-slate-600">|</span>
+              <span className="text-slate-300">
+                <strong className="text-white">{awayTeam?.name || match.awayTeamId} Total:</strong> {awayMatchRuns}
+              </span>
+              {match.followOnEnforced && (
+                <span className="bg-amber-950 text-amber-300 border border-amber-800/50 px-1.5 py-0.5 rounded text-[10px] font-bold">
+                  Follow-On Enforced
+                </span>
+              )}
+            </div>
+            <div className="flex flex-wrap items-center gap-2 text-[11px]">
+              <span className="text-emerald-400 font-semibold">{getTestLeadTargetSummary()}</span>
+              {match.pitchWear !== undefined && (
+                <span className="text-slate-400">
+                  • Pitch Wear {Math.round(match.pitchWear)}% • Day {match.dayNumber}/5
+                </span>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Innings Tabs (including Super Over Scorecards when played) */}
+        {allInningsTabs.length > 0 && (
+          <div className="bg-[#151c2c] border-b border-[#243247] px-4 py-2 flex flex-wrap items-center gap-2">
+            {allInningsTabs.map(({ innings: inn, isSuperOver }, idx) => {
+              const soPrefix = isSuperOver
+                ? (match.superOverRounds || 1) > 1
+                  ? `Super Over #${inn.superOverNumber || 1}: `
+                  : 'Super Over: '
+                : isTest
+                ? `Inn ${inn.inningsNumber}: `
+                : '';
+              return (
+                <button
+                  key={idx}
+                  onClick={() => setActiveInningsIdx(idx)}
+                  className={`px-3 py-1.5 rounded text-xs font-bold transition ${
+                    activeInningsIdx === idx
+                      ? isSuperOver
+                        ? 'bg-amber-600 text-white shadow'
+                        : 'bg-emerald-600 text-white shadow'
+                      : isSuperOver
+                      ? 'text-amber-300 hover:text-white bg-amber-950/40 border border-amber-800/40'
+                      : 'text-slate-400 hover:text-white hover:bg-[#1f293d]'
+                  }`}
+                >
+                  {soPrefix}
+                  {inn.battingTeamName} ({inn.totalRuns}/{inn.wickets}
+                  {isTest && inn.isDeclared ? 'd' : ''} in {inn.completedOvers}.{inn.ballsInCurrentOver} ov)
+                </button>
+              );
+            })}
           </div>
         )}
 
@@ -79,7 +187,8 @@ export const ScorecardModal: React.FC<ScorecardModalProps> = ({
                     {currentInnings.battingTeamName} Innings (Batting)
                   </h3>
                   <span className="text-xs font-mono font-bold text-white">
-                    {currentInnings.totalRuns}/{currentInnings.wickets} ({currentInnings.completedOvers}.{currentInnings.ballsInCurrentOver} Overs)
+                    {currentInnings.totalRuns}/{currentInnings.wickets}
+                    {isTest && currentInnings.isDeclared ? 'd' : ''} ({currentInnings.completedOvers}.{currentInnings.ballsInCurrentOver} Overs)
                   </span>
                 </div>
 
@@ -117,13 +226,24 @@ export const ScorecardModal: React.FC<ScorecardModalProps> = ({
                   </table>
                 </div>
 
+                {/* Did Not Bat / Yet to Bat */}
+                {didNotBatNames.length > 0 && (
+                  <div className="text-[11px] bg-[#131a29] border border-[#243247] px-2.5 py-1.5 rounded mt-2 text-slate-400">
+                    <strong className="text-slate-300">
+                      {currentInnings.isCompleted ? 'Did not bat: ' : 'Yet to bat: '}
+                    </strong>
+                    {didNotBatNames.join(', ')}
+                  </div>
+                )}
+
                 {/* Extras summary */}
-                <div className="flex items-center justify-between text-xs bg-[#151c2c] border border-[#243247] p-2.5 rounded mt-2 text-slate-300 font-mono">
+                <div className="flex flex-wrap items-center justify-between gap-2 text-xs bg-[#151c2c] border border-[#243247] p-2.5 rounded mt-2 text-slate-300 font-mono">
                   <span>
-                    Extras: <strong className="text-white">{currentInnings.extras.total}</strong> (w {currentInnings.extras.wides}, nb {currentInnings.extras.noBalls}, b {currentInnings.extras.byes}, lb {currentInnings.extras.legByes})
+                    Extras: <strong className="text-white">{currentInnings.extras.total}</strong> (w {currentInnings.extras.wides}, nb {currentInnings.extras.noBalls}, b {currentInnings.extras.byes}, lb {currentInnings.extras.legByes}
+                    {(currentInnings.extras.penalty || 0) > 0 ? `, p ${currentInnings.extras.penalty}` : ''})
                   </span>
                   <span>
-                    Total: <strong className="text-white">{currentInnings.totalRuns}/{currentInnings.wickets}</strong> ({currentInnings.completedOvers}.{currentInnings.ballsInCurrentOver} ov, RR {((currentInnings.totalRuns / Math.max(1, currentInnings.completedOvers * 6 + currentInnings.ballsInCurrentOver)) * 6).toFixed(2)})
+                    Total: <strong className="text-white">{currentInnings.totalRuns}/{currentInnings.wickets}{isTest && currentInnings.isDeclared ? 'd' : ''}</strong> ({currentInnings.completedOvers}.{currentInnings.ballsInCurrentOver} ov, RR {((currentInnings.totalRuns / Math.max(1, currentInnings.completedOvers * 6 + currentInnings.ballsInCurrentOver)) * 6).toFixed(2)})
                   </span>
                 </div>
               </div>
@@ -145,7 +265,14 @@ export const ScorecardModal: React.FC<ScorecardModalProps> = ({
                         <th className="p-2.5 text-right font-mono">W</th>
                         <th className="p-2.5 text-right font-mono">Econ</th>
                         <th className="p-2.5 text-right font-mono">Dots</th>
-                        <th className="p-2.5 text-right font-mono">Wd/Nb</th>
+                        {isTest ? (
+                          <>
+                            <th className="p-2.5 text-right font-mono">Wd</th>
+                            <th className="p-2.5 text-right font-mono">Nb</th>
+                          </>
+                        ) : (
+                          <th className="p-2.5 text-right font-mono">Wd/Nb</th>
+                        )}
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[#243247] font-mono">
@@ -158,7 +285,14 @@ export const ScorecardModal: React.FC<ScorecardModalProps> = ({
                           <td className="p-2.5 text-right font-bold text-emerald-400">{bw.wickets}</td>
                           <td className="p-2.5 text-right text-slate-300">{bw.economy.toFixed(2)}</td>
                           <td className="p-2.5 text-right text-slate-400">{bw.dots}</td>
-                          <td className="p-2.5 text-right text-slate-400">{bw.wides}/{bw.noBalls}</td>
+                          {isTest ? (
+                            <>
+                              <td className="p-2.5 text-right text-slate-400">{bw.wides}</td>
+                              <td className="p-2.5 text-right text-slate-400">{bw.noBalls}</td>
+                            </>
+                          ) : (
+                            <td className="p-2.5 text-right text-slate-400">{bw.wides}/{bw.noBalls}</td>
+                          )}
                         </tr>
                       ))}
                     </tbody>
@@ -200,14 +334,16 @@ export const ScorecardModal: React.FC<ScorecardModalProps> = ({
                         Wkt {fow.wicketNumber}: <strong className="text-white">{fow.partnershipRuns}</strong> ({fow.partnershipBalls}b, {fow.batterName})
                       </span>
                     ))}
-                    {currentInnings.wickets < 10 && (() => {
+                    {currentInnings.wickets < (isViewingSuperOver ? 2 : 10) && (() => {
                       const prevScore = currentInnings.fallOfWickets.length > 0
                         ? currentInnings.fallOfWickets[currentInnings.fallOfWickets.length - 1].score
                         : 0;
                       const unbroken = Math.max(0, currentInnings.totalRuns - prevScore);
-                      return unbroken > 0 ? (
+                      const totalBatBalls = currentInnings.batters.reduce((s, b) => s + b.balls, 0);
+                      const unbrokenBalls = Math.max(0, totalBatBalls - (currentInnings.lastWicketLegalBalls || 0));
+                      return unbroken > 0 || unbrokenBalls > 0 ? (
                         <span className="bg-[#182234] border border-emerald-800/40 px-2.5 py-1 rounded text-emerald-300">
-                          Unbroken: <strong>{unbroken}*</strong>
+                          Unbroken: <strong>{unbroken}*</strong> ({unbrokenBalls}b)
                         </span>
                       ) : null;
                     })()}

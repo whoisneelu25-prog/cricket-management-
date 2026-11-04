@@ -6,6 +6,9 @@ export interface VenueInfo {
   city: string;
   countryId: string;
   capacity: number;
+  boundarySize: 'SHORT' | 'MEDIUM' | 'LARGE';
+  avgBoundaryMeters: number;
+  dewProne: boolean;
   pitch: PitchCondition;
   weather: WeatherCondition;
 }
@@ -17,6 +20,9 @@ export const VENUES: VenueInfo[] = [
     city: 'London',
     countryId: 'ENG',
     capacity: 31100,
+    boundarySize: 'MEDIUM',
+    avgBoundaryMeters: 70,
+    dewProne: false,
     pitch: {
       name: 'Lord’s Slope & Seam',
       type: 'GREEN_SEAMER',
@@ -37,6 +43,9 @@ export const VENUES: VenueInfo[] = [
     city: 'Melbourne',
     countryId: 'AUS',
     capacity: 100024,
+    boundarySize: 'LARGE',
+    avgBoundaryMeters: 82,
+    dewProne: false,
     pitch: {
       name: 'Drop-in True Bounce',
       type: 'SPORTING_BALANCED',
@@ -57,6 +66,9 @@ export const VENUES: VenueInfo[] = [
     city: 'Mumbai',
     countryId: 'IND',
     capacity: 33108,
+    boundarySize: 'SHORT',
+    avgBoundaryMeters: 64,
+    dewProne: true,
     pitch: {
       name: 'Red Soil True Bounce',
       type: 'BATTER_PARADISE',
@@ -77,6 +89,9 @@ export const VENUES: VenueInfo[] = [
     city: 'Kolkata',
     countryId: 'IND',
     capacity: 68000,
+    boundarySize: 'MEDIUM',
+    avgBoundaryMeters: 68,
+    dewProne: true,
     pitch: {
       name: 'Historic Black Clay',
       type: 'SPORTING_BALANCED',
@@ -97,6 +112,9 @@ export const VENUES: VenueInfo[] = [
     city: 'Centurion',
     countryId: 'RSA',
     capacity: 22000,
+    boundarySize: 'MEDIUM',
+    avgBoundaryMeters: 72,
+    dewProne: false,
     pitch: {
       name: 'Highveld Steep Bounce',
       type: 'GREEN_SEAMER',
@@ -117,6 +135,9 @@ export const VENUES: VenueInfo[] = [
     city: 'Bridgetown',
     countryId: 'WI',
     capacity: 28000,
+    boundarySize: 'MEDIUM',
+    avgBoundaryMeters: 69,
+    dewProne: true,
     pitch: {
       name: 'Caribbean Hard Deck',
       type: 'SPORTING_BALANCED',
@@ -132,3 +153,34 @@ export const VENUES: VenueInfo[] = [
     },
   },
 ];
+
+export function resolveVenueProfile(venueName: string): {
+  boundarySize: 'SHORT' | 'MEDIUM' | 'LARGE';
+  avgBoundaryMeters: number;
+  dewProne: boolean;
+} {
+  const lower = (venueName || '').toLowerCase();
+  const exact = VENUES.find(
+    (v) =>
+      v.name.toLowerCase() === lower ||
+      lower.includes(v.city.toLowerCase()) ||
+      lower.includes(v.name.split(' ')[0].toLowerCase())
+  );
+  if (exact) {
+    return {
+      boundarySize: exact.boundarySize,
+      avgBoundaryMeters: exact.avgBoundaryMeters,
+      dewProne: exact.dewProne,
+    };
+  }
+  if (lower.includes('melbourne') || lower.includes('mcg') || lower.includes('adelaide') || lower.includes('perth') || lower.includes('gabba') || lower.includes('sydney')) {
+    return { boundarySize: 'LARGE', avgBoundaryMeters: 80, dewProne: false };
+  }
+  if (lower.includes('chinnaswamy') || lower.includes('auckland') || lower.includes('eden park') || lower.includes('sharjah') || lower.includes('wankhede')) {
+    return { boundarySize: 'SHORT', avgBoundaryMeters: 63, dewProne: true };
+  }
+  if (lower.includes('mumbai') || lower.includes('kolkata') || lower.includes('chennai') || lower.includes('colombo') || lower.includes('dhaka') || lower.includes('lahore') || lower.includes('karachi') || lower.includes('dubai')) {
+    return { boundarySize: 'MEDIUM', avgBoundaryMeters: 68, dewProne: true };
+  }
+  return { boundarySize: 'MEDIUM', avgBoundaryMeters: 71, dewProne: false };
+}

@@ -1,15 +1,21 @@
 import React from 'react';
 import {
   LayoutDashboard,
+  Users,
   UserCheck,
+  Sliders,
   Calendar,
-  Radio,
+  Plane,
   Trophy,
+  TrendingUp,
+  Search,
+  Activity,
   Newspaper,
+  History,
   Settings,
+  Radio,
   ChevronLeft,
   ChevronRight,
-  Briefcase,
 } from 'lucide-react';
 import { MainNavigationTab } from '../../store/careerStore';
 
@@ -17,6 +23,7 @@ interface SidebarProps {
   activeTab: MainNavigationTab;
   onSelectTab: (tab: MainNavigationTab) => void;
   isMatchActive: boolean;
+  isMatchReady?: boolean;
   isCollapsed: boolean;
   onToggleCollapse: () => void;
 }
@@ -27,73 +34,58 @@ interface NavItem {
   icon: React.ComponentType<{ className?: string }>;
   badge?: string;
   badgeColor?: string;
-  matchTabs?: MainNavigationTab[];
+  sectionHeader?: string;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
   activeTab,
   onSelectTab,
   isMatchActive,
+  isMatchReady,
   isCollapsed,
   onToggleCollapse,
 }) => {
-  // Streamlined 7 Core Operational Hubs (No clutter, No database in menu)
+  // 13 Official Navigation Hubs + Live Match Centre
   const navItems: NavItem[] = [
-    { id: 'DASHBOARD', label: 'Dashboard', icon: LayoutDashboard },
-    {
-      id: 'SQUAD_MANAGEMENT',
-      label: 'Squad & Lineup',
-      icon: UserCheck,
-      matchTabs: ['SQUAD_MANAGEMENT', 'MY_TEAM', 'PLAYER_DEVELOPMENT'],
-    },
-    {
-      id: 'MATCH_CENTRE',
-      label: 'Match Centre',
-      icon: Radio,
-      badge: isMatchActive ? 'LIVE' : undefined,
-      badgeColor: 'bg-rose-500',
-    },
-    {
-      id: 'TOURS',
-      label: 'Tours & Series',
-      icon: Briefcase,
-      matchTabs: ['TOURS', 'RIVALRIES'],
-    },
-    { id: 'TOURNAMENTS', label: 'Tournaments & WTC', icon: Trophy },
-    { id: 'FIXTURES', label: 'Calendar & Fixtures', icon: Calendar },
-    {
-      id: 'NEWS',
-      label: 'News & Records',
-      icon: Newspaper,
-      matchTabs: ['NEWS', 'RANKINGS', 'STATISTICS', 'CAREER_HISTORY'],
-    },
+    { id: 'DASHBOARD', label: 'Dashboard', icon: LayoutDashboard, sectionHeader: 'Overview' },
+    { id: 'SQUAD_MANAGEMENT', label: 'Squad', icon: Users, sectionHeader: 'Team Management' },
+    { id: 'TEAM_SELECTION', label: 'Team Selection', icon: UserCheck },
+    { id: 'TACTICS', label: 'Tactics', icon: Sliders },
+    { id: 'FIXTURES', label: 'Fixtures', icon: Calendar, sectionHeader: 'Schedule & Tours' },
+    { id: 'TOURS', label: 'Tours', icon: Plane },
+    { id: 'TOURNAMENTS', label: 'Competitions', icon: Trophy },
+    { id: 'RANKINGS', label: 'Rankings', icon: TrendingUp, sectionHeader: 'Scouting & Intel' },
+    { id: 'PLAYERS', label: 'Players', icon: Search },
+    { id: 'STATISTICS', label: 'Statistics', icon: Activity },
+    { id: 'NEWS', label: 'News', icon: Newspaper, sectionHeader: 'Archive' },
+    { id: 'CAREER_HISTORY', label: 'History', icon: History },
+    { id: 'SETTINGS', label: 'Settings', icon: Settings, sectionHeader: 'System' },
   ];
 
   return (
     <aside
-      className={`bg-[#090f1d] border-r border-[#152542] flex flex-col transition-all duration-200 select-none ${
-        isCollapsed ? 'w-16' : 'w-56 md:w-64'
+      className={`bg-[#0b0e14] border-r border-[#1e293b] flex flex-col transition-all duration-200 select-none z-30 ${
+        isCollapsed ? 'w-16' : 'w-60'
       }`}
     >
       {/* Brand Header */}
-      <div className="h-14 bg-[#080d1a] border-b border-[#152542] flex items-center justify-between px-3.5">
-        {!isCollapsed && (
+      <div className="h-14 bg-[#0e131d] border-b border-[#1e293b] flex items-center justify-between px-3">
+        {!isCollapsed ? (
           <div className="flex items-center space-x-2.5 overflow-hidden">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center font-black text-white text-xs tracking-wider shadow-md border border-emerald-400/30">
+            <div className="w-8 h-8 rounded-md bg-[#10b981] flex items-center justify-center font-black text-[#0b0e14] text-xs tracking-wider shadow-sm">
               ICM
             </div>
             <div className="flex flex-col">
-              <span className="text-xs font-bold text-white tracking-wider uppercase leading-none">
+              <span className="text-xs font-bold text-slate-100 tracking-wider uppercase leading-none">
                 Cricket Manager
               </span>
-              <span className="text-[10px] text-emerald-400 font-mono tracking-tight font-medium">
-                PRO 2026
+              <span className="text-[10px] text-emerald-400 font-mono tracking-tight font-medium mt-0.5">
+                PRO 2026/27
               </span>
             </div>
           </div>
-        )}
-        {isCollapsed && (
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center font-black text-white text-xs mx-auto shadow-md border border-emerald-400/30">
+        ) : (
+          <div className="w-8 h-8 rounded-md bg-[#10b981] flex items-center justify-center font-black text-[#0b0e14] text-xs mx-auto shadow-sm">
             ICM
           </div>
         )}
@@ -101,84 +93,109 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <button
           onClick={onToggleCollapse}
           aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          className="text-slate-400 hover:text-white p-1 rounded-md hover:bg-[#14233c] transition hidden md:block"
+          className="text-slate-400 hover:text-white p-1 rounded hover:bg-[#1a2232] transition hidden md:block"
         >
           {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
         </button>
       </div>
 
-      {/* Primary Nav List (Streamlined & Clean) */}
-      <nav className="flex-1 py-3 px-2 space-y-1 overflow-y-auto">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const isActive =
-            activeTab === item.id || (item.matchTabs && item.matchTabs.includes(activeTab));
-
-          return (
-            <button
-              key={item.id}
-              onClick={() => onSelectTab(item.id)}
-              title={isCollapsed ? item.label : undefined}
-              aria-label={item.label}
-              className={`w-full flex items-center rounded-lg text-xs font-medium transition cursor-pointer group ${
-                isCollapsed ? 'justify-center p-2.5' : 'px-3 py-2.5 space-x-3'
-              } ${
-                isActive
-                  ? 'bg-gradient-to-r from-emerald-950/70 via-[#10243d] to-sky-950/40 text-emerald-300 font-semibold border-l-2 border-emerald-400 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-100 hover:bg-[#111e35]'
-              }`}
-            >
-              <Icon
-                className={`w-4 h-4 flex-shrink-0 ${
-                  isActive ? 'text-emerald-400' : 'text-slate-400 group-hover:text-emerald-400'
-                }`}
-              />
-              {!isCollapsed && (
-                <span className="truncate text-left flex-1">{item.label}</span>
-              )}
-              {!isCollapsed && item.badge && (
-                <span
-                  className={`text-[9px] font-bold px-1.5 py-0.5 rounded text-white animate-pulse ${
-                    item.badgeColor || 'bg-emerald-700'
-                  }`}
-                >
-                  {item.badge}
+      {/* Live / Match Centre Pinned Action */}
+      <div className="p-2 border-b border-[#1e293b]/70 bg-[#0e1420]">
+        <button
+          onClick={() => onSelectTab('MATCH_CENTRE')}
+          title="Match Centre"
+          className={`w-full flex items-center rounded-md text-xs font-semibold transition cursor-pointer ${
+            isCollapsed ? 'justify-center p-2.5' : 'px-3 py-2 space-x-2.5'
+          } ${
+            activeTab === 'MATCH_CENTRE'
+              ? 'bg-rose-950/70 border border-rose-500/50 text-rose-300 shadow-sm'
+              : isMatchActive
+              ? 'bg-rose-950/40 border border-rose-600/40 text-rose-200 hover:bg-rose-900/50'
+              : isMatchReady
+              ? 'bg-emerald-950/40 border border-emerald-600/40 text-emerald-200 hover:bg-emerald-900/50'
+              : 'bg-[#151d29] border border-[#233147] text-slate-300 hover:text-white hover:bg-[#1b2535]'
+          }`}
+        >
+          <Radio
+            className={`w-4 h-4 flex-shrink-0 ${
+              isMatchActive ? 'text-rose-400 animate-pulse' : isMatchReady ? 'text-emerald-400' : 'text-slate-400'
+            }`}
+          />
+          {!isCollapsed && (
+            <div className="flex items-center justify-between flex-1">
+              <span className="truncate">Match Centre</span>
+              {isMatchActive && (
+                <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-rose-600 text-white animate-pulse">
+                  LIVE
                 </span>
               )}
-            </button>
+              {!isMatchActive && isMatchReady && (
+                <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-emerald-600 text-white">
+                  TODAY
+                </span>
+              )}
+            </div>
+          )}
+        </button>
+      </div>
+
+      {/* Primary 13 Nav Items */}
+      <nav className="flex-1 py-2 px-2 space-y-0.5 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-800">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = activeTab === item.id;
+
+          return (
+            <React.Fragment key={item.id}>
+              {/* Optional Section Header (when expanded) */}
+              {!isCollapsed && item.sectionHeader && (
+                <div className="pt-2.5 pb-1 px-2.5 text-[10px] font-bold uppercase tracking-wider text-slate-300">
+                  {item.sectionHeader}
+                </div>
+              )}
+
+              <button
+                onClick={() => onSelectTab(item.id)}
+                title={isCollapsed ? item.label : undefined}
+                aria-label={item.label}
+                className={`w-full flex items-center rounded-md text-xs font-medium transition cursor-pointer group ${
+                  isCollapsed ? 'justify-center p-2.5 my-0.5' : 'px-3 py-2 space-x-3'
+                } ${
+                  isActive
+                    ? 'bg-[#142646] text-emerald-300 font-semibold border-l-2 border-[#10b981] shadow-sm'
+                    : 'text-slate-400 hover:text-slate-100 hover:bg-[#151d29]'
+                }`}
+              >
+                <Icon
+                  className={`w-4 h-4 flex-shrink-0 ${
+                    isActive ? 'text-emerald-400' : 'text-slate-400 group-hover:text-emerald-400'
+                  }`}
+                />
+                {!isCollapsed && <span className="truncate text-left flex-1">{item.label}</span>}
+                {!isCollapsed && item.badge && (
+                  <span
+                    className={`text-[9px] font-bold px-1.5 py-0.2 rounded text-white ${
+                      item.badgeColor || 'bg-slate-700'
+                    }`}
+                  >
+                    {item.badge}
+                  </span>
+                )}
+              </button>
+            </React.Fragment>
           );
         })}
       </nav>
 
-      {/* Settings Action Button */}
-      <div className="px-2 pb-2">
-        <button
-          onClick={() => onSelectTab('SETTINGS')}
-          title={isCollapsed ? 'Settings & Saves' : undefined}
-          aria-label="Settings & Saves"
-          className={`w-full flex items-center rounded-lg text-xs font-medium transition cursor-pointer group ${
-            isCollapsed ? 'justify-center p-2.5' : 'px-3 py-2 space-x-3'
-          } ${
-            activeTab === 'SETTINGS'
-              ? 'bg-[#10243d] text-emerald-300 font-semibold border-l-2 border-emerald-400'
-              : 'text-slate-400 hover:text-slate-100 hover:bg-[#111e35]'
-          }`}
-        >
-          <Settings
-            className={`w-4 h-4 flex-shrink-0 ${
-              activeTab === 'SETTINGS' ? 'text-emerald-400' : 'text-slate-400 group-hover:text-emerald-400'
-            }`}
-          />
-          {!isCollapsed && <span className="truncate text-left flex-1">Settings & Saves</span>}
-        </button>
-      </div>
-
-      {/* Footer Info */}
-      <div className="p-3 border-t border-[#152542] text-[11px] text-slate-500 text-center">
+      {/* Footer / Build info */}
+      <div className="p-2.5 border-t border-[#1e293b] text-center text-[10px] text-slate-400 font-mono">
         {!isCollapsed ? (
-          <p className="truncate text-slate-400 font-mono text-[10px]">ICM Pro Edition • 2026 Engine</p>
+          <div className="flex items-center justify-between px-1">
+            <span>ICC Approved Rules</span>
+            <span className="text-emerald-400 font-bold">v3.0</span>
+          </div>
         ) : (
-          <span className="font-mono text-[10px] text-emerald-400">2026</span>
+          <span className="text-emerald-400 font-bold">v3</span>
         )}
       </div>
     </aside>

@@ -9,6 +9,9 @@ import {
   Tour,
   DataProvenanceReport,
   TournamentEdition,
+  GranularPlayerRole,
+  MatchTactics,
+  NotificationItem,
 } from '../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../data/teams';
 import {
@@ -48,28 +51,71 @@ import {
 import {
   buildAISquadConfig,
   initializeAITeams,
-  initializeTeamRankings,
   selectAIPlayingXIForMatch,
-  updateTeamRankingsAfterMatch,
 } from '../engine/aiTeamEngine';
+import {
+  initializeDetailedTeamRankings,
+  updateTeamRankingsAfterMatch as updateRankingEngineAfterMatch,
+  computeAllPlayerRankings,
+  createTeamRankingSnapshot,
+} from '../engine/rankingEngine';
 
 const STORAGE_KEY = 'icm_career_save_v1';
 
 export type MainNavigationTab =
   | 'DASHBOARD'
-  | 'MY_TEAM'
   | 'SQUAD_MANAGEMENT'
-  | 'PLAYER_DEVELOPMENT'
-  | 'TOURS'
-  | 'RIVALRIES'
-  | 'MATCH_CENTRE'
+  | 'TEAM_SELECTION'
+  | 'TACTICS'
   | 'FIXTURES'
+  | 'TOURS'
   | 'TOURNAMENTS'
   | 'RANKINGS'
+  | 'PLAYERS'
   | 'STATISTICS'
   | 'NEWS'
   | 'CAREER_HISTORY'
-  | 'SETTINGS';
+  | 'SETTINGS'
+  | 'MY_TEAM'
+  | 'PLAYER_DEVELOPMENT'
+  | 'RIVALRIES'
+  | 'MATCH_CENTRE';
+
+const SPIN_STYLES = new Set([
+  'OFF_BREAK',
+  'LEG_BREAK',
+  'SLOW_LEFT_ARM',
+  'LEFT_ARM_WRIST_SPIN',
+]);
+
+/**
+ * Granular Player Role classifier:
+ * Classifies players accurately into 7 roles based on attributes and database style.
+ */
+export function getGranularPlayerRole(p: Player): GranularPlayerRole {
+  if (p.isWicketKeeper || p.role === 'WICKETKEEPER_BATTER') {
+    return 'WICKETKEEPER_BATTER';
+  }
+  if (p.role === 'ALL_ROUNDER') {
+    return 'ALL_ROUNDER';
+  }
+  if (p.role === 'BOWLER') {
+    return SPIN_STYLES.has(p.bowlingStyle) ? 'SPIN_BOWLER' : 'FAST_BOWLER';
+  }
+  const defense = p.attributes?.defense || 70;
+  const technique = p.attributes?.technique || 70;
+  const power = p.attributes?.powerHitting || 70;
+  const aggression = p.attributes?.aggression || 70;
+
+  if (technique >= 78 && defense >= 76) {
+    return 'OPENING_BATTER';
+  }
+  if (power >= 76 || aggression >= 76) {
+    return 'MIDDLE_ORDER_BATTER';
+  }
+  return 'BATTER';
+}
+
 
 /**
  * Single-Country Career Control Guard (Phase 1):
@@ -190,11 +236,39 @@ export function createNewCareerSave(
     tours.find((t) => t.hostTeamId === team.id || t.visitingTeamId === team.id) || tours[0];
 
   const aiTeams = initializeAITeams(team.id);
-  const teamRankings = initializeTeamRankings();
+  const teamRankings = initializeDetailedTeamRankings();
+  const initialSnapshot = createTeamRankingSnapshot(
+    teamRankings,
+    '2026-11-15',
+    'Career Opening Rankings'
+  );
+
+  const initialNotifications: NotificationItem[] = [
+    {
+      id: 'notif_init_1',
+      date: '2026-11-15',
+      type: 'TOUR_ANNOUNCEMENT',
+      title: 'International Calendar Released',
+      message: 'Bilateral tours, WTC fixtures, and ICC tournaments are locked for your nation.',
+      read: false,
+      actionTab: 'TOURS',
+    },
+    {
+      id: 'notif_init_2',
+      date: '2026-11-15',
+      type: 'SELECTION_DEADLINE',
+      title: 'Independent Format Squads Open',
+      message: 'Select and manage separate squads for Test (18), ODI (15), and T20I (16).',
+      read: false,
+      actionTab: 'SQUAD_MANAGEMENT',
+    },
+  ];
+
+  const allCountryPlayers = getEffectivePlayersByCountry(team.id, undefined, true);
 
   const newCareer: CareerSave = {
     id: `career_${Date.now()}`,
-    version: 3,
+    version: 4,
     saveName: `${team.name} International Career`,
     savedAt: new Date().toISOString(),
     manager: {
@@ -221,12 +295,36 @@ export function createNewCareerSave(
     currentTourId: initialTour ? initialTour.id : 'tour_bgt_2026',
     seasonsGeneratedThroughYear: 2027,
     formatSquads: {
-      TEST: testConfig,
-      ODI: odiConfig,
-      T20I: t20Config,
+      TEST: {
+        ...testConfig,
+        targetSquadSize: 18,
+        squadPlayerIds: testConfig.squadPlayerIds.slice(0, 18),
+        reservePlayerIds: testConfig.squadPlayerIds.length > 18
+          ? testConfig.squadPlayerIds.slice(18, 22)
+          : allCountryPlayers.filter((p) => !testConfig.squadPlayerIds.includes(p.id)).slice(0, 4).map((p) => p.id),
+      },
+      ODI: {
+        ...odiConfig,
+        targetSquadSize: 15,
+        squadPlayerIds: odiConfig.squadPlayerIds.slice(0, 15),
+        reservePlayerIds: odiConfig.squadPlayerIds.length > 15
+          ? odiConfig.squadPlayerIds.slice(15, 19)
+          : allCountryPlayers.filter((p) => !odiConfig.squadPlayerIds.includes(p.id)).slice(0, 4).map((p) => p.id),
+      },
+      T20I: {
+        ...t20Config,
+        targetSquadSize: 16,
+        squadPlayerIds: t20Config.squadPlayerIds.slice(0, 16),
+        reservePlayerIds: t20Config.squadPlayerIds.length > 16
+          ? t20Config.squadPlayerIds.slice(16, 20)
+          : allCountryPlayers.filter((p) => !t20Config.squadPlayerIds.includes(p.id)).slice(0, 4).map((p) => p.id),
+      },
     },
     aiTeams,
     teamRankings,
+    rankingHistory: [initialSnapshot],
+    notifications: initialNotifications,
+    teamMorale: 85,
     emergingPlayers: [],
     archivedMatches: [],
     customSquadXI: {
@@ -250,6 +348,8 @@ export function createNewCareerSave(
     borderGavaskar: JSON.parse(JSON.stringify(INITIAL_BGT_COMPETITION)),
     tournamentEditions: JSON.parse(JSON.stringify(INITIAL_TOURNAMENT_EDITIONS)),
   };
+
+  newCareer.playerRankings = computeAllPlayerRankings(newCareer);
 
   return sanitizeCareerSave(newCareer);
 }
@@ -592,6 +692,300 @@ export function confirmMatchPreparationLineup(
 }
 
 /**
+ * Format-Specific National Squad Management Actions (Phase 4):
+ * Test, ODI, and T20I squads are strictly independent.
+ * Modifying one format squad never mutates the other format squads!
+ */
+export function setFormatTargetSquadSize(
+  career: CareerSave,
+  format: MatchFormat,
+  size: number
+): CareerSave {
+  const targetSize = Math.max(15, Math.min(20, size));
+  const cfg = career.formatSquads[format];
+  if (!cfg) return career;
+  return {
+    ...career,
+    formatSquads: {
+      ...career.formatSquads,
+      [format]: {
+        ...cfg,
+        targetSquadSize: targetSize,
+      },
+    },
+  };
+}
+
+export function addPlayerToFormatSquad(
+  career: CareerSave,
+  format: MatchFormat,
+  playerId: string
+): { updatedCareer: CareerSave; error?: string } {
+  if (!doesPlayerBelongToUserCountry(career, playerId)) {
+    return { updatedCareer: career, error: 'Player does not belong to your nation.' };
+  }
+  const cfg = career.formatSquads[format];
+  if (!cfg) return { updatedCareer: career };
+  const currentSquad = cfg.squadPlayerIds || [];
+  if (currentSquad.includes(playerId)) {
+    return { updatedCareer: career, error: 'Player is already selected in this format squad.' };
+  }
+  const maxSize = cfg.targetSquadSize || (format === 'TEST' ? 18 : format === 'ODI' ? 15 : 16);
+  if (currentSquad.length >= maxSize) {
+    return {
+      updatedCareer: career,
+      error: `Format squad has reached its configured size of ${maxSize} players. Remove a player or promote from reserves.`,
+    };
+  }
+
+  const updatedReserves = (cfg.reservePlayerIds || []).filter((id) => id !== playerId);
+  const updatedSquad = [...currentSquad, playerId];
+
+  return {
+    updatedCareer: {
+      ...career,
+      formatSquads: {
+        ...career.formatSquads,
+        [format]: {
+          ...cfg,
+          squadPlayerIds: updatedSquad,
+          reservePlayerIds: updatedReserves,
+        },
+      },
+    },
+  };
+}
+
+export function removePlayerFromFormatSquad(
+  career: CareerSave,
+  format: MatchFormat,
+  playerId: string
+): { updatedCareer: CareerSave; error?: string } {
+  const cfg = career.formatSquads[format];
+  if (!cfg) return { updatedCareer: career };
+  const currentSquad = cfg.squadPlayerIds || [];
+  if (!currentSquad.includes(playerId)) {
+    return { updatedCareer: career, error: 'Player is not in this format squad.' };
+  }
+  if (currentSquad.length <= 11) {
+    return {
+      updatedCareer: career,
+      error: 'Cannot reduce squad below 11 players without adding a replacement first.',
+    };
+  }
+
+  const updatedSquad = currentSquad.filter((id) => id !== playerId);
+
+  let updatedXI = [...cfg.playingXI];
+  if (updatedXI.includes(playerId)) {
+    const candidate = updatedSquad.find((id) => !updatedXI.includes(id));
+    if (candidate) {
+      updatedXI = updatedXI.map((id) => (id === playerId ? candidate : id));
+    } else {
+      updatedXI = updatedXI.filter((id) => id !== playerId);
+    }
+  }
+
+  let capId = cfg.captainId;
+  if (capId === playerId) {
+    capId = updatedXI[0] || updatedSquad[0] || '';
+  }
+  let vcId = cfg.viceCaptainId;
+  if (vcId === playerId) {
+    vcId = updatedXI[1] || updatedSquad[1] || updatedXI[0] || '';
+  }
+  let wkId = cfg.wicketKeeperId;
+  if (wkId === playerId) {
+    const nextWk = updatedXI.find((id) => {
+      const p = getEffectivePlayer(id, career);
+      return p?.isWicketKeeper || p?.role === 'WICKETKEEPER_BATTER';
+    });
+    wkId = nextWk || updatedXI[2] || updatedSquad[0] || '';
+  }
+
+  return {
+    updatedCareer: {
+      ...career,
+      formatSquads: {
+        ...career.formatSquads,
+        [format]: {
+          ...cfg,
+          squadPlayerIds: updatedSquad,
+          playingXI: updatedXI,
+          battingOrder: updatedXI,
+          captainId: capId,
+          viceCaptainId: vcId,
+          wicketKeeperId: wkId,
+        },
+      },
+    },
+  };
+}
+
+export function toggleFormatReservePlayer(
+  career: CareerSave,
+  format: MatchFormat,
+  playerId: string
+): CareerSave {
+  if (!doesPlayerBelongToUserCountry(career, playerId)) return career;
+  const cfg = career.formatSquads[format];
+  if (!cfg) return career;
+  const reserves = cfg.reservePlayerIds || [];
+  const nextReserves = reserves.includes(playerId)
+    ? reserves.filter((id) => id !== playerId)
+    : [...reserves, playerId];
+
+  return {
+    ...career,
+    formatSquads: {
+      ...career.formatSquads,
+      [format]: {
+        ...cfg,
+        reservePlayerIds: nextReserves,
+      },
+    },
+  };
+}
+
+export function promoteReserveToFormatSquad(
+  career: CareerSave,
+  format: MatchFormat,
+  reservePlayerId: string,
+  replacePlayerId?: string
+): { updatedCareer: CareerSave; error?: string } {
+  const cfg = career.formatSquads[format];
+  if (!cfg) return { updatedCareer: career };
+  const reserves = cfg.reservePlayerIds || [];
+  if (!reserves.includes(reservePlayerId)) {
+    return { updatedCareer: career, error: 'Selected player is not in reserves.' };
+  }
+
+  let updatedSquad = [...(cfg.squadPlayerIds || [])];
+  const maxSize = cfg.targetSquadSize || (format === 'TEST' ? 18 : format === 'ODI' ? 15 : 16);
+
+  if (replacePlayerId && updatedSquad.includes(replacePlayerId)) {
+    updatedSquad = updatedSquad.map((id) => (id === replacePlayerId ? reservePlayerId : id));
+  } else if (updatedSquad.length < maxSize) {
+    updatedSquad.push(reservePlayerId);
+  } else {
+    return {
+      updatedCareer: career,
+      error: `Squad is full (${maxSize}/${maxSize}). Choose a player to replace.`,
+    };
+  }
+
+  const updatedReserves = reserves.filter((id) => id !== reservePlayerId);
+  if (replacePlayerId && !updatedReserves.includes(replacePlayerId)) {
+    updatedReserves.push(replacePlayerId);
+  }
+
+  return {
+    updatedCareer: {
+      ...career,
+      formatSquads: {
+        ...career.formatSquads,
+        [format]: {
+          ...cfg,
+          squadPlayerIds: updatedSquad,
+          reservePlayerIds: updatedReserves,
+        },
+      },
+    },
+  };
+}
+
+export function replaceInjuredPlayerInFormatSquad(
+  career: CareerSave,
+  format: MatchFormat,
+  injuredPlayerId: string,
+  replacementPlayerId: string
+): { updatedCareer: CareerSave; error?: string } {
+  if (!doesPlayerBelongToUserCountry(career, replacementPlayerId)) {
+    return { updatedCareer: career, error: 'Replacement must belong to your nation.' };
+  }
+  const cfg = career.formatSquads[format];
+  if (!cfg) return { updatedCareer: career };
+  if (!cfg.squadPlayerIds.includes(injuredPlayerId)) {
+    return { updatedCareer: career, error: 'Injured player is not in this squad.' };
+  }
+
+  const updatedSquad = cfg.squadPlayerIds.map((id) => (id === injuredPlayerId ? replacementPlayerId : id));
+  const updatedXI = cfg.playingXI.map((id) => (id === injuredPlayerId ? replacementPlayerId : id));
+  const updatedOrder = cfg.battingOrder.map((id) => (id === injuredPlayerId ? replacementPlayerId : id));
+  const updatedReserves = (cfg.reservePlayerIds || []).filter((id) => id !== replacementPlayerId);
+
+  return {
+    updatedCareer: {
+      ...career,
+      formatSquads: {
+        ...career.formatSquads,
+        [format]: {
+          ...cfg,
+          squadPlayerIds: updatedSquad,
+          playingXI: updatedXI,
+          battingOrder: updatedOrder,
+          reservePlayerIds: updatedReserves,
+        },
+      },
+    },
+  };
+}
+
+export function resetFormatSquadSelection(
+  career: CareerSave,
+  format: MatchFormat
+): CareerSave {
+  const defaultCfg = getDefaultFormatSquadConfig(career.selectedTeamId, format);
+  return {
+    ...career,
+    formatSquads: {
+      ...career.formatSquads,
+      [format]: defaultCfg,
+    },
+  };
+}
+
+export function confirmFormatSquad(
+  career: CareerSave,
+  format: MatchFormat
+): CareerSave {
+  const cfg = career.formatSquads[format];
+  if (!cfg) return career;
+  const updatedConfig: FormatSquadConfig = {
+    ...cfg,
+    isConfirmed: true,
+    lastConfirmedDate: career.currentDate,
+  };
+  return {
+    ...career,
+    formatSquads: {
+      ...career.formatSquads,
+      [format]: updatedConfig,
+    },
+  };
+}
+
+export function updateFormatDefaultTactics(
+  career: CareerSave,
+  format: MatchFormat,
+  tactics: MatchTactics
+): CareerSave {
+  const cfg = career.formatSquads[format];
+  if (!cfg) return career;
+  return {
+    ...career,
+    formatSquads: {
+      ...career.formatSquads,
+      [format]: {
+        ...cfg,
+        defaultTactics: tactics,
+      },
+    },
+  };
+}
+
+
+/**
  * Returns structured Next Match metadata for the Dashboard and Post-Match workflow (Phase 6).
  */
 export function getNextUserMatchInfo(career: CareerSave): {
@@ -766,7 +1160,7 @@ export function applyUserMatchResult(
       : JSON.parse(JSON.stringify(INITIAL_BGT_COMPETITION)),
     teamRankings: career.teamRankings
       ? JSON.parse(JSON.stringify(career.teamRankings))
-      : initializeTeamRankings(),
+      : initializeDetailedTeamRankings(),
     playerOverrides: JSON.parse(JSON.stringify(career.playerOverrides || {})),
     calendar: [...(career.calendar || [])],
     news: [...(career.news || [])],
@@ -892,10 +1286,40 @@ export function applyUserMatchResult(
     }
   }
 
-  // 5. ICC Rankings update
-  const { updatedRankings, rankingNews } = updateTeamRankingsAfterMatch(updatedCareer, matchCopy);
+  // 5. ICC / ICM Rankings update
+  const { updatedRankings, rankingNews, newSnapshot } = updateRankingEngineAfterMatch(
+    updatedCareer,
+    matchCopy
+  );
   updatedCareer.teamRankings = updatedRankings;
+  if (newSnapshot) {
+    updatedCareer.rankingHistory = [...(updatedCareer.rankingHistory || []), newSnapshot];
+  }
   newHeadlines.push(...rankingNews);
+
+  // Recalculate 9 player ranking categories based on fresh match performances
+  updatedCareer.playerRankings = computeAllPlayerRankings(updatedCareer);
+
+  // Update Team Morale dynamically from performance & board confidence
+  const currentMorale = updatedCareer.teamMorale ?? 80;
+  updatedCareer.teamMorale = Math.max(
+    20,
+    Math.min(100, currentMorale + (userWon ? 4 : userLost ? -3 : 1))
+  );
+
+  // Add ranking notifications if team moved
+  rankingNews.forEach((rn) => {
+    if (!updatedCareer.notifications) updatedCareer.notifications = [];
+    updatedCareer.notifications.unshift({
+      id: `notif_${rn.id}`,
+      date: rn.timestamp,
+      type: 'RANKING_CHANGE',
+      title: rn.title,
+      message: rn.summary,
+      read: false,
+      actionTab: 'RANKINGS',
+    });
+  });
 
   // 6. Tournament Standings & Knockout Synchronization
   const tourneyNews = synchronizeAndAdvanceTournaments(
@@ -1110,14 +1534,40 @@ export function sanitizeCareerSave(career: CareerSave): CareerSave {
       wkId = validXI[2] || validXI[0] || '';
     }
 
+    const defaultTargetSize = fmt === 'TEST' ? 18 : fmt === 'ODI' ? 15 : 16;
+    const targetSquadSize = cfg.targetSquadSize || defaultTargetSize;
+    let filteredSquad = (cfg.squadPlayerIds || []).filter((id) => activeIds.has(id));
+    let initialReserves = (cfg.reservePlayerIds || []).filter((id) => activeIds.has(id));
+
+    // Ensure all 11 playing XI are in the squad
+    for (const xiId of validXI) {
+      if (!filteredSquad.includes(xiId)) filteredSquad.unshift(xiId);
+    }
+
+    // Overflow players beyond targetSquadSize into reserves
+    if (filteredSquad.length > targetSquadSize) {
+      const overflow = filteredSquad.slice(targetSquadSize);
+      filteredSquad = filteredSquad.slice(0, targetSquadSize);
+      for (const ovId of overflow) {
+        if (!initialReserves.includes(ovId)) {
+          initialReserves.push(ovId);
+        }
+      }
+    }
+
     sanitizedFormatSquads[fmt] = {
       ...cfg,
+      targetSquadSize,
+      reservePlayerIds: initialReserves,
+      wicketKeeperOptions: cfg.wicketKeeperOptions || [wkId],
+      isConfirmed: cfg.isConfirmed !== undefined ? cfg.isConfirmed : true,
+      lastConfirmedDate: cfg.lastConfirmedDate || career.currentDate || '2026-11-15',
       playingXI: validXI,
       battingOrder: validOrder,
       captainId: capId,
       viceCaptainId: vcId,
       wicketKeeperId: wkId,
-      squadPlayerIds: (cfg.squadPlayerIds || []).filter((id) => activeIds.has(id)),
+      squadPlayerIds: filteredSquad,
     };
   });
 
@@ -1132,7 +1582,18 @@ export function sanitizeCareerSave(career: CareerSave): CareerSave {
   const teamRankings =
     career.teamRankings && Object.keys(career.teamRankings).length > 0
       ? career.teamRankings
-      : initializeTeamRankings();
+      : initializeDetailedTeamRankings();
+
+  const rankingHistory =
+    career.rankingHistory && career.rankingHistory.length > 0
+      ? career.rankingHistory
+      : [createTeamRankingSnapshot(teamRankings, career.currentDate || '2026-11-15')];
+
+  const notifications = career.notifications || [];
+  const teamMorale =
+    typeof career.teamMorale === 'number'
+      ? career.teamMorale
+      : Math.max(40, Math.min(100, Math.round((career.manager?.boardConfidence || 85) * 0.95)));
 
   // Sanitize scheduled user fixtures
   const sanitizedFixtures = (career.fixtures || []).map((m) => {
@@ -1192,12 +1653,25 @@ export function sanitizeCareerSave(career: CareerSave): CareerSave {
     };
   });
 
+  const playerRankings =
+    career.playerRankings &&
+    career.playerRankings.rankings &&
+    career.playerRankings.rankings.TEST &&
+    career.playerRankings.rankings.ODI &&
+    career.playerRankings.rankings.T20I
+      ? career.playerRankings
+      : computeAllPlayerRankings(career);
+
   return {
     ...career,
     version: 3,
     seasonsGeneratedThroughYear: career.seasonsGeneratedThroughYear || 2027,
     aiTeams,
     teamRankings,
+    rankingHistory,
+    playerRankings,
+    notifications,
+    teamMorale,
     emergingPlayers: career.emergingPlayers || [],
     archivedMatches: career.archivedMatches || [],
     formatSquads: sanitizedFormatSquads,
@@ -1213,6 +1687,14 @@ export function sanitizeCareerSave(career: CareerSave): CareerSave {
     fixtures: sanitizedFixtures,
     tours: sanitizedTours,
   };
+}
+
+/**
+ * Migration helper for legacy career saves.
+ * Preserves user progression, historical data, and upgrades schemas seamlessly.
+ */
+export function migrateCareerSave(rawSave: any): CareerSave {
+  return sanitizeCareerSave(rawSave as CareerSave);
 }
 
 export function updateSupportStaff(

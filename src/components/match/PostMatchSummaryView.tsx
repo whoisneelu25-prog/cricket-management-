@@ -16,7 +16,11 @@ import {
 import { CareerSave, Match, Player } from '../../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
 import { getEffectivePlayer } from '../../data/squads';
-import { determineMatchOutcome, computeMatchResult } from '../../engine/matchEngine';
+import {
+  determineMatchOutcome,
+  computeMatchResult,
+  isTerminalMatchStatus,
+} from '../../engine/matchEngine';
 import { sortTournamentTable } from '../../engine/tournamentEngine';
 import { getNextUserMatchInfo } from '../../store/careerStore';
 import { ScorecardModal } from './ScorecardModal';
@@ -47,20 +51,36 @@ export const PostMatchSummaryView: React.FC<PostMatchSummaryViewProps> = ({
 
   const userTeamId = career?.selectedTeamId || match.userTeamId;
   const userWon = outcome.winnerTeamId === userTeamId;
-  const isDrawOrTie = outcome.isDraw || outcome.isTie;
+  const isNoResultOrAbandoned = match.status === 'NO_RESULT' || match.status === 'ABANDONED';
+  const isDrawOrTie = outcome.isDraw || outcome.isTie || isNoResultOrAbandoned;
 
   // Next match preview info
   const nextInfo = career ? getNextUserMatchInfo(career) : null;
   const nextMatch =
     nextInfo?.nextMatch && nextInfo.nextMatch.id !== match.id
       ? nextInfo.nextMatch
-      : career?.fixtures.find(
-          (f) =>
-            f.id !== match.id &&
-            f.status !== 'COMPLETED' &&
-            f.status !== 'DRAW' &&
-            f.status !== 'TIE'
-        );
+      : career?.fixtures.find((f) => f.id !== match.id && !isTerminalMatchStatus(f.status));
+
+  // Best Batting & Best Bowling Performances across the completed match (Phase 8)
+  const allMatchBatters = match.innings.flatMap((inn) =>
+    inn.batters.map((b) => ({ ...b, teamName: inn.battingTeamName }))
+  );
+  const bestBatter =
+    allMatchBatters.length > 0
+      ? [...allMatchBatters].sort((a, b) => b.runs - a.runs || a.balls - b.balls)[0]
+      : null;
+
+  const allMatchBowlers = match.innings.flatMap((inn) =>
+    inn.bowlers
+      .filter((bw) => bw.overs > 0 || bw.ballsThisOver > 0)
+      .map((bw) => ({ ...bw, teamName: inn.bowlingTeamName }))
+  );
+  const bestBowler =
+    allMatchBowlers.length > 0
+      ? [...allMatchBowlers].sort(
+          (a, b) => b.wickets - a.wickets || a.runs - b.runs || a.economy - b.economy
+        )[0]
+      : null;
 
   const nextOppId = nextMatch
     ? nextMatch.homeTeamId === userTeamId
@@ -158,7 +178,16 @@ export const PostMatchSummaryView: React.FC<PostMatchSummaryViewProps> = ({
             <p className="text-xs text-slate-300">
               {winnerTeam
                 ? `Winning Nation: ${winnerTeam.flagEmoji} ${winnerTeam.name} • ${match.resultText || computeMatchResult(match).resultText}`
-                : `Outcome: ${match.resultText || (outcome.isTie ? 'Match Tied' : 'Match Drawn')}`}
+                : `Outcome: ${
+                    match.resultText ||
+                    (match.status === 'NO_RESULT'
+                      ? 'No Result'
+                      : match.status === 'ABANDONED'
+                      ? 'Match Abandoned'
+                      : outcome.isTie
+                      ? 'Match Tied'
+                      : 'Match Drawn')
+                  }`}
             </p>
           </div>
 
@@ -182,6 +211,68 @@ export const PostMatchSummaryView: React.FC<PostMatchSummaryViewProps> = ({
             </div>
           )}
         </div>
+
+        {/* Best Batting, Best Bowling & Super Over Highlights Bar */}
+        {(bestBatter || bestBowler || (match.superOverPlayed && match.superOverInnings?.length)) && (
+          <div className="mt-4 pt-4 border-t border-[#243247]/80 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+            {bestBatter && (
+              <div className="bg-[#0d1422]/80 border border-[#243247] rounded-lg px-3.5 py-2.5 flex items-center justify-between">
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 block">
+                    Best Batting Performance
+                  </span>
+                  <span className="font-bold text-white">{bestBatter.playerName}</span>
+                  <span className="text-[11px] text-slate-400 ml-1.5">({bestBatter.teamName})</span>
+                </div>
+                <div className="text-right font-mono">
+                  <span className="text-sm font-black text-white">
+                    {bestBatter.runs}
+                    {!bestBatter.dismissal ? '*' : ''}
+                  </span>
+                  <span className="text-[11px] text-slate-400 block">
+                    {bestBatter.balls}b • {bestBatter.fours}x4, {bestBatter.sixes}x6
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {bestBowler && (
+              <div className="bg-[#0d1422]/80 border border-[#243247] rounded-lg px-3.5 py-2.5 flex items-center justify-between">
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 block">
+                    Best Bowling Performance
+                  </span>
+                  <span className="font-bold text-white">{bestBowler.playerName}</span>
+                  <span className="text-[11px] text-slate-400 ml-1.5">({bestBowler.teamName})</span>
+                </div>
+                <div className="text-right font-mono">
+                  <span className="text-sm font-black text-emerald-400">
+                    {bestBowler.wickets}/{bestBowler.runs}
+                  </span>
+                  <span className="text-[11px] text-slate-400 block">
+                    {bestBowler.overs}.{bestBowler.ballsThisOver} ov • Econ {bestBowler.economy.toFixed(2)}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {match.superOverPlayed && match.superOverInnings && match.superOverInnings.length > 0 && (
+              <div className="bg-amber-950/40 border border-amber-700/50 rounded-lg px-3.5 py-2.5 flex flex-col justify-center">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-300 block">
+                  Super Over Tiebreaker ({match.superOverRounds || Math.ceil(match.superOverInnings.length / 2)} Round{(match.superOverRounds || 1) > 1 ? 's' : ''})
+                </span>
+                <div className="flex flex-wrap gap-2 mt-1 font-mono text-[11px] text-slate-200">
+                  {match.superOverInnings.map((so, i) => (
+                    <span key={i} className="bg-[#0d1422] px-2 py-0.5 rounded border border-amber-800/40">
+                      {(match.superOverRounds || 1) > 1 ? `R${so.superOverNumber || Math.floor(i / 2) + 1} ` : ''}
+                      {so.battingTeamId}: <strong>{so.totalRuns}/{so.wickets}</strong>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* 2. Three Distinct Post-Match Action Controls (Phase 5 Non-Negotiable Requirement) */}

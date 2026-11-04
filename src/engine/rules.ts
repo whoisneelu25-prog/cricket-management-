@@ -12,27 +12,88 @@ export type PowerplayPhase = 'MANDATORY_PP1' | 'INTERMEDIATE_PP2' | 'DEATH_PP3' 
 
 /**
  * Returns the maximum overs allowed per bowler in the given format
+ * Adjusts dynamically for shortened limited-overs innings per ICC Playing Conditions.
  */
-export function getMaxOversPerBowler(format: MatchFormat): number {
+export function getMaxOversPerBowler(format: MatchFormat, allocatedOvers?: number): number {
   switch (format) {
-    case 'T20I':
+    case 'T20I': {
+      if (allocatedOvers !== undefined && allocatedOvers > 0 && allocatedOvers < 20) {
+        return Math.min(4, Math.ceil(allocatedOvers / 5));
+      }
       return 4;
-    case 'ODI':
+    }
+    case 'ODI': {
+      if (allocatedOvers !== undefined && allocatedOvers > 0 && allocatedOvers < 50) {
+        return Math.min(10, Math.ceil(allocatedOvers / 5));
+      }
       return 10;
+    }
     case 'TEST':
       return Infinity; // No over restriction in Test matches
   }
 }
 
 /**
+ * Returns exact ICC shortened-innings bowler quota distribution (Clause 13.8.2):
+ * e.g. 23-over ODI -> up to 3 bowlers may bowl 5 overs, remaining bowlers max 4 overs.
+ */
+export function getShortenedBowlerQuotaDistribution(
+  format: MatchFormat,
+  allocatedOvers?: number
+): { maxQuota: number; maxQuotaBowlersAllowed: number; reducedQuota: number } {
+  if (format === 'TEST') {
+    return { maxQuota: Infinity, maxQuotaBowlersAllowed: 11, reducedQuota: Infinity };
+  }
+  const totalOvers = getMaxOversPerInnings(format, allocatedOvers);
+  const standardCap = format === 'ODI' ? 10 : 4;
+  if (totalOvers >= (format === 'ODI' ? 50 : 20)) {
+    return { maxQuota: standardCap, maxQuotaBowlersAllowed: 5, reducedQuota: standardCap };
+  }
+  const remainder = totalOvers % 5;
+  if (remainder === 0) {
+    const q = Math.min(standardCap, totalOvers / 5);
+    return { maxQuota: q, maxQuotaBowlersAllowed: 5, reducedQuota: q };
+  }
+  return {
+    maxQuota: Math.min(standardCap, Math.ceil(totalOvers / 5)),
+    maxQuotaBowlersAllowed: remainder,
+    reducedQuota: Math.min(standardCap, Math.floor(totalOvers / 5)),
+  };
+}
+
+/**
+ * Returns the effective maximum overs this specific bowler may bowl in the current innings,
+ * accounting for shortened-match ICC bowler quota distribution.
+ */
+export function getEffectiveMaxOversForBowler(
+  format: MatchFormat,
+  bowlerId: string,
+  bowlers: BowlerInningsFigures[],
+  allocatedOvers?: number
+): number {
+  if (format === 'TEST') return Infinity;
+  const dist = getShortenedBowlerQuotaDistribution(format, allocatedOvers);
+  if (dist.maxQuota === dist.reducedQuota) return dist.maxQuota;
+
+  // Count how many OTHER bowlers have already exceeded reducedQuota (i.e. claimed a maxQuota slot)
+  const otherBowlersUsingMaxSlot = bowlers.filter(
+    (bw) =>
+      bw.playerId !== bowlerId &&
+      bw.overs * 6 + bw.ballsThisOver > dist.reducedQuota * 6
+  ).length;
+
+  return otherBowlersUsingMaxSlot >= dist.maxQuotaBowlersAllowed ? dist.reducedQuota : dist.maxQuota;
+}
+
+/**
  * Returns total overs per innings in the given format
  */
-export function getMaxOversPerInnings(format: MatchFormat): number {
+export function getMaxOversPerInnings(format: MatchFormat, allocatedOvers?: number): number {
   switch (format) {
     case 'T20I':
-      return 20;
+      return allocatedOvers !== undefined && allocatedOvers > 0 ? allocatedOvers : 20;
     case 'ODI':
-      return 50;
+      return allocatedOvers !== undefined && allocatedOvers > 0 ? allocatedOvers : 50;
     case 'TEST':
       return Infinity; // Completed by all-out, declaration, or target reached
   }
@@ -41,45 +102,54 @@ export function getMaxOversPerInnings(format: MatchFormat): number {
 /**
  * Determines the current Powerplay phase and fielding restriction
  */
-export function getPowerplayPhase(format: MatchFormat, completedOvers: number): {
+export function getPowerplayPhase(
+  format: MatchFormat,
+  completedOvers: number,
+  allocatedOvers?: number
+): {
   phase: PowerplayPhase;
   maxFieldersOutsideCircle: number;
   description: string;
 } {
   if (format === 'T20I') {
-    if (completedOvers < 6) {
+    const totalOvers = getMaxOversPerInnings('T20I', allocatedOvers);
+    const pp1End = totalOvers < 20 ? Math.max(1, Math.round(totalOvers * 0.3)) : 6;
+    if (completedOvers < pp1End) {
       return {
         phase: 'MANDATORY_PP1',
         maxFieldersOutsideCircle: 2,
-        description: 'Powerplay (Overs 1–6): Max 2 fielders outside 30-yard circle',
+        description: `Powerplay (Overs 1–${pp1End}): Max 2 fielders outside 30-yard circle`,
       };
     }
     return {
       phase: 'STANDARD',
       maxFieldersOutsideCircle: 5,
-      description: 'Non-Powerplay (Overs 7–20): Max 5 fielders outside 30-yard circle',
+      description: `Non-Powerplay (Overs ${pp1End + 1}–${totalOvers}): Max 5 fielders outside 30-yard circle`,
     };
   }
 
   if (format === 'ODI') {
-    if (completedOvers < 10) {
+    const totalOvers = getMaxOversPerInnings('ODI', allocatedOvers);
+    const pp1End = totalOvers < 50 ? Math.max(2, Math.round(totalOvers * 0.2)) : 10;
+    const pp2End = totalOvers < 50 ? Math.max(pp1End + 1, Math.round(totalOvers * 0.8)) : 40;
+    if (completedOvers < pp1End) {
       return {
         phase: 'MANDATORY_PP1',
         maxFieldersOutsideCircle: 2,
-        description: 'Powerplay 1 (Overs 1–10): Max 2 fielders outside circle',
+        description: `Powerplay 1 (Overs 1–${pp1End}): Max 2 fielders outside circle`,
       };
     }
-    if (completedOvers < 40) {
+    if (completedOvers < pp2End) {
       return {
         phase: 'INTERMEDIATE_PP2',
         maxFieldersOutsideCircle: 4,
-        description: 'Powerplay 2 (Overs 11–40): Max 4 fielders outside circle',
+        description: `Powerplay 2 (Overs ${pp1End + 1}–${pp2End}): Max 4 fielders outside circle`,
       };
     }
     return {
       phase: 'DEATH_PP3',
       maxFieldersOutsideCircle: 5,
-      description: 'Powerplay 3 (Overs 41–50): Max 5 fielders outside circle',
+      description: `Powerplay 3 (Overs ${pp2End + 1}–${totalOvers}): Max 5 fielders outside circle`,
     };
   }
 
@@ -109,6 +179,11 @@ export function isInningsComplete(innings: InningsState, format: MatchFormat): b
     return true;
   }
 
+  // Super Over 2-wicket limit check
+  if (innings.superOverNumber !== undefined && innings.wickets >= 2) {
+    return true;
+  }
+
   // 10 wickets down = all out
   if (innings.wickets >= 10) {
     return true;
@@ -119,8 +194,8 @@ export function isInningsComplete(innings: InningsState, format: MatchFormat): b
     return true;
   }
 
-  // Limited overs check
-  const maxOvers = getMaxOversPerInnings(format);
+  // Limited overs check (respecting allocatedOvers if shortened or Super Over)
+  const maxOvers = getMaxOversPerInnings(format, innings.allocatedOvers);
   if (format !== 'TEST' && innings.completedOvers >= maxOvers) {
     return true;
   }
@@ -145,10 +220,11 @@ export function calculateRequiredRunRate(
   currentRuns: number,
   completedOvers: number,
   ballsInOver: number,
-  format: MatchFormat
+  format: MatchFormat,
+  allocatedOvers?: number
 ): number | null {
-  const maxOvers = getMaxOversPerInnings(format);
   if (format === 'TEST') return null;
+  const maxOvers = getMaxOversPerInnings(format, allocatedOvers);
 
   const runsNeeded = targetRuns - currentRuns;
   if (runsNeeded <= 0) return 0;
@@ -161,16 +237,17 @@ export function calculateRequiredRunRate(
 }
 
 /**
- * Checks if a dismissal is legally permitted on a given delivery type per MCC Laws:
- * - On a No-Ball: Only RUN_OUT, OBSTRUCTING_FIELD, or HIT_THE_BALL_TWICE is legal.
- * - On a Wide: Only STUMPED, RUN_OUT, or HIT_WICKET is legal.
+ * Checks if a dismissal is legally permitted on a given delivery type per MCC Laws & ICC Playing Conditions:
+ * - On a No-Ball or Free Hit: Only RUN_OUT, OBSTRUCTING_FIELD, or HIT_BALL_TWICE is legal.
+ * - On a Wide (non-Free-Hit): Only STUMPED, RUN_OUT, or HIT_WICKET is legal.
  */
 export function isDismissalLegalForDelivery(
   dismissalType: DismissalType,
   isNoBall: boolean,
-  isWide: boolean
+  isWide: boolean,
+  isFreeHit: boolean = false
 ): boolean {
-  if (isNoBall) {
+  if (isNoBall || isFreeHit) {
     return dismissalType === 'RUN_OUT' || dismissalType === 'OBSTRUCTING_FIELD' || dismissalType === 'HIT_BALL_TWICE';
   }
   if (isWide) {
@@ -198,6 +275,7 @@ export function applyBallToInnings(
   playerNames: Record<string, string>,
   format: MatchFormat
 ): InningsState {
+  const penaltyRuns = outcome.extras.penalty || 0;
   const next: InningsState = {
     ...current,
     extras: {
@@ -205,6 +283,9 @@ export function applyBallToInnings(
       noBalls: current.extras.noBalls + outcome.extras.noBalls,
       byes: current.extras.byes + outcome.extras.byes,
       legByes: current.extras.legByes + outcome.extras.legByes,
+      ...(current.extras.penalty !== undefined || penaltyRuns > 0
+        ? { penalty: (current.extras.penalty || 0) + penaltyRuns }
+        : {}),
       total: current.extras.total + outcome.totalRuns - outcome.runsOffBat,
     },
     totalRuns: current.totalRuns + outcome.totalRuns,
@@ -213,6 +294,18 @@ export function applyBallToInnings(
     bowlers: current.bowlers.map((bw) => ({ ...bw })),
     fallOfWickets: [...current.fallOfWickets],
   };
+
+  // Update Free Hit status for ODI & T20I per ICC Playing Conditions Clause 21.19
+  if (format === 'ODI' || format === 'T20I') {
+    if (outcome.extras.noBalls > 0) {
+      next.isFreeHit = true;
+    } else if (current.isFreeHit && !outcome.isLegalDelivery) {
+      // Wide on a Free Hit repeats the Free Hit
+      next.isFreeHit = true;
+    } else {
+      next.isFreeHit = false;
+    }
+  }
 
   // Find or initialize striker and non-striker
   let striker = next.batters.find((b) => b.playerId === current.currentStrikerId);
@@ -277,25 +370,39 @@ export function applyBallToInnings(
     }
 
     // Check if dismissed batter was striker or non-striker
-    if (striker) {
+    const dismissedId = outcome.wicketDetails.dismissedPlayerId || current.currentStrikerId;
+    nonStrikerDismissed = dismissedId === current.currentNonStrikerId && nonStriker !== undefined;
+
+    if (nonStrikerDismissed && nonStriker) {
+      nonStriker.dismissal = outcome.wicketDetails;
+      nonStriker.isCurrentNonStriker = false;
+    } else if (striker) {
       striker.dismissal = outcome.wicketDetails;
       striker.isCurrentStriker = false;
     }
 
-    // Record Fall of Wicket
+    // Record Fall of Wicket with exact partnership runs and balls
     const lastFowScore = next.fallOfWickets.length > 0 ? next.fallOfWickets[next.fallOfWickets.length - 1].score : 0;
+    const totalBatterBalls = next.batters.reduce((sum, b) => sum + b.balls, 0);
+    const prevWicketBalls = current.lastWicketLegalBalls || 0;
+    const dismissedBatterName = nonStrikerDismissed
+      ? nonStriker?.playerName || 'Batter'
+      : striker?.playerName || 'Batter';
     const fow: FallOfWicket = {
       wicketNumber: next.wickets,
       score: next.totalRuns,
       overs: Number(`${next.completedOvers}.${next.ballsInCurrentOver + (outcome.isLegalDelivery ? 1 : 0)}`),
-      batterName: striker?.playerName || 'Batter',
+      batterName: dismissedBatterName,
       partnershipRuns: next.totalRuns - lastFowScore,
-      partnershipBalls: 0,
+      partnershipBalls: Math.max(0, totalBatterBalls - prevWicketBalls),
     };
+    next.lastWicketLegalBalls = totalBatterBalls;
     next.fallOfWickets.push(fow);
 
-    // If 10 wickets fallen, team is all out
-    if (next.wickets >= 10) {
+    const maxWicketsForInnings = current.superOverNumber !== undefined ? 2 : Math.max(1, battingXI.length - 1);
+
+    // If max wickets fallen (10 in normal innings, 2 in Super Over), team is all out
+    if (next.wickets >= maxWicketsForInnings || next.wickets >= 10) {
       next.isAllOut = true;
       next.isCompleted = true;
     } else {
@@ -304,20 +411,41 @@ export function applyBallToInnings(
       const nextBatterId = battingXI.find((id) => !alreadyBattedIds.has(id));
 
       if (nextBatterId) {
-        const newBatter: BatterInningsScore = {
-          playerId: nextBatterId,
-          playerName: playerNames[nextBatterId] || 'Batter',
-          runs: 0,
-          balls: 0,
-          fours: 0,
-          sixes: 0,
-          strikeRate: 0,
-          isCurrentStriker: true,
-          isCurrentNonStriker: false,
-        };
-        next.batters.push(newBatter);
-        next.currentStrikerId = nextBatterId;
-        striker = newBatter;
+        if (nonStrikerDismissed) {
+          const newBatter: BatterInningsScore = {
+            playerId: nextBatterId,
+            playerName: playerNames[nextBatterId] || 'Batter',
+            runs: 0,
+            balls: 0,
+            fours: 0,
+            sixes: 0,
+            strikeRate: 0,
+            isCurrentStriker: false,
+            isCurrentNonStriker: true,
+          };
+          next.batters.push(newBatter);
+          next.currentNonStrikerId = nextBatterId;
+          nonStriker = newBatter;
+        } else {
+          // MCC 2022 Law 18.11: Incoming batter takes strike regardless of whether batters crossed
+          const newBatter: BatterInningsScore = {
+            playerId: nextBatterId,
+            playerName: playerNames[nextBatterId] || 'Batter',
+            runs: 0,
+            balls: 0,
+            fours: 0,
+            sixes: 0,
+            strikeRate: 0,
+            isCurrentStriker: true,
+            isCurrentNonStriker: false,
+          };
+          next.batters.push(newBatter);
+          next.currentStrikerId = nextBatterId;
+          striker = newBatter;
+        }
+      } else {
+        next.isAllOut = true;
+        next.isCompleted = true;
       }
     }
   }
@@ -330,6 +458,7 @@ export function applyBallToInnings(
       next.completedOvers += 1;
       next.ballsInCurrentOver = 0;
       overFinished = true;
+      next.lastCompletedOverBowlerId = current.currentBowlerId;
 
       // Update bowler complete over
       bowler.overs += 1;
@@ -337,11 +466,9 @@ export function applyBallToInnings(
 
       // Accurate Maiden over calculation:
       // An over is a maiden if bowler conceded 0 runs across all deliveries in this over
-      // Check last deliveries belonging to this completed over
-      const ballsInOverHistory = next.recentBalls.slice(0, 8);
       let runsConcededInCompletedOver = 0;
       let legalBallsFound = 0;
-      for (const b of ballsInOverHistory) {
+      for (const b of next.recentBalls) {
         runsConcededInCompletedOver += (b.runsOffBat + b.extras.wides + b.extras.noBalls);
         if (b.isLegalDelivery) {
           legalBallsFound++;
@@ -359,8 +486,11 @@ export function applyBallToInnings(
   bowler.economy = totalBowlerBalls > 0 ? Number(((bowler.runs / totalBowlerBalls) * 6).toFixed(2)) : 0;
 
   // Determine Strike Rotation:
-  // Odd physical runs scored (off bat, byes, leg-byes) rotate ends
-  const physicalRunsScored = outcome.runsOffBat + outcome.extras.byes + outcome.extras.legByes;
+  // Odd physical runs scored (off bat, byes, leg-byes, or extra runs run on a wide) rotate ends
+  const extraWidePhysicalRuns =
+    outcome.extras.wides > 1 && outcome.extras.wides !== 5 ? outcome.extras.wides - 1 : 0;
+  const physicalRunsScored =
+    outcome.runsOffBat + outcome.extras.byes + outcome.extras.legByes + extraWidePhysicalRuns;
   const oddRuns = physicalRunsScored % 2 === 1;
 
   if (oddRuns && !wicketFell) {

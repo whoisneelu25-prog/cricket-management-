@@ -70,9 +70,39 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
     locationLabel = 'NEUTRAL';
   }
 
+  const activeTour = match.tourId
+    ? career.tours.find((t) => t.id === match.tourId)
+    : undefined;
+
+  // Format-specific tour squad IDs (Phase 7 step 1: Load format-specific tour squad)
+  const formatSquadIds = useMemo(() => {
+    const tourFmtIds = activeTour?.squadAnnounced
+      ? activeTour.formatSquads?.[match.format] || activeTour.tourSquadIds
+      : undefined;
+    if (tourFmtIds && tourFmtIds.length >= 11) {
+      return tourFmtIds;
+    }
+    const savedFmtIds = career.formatSquads[match.format]?.squadPlayerIds;
+    if (savedFmtIds && savedFmtIds.length >= 11) {
+      return savedFmtIds;
+    }
+    return undefined;
+  }, [activeTour, career.formatSquads, match.format]);
+
+  const [poolMode, setPoolMode] = useState<'TOUR_SQUAD' | 'NATIONAL_POOL'>(
+    formatSquadIds ? 'TOUR_SQUAD' : 'NATIONAL_POOL'
+  );
+
   const eligiblePool = useMemo(() => {
     const all = getEffectivePlayersByCountry(userTeamId, career, true);
-    return [...all].sort((a, b) => {
+    const scoped =
+      poolMode === 'TOUR_SQUAD' && formatSquadIds
+        ? all.filter((p) => formatSquadIds.includes(p.id))
+        : all;
+    const healthyScoped = scoped.filter((p) => !p.isInjured);
+    const effectiveList = healthyScoped.length >= 11 ? scoped : all;
+
+    return [...effectiveList].sort((a, b) => {
       const aElig = a.formatEligibility?.[match.format] ? 1 : 0;
       const bElig = b.formatEligibility?.[match.format] ? 1 : 0;
       if (bElig !== aElig) return bElig - aElig;
@@ -82,7 +112,7 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
         match.format === 'TEST' ? b.testRating : match.format === 'ODI' ? b.odiRating : b.t20Rating;
       return rB - rA;
     });
-  }, [userTeamId, career, match.format]);
+  }, [userTeamId, career, match.format, poolMode, formatSquadIds]);
 
   const initialUserXI = useMemo(() => {
     const matchXI = userIsHome ? match.homeXI : match.awayXI;
@@ -99,15 +129,27 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
         .map((p) => p.id);
       return [...healthyIds, ...replacements];
     }
-    const formatXI = career.formatSquads[match.format]?.playingXI || [];
-    if (formatXI.length === 11) return formatXI;
+    const fmtCfg = career.formatSquads[match.format];
+    const formatXI =
+      fmtCfg?.battingOrder?.length === 11
+        ? fmtCfg.battingOrder
+        : fmtCfg?.playingXI || [];
+    if (formatXI.length === 11) {
+      const healthyFmt = formatXI.filter((id) => {
+        const p = getEffectivePlayer(id, career);
+        return p && !p.isInjured && (!formatSquadIds || formatSquadIds.includes(id));
+      });
+      if (healthyFmt.length === 11) return healthyFmt;
+    }
     return eligiblePool.filter((p) => !p.isInjured).slice(0, 11).map((p) => p.id);
-  }, [match, userIsHome, career, eligiblePool]);
+  }, [match, userIsHome, career, eligiblePool, formatSquadIds]);
 
   const [playingXI, setPlayingXI] = useState<string[]>(initialUserXI);
   const [captainId, setCaptainId] = useState<string>(() => {
     const matchCap = userIsHome ? match.homeCaptainId : match.awayCaptainId;
     if (matchCap && initialUserXI.includes(matchCap)) return matchCap;
+    const tourCap = activeTour?.captains?.[match.format];
+    if (tourCap && initialUserXI.includes(tourCap)) return tourCap;
     const fmtCap = career.formatSquads[match.format]?.captainId;
     if (fmtCap && initialUserXI.includes(fmtCap)) return fmtCap;
     return initialUserXI[0] || '';
@@ -122,6 +164,22 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
       return p?.isWicketKeeper || p?.role === 'WICKETKEEPER_BATTER';
     });
     return foundWk || initialUserXI[0] || '';
+  });
+  const [selectedBowlerIds, setSelectedBowlerIds] = useState<string[]>(() => {
+    const matchBowl = userIsHome ? match.homeBowlingOptions : match.awayBowlingOptions;
+    const baseBowl =
+      matchBowl && matchBowl.length > 0
+        ? matchBowl
+        : career.formatSquads[match.format]?.bowlingRotation || [];
+    const validSaved = baseBowl.filter(
+      (id) => initialUserXI.includes(id) && id !== wicketKeeperId
+    );
+    if (validSaved.length >= 4) return validSaved;
+    return initialUserXI.filter((id) => {
+      if (id === wicketKeeperId) return false;
+      const p = getEffectivePlayer(id, career);
+      return p?.role === 'BOWLER' || p?.role === 'ALL_ROUNDER';
+    });
   });
   const [roleFilter, setRoleFilter] = useState<string>('ALL');
   const [savedNotice, setSavedNotice] = useState<boolean>(Boolean(match.lineupConfirmed));
@@ -143,9 +201,10 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
     .map((id) => eligiblePool.find((p) => p.id === id) || getEffectivePlayer(id, career))
     .filter((p): p is Player => Boolean(p));
 
-  const bowlingOptions = xiPlayers.filter(
-    (p) => p.role === 'BOWLER' || p.role === 'ALL_ROUNDER'
+  const effectiveSelectedBowlerIds = selectedBowlerIds.filter(
+    (id) => playingXI.includes(id) && id !== wicketKeeperId
   );
+  const bowlingOptions = xiPlayers.filter((p) => effectiveSelectedBowlerIds.includes(p.id));
   const injuredInXI = xiPlayers.filter((p) => p.isInjured);
   const hasWK = xiPlayers.some(
     (p) =>
@@ -156,11 +215,20 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
 
   const canConfirm = playingXI.length === 11 && injuredInXI.length === 0;
 
+  const handleToggleBowlerOption = (playerId: string) => {
+    if (playerId === wicketKeeperId) return;
+    setSavedNotice(false);
+    setSelectedBowlerIds((prev) =>
+      prev.includes(playerId) ? prev.filter((id) => id !== playerId) : [...prev, playerId]
+    );
+  };
+
   const handleToggleXI = (player: Player) => {
     setSavedNotice(false);
     if (playingXI.includes(player.id)) {
       const next = playingXI.filter((id) => id !== player.id);
       setPlayingXI(next);
+      setSelectedBowlerIds((prev) => prev.filter((id) => id !== player.id));
       if (captainId === player.id && next[0]) setCaptainId(next[0]);
       if (wicketKeeperId === player.id && next[0]) setWicketKeeperId(next[0]);
     } else {
@@ -168,8 +236,16 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
       if (playingXI.length >= 11) return;
       const next = [...playingXI, player.id];
       setPlayingXI(next);
+      let nextWk = wicketKeeperId;
       if (!wicketKeeperId && (player.isWicketKeeper || player.role === 'WICKETKEEPER_BATTER')) {
+        nextWk = player.id;
         setWicketKeeperId(player.id);
+      }
+      if (
+        player.id !== nextWk &&
+        (player.role === 'BOWLER' || player.role === 'ALL_ROUNDER')
+      ) {
+        setSelectedBowlerIds((prev) => (prev.includes(player.id) ? prev : [...prev, player.id]));
       }
     }
   };
@@ -185,13 +261,21 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
     setPlayingXI(copy);
   };
 
+  const resolveConfirmedBowlingRotation = (): string[] => {
+    const chosen = effectiveSelectedBowlerIds;
+    if (chosen.length > 0) return chosen;
+    return xiPlayers
+      .filter((p) => p.id !== wicketKeeperId && (p.role === 'BOWLER' || p.role === 'ALL_ROUNDER'))
+      .map((b) => b.id);
+  };
+
   const handleConfirmOnly = () => {
     if (!canConfirm) return;
     onConfirmLineup(match.id, {
       playingXI,
       captainId: playingXI.includes(captainId) ? captainId : playingXI[0],
       wicketKeeperId: playingXI.includes(wicketKeeperId) ? wicketKeeperId : playingXI[0],
-      bowlingRotation: bowlingOptions.map((b) => b.id),
+      bowlingRotation: resolveConfirmedBowlingRotation(),
     });
     setSavedNotice(true);
   };
@@ -202,7 +286,7 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
       playingXI,
       captainId: playingXI.includes(captainId) ? captainId : playingXI[0],
       wicketKeeperId: playingXI.includes(wicketKeeperId) ? wicketKeeperId : playingXI[0],
-      bowlingRotation: bowlingOptions.map((b) => b.id),
+      bowlingRotation: resolveConfirmedBowlingRotation(),
     });
     onStartPreparedMatch(updatedCareer, match.id, daysRemaining > 0);
   };
@@ -424,6 +508,7 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
                           onClick={() => {
                             setSavedNotice(false);
                             setWicketKeeperId(p.id);
+                            setSelectedBowlerIds((prev) => prev.filter((id) => id !== p.id));
                           }}
                           className={`text-[10px] px-1.5 py-0.5 rounded font-bold cursor-pointer ${
                             isWK ? 'bg-sky-600 text-white' : 'bg-[#0e1525] text-slate-400 hover:text-white'
@@ -431,6 +516,18 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
                           title="Assign Wicketkeeper"
                         >
                           WK
+                        </button>
+                        <button
+                          disabled={isWK}
+                          onClick={() => handleToggleBowlerOption(p.id)}
+                          className={`text-[10px] px-1.5 py-0.5 rounded font-bold cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed ${
+                            effectiveSelectedBowlerIds.includes(p.id)
+                              ? 'bg-emerald-700 text-white'
+                              : 'bg-[#0e1525] text-slate-400 hover:text-white'
+                          }`}
+                          title="Toggle Bowling Option"
+                        >
+                          BOWL
                         </button>
                         <button
                           onClick={() => handleToggleXI(p)}
@@ -447,11 +544,27 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
 
             {/* Available Format Squad Pool */}
             <div className="lg:col-span-4 bg-[#121a2b] border border-[#243247] rounded-lg p-3.5 space-y-2.5">
-              <div className="flex items-center justify-between border-b border-[#243247] pb-2">
+              <div className="flex items-center justify-between border-b border-[#243247] pb-2 gap-2">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-sky-400 flex items-center gap-1.5">
                   <Users className="w-3.5 h-3.5" />
-                  <span>National Squad Pool ({eligiblePool.length})</span>
+                  <span>
+                    {poolMode === 'TOUR_SQUAD' && formatSquadIds
+                      ? `${match.format} Tour Squad (${eligiblePool.length})`
+                      : `National Squad Pool (${eligiblePool.length})`}
+                  </span>
                 </h3>
+                {formatSquadIds && (
+                  <button
+                    onClick={() =>
+                      setPoolMode((prev) =>
+                        prev === 'TOUR_SQUAD' ? 'NATIONAL_POOL' : 'TOUR_SQUAD'
+                      )
+                    }
+                    className="text-[10px] font-bold text-emerald-400 hover:text-emerald-300 underline cursor-pointer shrink-0"
+                  >
+                    {poolMode === 'TOUR_SQUAD' ? 'View Full Pool' : `View ${match.format} Squad`}
+                  </button>
+                )}
               </div>
 
               <div className="flex items-center gap-1 overflow-x-auto pb-1">

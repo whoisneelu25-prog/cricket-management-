@@ -32,8 +32,20 @@ import { INTERNATIONAL_TEAMS } from '../../data/teams';
 import { ALL_PLAYERS, getEffectivePlayer } from '../../data/squads';
 import { ScorecardModal } from './ScorecardModal';
 import { PostMatchSummaryView } from './PostMatchSummaryView';
-import { getPlayerById, isPreMatchStatus, isTerminalMatchStatus } from '../../engine/matchEngine';
-import { getPowerplayPhase, getMaxOversPerBowler } from '../../engine/rules';
+import {
+  getPlayerById,
+  isPreMatchStatus,
+  isTerminalMatchStatus,
+  getRemainingOversInTestMatch,
+  getDeclarationStrategicContext,
+} from '../../engine/matchEngine';
+import {
+  getPowerplayPhase,
+  getMaxOversPerBowler,
+  getMaxOversPerInnings,
+  getEffectiveMaxOversForBowler,
+} from '../../engine/rules';
+import { DLS_SUPPORT_STATUS } from '../../engine/whiteBallEngine';
 
 interface MatchCentreViewProps {
   match: Match;
@@ -48,6 +60,7 @@ interface MatchCentreViewProps {
   onSelectPlayer: (player: Player) => void;
   onDeclareInnings?: () => void;
   onFollowOnDecision?: (enforce: boolean) => void;
+  onTakeNewBall?: () => void;
   onContinueToDashboard?: () => void;
   onPrepareNextMatch?: (nextMatchId: string) => void;
   onOpenMatchPreparation?: (matchId: string) => void;
@@ -66,11 +79,13 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
   onSelectPlayer,
   onDeclareInnings,
   onFollowOnDecision,
+  onTakeNewBall,
   onContinueToDashboard,
   onPrepareNextMatch,
   onOpenMatchPreparation,
 }) => {
   const [showScorecard, setShowScorecard] = useState(false);
+  const [showDeclareModal, setShowDeclareModal] = useState(false);
   const [isAutoPlaying, setIsAutoPlaying] = useState(false);
   const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
   const commentaryScrollRef = useRef<HTMLDivElement | null>(null);
@@ -80,10 +95,15 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
 
   const currentInnings = match.innings[match.currentInningsIndex] || match.innings[0];
   const isMatchFinished = isTerminalMatchStatus(match.status);
+  const needsUserFollowOnChoice =
+    match.format === 'TEST' &&
+    (match.awaitingFollowOnDecision ||
+      (match.isFollowOnEligible && match.followOnEnforced === undefined)) &&
+    match.innings[0]?.battingTeamId === match.userTeamId;
 
   // Auto-play loop for smooth broadcast simulation
   useEffect(() => {
-    if (isAutoPlaying && !isMatchFinished) {
+    if (isAutoPlaying && !isMatchFinished && !needsUserFollowOnChoice) {
       autoPlayTimerRef.current = setInterval(() => {
         onSimulateBall();
       }, 700);
@@ -93,14 +113,14 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
     return () => {
       if (autoPlayTimerRef.current) clearInterval(autoPlayTimerRef.current);
     };
-  }, [isAutoPlaying, isMatchFinished, onSimulateBall]);
+  }, [isAutoPlaying, isMatchFinished, needsUserFollowOnChoice, onSimulateBall]);
 
-  // Stop autoplay if match completed
+  // Stop autoplay if match completed or user captaincy prompt requires input
   useEffect(() => {
-    if (isMatchFinished) {
+    if (isMatchFinished || needsUserFollowOnChoice) {
       setIsAutoPlaying(false);
     }
-  }, [isMatchFinished]);
+  }, [isMatchFinished, needsUserFollowOnChoice]);
 
   // Auto-scroll commentary to newest ball
   useEffect(() => {
@@ -138,43 +158,112 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
   const isUserBatting = currentInnings?.battingTeamId === match.userTeamId;
   const isUserBowling = currentInnings?.bowlingTeamId === match.userTeamId;
 
-  // Run Rate calculation
-  const totalBallsBowled = currentInnings ? currentInnings.completedOvers * 6 + currentInnings.ballsInCurrentOver : 0;
-  const currentRunRate = totalBallsBowled > 0 ? ((currentInnings!.totalRuns / totalBallsBowled) * 6).toFixed(2) : '0.00';
+  // Allocated overs & Run Rate calculation
+  const allocatedInningsOvers =
+    match.format !== 'TEST'
+      ? getMaxOversPerInnings(
+          match.format,
+          currentInnings?.allocatedOvers ?? match.allocatedOversPerInnings
+        )
+      : Infinity;
+  const maxBallsInInnings =
+    match.format !== 'TEST' && Number.isFinite(allocatedInningsOvers)
+      ? allocatedInningsOvers * 6
+      : 0;
+
+  const totalBallsBowled = currentInnings
+    ? currentInnings.completedOvers * 6 + currentInnings.ballsInCurrentOver
+    : 0;
+  const currentRunRate =
+    totalBallsBowled > 0 ? ((currentInnings!.totalRuns / totalBallsBowled) * 6).toFixed(2) : '0.00';
 
   // Required Run Rate (if chasing in limited overs)
   let requiredRunRate: string | null = null;
+  const whiteBallBallsRemaining =
+    match.format !== 'TEST' ? Math.max(0, maxBallsInInnings - totalBallsBowled) : 0;
   if (currentInnings?.targetRuns && match.format !== 'TEST') {
-    const maxBalls = match.format === 'T20I' ? 120 : 300;
     const runsNeeded = currentInnings.targetRuns - currentInnings.totalRuns;
-    const ballsRemaining = maxBalls - totalBallsBowled;
-    if (ballsRemaining > 0 && runsNeeded > 0) {
-      requiredRunRate = ((runsNeeded / ballsRemaining) * 6).toFixed(2);
+    if (whiteBallBallsRemaining > 0 && runsNeeded > 0) {
+      requiredRunRate = ((runsNeeded / whiteBallBallsRemaining) * 6).toFixed(2);
     } else {
       requiredRunRate = runsNeeded <= 0 ? '0.00' : '99.9';
     }
   }
 
-  // Powerplay phase for white ball
-  const ppInfo = currentInnings ? getPowerplayPhase(match.format, currentInnings.completedOvers) : null;
+  // Powerplay phase for white ball (handles shortened overs as well)
+  const ppInfo = currentInnings
+    ? getPowerplayPhase(
+        match.format,
+        currentInnings.completedOvers,
+        currentInnings.allocatedOvers ?? match.allocatedOversPerInnings
+      )
+    : null;
 
-  // Maximum quota per bowler
-  const maxOversPerBowler = getMaxOversPerBowler(match.format);
+  // Maximum quota per bowler (handles ICC shortened-innings dynamic distribution)
+  const bowlingWkId =
+    currentInnings?.bowlingTeamId === match.homeTeamId
+      ? match.homeWicketKeeperId
+      : match.awayWicketKeeperId;
+  const maxOversPerBowler = getMaxOversPerBowler(
+    match.format,
+    currentInnings?.allocatedOvers ?? match.allocatedOversPerInnings
+  );
 
-  // Filter eligible bowlers for user bowling change (exclude current bowler and bowlers at max quota)
+  // Filter eligible bowlers for user bowling change (prevent consecutive overs & wicketkeeper bowling)
   const availableBowlersForChange = bowlingXI.map((id) => {
     const p = getPlayerById(id);
     const figures = currentInnings?.bowlers.find((b) => b.playerId === id);
     const oversBowled = figures ? figures.overs : 0;
-    const isExhausted = oversBowled >= maxOversPerBowler;
+    const effectiveQuota =
+      match.format !== 'TEST'
+        ? getEffectiveMaxOversForBowler(
+            match.format,
+            id,
+            currentInnings?.bowlers || [],
+            currentInnings?.allocatedOvers ?? match.allocatedOversPerInnings
+          )
+        : Infinity;
+    const isExhausted = oversBowled >= effectiveQuota;
     const isCurrent = id === currentInnings?.currentBowlerId;
+    const bowledJustCompletedOver =
+      currentInnings?.ballsInCurrentOver === 0 && id === currentInnings?.lastCompletedOverBowlerId;
+    const isWk = id === bowlingWkId;
     return {
       player: p,
       oversBowled,
+      effectiveQuota,
       isExhausted,
       isCurrent,
+      bowledJustCompletedOver,
+      isWk,
     };
   });
+  const activeBowlerEffectiveQuota =
+    activeBowler && match.format !== 'TEST'
+      ? getEffectiveMaxOversForBowler(
+          match.format,
+          activeBowler.playerId,
+          currentInnings?.bowlers || [],
+          currentInnings?.allocatedOvers ?? match.allocatedOversPerInnings
+        )
+      : maxOversPerBowler;
+
+  // Current partnership runs & balls
+  const prevWktScore =
+    currentInnings && currentInnings.fallOfWickets.length > 0
+      ? currentInnings.fallOfWickets[currentInnings.fallOfWickets.length - 1].score
+      : 0;
+  const currentPartnershipRuns = currentInnings ? Math.max(0, currentInnings.totalRuns - prevWktScore) : 0;
+  const totalFacedInningsBalls = currentInnings
+    ? currentInnings.batters.reduce((s, b) => s + b.balls, 0)
+    : 0;
+  const currentPartnershipBalls = currentInnings
+    ? Math.max(0, totalFacedInningsBalls - (currentInnings.lastWicketLegalBalls || 0))
+    : 0;
+
+  const testOversRemaining = match.format === 'TEST' ? getRemainingOversInTestMatch(match) : 0;
+  const declarationContext =
+    match.format === 'TEST' && showDeclareModal ? getDeclarationStrategicContext(match) : null;
 
   // Dedicated Post-Match Completion Screen when match ends (Phase 5)
   if (isMatchFinished) {
@@ -350,16 +439,38 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
 
             {/* Test Cricket Day & Session HUD */}
             {match.format === 'TEST' && (
-              <span className="text-xs font-bold bg-[#182234] text-amber-300 border border-amber-800/40 px-2 py-0.5 rounded font-mono flex items-center space-x-1">
-                <Clock className="w-3 h-3" />
-                <span>Day {match.dayNumber} • {sessionLabel} ({match.oversBowledToday || 0}/90 Ov)</span>
-              </span>
+              <>
+                <span className="text-xs font-bold bg-[#182234] text-amber-300 border border-amber-800/40 px-2 py-0.5 rounded font-mono flex items-center space-x-1">
+                  <Clock className="w-3 h-3" />
+                  <span>
+                    Day {match.dayNumber}/5 • {sessionLabel} ({match.oversBowledToday || 0}/{match.oversPerDay || 90} Ov)
+                  </span>
+                </span>
+                <span className="text-[11px] font-bold bg-[#182234] text-sky-300 border border-sky-800/40 px-2 py-0.5 rounded font-mono">
+                  ~{testOversRemaining} Ov Remaining
+                </span>
+                {match.sessionBreakStatus && (
+                  <span className="text-[11px] font-black bg-amber-950 text-amber-300 border border-amber-700/60 px-2 py-0.5 rounded font-mono uppercase">
+                    {match.sessionBreakStatus.replace('_', ' ')}
+                  </span>
+                )}
+              </>
             )}
 
-            {/* White-ball Powerplay HUD */}
+            {/* White-ball Powerplay & Free Hit HUD */}
             {ppInfo && ppInfo.phase !== 'NONE' && (
               <span className="text-[11px] font-bold bg-blue-950 text-blue-300 border border-blue-800/40 px-2 py-0.5 rounded font-mono">
                 {ppInfo.description}
+              </span>
+            )}
+            {match.format !== 'TEST' && currentInnings?.isFreeHit && (
+              <span className="text-[11px] font-black uppercase tracking-wider bg-rose-600 text-white px-2.5 py-0.5 rounded font-mono animate-pulse shadow">
+                FREE HIT!
+              </span>
+            )}
+            {match.tossWinnerId && (
+              <span className="text-[11px] font-mono text-slate-400 bg-[#182234] px-2 py-0.5 rounded border border-[#243247] hidden md:inline">
+                Toss: {match.tossWinnerId} chose to {match.tossChoice || 'BAT'}
               </span>
             )}
 
@@ -395,7 +506,11 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                   {currentInnings?.totalRuns}/{currentInnings?.wickets}
                 </h2>
                 <span className="text-base sm:text-lg font-mono text-slate-400 font-bold">
-                  ({currentInnings?.completedOvers}.{currentInnings?.ballsInCurrentOver} ov)
+                  ({currentInnings?.completedOvers}.{currentInnings?.ballsInCurrentOver}
+                  {match.format !== 'TEST' && Number.isFinite(allocatedInningsOvers)
+                    ? `/${allocatedInningsOvers}`
+                    : ''}{' '}
+                  ov)
                 </span>
                 {currentInnings?.isDeclared && (
                   <span className="text-xs bg-amber-950 text-amber-400 border border-amber-800 px-2 py-0.5 rounded font-bold font-mono">
@@ -452,14 +567,19 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                 </div>
                 <p className="text-xs text-emerald-400 mt-1 font-semibold">
                   Need {Math.max(0, currentInnings.targetRuns - currentInnings.totalRuns)} runs
-                  {match.format !== 'TEST' && (
-                    <span> from {Math.max(0, (match.format === 'T20I' ? 120 : 300) - totalBallsBowled)} balls</span>
+                  {match.format !== 'TEST' ? (
+                    <span>
+                      {' '}
+                      from {whiteBallBallsRemaining} balls • {10 - currentInnings.wickets} wkts in hand
+                    </span>
+                  ) : (
+                    <span> ({10 - currentInnings.wickets} wkts in hand • ~{testOversRemaining} ov left)</span>
                   )}
                 </p>
               </div>
             ) : match.format === 'TEST' && match.currentInningsIndex === 1 && match.innings[0] ? (
               <div className="text-right text-xs">
-                <span className="text-slate-400 uppercase font-medium block">1st Innings Deficit</span>
+                <span className="text-slate-400 uppercase font-medium block">1st Innings Status</span>
                 <span className="text-slate-200 mt-0.5 font-bold font-mono">
                   {currentInnings.totalRuns < match.innings[0].totalRuns
                     ? `Trail by ${match.innings[0].totalRuns - currentInnings.totalRuns} runs`
@@ -471,7 +591,9 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                 <span className="text-slate-400 uppercase font-medium block">Lead / Deficit</span>
                 <span className="text-slate-200 mt-0.5 font-bold font-mono">
                   {match.followOnEnforced
-                    ? `Trail by ${Math.max(0, match.innings[0].totalRuns - (match.innings[1].totalRuns + currentInnings.totalRuns))} runs`
+                    ? match.innings[1].totalRuns + currentInnings.totalRuns < match.innings[0].totalRuns
+                      ? `Trail by ${match.innings[0].totalRuns - (match.innings[1].totalRuns + currentInnings.totalRuns)} runs (f/o)`
+                      : `Lead by ${match.innings[1].totalRuns + currentInnings.totalRuns - match.innings[0].totalRuns} runs (f/o)`
                     : `Overall Lead: ${match.innings[0].totalRuns + currentInnings.totalRuns - match.innings[1].totalRuns} runs`}
                 </span>
               </div>
@@ -486,28 +608,186 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
           </div>
         </div>
 
+        {/* Test All-Innings Summary & Live Pitch / Weather / Ball Age Conditions Bar */}
+        {match.format === 'TEST' && (
+          <div className="mt-3 pt-3 border-t border-[#1f293d] space-y-2">
+            <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono">
+              <div className="flex flex-wrap items-center gap-1.5">
+                {match.innings.map((inn, idx) => (
+                  <span
+                    key={idx}
+                    className={`px-2 py-0.5 rounded border ${
+                      idx === match.currentInningsIndex
+                        ? 'bg-emerald-950/70 border-emerald-700/60 text-emerald-300 font-bold'
+                        : 'bg-[#182234] border-[#243247] text-slate-300'
+                    }`}
+                  >
+                    Inn {inn.inningsNumber}: {inn.battingTeamName} {inn.totalRuns}/{inn.wickets}
+                    {inn.isDeclared ? 'd' : ''}
+                  </span>
+                ))}
+              </div>
+              {match.lastInterruptionText && (
+                <span className="text-amber-300 bg-amber-950/60 border border-amber-800/50 px-2 py-0.5 rounded">
+                  {match.lastInterruptionText}
+                </span>
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] font-mono">
+              <div className="bg-[#182234]/80 border border-[#243247] px-2.5 py-1.5 rounded flex items-center justify-between">
+                <span className="text-slate-400 flex items-center gap-1 font-sans">
+                  <Layers className="w-3.5 h-3.5 text-emerald-400" /> Pitch:
+                </span>
+                <span className="text-slate-200 font-bold">
+                  {match.pitch.name} • Wear {Math.round(match.pitchWear || 10)}%
+                </span>
+              </div>
+
+              <div className="bg-[#182234]/80 border border-[#243247] px-2.5 py-1.5 rounded flex items-center justify-between">
+                <span className="text-slate-400 flex items-center gap-1 font-sans">
+                  <Wind className="w-3.5 h-3.5 text-sky-400" /> Weather:
+                </span>
+                <span className="text-slate-200 font-bold">
+                  {(match.dynamicWeather?.condition || match.weather.type).replace('_', ' ')} •{' '}
+                  {match.dynamicWeather ? `${match.dynamicWeather.temperatureC}°C • Cloud ${match.dynamicWeather.cloudCover}%` : 'Good Light'}
+                </span>
+              </div>
+
+              <div className="bg-[#182234]/80 border border-[#243247] px-2.5 py-1.5 rounded flex items-center justify-between gap-2">
+                <span className="text-slate-300">
+                  Ball Age:{' '}
+                  <strong className="text-white">
+                    {currentInnings?.ballAgeOvers ?? currentInnings?.completedOvers ?? 0} ov
+                  </strong>
+                  {currentInnings?.newBallAvailable && (
+                    <span className="ml-1.5 text-amber-300 font-bold">(New Ball Due!)</span>
+                  )}
+                </span>
+                {isUserBowling && currentInnings?.newBallAvailable && onTakeNewBall && (
+                  <button
+                    onClick={onTakeNewBall}
+                    className="bg-rose-700 hover:bg-rose-600 text-white font-sans font-bold text-[10px] px-2 py-0.5 rounded cursor-pointer transition shadow"
+                  >
+                    Take New Ball
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* White-Ball (ODI / T20I) Match Conditions, Ground Dimensions, Dew & DLS Status Bar */}
+        {match.format !== 'TEST' && (
+          <div className="mt-3 pt-3 border-t border-[#1f293d] space-y-2">
+            {match.innings.length > 1 && (
+              <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  {match.innings.map((inn, idx) => (
+                    <span
+                      key={idx}
+                      className={`px-2 py-0.5 rounded border ${
+                        idx === match.currentInningsIndex
+                          ? 'bg-emerald-950/70 border-emerald-700/60 text-emerald-300 font-bold'
+                          : 'bg-[#182234] border-[#243247] text-slate-300'
+                      }`}
+                    >
+                      Inn {inn.inningsNumber}: {inn.battingTeamName} {inn.totalRuns}/{inn.wickets} ({inn.completedOvers}.{inn.ballsInCurrentOver} ov)
+                    </span>
+                  ))}
+                </div>
+                {match.lastInterruptionText && (
+                  <span className="text-amber-300 bg-amber-950/60 border border-amber-800/50 px-2 py-0.5 rounded">
+                    {match.lastInterruptionText}
+                  </span>
+                )}
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] font-mono">
+              <div className="bg-[#182234]/80 border border-[#243247] px-2.5 py-1.5 rounded flex items-center justify-between">
+                <span className="text-slate-400 flex items-center gap-1 font-sans">
+                  <Layers className="w-3.5 h-3.5 text-emerald-400" /> Surface:
+                </span>
+                <span className="text-slate-200 font-bold truncate ml-1">
+                  {match.pitch.name}
+                  {match.whiteBallConditions
+                    ? ` • Pace ${match.whiteBallConditions.surfacePace} • Spin ${match.whiteBallConditions.spinAssistance}`
+                    : ''}
+                </span>
+              </div>
+
+              <div className="bg-[#182234]/80 border border-[#243247] px-2.5 py-1.5 rounded flex items-center justify-between">
+                <span className="text-slate-400 flex items-center gap-1 font-sans">
+                  <Wind className="w-3.5 h-3.5 text-sky-400" /> Overhead:
+                </span>
+                <span className="text-slate-200 font-bold truncate ml-1">
+                  {match.weather.type.replace('_', ' ')}
+                  {match.whiteBallConditions
+                    ? ` • ${match.whiteBallConditions.temperatureC}°C • Hum ${match.whiteBallConditions.humidity}%`
+                    : ''}
+                </span>
+              </div>
+
+              <div className="bg-[#182234]/80 border border-[#243247] px-2.5 py-1.5 rounded flex items-center justify-between gap-2">
+                <span className="text-slate-300 truncate">
+                  {match.whiteBallConditions ? (
+                    <>
+                      Boundaries:{' '}
+                      <strong className="text-white">
+                        {match.whiteBallConditions.boundarySize} ({match.whiteBallConditions.avgBoundaryMeters}m)
+                      </strong>
+                      {match.currentInningsIndex === 1 && match.whiteBallConditions.dewFactor !== 'NONE' && (
+                        <span className="ml-1.5 text-sky-300 font-bold">
+                          • {match.whiteBallConditions.dewFactor} DEW
+                        </span>
+                      )}
+                    </>
+                  ) : (
+                    <span>Format: {match.format} Standard Conditions</span>
+                  )}
+                </span>
+                {(match.weather.type === 'RAIN_RISK' ||
+                  allocatedInningsOvers < (match.format === 'T20I' ? 20 : 50)) &&
+                  !DLS_SUPPORT_STATUS.supported && (
+                    <span
+                      title={DLS_SUPPORT_STATUS.explanation}
+                      className="bg-amber-950 text-amber-300 border border-amber-800/60 px-1.5 py-0.5 rounded text-[9px] font-bold shrink-0"
+                    >
+                      DLS: UNSUPPORTED
+                    </span>
+                  )}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Follow-On Decision Prompt Card for Test Cricket */}
-        {match.format === 'TEST' && match.isFollowOnEligible && match.followOnEnforced === undefined && isUserBatting && (
-          <div className="mt-4 p-3.5 bg-amber-950/70 border border-amber-600/60 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in">
-            <div className="space-y-0.5">
-              <span className="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+        {needsUserFollowOnChoice && match.innings[0] && match.innings[1] && (
+          <div className="mt-4 p-4 bg-amber-950/80 border-2 border-amber-500/70 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in shadow-lg">
+            <div className="space-y-1">
+              <span className="text-xs font-black uppercase tracking-wider text-amber-300 flex items-center gap-1.5">
                 <AlertCircle className="w-4 h-4 text-amber-400" />
-                Follow-On Opportunity (Lead ≥ 200 Runs)
+                Captain’s Follow-On Decision Required (Lead: {match.innings[0].totalRuns - match.innings[1].totalRuns} Runs)
               </span>
-              <p className="text-xs text-slate-300">
-                Opponent has finished their 1st innings trailing by {match.innings[0].totalRuns - match.innings[1].totalRuns} runs. You can enforce the follow-on or bat again.
+              <p className="text-xs text-slate-200">
+                {match.innings[1].battingTeamName} were dismissed for {match.innings[1].totalRuns} ({match.innings[1].completedOvers}.{match.innings[1].ballsInCurrentOver} ov), trailing your 1st-innings {match.innings[0].totalRuns} by{' '}
+                <strong>{match.innings[0].totalRuns - match.innings[1].totalRuns} runs</strong>.
+              </p>
+              <p className="text-[11px] text-amber-200/80 font-mono">
+                Match Context: Day {match.dayNumber}/5 • ~{testOversRemaining} overs remaining • Pitch Wear {Math.round(match.pitchWear || 25)}%
               </p>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 shrink-0">
               <button
                 onClick={() => onFollowOnDecision && onFollowOnDecision(true)}
-                className="bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs px-3.5 py-1.5 rounded transition cursor-pointer"
+                className="bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs px-4 py-2 rounded transition cursor-pointer shadow"
               >
                 Enforce Follow-On
               </button>
               <button
                 onClick={() => onFollowOnDecision && onFollowOnDecision(false)}
-                className="bg-[#182234] hover:bg-[#202d42] text-slate-200 border border-[#243247] font-bold text-xs px-3.5 py-1.5 rounded transition cursor-pointer"
+                className="bg-[#182234] hover:bg-[#24344f] text-slate-100 border border-[#364968] font-bold text-xs px-4 py-2 rounded transition cursor-pointer"
               >
                 Bat Again
               </button>
@@ -569,18 +849,32 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         {/* Active Batters (7 cols) */}
         <div className="lg:col-span-7 bg-[#121824] border border-[#1f293d] rounded-lg p-4">
-          <h3 className="text-xs uppercase font-bold text-slate-400 tracking-wider mb-2.5 flex items-center justify-between">
-            <span>Batters at the Crease</span>
+          <h3 className="text-xs uppercase font-bold text-slate-400 tracking-wider mb-2.5 flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <span>Batters at the Crease</span>
+              <span className="text-[10px] font-mono text-sky-300 bg-[#182234] px-2 py-0.5 rounded border border-[#243247] normal-case">
+                Partnership: {currentPartnershipRuns}* ({currentPartnershipBalls}b)
+              </span>
+            </div>
             <div className="flex items-center space-x-2">
-              {match.format === 'TEST' && isUserBatting && !isMatchFinished && onDeclareInnings && (
-                <button
-                  onClick={onDeclareInnings}
-                  className="bg-amber-600/90 hover:bg-amber-500 text-white font-bold text-[10px] px-2.5 py-0.5 rounded transition cursor-pointer flex items-center space-x-1"
-                >
-                  <Flag className="w-3 h-3" />
-                  <span>Declare Innings</span>
-                </button>
+              {!isUserBatting && (
+                <span className="text-[10px] font-mono text-slate-300 bg-[#182234] px-2 py-0.5 rounded border border-[#243247]">
+                  AI Approach: {match.aiTactics.battingAggression}
+                </span>
               )}
+              {match.format === 'TEST' &&
+                isUserBatting &&
+                !isMatchFinished &&
+                match.currentInningsIndex < 3 &&
+                onDeclareInnings && (
+                  <button
+                    onClick={() => setShowDeclareModal(true)}
+                    className="bg-amber-600/90 hover:bg-amber-500 text-white font-bold text-[10px] px-2.5 py-0.5 rounded transition cursor-pointer flex items-center space-x-1"
+                  >
+                    <Flag className="w-3 h-3" />
+                    <span>Declare Innings</span>
+                  </button>
+                )}
               <span className="text-[10px] text-emerald-400 font-mono">* On Strike</span>
             </div>
           </h3>
@@ -624,10 +918,17 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
         {/* Active Bowler (5 cols) */}
         <div className="lg:col-span-5 bg-[#121824] border border-[#1f293d] rounded-lg p-4 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between mb-2.5">
-              <h3 className="text-xs uppercase font-bold text-slate-400 tracking-wider">
-                Current Bowler
-              </h3>
+            <div className="flex items-center justify-between mb-2.5 gap-2">
+              <div className="flex items-center gap-2">
+                <h3 className="text-xs uppercase font-bold text-slate-400 tracking-wider">
+                  Current Bowler
+                </h3>
+                {!isUserBowling && (
+                  <span className="text-[10px] font-mono text-slate-300 bg-[#182234] px-2 py-0.5 rounded border border-[#243247]">
+                    AI Plan: {match.aiTactics.bowlingTactic.replace('_', ' ')}
+                  </span>
+                )}
+              </div>
               {/* Bowler change dropdown for user if bowling */}
               {isUserBowling && !isMatchFinished && (
                 <select
@@ -635,12 +936,35 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                   onChange={(e) => onChangeBowler(e.target.value)}
                   className="bg-[#182234] border border-[#243247] text-[11px] text-slate-200 rounded px-2 py-0.5 focus:outline-hidden cursor-pointer"
                 >
-                  {availableBowlersForChange.map(({ player, oversBowled, isExhausted, isCurrent }) => (
-                    <option key={player.id} value={player.id} disabled={isExhausted || isCurrent}>
-                      {player.shortName} ({oversBowled}/{maxOversPerBowler === Infinity ? '∞' : maxOversPerBowler} ov)
-                      {isCurrent ? ' [Current]' : isExhausted ? ' [Quota Done]' : ''}
-                    </option>
-                  ))}
+                  {availableBowlersForChange.map(
+                    ({
+                      player,
+                      oversBowled,
+                      effectiveQuota,
+                      isExhausted,
+                      isCurrent,
+                      bowledJustCompletedOver,
+                      isWk,
+                    }) => (
+                      <option
+                        key={player.id}
+                        value={player.id}
+                        disabled={isExhausted || isCurrent || bowledJustCompletedOver || isWk}
+                      >
+                        {player.shortName} ({oversBowled}/
+                        {effectiveQuota === Infinity ? '∞' : effectiveQuota} ov)
+                        {isCurrent
+                          ? ' [Current]'
+                          : isWk
+                          ? ' [WK]'
+                          : bowledJustCompletedOver
+                          ? ' [Bowled Last Over]'
+                          : isExhausted
+                          ? ' [Quota Done]'
+                          : ''}
+                      </option>
+                    )
+                  )}
                 </select>
               )}
             </div>
@@ -650,7 +974,11 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                 <div>
                   <h4 className="font-bold text-white text-sm font-sans">{activeBowler.playerName}</h4>
                   <span className="text-[10px] text-slate-400 font-sans">
-                    {activeBowler.overs}.{activeBowler.ballsThisOver} Overs Bowled (Quota: {maxOversPerBowler === Infinity ? 'Unlimited' : `${maxOversPerBowler} Max`})
+                    {activeBowler.overs}.{activeBowler.ballsThisOver} Overs Bowled (
+                    {match.format === 'TEST'
+                      ? `Spell: ${currentInnings?.bowlerSpellOvers?.[activeBowler.playerId] || 0} ov`
+                      : `Quota: ${activeBowlerEffectiveQuota} Max`}
+                    )
                   </span>
                 </div>
 
@@ -681,7 +1009,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 {/* Batting Aggression */}
                 <div>
-                  <label className="text-[10px] text-slate-400 uppercase block mb-1">Batting Aggression</label>
+                  <label className="text-[10px] text-slate-400 uppercase block mb-1">Batting Approach</label>
                   <select
                     value={match.userTactics.battingAggression}
                     onChange={(e) =>
@@ -693,11 +1021,13 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                     }
                     className="w-full bg-[#182234] border border-[#243247] text-xs text-white rounded p-1.5 focus:border-emerald-500 cursor-pointer"
                   >
-                    <option value="BLOCK">Block / Stone-wall</option>
-                    <option value="DEFENSIVE">Defensive Contain</option>
-                    <option value="BALANCED">Balanced Normal</option>
-                    <option value="ATTACKING">Attacking Aggression</option>
-                    <option value="SMASH">Max Aggression (Smash)</option>
+                    {match.format === 'TEST' && (
+                      <option value="BLOCK">Block / Stone-wall</option>
+                    )}
+                    <option value="DEFENSIVE">Defensive</option>
+                    <option value="BALANCED">Balanced</option>
+                    <option value="ATTACKING">Aggressive</option>
+                    <option value="SMASH">All-Out Attack</option>
                   </select>
                 </div>
 
@@ -717,16 +1047,21 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                   >
                     <option value="TIGHT_DEFENSIVE">Tight Good Length</option>
                     <option value="BALANCED_CONTAIN">Balanced Stump-to-Stump</option>
-                    <option value="ATTACKING_FULL">Attacking Full & Swinging</option>
-                    <option value="BOUNCER_SHORT">Short Pitch Bouncers</option>
+                    <option value="ATTACKING_FULL">Attacking Full &amp; Swinging</option>
+                    <option value="BOUNCER_SHORT">Short Pitch / Slower Cutter</option>
                     <option value="YORKER_DEATH">Death Bowling Yorkers</option>
-                    <option value="FLIGHT_SPIN">Flight & Spin Trap</option>
+                    <option value="FLIGHT_SPIN">Flight &amp; Spin Trap</option>
                   </select>
                 </div>
 
                 {/* Field Presets */}
                 <div>
-                  <label className="text-[10px] text-slate-400 uppercase block mb-1">Field Placement</label>
+                  <label className="text-[10px] text-slate-400 uppercase block mb-1">
+                    Field Placement
+                    {ppInfo && ppInfo.phase !== 'NONE'
+                      ? ` (Max ${ppInfo.maxFieldersOutsideCircle} Out)`
+                      : ''}
+                  </label>
                   <select
                     value={match.userTactics.fieldPreset}
                     onChange={(e) =>
@@ -740,9 +1075,19 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                   >
                     <option value="BALANCED_STANDARD">Balanced Standard</option>
                     <option value="ATTACKING_SLIPS">Attacking Slips Cordon</option>
-                    <option value="DEFENSIVE_BOUNDARY">Deep Boundary Ring</option>
                     <option value="RING_INNER">Inner 30-Yard Ring</option>
-                    <option value="DEATH_PROTECT">Death Protection</option>
+                    <option
+                      value="DEFENSIVE_BOUNDARY"
+                      disabled={ppInfo?.phase === 'MANDATORY_PP1'}
+                    >
+                      Deep Boundary Ring{ppInfo?.phase === 'MANDATORY_PP1' ? ' (PP1 Restricted)' : ''}
+                    </option>
+                    <option
+                      value="DEATH_PROTECT"
+                      disabled={ppInfo?.phase === 'MANDATORY_PP1'}
+                    >
+                      Death Protection{ppInfo?.phase === 'MANDATORY_PP1' ? ' (PP1 Restricted)' : ''}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -839,6 +1184,94 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
           )}
         </div>
       </div>
+
+      {/* Strategic Declaration Confirmation Modal */}
+      {showDeclareModal && declarationContext && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150">
+          <div className="bg-[#121824] border border-amber-500/40 rounded-xl w-full max-w-lg p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-[#1f293d] pb-3">
+              <div className="flex items-center gap-2">
+                <Flag className="w-5 h-5 text-amber-400" />
+                <h3 className="text-base font-black text-white uppercase tracking-wide">
+                  Declare Test Innings?
+                </h3>
+              </div>
+              <span className="text-[11px] font-mono text-amber-300 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-700/40">
+                Innings #{match.currentInningsIndex + 1}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2.5 text-xs">
+              <div className="bg-[#182234] border border-[#243247] rounded p-2.5">
+                <span className="text-[10px] uppercase text-slate-400 block">Current Score</span>
+                <span className="text-sm font-black font-mono text-white">
+                  {declarationContext.scoreText}
+                </span>
+              </div>
+              <div className="bg-[#182234] border border-[#243247] rounded p-2.5">
+                <span className="text-[10px] uppercase text-slate-400 block">Overs Faced</span>
+                <span className="text-sm font-bold font-mono text-slate-200">
+                  {declarationContext.oversFacedText}
+                </span>
+              </div>
+              <div className="bg-[#182234] border border-[#243247] rounded p-2.5 col-span-2">
+                <span className="text-[10px] uppercase text-slate-400 block">Lead / Deficit Position</span>
+                <span className="text-xs font-bold text-emerald-400">
+                  {declarationContext.leadOrDeficitText}
+                </span>
+              </div>
+              <div className="bg-[#182234] border border-[#243247] rounded p-2.5 col-span-2">
+                <span className="text-[10px] uppercase text-slate-400 block">Opponent Previous Score</span>
+                <span className="text-xs font-mono text-slate-200">
+                  {declarationContext.opponentPreviousScoreText}
+                </span>
+              </div>
+              <div className="bg-[#182234] border border-[#243247] rounded p-2.5 col-span-2">
+                <span className="text-[10px] uppercase text-slate-400 block">Time Remaining</span>
+                <span className="text-xs font-mono text-sky-300">
+                  {declarationContext.daysSessionsRemainingText}
+                </span>
+              </div>
+            </div>
+
+            <div className="bg-[#0d131f] border border-[#243247] rounded-lg p-3 text-xs text-slate-300 leading-relaxed">
+              <span className="text-[10px] uppercase font-bold text-amber-400 block mb-1">
+                Strategic Consequences
+              </span>
+              {declarationContext.strategicConsequences}
+            </div>
+
+            {!declarationContext.allowed && declarationContext.reason && (
+              <div className="bg-rose-950/50 border border-rose-500/40 rounded-lg p-2.5 text-xs text-rose-300 flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+                <span>{declarationContext.reason}</span>
+              </div>
+            )}
+
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#1f293d]">
+              <button
+                onClick={() => setShowDeclareModal(false)}
+                className="bg-[#182234] hover:bg-[#243247] text-slate-300 font-bold text-xs px-4 py-2 rounded border border-[#243247] transition cursor-pointer"
+              >
+                Cancel & Keep Batting
+              </button>
+              <button
+                disabled={!declarationContext.allowed}
+                onClick={() => {
+                  if (onDeclareInnings && declarationContext.allowed) {
+                    onDeclareInnings();
+                    setShowDeclareModal(false);
+                  }
+                }}
+                className="bg-amber-600 hover:bg-amber-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-xs px-4 py-2 rounded shadow transition cursor-pointer flex items-center gap-1.5"
+              >
+                <Flag className="w-3.5 h-3.5" />
+                <span>Confirm Declaration</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Full Scorecard Modal */}
       {showScorecard && (

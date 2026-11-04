@@ -2,6 +2,15 @@ export type MatchFormat = 'TEST' | 'ODI' | 'T20I';
 
 export type PlayerRole = 'BATTER' | 'BOWLER' | 'ALL_ROUNDER' | 'WICKETKEEPER_BATTER';
 
+export type GranularPlayerRole =
+  | 'BATTER'
+  | 'OPENING_BATTER'
+  | 'MIDDLE_ORDER_BATTER'
+  | 'WICKETKEEPER_BATTER'
+  | 'ALL_ROUNDER'
+  | 'FAST_BOWLER'
+  | 'SPIN_BOWLER';
+
 export type BattingHand = 'RIGHT_HAND' | 'LEFT_HAND';
 
 export type BowlingStyle =
@@ -21,11 +30,13 @@ export interface FormatStats {
   matches: number;
   innings: number;
   runs: number;
+  ballsFaced?: number;
   highestScore: number;
   highestScoreNotOut: boolean;
   average: number;
   strikeRate: number;
   centuries: number;
+  doubleCenturies?: number;
   fifties: number;
   fours: number;
   sixes: number;
@@ -42,6 +53,7 @@ export interface FormatStats {
   bowlingAverage: number;
   economy: number;
   bowlingStrikeRate: number;
+  fourWicketHauls?: number;
   fiveWicketHauls: number;
   tenWicketHauls: number;
 
@@ -116,6 +128,7 @@ export interface Player {
   gender: 'MALE' | 'FEMALE';
   status: PlayerCareerStatus;
   role: PlayerRole;
+  granularRole?: GranularPlayerRole;
   battingHand: BattingHand;
   bowlingStyle: BowlingStyle;
 
@@ -139,7 +152,7 @@ export interface Player {
   fitness?: number; // 0-100 overall physical conditioning
   currentForm?: number; // 0-100 form momentum
 
-  // Player Development & Potential (Phases 11 & 12)
+  // Player Development & Potential
   potential?: number; // 0-100 development ceiling
   trainingFocus?: 'BATTING' | 'BOWLING' | 'FIELDING' | 'FITNESS' | 'AUTO';
   developmentFeedback?: 'Improving' | 'Developing steadily' | 'No significant change' | 'At peak performance' | 'Declining';
@@ -192,6 +205,7 @@ export type DismissalType =
 
 export interface Dismissal {
   type: DismissalType;
+  dismissedPlayerId?: string;
   bowlerId?: string;
   bowlerName?: string;
   fielderId?: string;
@@ -244,6 +258,7 @@ export interface BallOutcome {
     noBalls: number;
     byes: number;
     legByes: number;
+    penalty?: number;
   };
   totalRuns: number;
   isLegalDelivery: boolean;
@@ -275,11 +290,15 @@ export interface InningsState {
     noBalls: number;
     byes: number;
     legByes: number;
+    penalty?: number;
     total: number;
   };
   isDeclared?: boolean;
   isAllOut?: boolean;
   isCompleted?: boolean;
+  isFreeHit?: boolean;
+  allocatedOvers?: number;
+  superOverNumber?: number;
   batters: BatterInningsScore[];
   bowlers: BowlerInningsFigures[];
   currentStrikerId: string;
@@ -288,6 +307,14 @@ export interface InningsState {
   fallOfWickets: FallOfWicket[];
   recentBalls: BallOutcome[];
   targetRuns?: number;
+  // Test cricket ball & spell tracking
+  ballAgeOvers?: number;
+  newBallAvailable?: boolean;
+  newBallsTaken?: number;
+  bowlerSpellOvers?: Record<string, number>;
+  bowlerLastOverBowled?: Record<string, number>;
+  lastCompletedOverBowlerId?: string;
+  lastWicketLegalBalls?: number;
 }
 
 export type BattingAggression =
@@ -369,6 +396,29 @@ export type MatchStatus =
   | 'ABANDONED'
   | 'NO_RESULT';
 
+export interface TestDynamicWeather {
+  condition: 'SUNNY' | 'PARTLY_CLOUDY' | 'OVERCAST' | 'HUMID' | 'RAIN_DELAY' | 'BAD_LIGHT';
+  cloudCover: number; // 0-100%
+  temperatureC: number;
+  humidity: number; // 0-100%
+  lightLevel: 'GOOD' | 'FADING' | 'BAD_LIGHT';
+  description: string;
+}
+
+export interface WhiteBallMatchConditions {
+  boundarySize: 'SHORT' | 'MEDIUM' | 'LARGE';
+  avgBoundaryMeters: number;
+  surfacePace: number; // 0-100
+  bounce: number; // 0-100
+  seamMovement: number; // 0-100
+  spinAssistance: number; // 0-100
+  cloudCover: number; // 0-100
+  humidity: number; // 0-100
+  temperatureC: number;
+  dewFactor: 'NONE' | 'MILD' | 'HEAVY';
+  dlsSupported: false;
+}
+
 export interface Match {
   id: string;
   format: MatchFormat;
@@ -376,13 +426,13 @@ export interface Match {
   seriesName?: string;
   tourId?: string;
   tournamentId?: string;
-  competitionId?: string; // Phase 1
-  matchNumber?: number; // Phase 1
+  competitionId?: string;
+  matchNumber?: number;
   totalMatchesInSeries?: number;
-  seriesStartDate?: string; // Phase 1
-  seriesEndDate?: string; // Phase 1
-  squadSelectionDeadline?: string; // Phase 1
-  tourStatus?: 'UPCOMING' | 'IN_PROGRESS' | 'COMPLETED'; // Phase 1
+  seriesStartDate?: string;
+  seriesEndDate?: string;
+  squadSelectionDeadline?: string;
+  tourStatus?: 'UPCOMING' | 'IN_PROGRESS' | 'COMPLETED';
   stage?: 'GROUP' | 'SUPER_EIGHT' | 'SEMI_FINAL' | 'FINAL' | 'LEAGUE';
   groupId?: string;
   homeTeamId: string;
@@ -417,11 +467,26 @@ export interface Match {
   userTactics: MatchTactics;
   aiTactics: MatchTactics;
   oversBowledToday?: number;
+  oversPerDay?: number;
+  newBallOversThreshold?: number;
+  extraOversToday?: number;
+  oversLostToday?: number;
+  totalOversLostToWeather?: number;
+  sessionBreakStatus?: string;
+  lastInterruptionText?: string;
+  pitchWear?: number; // 0-100 dynamic deterioration across 5 days
+  dynamicWeather?: TestDynamicWeather;
   followOnEnforced?: boolean;
   followOnOffered?: boolean;
   isFollowOnEligible?: boolean;
+  awaitingFollowOnDecision?: boolean;
+  allocatedOversPerInnings?: number;
+  whiteBallConditions?: WhiteBallMatchConditions;
+  homeBowlingOptions?: string[];
+  awayBowlingOptions?: string[];
   superOverInnings?: InningsState[];
   superOverPlayed?: boolean;
+  superOverRounds?: number;
   statsRecorded?: boolean;
   seed?: number;
 }
@@ -457,17 +522,23 @@ export interface NewsArticle {
 
 /**
  * Format-specific Squad configuration
- * Every format has its own Squad, Captain, Vice-Captain, Wicketkeeper, and Batting Order
+ * Every format has its own Squad, Reserves, Captain, Vice-Captain, Wicketkeeper, and Batting Order
  */
 export interface FormatSquadConfig {
   format: MatchFormat;
   squadPlayerIds: string[]; // Active 15-20 players selected for this format
+  reservePlayerIds?: string[]; // Standby / reserves for injuries & emergency promotions
   playingXI: string[];      // Match-day 11
   battingOrder: string[];   // 11 in batting order
   captainId: string;        // Dedicated format captain
   viceCaptainId: string;    // Dedicated format vice-captain
   wicketKeeperId: string;   // Dedicated format keeper
+  wicketKeeperOptions?: string[]; // Keeper candidates in squad
   bowlingRotation: string[]; // Designated bowlers
+  targetSquadSize?: number; // Configurable between 15 and 20 (defaults: TEST 18, ODI 15, T20I 16)
+  defaultTactics?: MatchTactics; // Format-specific tactical philosophy
+  isConfirmed?: boolean;
+  lastConfirmedDate?: string;
 }
 
 export interface SupportStaff {
@@ -480,6 +551,15 @@ export interface SupportStaff {
   t20Consultant: string;
 }
 
+export type TourType =
+  | 'HOME'
+  | 'AWAY'
+  | 'SINGLE_FORMAT'
+  | 'MULTI_FORMAT'
+  | 'NEUTRAL'
+  | 'TRI_SERIES'
+  | 'TOURNAMENT';
+
 export interface Tour {
   id: string;
   name: string;
@@ -490,6 +570,8 @@ export interface Tour {
   year: number;
   status: 'UPCOMING' | 'IN_PROGRESS' | 'COMPLETED';
   competitionType?: 'BILATERAL' | 'ASHES' | 'BORDER_GAVASKAR' | 'TRI_SERIES' | 'ICC_TOURNAMENT';
+  tourType?: TourType;
+  neutralCountryId?: string;
   trophyHolder?: string;
   retainedTrophy?: boolean;
   formats?: MatchFormat[];
@@ -502,6 +584,7 @@ export interface Tour {
   squadSelectionDeadline: string;
   squadAnnounced: boolean;
   tourSquadIds: string[]; // 15-20 players selected from national pool
+  reservePlayerIds?: string[];
   formatSquads?: {
     TEST?: string[];
     ODI?: string[];
@@ -517,8 +600,20 @@ export interface Tour {
     ODI?: string;
     T20I?: string;
   };
+  progressionStage?:
+    | 'ANNOUNCED'
+    | 'SQUAD_DEADLINE'
+    | 'SQUAD_ANNOUNCED'
+    | 'TRAVEL_PREP'
+    | 'MATCH_PREP'
+    | 'PLAYING_XI_CONFIRMED'
+    | 'IN_PROGRESS'
+    | 'SERIES_UPDATE'
+    | 'COMPLETED';
   leadingRunScorer?: { playerId: string; playerName: string; runs: number; average: number };
   leadingWicketTaker?: { playerId: string; playerName: string; wickets: number; average: number };
+  bestBattingPerformance?: { playerId: string; playerName: string; description: string; runs: number };
+  bestBowlingPerformance?: { playerId: string; playerName: string; description: string; wickets: number; runs: number };
   playerOfTheSeries?: { playerId: string; playerName: string; reason: string };
   historicalResults?: Array<{ year: number; host: string; winner: string; score: string; retained?: boolean }>;
   resultText?: string;
@@ -583,6 +678,81 @@ export interface AITeamManagementState {
   rotationCounter?: number;
 }
 
+export interface TeamRankingEntry {
+  teamId: string;
+  name: string;
+  code: string;
+  flagEmoji: string;
+  position: number;
+  previousPosition: number;
+  highestPosition: number;
+  movement: number; // positive = moved up, negative = dropped
+  matches: number;
+  points: number;
+  rating: number;
+}
+
+export interface TeamRankingSnapshot {
+  date: string;
+  label?: string;
+  rankings: Record<
+    MatchFormat,
+    Array<{
+      teamId: string;
+      position: number;
+      rating: number;
+      points: number;
+      matches: number;
+    }>
+  >;
+}
+
+export type PlayerRankingCategory = 'BATTER' | 'BOWLER' | 'ALL_ROUNDER';
+
+export interface PlayerRankingEntry {
+  rank: number;
+  previousRank: number;
+  highestRank: number;
+  movement: number;
+  playerId: string;
+  playerName: string;
+  countryId: string;
+  countryName: string;
+  format: MatchFormat;
+  category: PlayerRankingCategory;
+  rating: number;
+  matchesPlayed: number;
+  isEligible: boolean;
+  highlightStats?: string;
+}
+
+export interface PlayerRankingState {
+  lastUpdatedDate: string;
+  rankings: Record<MatchFormat, Record<PlayerRankingCategory, PlayerRankingEntry[]>>;
+  minimumEligibility: {
+    TEST: number;
+    ODI: number;
+    T20I: number;
+  };
+}
+
+export interface NotificationItem {
+  id: string;
+  date: string;
+  type:
+    | 'SQUAD_ANNOUNCEMENT'
+    | 'INJURY'
+    | 'SELECTION_DEADLINE'
+    | 'MATCH_RESULT'
+    | 'TOUR_ANNOUNCEMENT'
+    | 'RANKING_CHANGE';
+  title: string;
+  message: string;
+  read: boolean;
+  actionTab?: string;
+  relatedId?: string;
+}
+
 export interface TeamRankingState {
   teamId: string;
   ratingPoints: {
@@ -591,6 +761,27 @@ export interface TeamRankingState {
     T20I: number;
   };
   worldRankings: {
+    TEST: number;
+    ODI: number;
+    T20I: number;
+  };
+  // Detailed deterministic ranking tracking (Phase 2)
+  matches?: {
+    TEST: number;
+    ODI: number;
+    T20I: number;
+  };
+  totalPoints?: {
+    TEST: number;
+    ODI: number;
+    T20I: number;
+  };
+  previousRankings?: {
+    TEST: number;
+    ODI: number;
+    T20I: number;
+  };
+  highestRankings?: {
     TEST: number;
     ODI: number;
     T20I: number;
@@ -736,8 +927,20 @@ export interface CareerSave {
   // Independent AI team management states for every non-user country
   aiTeams?: Record<string, AITeamManagementState>;
 
-  // Live evolving ICC rankings & rating points per country
+  // Live evolving ICC / ICM rankings & rating points per country
   teamRankings?: Record<string, TeamRankingState>;
+
+  // 9-category format-specific international player rankings
+  playerRankings?: PlayerRankingState;
+
+  // Real historical ranking snapshots over time for progression charts
+  rankingHistory?: TeamRankingSnapshot[];
+
+  // Interactive notification items
+  notifications?: NotificationItem[];
+
+  // Team morale (0–100) computed from recent results and board confidence
+  teamMorale?: number;
 
   // Emerging academy/debutant players generated over multi-year careers
   emergingPlayers?: Player[];
@@ -763,14 +966,14 @@ export interface CareerSave {
   news: NewsArticle[];
   dataProvenance: DataProvenanceReport;
 
-  // Player Training Assignments & Progression (Phases 11 & 12)
+  // Player Training Assignments & Progression
   playerTrainingFocus?: Record<string, 'BATTING' | 'BOWLING' | 'FIELDING' | 'FITNESS' | 'AUTO'>;
   playerOverrides?: Record<string, Partial<Player>>;
 
-  // Special Rivalry Series (Phases 3 & 4)
+  // Special Rivalry Series
   ashes?: RivalryCompetition;
   borderGavaskar?: RivalryCompetition;
 
-  // Complete Multi-Year Tournament System (Phases 5, 6, 7, 8)
+  // Complete Multi-Year Tournament System
   tournamentEditions?: TournamentEdition[];
 }

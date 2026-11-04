@@ -667,9 +667,8 @@ export function synchronizeAndAdvanceTournaments(
             .map((m) => m.date || currentDate)
             .sort()
             .pop() || currentDate;
-        const baseDate = lastGroupDate > currentDate ? lastGroupDate : currentDate;
-        const sf1Date = addDaysISO(baseDate, 3);
-        const sf2Date = addDaysISO(baseDate, 4);
+        const sf1Date = addDaysISO(lastGroupDate, 3);
+        const sf2Date = addDaysISO(lastGroupDate, 4);
 
         const sf1 = buildKnockoutFixture(
           `match_${t.id}_sf1`,
@@ -727,7 +726,7 @@ export function synchronizeAndAdvanceTournaments(
           .map((m) => m.date || currentDate)
           .sort()
           .pop() || currentDate;
-      const finalDate = addDaysISO(lastSfDate > currentDate ? lastSfDate : currentDate, 4);
+      const finalDate = addDaysISO(lastSfDate, 4);
 
       const finalMatch = buildKnockoutFixture(
         `match_${t.id}_final`,
