@@ -27,7 +27,10 @@ import {
   Match,
   MatchFormat,
   BattingAggression,
+  BattingApproach,
   BowlingTactic,
+  BowlingIntention,
+  ShotSelection,
   FieldPreset,
   Player,
   IndividualBatterInstruction,
@@ -117,7 +120,9 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
   const [showScorecard, setShowScorecard] = useState(false);
   const [showDeclareModal, setShowDeclareModal] = useState(false);
   const [showDRSModal, setShowDRSModal] = useState(false);
-  const [activeTab, setActiveTab] = useState<'TACTICS' | 'INTELLIGENCE'>('TACTICS');
+  const [tacticalTab, setTacticalTab] = useState<
+    'SCOREBOARD' | 'BATTING' | 'BOWLING' | 'INTELLIGENCE'
+  >('SCOREBOARD');
   const [isAutoPlaying, setIsAutoPlaying] = useState(false);
   const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
   const commentaryScrollRef = useRef<HTMLDivElement | null>(null);
@@ -910,8 +915,89 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
         </div>
       </div>
 
-      {/* 2. Interactive Batters & Bowler Status Bar (Always Visible) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      {/* Tactical Center Tab Navigation */}
+      <div className="bg-[#141f36] border border-slate-800 rounded-xl p-1.5 flex flex-wrap items-center gap-1.5 shadow">
+        <button
+          onClick={() => setTacticalTab('SCOREBOARD')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
+            tacticalTab === 'SCOREBOARD'
+              ? 'bg-emerald-600 text-white shadow-md'
+              : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+          }`}
+        >
+          <Activity className="w-3.5 h-3.5" />
+          <span>Match Flow & Scoreboard</span>
+        </button>
+
+        {isUserBatting && (
+          <button
+            onClick={() => setTacticalTab('BATTING')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
+              tacticalTab === 'BATTING'
+                ? 'bg-emerald-600 text-white shadow-md'
+                : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+            }`}
+          >
+            <Flame className="w-3.5 h-3.5" />
+            <span>Batting Plans</span>
+          </button>
+        )}
+
+        {isUserBowling && (
+          <button
+            onClick={() => setTacticalTab('BOWLING')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
+              tacticalTab === 'BOWLING'
+                ? 'bg-emerald-600 text-white shadow-md'
+                : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+            }`}
+          >
+            <Shield className="w-3.5 h-3.5" />
+            <span>Bowling & Spells</span>
+          </button>
+        )}
+
+        <button
+          onClick={() => setTacticalTab('INTELLIGENCE')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
+            tacticalTab === 'INTELLIGENCE'
+              ? 'bg-emerald-600 text-white shadow-md'
+              : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+          }`}
+        >
+          <Zap className="w-3.5 h-3.5" />
+          <span>Match Intelligence</span>
+        </button>
+      </div>
+
+      {/* Tab Panels */}
+      {tacticalTab === 'BATTING' && (
+        <BatterTacticsPanel
+          match={match}
+          onUpdateTactics={onUpdateTactics}
+          onUpdateInstruction={(instruction) =>
+            onUpdateBatterInstruction && onUpdateBatterInstruction(instruction)
+          }
+          onUpdateCustomTargets={onUpdateCustomTargets}
+          onUpdatePhaseTargets={onUpdatePhaseTargets}
+        />
+      )}
+
+      {tacticalTab === 'BOWLING' && (
+        <BowlingTacticsPanel
+          match={match}
+          onUpdateTactics={onUpdateTactics}
+          onUpdateBowlingPlan={(plan) =>
+            onUpdateBowlingPlan && onUpdateBowlingPlan(plan)
+          }
+          onChangeBowler={onChangeBowler}
+        />
+      )}
+
+      {tacticalTab === 'INTELLIGENCE' && <WagonWheelPitchMap match={match} />}
+
+      {/* 2. Interactive Batters & Bowler Status Bar */}
+      <div className={`grid grid-cols-1 lg:grid-cols-12 gap-4 ${tacticalTab !== 'SCOREBOARD' ? 'hidden' : ''}`}>
         {/* Active Batters (7 cols) */}
         <div className="lg:col-span-7 bg-[#121824] border border-[#1f293d] rounded-lg p-4">
           <h3 className="text-xs uppercase font-bold text-slate-400 tracking-wider mb-2.5 flex flex-wrap items-center justify-between gap-2">
@@ -1061,157 +1147,244 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
         </div>
       </div>
 
-      {/* 3. Simplified Contextual Tactical Panel (Batting Settings OR Bowling Settings OR Opposition Mode) */}
-      <div className="space-y-3">
-        <div className="bg-[#141f36] border border-slate-800 rounded-xl p-1.5 flex flex-wrap items-center justify-between gap-2 shadow">
-          <div className="flex items-center gap-1.5">
-            <button
-              onClick={() => setActiveTab('TACTICS')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
-                activeTab === 'TACTICS'
-                  ? 'bg-emerald-600 text-white shadow-md'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
-              }`}
-            >
-              {isUserBatting ? (
-                <>
-                  <Flame className="w-3.5 h-3.5 text-emerald-300" />
-                  <span>Batting Settings (Your Team)</span>
-                </>
-              ) : isUserBowling ? (
-                <>
-                  <Shield className="w-3.5 h-3.5 text-emerald-300" />
-                  <span>Bowling Settings (Your Team)</span>
-                </>
-              ) : (
-                <>
-                  <Bot className="w-3.5 h-3.5 text-sky-400" />
-                  <span>Opposition Innings (AI Automated)</span>
-                </>
-              )}
-            </button>
-
-            <button
-              onClick={() => setActiveTab('INTELLIGENCE')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
-                activeTab === 'INTELLIGENCE'
-                  ? 'bg-emerald-600 text-white shadow-md'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
-              }`}
-            >
-              <Zap className="w-3.5 h-3.5" />
-              <span>Match Intelligence (Wagon Wheel & Pitch Map)</span>
-            </button>
-          </div>
-
-          <div className="flex items-center gap-2 pr-2">
-            <span className="text-[11px] font-mono text-slate-400 hidden sm:inline">
-              Control: {isUserBatting || isUserBowling ? 'User Team Management' : 'AI Opposition Manager'}
-            </span>
-          </div>
-        </div>
-
-        {/* Tab Content */}
-        {activeTab === 'TACTICS' && (
-          <div>
-            {isUserBatting ? (
-              <BatterTacticsPanel
-                match={match}
-                onUpdateTactics={onUpdateTactics}
-                onUpdateInstruction={(instruction) =>
-                  onUpdateBatterInstruction && onUpdateBatterInstruction(instruction)
-                }
-                onUpdateCustomTargets={onUpdateCustomTargets}
-                onUpdatePhaseTargets={onUpdatePhaseTargets}
-              />
-            ) : isUserBowling ? (
-              <BowlingTacticsPanel
-                match={match}
-                onUpdateTactics={onUpdateTactics}
-                onUpdateBowlingPlan={(plan) =>
-                  onUpdateBowlingPlan && onUpdateBowlingPlan(plan)
-                }
-                onChangeBowler={onChangeBowler}
-              />
-            ) : (
-              <div className="bg-[#121824] border border-[#1f293d] rounded-xl p-4 flex flex-wrap items-center justify-between gap-3 text-xs">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-7 h-7 rounded-lg bg-sky-500/20 border border-sky-500/30 flex items-center justify-center text-sky-400">
-                    <Bot className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <span className="text-white font-bold block">Opposition Innings In Progress</span>
-                    <span className="text-slate-400 text-[11px]">
-                      In-match tactical decisions are controlled automatically by the local AI Opposition Manager. User controls are disabled for non-managed teams.
-                    </span>
-                  </div>
-                </div>
-                <span className="px-2.5 py-1 rounded bg-sky-950/40 border border-sky-500/30 text-sky-400 text-[10px] font-mono font-bold">
-                  AI Automated
-                </span>
-              </div>
-            )}
-          </div>
-        )}
-
-        {activeTab === 'INTELLIGENCE' && <WagonWheelPitchMap match={match} />}
-      </div>
-
-      {/* 4. Match Simulation Controls */}
+      {/* 3. Captaincy Tactics & Match Simulation Controls */}
       {!isMatchFinished && (
         <div className="bg-[#121824] border border-[#1f293d] rounded-lg p-4 sm:p-5">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <span className="text-xs uppercase font-bold tracking-wider text-slate-300">
-                Match Simulation
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+            {/* Captain's Tactical Orders (7 cols) */}
+            <div className="md:col-span-7 space-y-3">
+              <span className="text-[11px] uppercase font-bold tracking-wider text-slate-400 block flex items-center justify-between">
+                <span className="flex items-center gap-1.5">
+                  <Shield className="w-3.5 h-3.5 text-emerald-400" /> Captain’s Tactical Orders
+                  {isUserBatting && <span className="text-emerald-400 font-mono text-[10px]">(Your Team Batting)</span>}
+                  {isUserBowling && <span className="text-sky-400 font-mono text-[10px]">(Your Team Bowling)</span>}
+                </span>
+                {isUserBatting && (
+                  <button
+                    onClick={() => setTacticalTab('BATTING')}
+                    className="text-[10px] text-emerald-400 hover:text-emerald-300 font-normal cursor-pointer hover:underline"
+                  >
+                    Full Batting Targets & Plans →
+                  </button>
+                )}
+                {isUserBowling && (
+                  <button
+                    onClick={() => setTacticalTab('BOWLING')}
+                    className="text-[10px] text-emerald-400 hover:text-emerald-300 font-normal cursor-pointer hover:underline"
+                  >
+                    Full Bowling Squad & Spells →
+                  </button>
+                )}
               </span>
-              <span className="text-[11px] font-mono text-slate-400 hidden md:inline">
-                • Step ball-by-ball, over-by-over, or stream continuously
-              </span>
+
+              {isUserBatting ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {/* Batting Aggression */}
+                  <div>
+                    <label className="text-[10px] text-slate-400 uppercase font-semibold block mb-1">
+                      Team Batting Approach
+                    </label>
+                    <select
+                      value={match.userTactics.battingAggression}
+                      onChange={(e) =>
+                        onUpdateTactics(
+                          e.target.value as BattingAggression,
+                          match.userTactics.bowlingTactic,
+                          match.userTactics.fieldPreset
+                        )
+                      }
+                      className="w-full bg-[#182234] border border-[#243247] text-xs text-white rounded p-1.5 focus:border-emerald-500 cursor-pointer"
+                    >
+                      {match.format === 'TEST' && (
+                        <option value="BLOCK">Block / Stone-wall</option>
+                      )}
+                      <option value="DEFENSIVE">Defensive (Protect Wickets)</option>
+                      <option value="BALANCED">Balanced (Standard Flow)</option>
+                      <option value="ATTACKING">Aggressive (Scoring Intent)</option>
+                      <option value="SMASH">Smash (Maximum Attack)</option>
+                    </select>
+                  </div>
+
+                  {/* Active Striker Approach */}
+                  <div>
+                    <label className="text-[10px] text-slate-400 uppercase font-semibold block mb-1">
+                      Active Batter ({striker?.playerName ? striker.playerName.split(' ').pop() : 'Striker'})
+                    </label>
+                    <select
+                      value={
+                        striker
+                          ? match.individualBatterInstructions?.[striker.playerId]?.approach ||
+                            match.userTactics.battingAggression
+                          : match.userTactics.battingAggression
+                      }
+                      onChange={(e) => {
+                        if (striker && onUpdateBatterInstruction) {
+                          const app = e.target.value as BattingApproach;
+                          onUpdateBatterInstruction({
+                            playerId: striker.playerId,
+                            approach: app,
+                            shotSelection:
+                              app === 'SMASH' || app === 'AGGRESSIVE'
+                                ? 'LOOK_FOR_BOUNDARIES'
+                                : app === 'DEFENSIVE' || (app as string) === 'BLOCK'
+                                ? 'AVOID_RISKY_SHOTS'
+                                : 'PLAY_STRAIGHT',
+                          });
+                        }
+                      }}
+                      className="w-full bg-[#182234] border border-[#243247] text-xs text-white rounded p-1.5 focus:border-emerald-500 cursor-pointer"
+                    >
+                      {match.format === 'TEST' && (
+                        <option value="BLOCK">Block (Stone-wall)</option>
+                      )}
+                      <option value="DEFENSIVE">Defensive (Anchor)</option>
+                      <option value="BALANCED">Balanced (Normal)</option>
+                      <option value="ATTACKING">Aggressive (Attack)</option>
+                      <option value="SMASH">Smash (Boundary Intent)</option>
+                    </select>
+                  </div>
+                </div>
+              ) : isUserBowling ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {/* Bowling Strategy */}
+                  <div>
+                    <label className="text-[10px] text-slate-400 uppercase font-semibold block mb-1">
+                      Team Bowling Strategy
+                    </label>
+                    <select
+                      value={match.userTactics.bowlingTactic}
+                      onChange={(e) =>
+                        onUpdateTactics(
+                          match.userTactics.battingAggression,
+                          e.target.value as BowlingTactic,
+                          match.userTactics.fieldPreset
+                        )
+                      }
+                      className="w-full bg-[#182234] border border-[#243247] text-xs text-white rounded p-1.5 focus:border-emerald-500 cursor-pointer"
+                    >
+                      <option value="TIGHT_DEFENSIVE">Tight Good Length</option>
+                      <option value="BALANCED_CONTAIN">Balanced Stump-to-Stump</option>
+                      <option value="ATTACKING_FULL">Attacking Full &amp; Swinging</option>
+                      <option value="BOUNCER_SHORT">Short Pitch / Slower Cutter</option>
+                      <option value="YORKER_DEATH">Death Bowling Yorkers</option>
+                      <option value="FLIGHT_SPIN">Flight &amp; Spin Trap</option>
+                    </select>
+                  </div>
+
+                  {/* Active Bowler Plan */}
+                  <div>
+                    <label className="text-[10px] text-slate-400 uppercase font-semibold block mb-1">
+                      Bowler Plan ({activeBowler?.playerName ? activeBowler.playerName.split(' ').pop() : 'Active'})
+                    </label>
+                    <select
+                      value={
+                        activeBowler
+                          ? match.individualBowlingPlans?.[activeBowler.playerId]?.intention || 'BUILD_PRESSURE'
+                          : 'BUILD_PRESSURE'
+                      }
+                      onChange={(e) => {
+                        if (activeBowler && onUpdateBowlingPlan) {
+                          const intent = e.target.value as BowlingIntention;
+                          let line: any = 'FOURTH_STUMP';
+                          let length: any = 'GOOD_LENGTH';
+                          if (intent === 'TARGET_STUMPS') {
+                            line = 'MIDDLE_STUMP';
+                            length = 'FULL';
+                          } else if (intent === 'RESTRICT_BOUNDARIES') {
+                            line = 'MIDDLE_STUMP';
+                            length = 'YORKER';
+                          } else if (intent === 'FORCE_MISTAKES') {
+                            line = 'BODY_LINE';
+                            length = 'SHORT';
+                          }
+                          onUpdateBowlingPlan({
+                            bowlerId: activeBowler.playerId,
+                            line,
+                            length,
+                            intention: intent,
+                            targetBatterId: currentInnings?.currentStrikerId,
+                          });
+                        }
+                      }}
+                      className="w-full bg-[#182234] border border-[#243247] text-xs text-white rounded p-1.5 focus:border-emerald-500 cursor-pointer"
+                    >
+                      <option value="BUILD_PRESSURE">Standard Containment</option>
+                      <option value="TARGET_STUMPS">Attack the Stumps</option>
+                      <option value="OUTSIDE_OFF_CONTAINMENT">Outside-off Channel</option>
+                      <option value="FORCE_MISTAKES">Short-pitch Pressure</option>
+                      <option value="RESTRICT_BOUNDARIES">Death Yorkers / Full</option>
+                      <option value="ATTACK_WICKETS">Wicket-taking Search</option>
+                    </select>
+                  </div>
+                </div>
+              ) : (
+                <div className="bg-[#182234]/80 border border-[#243247] rounded p-2.5 flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2">
+                    <Bot className="w-4 h-4 text-sky-400" />
+                    <div>
+                      <span className="text-white font-bold block text-xs">Opposition Innings In Progress</span>
+                      <span className="text-slate-400 text-[10px]">
+                        Tactical decisions run automatically via local AI Opposition Manager.
+                      </span>
+                    </div>
+                  </div>
+                  <span className="px-2 py-0.5 rounded bg-sky-950/60 border border-sky-500/30 text-sky-400 text-[10px] font-mono">
+                    AI Auto
+                  </span>
+                </div>
+              )}
             </div>
 
-            <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-              <button
-                onClick={onSimulateBall}
-                className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2 px-3.5 rounded shadow transition cursor-pointer flex items-center space-x-1.5 active:scale-95"
-              >
-                <Play className="w-3 h-3 fill-current" />
-                <span>Next Ball</span>
-              </button>
+            {/* Simulation Controls (5 cols) */}
+            <div className="md:col-span-5 bg-[#182234] border border-[#243247] p-3 rounded-lg flex flex-col justify-center space-y-2">
+              <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block text-center">
+                Match Simulation Controls
+              </span>
 
-              <button
-                onClick={onSimulateOver}
-                className="bg-[#243247] hover:bg-[#334155] text-white font-bold text-xs py-2 px-3.5 rounded border border-[#3b4d6a] transition cursor-pointer flex items-center space-x-1.5 active:scale-95"
-              >
-                <FastForward className="w-3 h-3" />
-                <span>Next Over</span>
-              </button>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                <button
+                  onClick={onSimulateBall}
+                  className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2 rounded shadow transition cursor-pointer flex items-center justify-center space-x-1 active:scale-95"
+                >
+                  <Play className="w-3 h-3 fill-current" />
+                  <span>Ball</span>
+                </button>
 
-              <button
-                onClick={onSimulateInnings}
-                className="bg-[#243247] hover:bg-[#334155] text-white font-bold text-xs py-2 px-3.5 rounded border border-[#3b4d6a] transition cursor-pointer flex items-center space-x-1.5 active:scale-95"
-              >
-                <SkipForward className="w-3 h-3" />
-                <span>Next Innings</span>
-              </button>
+                <button
+                  onClick={onSimulateOver}
+                  className="bg-[#243247] hover:bg-[#334155] text-white font-bold text-xs py-2 rounded border border-[#3b4d6a] transition cursor-pointer flex items-center justify-center space-x-1 active:scale-95"
+                >
+                  <FastForward className="w-3 h-3" />
+                  <span>Over</span>
+                </button>
 
-              <button
-                onClick={onSimulateMatch}
-                className="bg-[#243247] hover:bg-[#334155] text-amber-300 font-bold text-xs py-2 px-3 rounded border border-amber-800/40 transition cursor-pointer flex items-center space-x-1 active:scale-95"
-              >
-                <Flame className="w-3 h-3 text-amber-400" />
-                <span>Sim Match</span>
-              </button>
+                <button
+                  onClick={onSimulateInnings}
+                  className="bg-[#243247] hover:bg-[#334155] text-white font-bold text-xs py-2 rounded border border-[#3b4d6a] transition cursor-pointer flex items-center justify-center space-x-1 active:scale-95"
+                >
+                  <SkipForward className="w-3 h-3" />
+                  <span>Innings</span>
+                </button>
 
+                <button
+                  onClick={onSimulateMatch}
+                  className="bg-[#243247] hover:bg-[#334155] text-amber-300 font-bold text-xs py-2 rounded border border-amber-800/40 transition cursor-pointer flex items-center justify-center space-x-1 active:scale-95"
+                >
+                  <Flame className="w-3 h-3 text-amber-400" />
+                  <span>Match</span>
+                </button>
+              </div>
+
+              {/* Auto Broadcast Play Button */}
               <button
                 onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-                className={`py-2 px-3.5 rounded text-xs font-semibold transition cursor-pointer flex items-center space-x-1.5 ${
+                className={`w-full py-1 rounded text-xs font-semibold transition cursor-pointer flex items-center justify-center space-x-1.5 ${
                   isAutoPlaying
                     ? 'bg-rose-600 text-white animate-pulse'
-                    : 'bg-[#182234] text-slate-300 hover:text-white border border-[#243247]'
+                    : 'bg-[#0d131f] text-slate-300 hover:text-white border border-[#243247]'
                 }`}
               >
-                <span>{isAutoPlaying ? 'Pause Stream' : '▶ Auto Stream'}</span>
+                <span>{isAutoPlaying ? 'Pause Live Broadcast' : '▶ Auto Broadcast Stream (Continuous)'}</span>
               </button>
             </div>
           </div>

@@ -359,3 +359,4 @@ describe('MATCH CENTRE SIMPLIFICATION & CONTEXTUAL CONTROL VALIDATION', () => {
     assert.strictEqual(restoredMatch.customScoringTargets?.[0]?.targetScore, 280);
   });
 });
+
