@@ -319,46 +319,47 @@ export const SquadView: React.FC<SquadViewProps> = ({
   });
 
   return (
-    <div className="space-y-4 select-none pb-8 text-slate-200">
-      {/* Top Banner: Country Switcher & Format Tabs */}
-      <div className="bg-[#111827] border border-[#1e293b] rounded-lg p-3.5 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-sm">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded bg-[#151d29] border border-[#1e293b] flex items-center justify-center text-2xl">
+    <div className="space-y-4 select-none pb-8 text-[#e8edf2]">
+      {/* Top Banner: Country Switcher & Format Tabs in Dugout Style */}
+      <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
+        <div className="flex items-center space-x-3.5">
+          <div className="w-12 h-12 rounded-xl bg-[#10151c] border border-[#1e2733] flex items-center justify-center text-3xl shadow-md">
             {viewedTeam?.flagEmoji || '🏏'}
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className="text-base font-bold text-white tracking-wide">
-                {viewedTeam?.name} National Squad
-              </h1>
+              <span className="dugout-kicker text-[11px] text-[#e2b64a]">Squad Roster</span>
               {isReadOnly ? (
-                <span className="text-[10px] bg-slate-800 text-slate-300 font-mono px-1.5 py-0.5 rounded border border-slate-700 flex items-center gap-1">
+                <span className="text-[10px] bg-[#10151c] text-[#8b97a3] font-mono px-2 py-0.5 rounded-full border border-[#1e2733] flex items-center gap-1 font-bold">
                   <Lock className="w-3 h-3" /> Read-Only AI Squad
                 </span>
               ) : (
-                <span className="text-[10px] bg-[#142646] text-emerald-400 font-mono px-1.5 py-0.5 rounded border border-emerald-900/60 font-bold">
+                <span className="text-[10px] bg-[#e2b64a]/10 text-[#e2b64a] font-mono px-2 py-0.5 rounded-full border border-[#e2b64a]/30 font-bold uppercase tracking-wider">
                   Managed Nation
                 </span>
               )}
             </div>
-            <p className="text-xs text-slate-400">
-              Tier 2: Format-specific national squad pool selection & leadership
+            <h1 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight mt-0.5">
+              {viewedTeam?.name} National Squad
+            </h1>
+            <p className="text-xs text-[#8b97a3] mt-0.5">
+              Tier 2: Format-specific national squad pool selection, tour reserves &amp; leadership
             </p>
           </div>
         </div>
 
         {/* Format Tabs & Country Inspector */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2.5">
           {/* Format Selector */}
-          <div className="flex bg-[#151d29] p-0.5 rounded border border-[#1e293b]">
+          <div className="flex bg-[#10151c] p-1 rounded-xl border border-[#1e2733]">
             {(['TEST', 'ODI', 'T20I'] as MatchFormat[]).map((fmt) => (
               <button
                 key={fmt}
                 onClick={() => setSelectedFormat(fmt)}
-                className={`px-3 py-1 text-xs font-bold rounded transition cursor-pointer ${
+                className={`px-3.5 py-1.5 text-xs font-bold rounded-lg uppercase tracking-wider transition cursor-pointer ${
                   selectedFormat === fmt
-                    ? 'bg-emerald-600 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-white'
+                    ? 'bg-gradient-to-r from-[#ffe9a8] to-[#e0ab3a] text-black shadow-sm'
+                    : 'text-[#8b97a3] hover:text-white'
                 }`}
               >
                 {fmt}
@@ -367,18 +368,18 @@ export const SquadView: React.FC<SquadViewProps> = ({
           </div>
 
           {/* Inspect other national squads (strictly read-only) */}
-          <div className="flex items-center space-x-1.5 bg-[#151d29] border border-[#1e293b] px-2 py-1 rounded text-xs">
-            <span className="text-slate-400 text-[11px]">Inspect:</span>
+          <div className="flex items-center space-x-2 bg-[#10151c] border border-[#1e2733] px-3 py-1.5 rounded-xl text-xs">
+            <span className="dugout-kicker text-[10px] text-[#8b97a3]">Inspect:</span>
             <select
               value={viewedCountryId}
               onChange={(e) => setViewedCountryId(e.target.value)}
-              className="bg-transparent text-white font-medium focus:outline-none cursor-pointer"
+              className="bg-transparent text-white font-medium focus:outline-none cursor-pointer tracking-wide"
             >
-              <option value={career.selectedTeamId} className="bg-[#111827]">
+              <option value={career.selectedTeamId} className="bg-[#070a0e] text-[#ffe9a8]">
                 ★ {userTeam?.name} (Managed)
               </option>
               {INTERNATIONAL_TEAMS.filter((t) => t.id !== career.selectedTeamId).map((t) => (
-                <option key={t.id} value={t.id} className="bg-[#111827]">
+                <option key={t.id} value={t.id} className="bg-[#070a0e] text-[#c3ccd6]">
                   {t.name} (AI)
                 </option>
               ))}
@@ -387,13 +388,13 @@ export const SquadView: React.FC<SquadViewProps> = ({
         </div>
       </div>
 
-      {/* Squad Size & Composition Bar */}
-      <div className="bg-[#111827] border border-[#1e293b] rounded-lg p-3.5 space-y-3">
+      {/* Squad Size & Composition Bar in Dugout Style */}
+      <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-5 space-y-4 shadow-xl">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           {/* Size Selector */}
           <div className="flex items-center space-x-2 text-xs">
-            <span className="font-semibold text-slate-300">
-              {selectedFormat} Squad Size:
+            <span className="dugout-kicker text-[11px] text-[#e2b64a]">
+              {selectedFormat} Squad Cap:
             </span>
             {!isReadOnly ? (
               <div className="flex items-center space-x-1">
@@ -401,10 +402,10 @@ export const SquadView: React.FC<SquadViewProps> = ({
                   <button
                     key={sz}
                     onClick={() => handleSetTargetSize(sz)}
-                    className={`w-6 h-6 rounded text-xs font-mono font-bold transition cursor-pointer ${
+                    className={`w-7 h-7 rounded-lg text-xs font-mono font-bold transition cursor-pointer ${
                       targetSize === sz
-                        ? 'bg-emerald-600 text-white'
-                        : 'bg-[#151d29] text-slate-400 hover:text-white border border-[#1e293b]'
+                        ? 'bg-[#e2b64a] text-black shadow-sm font-black'
+                        : 'bg-[#10151c] text-[#8b97a3] hover:text-white border border-[#1e2733]'
                     }`}
                   >
                     {sz}
@@ -412,29 +413,29 @@ export const SquadView: React.FC<SquadViewProps> = ({
                 ))}
               </div>
             ) : (
-              <span className="font-mono font-bold text-white">{targetSize}</span>
+              <span className="font-mono font-bold text-white text-sm">{targetSize}</span>
             )}
-            <span className="text-slate-500 font-mono">
+            <span className="text-[#8b97a3] font-mono text-xs">
               ({squadPlayers.length} / {targetSize} selected)
             </span>
           </div>
 
           {/* Action Buttons: Reset & Confirm */}
           {!isReadOnly && (
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2.5">
               <button
                 onClick={handleReset}
-                className="text-xs text-slate-400 hover:text-white px-2.5 py-1 rounded bg-[#151d29] border border-[#1e293b] transition cursor-pointer flex items-center gap-1"
+                className="text-xs text-[#8b97a3] hover:text-white px-3 py-1.5 rounded-xl bg-[#10151c] border border-[#1e2733] hover:border-[#8fb2d9] transition cursor-pointer flex items-center gap-1.5 uppercase tracking-wider font-semibold"
               >
-                <RefreshCw className="w-3 h-3" />
+                <RefreshCw className="w-3.5 h-3.5" />
                 <span>Reset</span>
               </button>
               <button
                 onClick={handleConfirmSquad}
-                className={`text-xs font-bold px-3 py-1 rounded transition cursor-pointer flex items-center gap-1.5 ${
+                className={`text-xs font-bold px-3.5 py-1.5 rounded-xl transition cursor-pointer flex items-center gap-1.5 uppercase tracking-wider shadow-sm ${
                   formatConfig.isConfirmed
-                    ? 'bg-emerald-950 text-emerald-400 border border-emerald-800'
-                    : 'bg-[#10b981] hover:bg-[#059669] text-[#0b0e14]'
+                    ? 'bg-[#3fca86]/20 text-[#3fca86] border border-[#3fca86]/40'
+                    : 'bg-gradient-to-r from-[#ffe9a8] to-[#e0ab3a] text-black font-extrabold hover:brightness-110'
                 }`}
               >
                 <CheckCircle2 className="w-3.5 h-3.5" />
@@ -445,32 +446,32 @@ export const SquadView: React.FC<SquadViewProps> = ({
         </div>
 
         {/* Balance Composition Breakdown */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-xs">
-          <div className="bg-[#151d29] p-2 rounded border border-[#1e293b]">
-            <span className="text-[10px] text-slate-400 block uppercase">Batters</span>
-            <span className="text-white font-mono font-bold text-sm">{battersCount}</span>
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 text-center text-xs">
+          <div className="bg-[#10151c] p-2.5 rounded-xl border border-[#1e2733]">
+            <span className="dugout-kicker text-[10px] text-[#8b97a3] block mb-0.5">Batters</span>
+            <span className="text-white font-mono font-black text-base">{battersCount}</span>
           </div>
-          <div className="bg-[#151d29] p-2 rounded border border-[#1e293b]">
-            <span className="text-[10px] text-slate-400 block uppercase">Wicketkeepers</span>
+          <div className="bg-[#10151c] p-2.5 rounded-xl border border-[#1e2733]">
+            <span className="dugout-kicker text-[10px] text-[#8b97a3] block mb-0.5">Wicketkeepers</span>
             <span
-              className={`font-mono font-bold text-sm ${
-                wkCount === 0 ? 'text-rose-400' : 'text-emerald-400'
+              className={`font-mono font-black text-base ${
+                wkCount === 0 ? 'text-[#ff5470]' : 'text-[#3fca86]'
               }`}
             >
               {wkCount}
             </span>
           </div>
-          <div className="bg-[#151d29] p-2 rounded border border-[#1e293b]">
-            <span className="text-[10px] text-slate-400 block uppercase">All-Rounders</span>
-            <span className="text-white font-mono font-bold text-sm">{arCount}</span>
+          <div className="bg-[#10151c] p-2.5 rounded-xl border border-[#1e2733]">
+            <span className="dugout-kicker text-[10px] text-[#8b97a3] block mb-0.5">All-Rounders</span>
+            <span className="text-white font-mono font-black text-base">{arCount}</span>
           </div>
-          <div className="bg-[#151d29] p-2 rounded border border-[#1e293b]">
-            <span className="text-[10px] text-slate-400 block uppercase">Fast Bowlers</span>
-            <span className="text-white font-mono font-bold text-sm">{paceCount}</span>
+          <div className="bg-[#10151c] p-2.5 rounded-xl border border-[#1e2733]">
+            <span className="dugout-kicker text-[10px] text-[#8b97a3] block mb-0.5">Fast Bowlers</span>
+            <span className="text-white font-mono font-black text-base">{paceCount}</span>
           </div>
-          <div className="bg-[#151d29] p-2 rounded border border-[#1e293b]">
-            <span className="text-[10px] text-slate-400 block uppercase">Spin Bowlers</span>
-            <span className="text-white font-mono font-bold text-sm">{spinCount}</span>
+          <div className="bg-[#10151c] p-2.5 rounded-xl border border-[#1e2733]">
+            <span className="dugout-kicker text-[10px] text-[#8b97a3] block mb-0.5">Spin Bowlers</span>
+            <span className="text-white font-mono font-black text-base">{spinCount}</span>
           </div>
         </div>
 
@@ -490,37 +491,37 @@ export const SquadView: React.FC<SquadViewProps> = ({
         )}
       </div>
 
-      {/* Selected Format Squad Table */}
-      <div className="bg-[#111827] border border-[#1e293b] rounded-lg p-3.5 space-y-3">
-        <div className="flex items-center justify-between border-b border-[#1e293b] pb-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-            <Users className="w-3.5 h-3.5 text-emerald-400" />
+      {/* Selected Format Squad Table in Dugout Style */}
+      <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-5 space-y-4 shadow-xl">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#1e2733] pb-3">
+          <span className="dugout-kicker text-xs text-[#e2b64a] flex items-center gap-2">
+            <Users className="w-4 h-4" />
             Selected {selectedFormat} Squad ({squadPlayers.length} Players)
           </span>
-          <span className="text-[11px] text-slate-400 font-mono">
-            Cap: {fullNationalPool.find((p) => p.id === formatConfig.captainId)?.shortName || 'None'} • WK:{' '}
-            {fullNationalPool.find((p) => p.id === formatConfig.wicketKeeperId)?.shortName || 'None'}
+          <span className="text-[11px] text-[#8b97a3] font-mono">
+            Cap: <strong className="text-white">{fullNationalPool.find((p) => p.id === formatConfig.captainId)?.shortName || 'None'}</strong> • WK:{' '}
+            <strong className="text-white">{fullNationalPool.find((p) => p.id === formatConfig.wicketKeeperId)?.shortName || 'None'}</strong>
           </span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-xs text-left">
-            <thead className="bg-[#151d29] text-slate-400 font-mono text-[10px] uppercase border-b border-[#1e293b]">
+            <thead className="bg-[#10151c] text-[#8b97a3] font-mono text-[10px] uppercase border-b border-[#1e2733] tracking-wider">
               <tr>
-                <th className="py-2 px-2.5">Player</th>
-                <th className="py-2 px-2">Role</th>
-                <th className="py-2 px-2">Style</th>
-                <th className="py-2 px-2 text-center">Rating</th>
-                <th className="py-2 px-2 text-center">Form</th>
-                <th className="py-2 px-2 text-center">Fitness</th>
-                <th className="py-2 px-2">Leadership</th>
-                {!isReadOnly && <th className="py-2 px-2 text-right">Actions</th>}
+                <th className="py-2.5 px-3">Player</th>
+                <th className="py-2.5 px-2">Role</th>
+                <th className="py-2.5 px-2">Style</th>
+                <th className="py-2.5 px-2 text-center">Rating</th>
+                <th className="py-2.5 px-2 text-center">Form</th>
+                <th className="py-2.5 px-2 text-center">Fitness</th>
+                <th className="py-2.5 px-2">Leadership</th>
+                {!isReadOnly && <th className="py-2.5 px-3 text-right">Actions</th>}
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#1e293b]/60">
+            <tbody className="divide-y divide-[#1e2733]">
               {squadPlayers.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="py-4 text-center text-slate-400">
+                  <td colSpan={8} className="py-8 text-center text-[#8b97a3]">
                     No players in {selectedFormat} squad. Select from the national pool below.
                   </td>
                 </tr>
@@ -532,85 +533,85 @@ export const SquadView: React.FC<SquadViewProps> = ({
                   const isWK = player.id === formatConfig.wicketKeeperId;
 
                   return (
-                    <tr key={player.id} className="hover:bg-[#151d29] transition">
-                      <td className="py-2 px-2.5">
+                    <tr key={player.id} className="hover:bg-[#10151c] transition-colors">
+                      <td className="py-2.5 px-3">
                         <div
                           onClick={() => onSelectPlayer(player)}
-                          className="font-semibold text-white hover:text-emerald-400 cursor-pointer flex items-center gap-1.5"
+                          className="font-bold text-white hover:text-[#e2b64a] cursor-pointer flex items-center gap-2"
                         >
                           <span>{player.name}</span>
                           {player.isInjured && (
-                            <span className="text-[9px] font-bold px-1 py-0.2 rounded bg-rose-950 text-rose-300 border border-rose-800">
+                            <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#ff3d7f]/20 text-[#ff5470] border border-[#ff3d7f]/40 uppercase tracking-wider">
                               INJ
                             </span>
                           )}
                         </div>
                       </td>
-                      <td className="py-2 px-2 text-slate-300">
-                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#151d29] border border-[#1e293b]">
+                      <td className="py-2.5 px-2 text-[#c3ccd6]">
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#10151c] border border-[#1e2733] uppercase">
                           {role.replace(/_/g, ' ')}
                         </span>
                       </td>
-                      <td className="py-2 px-2 text-slate-400 text-[11px]">
-                        {player.battingHand === 'LEFT_HAND' ? 'LHB' : 'RHB'} •{' '}
-                        {player.bowlingStyle?.replace(/_/g, ' ') || 'None'}
+                      <td className="py-2.5 px-2 text-[#8b97a3] text-[11px]">
+                        <span className="text-white font-medium">{player.battingHand === 'LEFT_HAND' ? 'LHB' : 'RHB'}</span> •{' '}
+                        <span>{player.bowlingStyle?.replace(/_/g, ' ') || 'None'}</span>
                       </td>
-                      <td className="py-2 px-2 text-center font-mono font-bold text-white">
-                        {Math.round((player.testRating + player.odiRating + player.t20Rating) / 3)}
+                      <td className="py-2.5 px-2 text-center font-mono font-black text-white">
+                        <span className="text-[#ffe9a8]">{Math.round((player.testRating + player.odiRating + player.t20Rating) / 3)}</span>
                       </td>
-                      <td className="py-2 px-2 text-center font-mono">
+                      <td className="py-2.5 px-2 text-center font-mono font-bold">
                         <span
                           className={`${
                             (player.currentForm || player.attributes?.currentForm || 75) >= 80
-                              ? 'text-emerald-400 font-bold'
+                              ? 'text-[#3fca86]'
                               : (player.currentForm || player.attributes?.currentForm || 75) >= 60
-                              ? 'text-slate-300'
-                              : 'text-rose-400'
+                              ? 'text-[#8fb2d9]'
+                              : 'text-[#ff5470]'
                           }`}
                         >
-                          {player.currentForm || player.attributes?.currentForm || 75}
+                          {player.currentForm || player.attributes?.currentForm || 75}%
                         </span>
                       </td>
-                      <td className="py-2 px-2 text-center font-mono">
+                      <td className="py-2.5 px-2 text-center font-mono font-bold">
                         <span
                           className={`${
                             (player.fitness || 90) >= 85
-                              ? 'text-emerald-400'
+                              ? 'text-[#3fca86]'
                               : (player.fitness || 90) >= 70
-                              ? 'text-amber-400'
-                              : 'text-rose-400 font-bold'
+                              ? 'text-[#e2b64a]'
+                              : 'text-[#ff5470]'
                           }`}
                         >
                           {player.fitness || 90}%
                         </span>
                       </td>
-                      <td className="py-2 px-2">
-                        <div className="flex items-center space-x-1">
+                      <td className="py-2.5 px-2">
+                        <div className="flex items-center space-x-1.5">
                           {isCap && (
-                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800 flex items-center gap-0.5">
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#e2b64a] text-black uppercase tracking-wider flex items-center gap-1 shadow-xs">
                               <Crown className="w-3 h-3" /> C
                             </span>
                           )}
                           {isVC && (
-                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800">
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#8fb2d9]/20 text-[#8fb2d9] border border-[#8fb2d9]/40 uppercase tracking-wider font-mono">
                               VC
                             </span>
                           )}
                           {isWK && (
-                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800">
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#3fca86]/20 text-[#3fca86] border border-[#3fca86]/40 uppercase tracking-wider font-mono">
                               WK
                             </span>
                           )}
                         </div>
                       </td>
                       {!isReadOnly && (
-                        <td className="py-2 px-2 text-right">
-                          <div className="flex items-center justify-end space-x-1">
+                        <td className="py-2.5 px-3 text-right">
+                          <div className="flex items-center justify-end space-x-1.5">
                             {!isCap && (
                               <button
                                 onClick={() => handleAssignCaptain(player)}
                                 title="Make Captain"
-                                className="text-[10px] text-amber-300 hover:bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-900/50 cursor-pointer"
+                                className="text-[10px] text-[#ffe9a8] hover:bg-[#e2b64a]/20 px-2 py-0.5 rounded border border-[#e2b64a]/30 cursor-pointer uppercase font-bold"
                               >
                                 Make C
                               </button>
@@ -619,7 +620,7 @@ export const SquadView: React.FC<SquadViewProps> = ({
                               <button
                                 onClick={() => handleAssignViceCaptain(player.id)}
                                 title="Make Vice-Captain"
-                                className="text-[10px] text-sky-300 hover:bg-sky-950/40 px-1.5 py-0.5 rounded border border-sky-900/50 cursor-pointer"
+                                className="text-[10px] text-[#8fb2d9] hover:bg-[#8fb2d9]/20 px-2 py-0.5 rounded border border-[#8fb2d9]/30 cursor-pointer uppercase font-bold"
                               >
                                 VC
                               </button>
@@ -628,7 +629,7 @@ export const SquadView: React.FC<SquadViewProps> = ({
                               <button
                                 onClick={() => handleAssignWicketKeeper(player.id)}
                                 title="Assign Wicketkeeper"
-                                className="text-[10px] text-purple-300 hover:bg-purple-950/40 px-1.5 py-0.5 rounded border border-purple-900/50 cursor-pointer"
+                                className="text-[10px] text-[#3fca86] hover:bg-[#3fca86]/20 px-2 py-0.5 rounded border border-[#3fca86]/30 cursor-pointer uppercase font-bold"
                               >
                                 WK
                               </button>
@@ -636,7 +637,7 @@ export const SquadView: React.FC<SquadViewProps> = ({
                             <button
                               onClick={() => handleRemovePlayer(player)}
                               title="Drop from Squad"
-                              className="text-[10px] text-rose-400 hover:bg-rose-950/40 px-1.5 py-0.5 rounded border border-rose-900/50 cursor-pointer"
+                              className="text-[10px] text-[#ff5470] hover:bg-[#ff3d7f]/20 px-2 py-0.5 rounded border border-[#ff3d7f]/30 cursor-pointer uppercase font-bold"
                             >
                               Drop
                             </button>
@@ -652,51 +653,51 @@ export const SquadView: React.FC<SquadViewProps> = ({
         </div>
       </div>
 
-      {/* Reserves Section */}
-      <div className="bg-[#111827] border border-[#1e293b] rounded-lg p-3.5 space-y-2.5">
-        <div className="flex items-center justify-between border-b border-[#1e293b] pb-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-            <Shield className="w-3.5 h-3.5 text-sky-400" />
+      {/* Reserves Section in Dugout Style */}
+      <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-5 space-y-3 shadow-xl">
+        <div className="flex items-center justify-between border-b border-[#1e2733] pb-3">
+          <span className="dugout-kicker text-xs text-[#8fb2d9] flex items-center gap-2">
+            <Shield className="w-4 h-4 text-[#8fb2d9]" />
             Format Standby Reserves ({reservePlayers.length} Players)
           </span>
-          <span className="text-[10px] text-slate-500 font-mono">Available for quick call-up</span>
+          <span className="text-[10px] text-[#8b97a3] font-mono uppercase tracking-wider">Available for quick call-up</span>
         </div>
 
         {reservePlayers.length === 0 ? (
-          <p className="text-xs text-slate-400 py-2">
+          <p className="text-xs text-[#8b97a3] py-3">
             No standby reserves selected for {selectedFormat}. Add players as reserves from the pool below.
           </p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
             {reservePlayers.map((player) => (
               <div
                 key={player.id}
-                className="bg-[#151d29] border border-[#1e293b] p-2 rounded flex items-center justify-between text-xs"
+                className="bg-[#10151c] border border-[#1e2733] hover:border-[#8fb2d9]/60 p-2.5 rounded-xl flex items-center justify-between text-xs transition"
               >
                 <div>
                   <div
                     onClick={() => onSelectPlayer(player)}
-                    className="font-medium text-white hover:text-emerald-400 cursor-pointer truncate"
+                    className="font-bold text-white hover:text-[#8fb2d9] cursor-pointer truncate"
                   >
                     {player.name}
                   </div>
-                  <span className="text-[10px] text-slate-400 font-mono">
-                    {getGranularPlayerRole(player).replace(/_/g, ' ')} • {Math.round((player.testRating + player.odiRating + player.t20Rating) / 3)}
+                  <span className="text-[10px] text-[#8b97a3] font-mono">
+                    {getGranularPlayerRole(player).replace(/_/g, ' ')} • <strong className="text-white">{Math.round((player.testRating + player.odiRating + player.t20Rating) / 3)}</strong>
                   </span>
                 </div>
                 {!isReadOnly && (
-                  <div className="flex items-center space-x-1">
+                  <div className="flex items-center space-x-1.5">
                     <button
                       onClick={() => handlePromoteReserve(player.id)}
                       title="Promote to Squad"
-                      className="text-[10px] text-emerald-400 hover:bg-emerald-950/50 px-1.5 py-0.5 rounded border border-emerald-900/60 cursor-pointer"
+                      className="text-[10px] text-[#3fca86] hover:bg-[#3fca86]/20 px-2 py-0.5 rounded border border-[#3fca86]/40 cursor-pointer font-bold uppercase"
                     >
                       Promote
                     </button>
                     <button
                       onClick={() => handleToggleReserve(player.id)}
                       title="Remove from Reserves"
-                      className="text-[10px] text-slate-400 hover:text-white px-1 py-0.5 rounded cursor-pointer"
+                      className="text-[10px] text-[#8b97a3] hover:text-white px-1.5 py-0.5 rounded cursor-pointer"
                     >
                       ✕
                     </button>
@@ -708,23 +709,23 @@ export const SquadView: React.FC<SquadViewProps> = ({
         )}
       </div>
 
-      {/* National Selection Pool with 9 Granular Filters */}
-      <div className="bg-[#111827] border border-[#1e293b] rounded-lg p-3.5 space-y-3">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-[#1e293b] pb-2.5">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-            <Filter className="w-3.5 h-3.5 text-emerald-400" />
+      {/* National Selection Pool with 9 Granular Filters in Dugout Style */}
+      <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-5 space-y-4 shadow-xl">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-[#1e2733] pb-3">
+          <span className="dugout-kicker text-xs text-[#e2b64a] flex items-center gap-2">
+            <Filter className="w-4 h-4 text-[#e2b64a]" />
             National Selection Pool ({filteredPool.length} Eligible Players Available)
           </span>
 
           {/* Search bar */}
           <div className="relative w-full md:w-64">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2" />
+            <Search className="w-3.5 h-3.5 text-[#8b97a3] absolute left-2.5 top-2.5" />
             <input
               type="text"
               placeholder="Search player name..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#151d29] border border-[#1e293b] pl-8 pr-3 py-1 rounded text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+              className="w-full bg-[#10151c] border border-[#1e2733] pl-8 pr-3 py-1.5 rounded-lg text-xs text-white placeholder-[#556375] focus:outline-none focus:border-[#e2b64a]"
             />
           </div>
         </div>
@@ -733,11 +734,11 @@ export const SquadView: React.FC<SquadViewProps> = ({
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2 text-[11px]">
           {/* 1. Role */}
           <div>
-            <label className="text-[10px] text-slate-400 block mb-0.5">Role</label>
+            <label className="dugout-kicker text-[9px] text-[#8b97a3] block mb-1">Role</label>
             <select
               value={filterRole}
               onChange={(e) => setFilterRole(e.target.value)}
-              className="w-full bg-[#151d29] border border-[#1e293b] rounded p-1 text-white focus:outline-none cursor-pointer"
+              className="w-full bg-[#10151c] border border-[#1e2733] rounded-lg p-1.5 text-white focus:outline-none focus:border-[#e2b64a] cursor-pointer"
             >
               <option value="ALL">All Roles</option>
               <option value="OPENING_BATTER">Opening</option>
@@ -751,11 +752,11 @@ export const SquadView: React.FC<SquadViewProps> = ({
 
           {/* 2. Batting Style */}
           <div>
-            <label className="text-[10px] text-slate-400 block mb-0.5">Batting</label>
+            <label className="dugout-kicker text-[9px] text-[#8b97a3] block mb-1">Batting</label>
             <select
               value={filterBattingStyle}
               onChange={(e) => setFilterBattingStyle(e.target.value)}
-              className="w-full bg-[#151d29] border border-[#1e293b] rounded p-1 text-white focus:outline-none cursor-pointer"
+              className="w-full bg-[#10151c] border border-[#1e2733] rounded-lg p-1.5 text-white focus:outline-none focus:border-[#e2b64a] cursor-pointer"
             >
               <option value="ALL">All Styles</option>
               <option value="RHB">Right Hand</option>
@@ -765,11 +766,11 @@ export const SquadView: React.FC<SquadViewProps> = ({
 
           {/* 3. Bowling Style */}
           <div>
-            <label className="text-[10px] text-slate-400 block mb-0.5">Bowling</label>
+            <label className="dugout-kicker text-[9px] text-[#8b97a3] block mb-1">Bowling</label>
             <select
               value={filterBowlingStyle}
               onChange={(e) => setFilterBowlingStyle(e.target.value)}
-              className="w-full bg-[#151d29] border border-[#1e293b] rounded p-1 text-white focus:outline-none cursor-pointer"
+              className="w-full bg-[#10151c] border border-[#1e2733] rounded-lg p-1.5 text-white focus:outline-none focus:border-[#e2b64a] cursor-pointer"
             >
               <option value="ALL">All Bowling</option>
               <option value="FAST">Pace / Fast</option>
@@ -779,11 +780,11 @@ export const SquadView: React.FC<SquadViewProps> = ({
 
           {/* 4. Age */}
           <div>
-            <label className="text-[10px] text-slate-400 block mb-0.5">Age</label>
+            <label className="dugout-kicker text-[9px] text-[#8b97a3] block mb-1">Age</label>
             <select
               value={filterAge}
               onChange={(e) => setFilterAge(e.target.value)}
-              className="w-full bg-[#151d29] border border-[#1e293b] rounded p-1 text-white focus:outline-none cursor-pointer"
+              className="w-full bg-[#10151c] border border-[#1e2733] rounded-lg p-1.5 text-white focus:outline-none focus:border-[#e2b64a] cursor-pointer"
             >
               <option value="ALL">All Ages</option>
               <option value="U25">Under 25</option>
@@ -794,11 +795,11 @@ export const SquadView: React.FC<SquadViewProps> = ({
 
           {/* 5. Form */}
           <div>
-            <label className="text-[10px] text-slate-400 block mb-0.5">Form</label>
+            <label className="dugout-kicker text-[9px] text-[#8b97a3] block mb-1">Form</label>
             <select
               value={filterForm}
               onChange={(e) => setFilterForm(e.target.value)}
-              className="w-full bg-[#151d29] border border-[#1e293b] rounded p-1 text-white focus:outline-none cursor-pointer"
+              className="w-full bg-[#10151c] border border-[#1e2733] rounded-lg p-1.5 text-white focus:outline-none focus:border-[#e2b64a] cursor-pointer"
             >
               <option value="ALL">All Form</option>
               <option value="HIGH">High (80+)</option>
@@ -809,11 +810,11 @@ export const SquadView: React.FC<SquadViewProps> = ({
 
           {/* 6. Fitness */}
           <div>
-            <label className="text-[10px] text-slate-400 block mb-0.5">Fitness</label>
+            <label className="dugout-kicker text-[9px] text-[#8b97a3] block mb-1">Fitness</label>
             <select
               value={filterFitness}
               onChange={(e) => setFilterFitness(e.target.value)}
-              className="w-full bg-[#151d29] border border-[#1e293b] rounded p-1 text-white focus:outline-none cursor-pointer"
+              className="w-full bg-[#10151c] border border-[#1e2733] rounded-lg p-1.5 text-white focus:outline-none focus:border-[#e2b64a] cursor-pointer"
             >
               <option value="ALL">All Fitness</option>
               <option value="HIGH">Fit (85%+)</option>
@@ -824,11 +825,11 @@ export const SquadView: React.FC<SquadViewProps> = ({
 
           {/* 7. Experience */}
           <div>
-            <label className="text-[10px] text-slate-400 block mb-0.5">Experience</label>
+            <label className="dugout-kicker text-[9px] text-[#8b97a3] block mb-1">Experience</label>
             <select
               value={filterExperience}
               onChange={(e) => setFilterExperience(e.target.value)}
-              className="w-full bg-[#151d29] border border-[#1e293b] rounded p-1 text-white focus:outline-none cursor-pointer"
+              className="w-full bg-[#10151c] border border-[#1e2733] rounded-lg p-1.5 text-white focus:outline-none focus:border-[#e2b64a] cursor-pointer"
             >
               <option value="ALL">All Exp</option>
               <option value="DEBUT">Debut (0-5)</option>
@@ -839,11 +840,11 @@ export const SquadView: React.FC<SquadViewProps> = ({
 
           {/* 8. Availability */}
           <div>
-            <label className="text-[10px] text-slate-400 block mb-0.5">Availability</label>
+            <label className="dugout-kicker text-[9px] text-[#8b97a3] block mb-1">Availability</label>
             <select
               value={filterAvailability}
               onChange={(e) => setFilterAvailability(e.target.value)}
-              className="w-full bg-[#151d29] border border-[#1e293b] rounded p-1 text-white focus:outline-none cursor-pointer"
+              className="w-full bg-[#10151c] border border-[#1e2733] rounded-lg p-1.5 text-white focus:outline-none focus:border-[#e2b64a] cursor-pointer"
             >
               <option value="ALL">All Status</option>
               <option value="AVAILABLE">Available</option>
@@ -853,11 +854,11 @@ export const SquadView: React.FC<SquadViewProps> = ({
 
           {/* 9. Rating */}
           <div>
-            <label className="text-[10px] text-slate-400 block mb-0.5">Rating</label>
+            <label className="dugout-kicker text-[9px] text-[#8b97a3] block mb-1">Rating</label>
             <select
               value={filterRating}
               onChange={(e) => setFilterRating(e.target.value)}
-              className="w-full bg-[#151d29] border border-[#1e293b] rounded p-1 text-white focus:outline-none cursor-pointer"
+              className="w-full bg-[#10151c] border border-[#1e2733] rounded-lg p-1.5 text-white focus:outline-none focus:border-[#e2b64a] cursor-pointer"
             >
               <option value="ALL">All Ratings</option>
               <option value="85+">Elite (85+)</option>
@@ -870,22 +871,22 @@ export const SquadView: React.FC<SquadViewProps> = ({
         {/* Pool Table */}
         <div className="overflow-x-auto max-h-96 overflow-y-auto">
           <table className="w-full text-xs text-left">
-            <thead className="bg-[#151d29] text-slate-400 font-mono text-[10px] uppercase border-b border-[#1e293b] sticky top-0">
+            <thead className="bg-[#10151c] text-[#8b97a3] font-mono text-[10px] uppercase border-b border-[#1e2733] sticky top-0 tracking-wider">
               <tr>
-                <th className="py-2 px-2.5">Player</th>
-                <th className="py-2 px-2">Role</th>
-                <th className="py-2 px-2">Style</th>
-                <th className="py-2 px-2 text-center">Age</th>
-                <th className="py-2 px-2 text-center">Rating</th>
-                <th className="py-2 px-2 text-center">Form</th>
-                <th className="py-2 px-2 text-center">Fitness</th>
-                {!isReadOnly && <th className="py-2 px-2 text-right">Action</th>}
+                <th className="py-2.5 px-3">Player</th>
+                <th className="py-2.5 px-2">Role</th>
+                <th className="py-2.5 px-2">Style</th>
+                <th className="py-2.5 px-2 text-center">Age</th>
+                <th className="py-2.5 px-2 text-center">Rating</th>
+                <th className="py-2.5 px-2 text-center">Form</th>
+                <th className="py-2.5 px-2 text-center">Fitness</th>
+                {!isReadOnly && <th className="py-2.5 px-3 text-right">Action</th>}
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#1e293b]/60">
+            <tbody className="divide-y divide-[#1e2733]">
               {filteredPool.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="py-4 text-center text-slate-400">
+                  <td colSpan={8} className="py-8 text-center text-[#8b97a3]">
                     No eligible players match the selected filters.
                   </td>
                 </tr>
@@ -893,73 +894,73 @@ export const SquadView: React.FC<SquadViewProps> = ({
                 filteredPool.map((player) => {
                   const role = getGranularPlayerRole(player);
                   return (
-                    <tr key={player.id} className="hover:bg-[#151d29] transition">
-                      <td className="py-2 px-2.5">
+                    <tr key={player.id} className="hover:bg-[#10151c] transition-colors">
+                      <td className="py-2.5 px-3">
                         <div
                           onClick={() => onSelectPlayer(player)}
-                          className="font-medium text-white hover:text-emerald-400 cursor-pointer flex items-center gap-1.5"
+                          className="font-bold text-white hover:text-[#e2b64a] cursor-pointer flex items-center gap-2"
                         >
                           <span>{player.name}</span>
                           {player.isInjured && (
-                            <span className="text-[9px] font-bold px-1 py-0.2 rounded bg-rose-950 text-rose-300 border border-rose-800">
+                            <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#ff3d7f]/20 text-[#ff5470] border border-[#ff3d7f]/40 uppercase tracking-wider">
                               INJ
                             </span>
                           )}
                         </div>
                       </td>
-                      <td className="py-2 px-2 text-slate-300">
-                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#151d29] border border-[#1e293b]">
+                      <td className="py-2.5 px-2 text-[#c3ccd6]">
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#10151c] border border-[#1e2733] uppercase">
                           {role.replace(/_/g, ' ')}
                         </span>
                       </td>
-                      <td className="py-2 px-2 text-slate-400 text-[11px]">
-                        {player.battingHand === 'LEFT_HAND' ? 'LHB' : 'RHB'} •{' '}
-                        {player.bowlingStyle?.replace(/_/g, ' ') || 'None'}
+                      <td className="py-2.5 px-2 text-[#8b97a3] text-[11px]">
+                        <span className="text-white font-medium">{player.battingHand === 'LEFT_HAND' ? 'LHB' : 'RHB'}</span> •{' '}
+                        <span>{player.bowlingStyle?.replace(/_/g, ' ') || 'None'}</span>
                       </td>
-                      <td className="py-2 px-2 text-center font-mono text-slate-300">
+                      <td className="py-2.5 px-2 text-center font-mono text-[#c3ccd6]">
                         {player.age || 26}
                       </td>
-                      <td className="py-2 px-2 text-center font-mono font-bold text-white">
-                        {Math.round((player.testRating + player.odiRating + player.t20Rating) / 3)}
+                      <td className="py-2.5 px-2 text-center font-mono font-black text-white">
+                        <span className="text-[#ffe9a8]">{Math.round((player.testRating + player.odiRating + player.t20Rating) / 3)}</span>
                       </td>
-                      <td className="py-2 px-2 text-center font-mono">
+                      <td className="py-2.5 px-2 text-center font-mono font-bold">
                         <span
                           className={`${
                             (player.currentForm || player.attributes?.currentForm || 75) >= 80
-                              ? 'text-emerald-400 font-bold'
+                              ? 'text-[#3fca86]'
                               : (player.currentForm || player.attributes?.currentForm || 75) >= 60
-                              ? 'text-slate-300'
-                              : 'text-rose-400'
+                              ? 'text-[#8fb2d9]'
+                              : 'text-[#ff5470]'
                           }`}
                         >
-                          {player.currentForm || player.attributes?.currentForm || 75}
+                          {player.currentForm || player.attributes?.currentForm || 75}%
                         </span>
                       </td>
-                      <td className="py-2 px-2 text-center font-mono">
+                      <td className="py-2.5 px-2 text-center font-mono font-bold">
                         <span
                           className={`${
                             (player.fitness || 90) >= 85
-                              ? 'text-emerald-400'
+                              ? 'text-[#3fca86]'
                               : (player.fitness || 90) >= 70
-                              ? 'text-amber-400'
-                              : 'text-rose-400 font-bold'
+                              ? 'text-[#e2b64a]'
+                              : 'text-[#ff5470]'
                           }`}
                         >
                           {player.fitness || 90}%
                         </span>
                       </td>
                       {!isReadOnly && (
-                        <td className="py-2 px-2 text-right">
-                          <div className="flex items-center justify-end space-x-1">
+                        <td className="py-2.5 px-3 text-right">
+                          <div className="flex items-center justify-end space-x-1.5">
                             <button
                               onClick={() => handleAddPlayer(player.id)}
-                              className="text-[10px] bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-2 py-0.5 rounded cursor-pointer"
+                              className="text-[10px] bg-gradient-to-r from-[#ffe9a8] to-[#e0ab3a] text-black font-extrabold px-2.5 py-1 rounded-md uppercase tracking-wider cursor-pointer shadow-xs hover:brightness-110"
                             >
                               + Squad
                             </button>
                             <button
                               onClick={() => handleToggleReserve(player.id)}
-                              className="text-[10px] bg-[#151d29] hover:bg-[#1f2c42] text-slate-300 border border-[#1e293b] px-1.5 py-0.5 rounded cursor-pointer"
+                              className="text-[10px] bg-[#10151c] hover:bg-[#161d27] text-[#c3ccd6] border border-[#1e2733] hover:border-[#8fb2d9] px-2 py-1 rounded-md cursor-pointer uppercase font-semibold"
                             >
                               Reserve
                             </button>
@@ -977,35 +978,35 @@ export const SquadView: React.FC<SquadViewProps> = ({
 
       {/* Confirmation Modal */}
       {confirmModal.isOpen && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#111827] border border-[#1e293b] rounded-lg p-5 max-w-md w-full space-y-4 shadow-xl">
+        <div className="fixed inset-0 bg-black/85 backdrop-blur-sm flex items-center justify-center z-50 p-4 select-none">
+          <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-6 max-w-md w-full space-y-4 shadow-2xl text-[#e8edf2]">
             <div className="flex items-start justify-between">
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-amber-400" />
+              <h3 className="text-base font-black text-white flex items-center gap-2 uppercase tracking-wide">
+                <AlertTriangle className="w-4 h-4 text-[#e2b64a]" />
                 {confirmModal.title}
               </h3>
               <button
                 onClick={() =>
                   setConfirmModal({ isOpen: false, title: '', message: '', onConfirm: () => {} })
                 }
-                className="text-slate-400 hover:text-white"
+                className="text-[#8b97a3] hover:text-white"
               >
                 ✕
               </button>
             </div>
-            <p className="text-xs text-slate-300 leading-relaxed">{confirmModal.message}</p>
-            <div className="flex items-center justify-end space-x-2 pt-2 border-t border-[#1e293b]">
+            <p className="text-xs text-[#c3ccd6] leading-relaxed">{confirmModal.message}</p>
+            <div className="flex items-center justify-end space-x-2.5 pt-3 border-t border-[#1e2733]">
               <button
                 onClick={() =>
                   setConfirmModal({ isOpen: false, title: '', message: '', onConfirm: () => {} })
                 }
-                className="text-xs text-slate-400 hover:text-white px-3 py-1.5 rounded bg-[#151d29] border border-[#1e293b] cursor-pointer"
+                className="text-xs text-[#8b97a3] hover:text-white px-3.5 py-2 rounded-xl bg-[#10151c] border border-[#1e2733] cursor-pointer uppercase font-bold"
               >
                 Cancel
               </button>
               <button
                 onClick={confirmModal.onConfirm}
-                className="text-xs font-bold text-white px-3.5 py-1.5 rounded bg-rose-600 hover:bg-rose-500 cursor-pointer shadow-sm"
+                className="text-xs font-black text-white px-4 py-2 rounded-xl bg-[#ff3d7f] hover:bg-[#ff5470] cursor-pointer shadow-sm uppercase tracking-wider"
               >
                 Confirm Decision
               </button>

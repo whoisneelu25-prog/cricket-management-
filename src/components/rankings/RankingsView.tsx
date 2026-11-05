@@ -8,6 +8,7 @@ import {
   Shield,
   HelpCircle,
   BarChart2,
+  Sparkles,
 } from 'lucide-react';
 import {
   CareerSave,
@@ -22,6 +23,7 @@ import {
   getSortedTeamRankingEntries,
   computeAllPlayerRankings,
 } from '../../engine/rankingEngine';
+import { CountryFlag } from '../common/CountryFlag';
 
 interface RankingsViewProps {
   career?: CareerSave;
@@ -80,39 +82,40 @@ export const RankingsView: React.FC<RankingsViewProps> = ({ career, onSelectPlay
   }, [allPlayerRankings, selectedFormat, playerCategory, minInningsFilter]);
 
   return (
-    <div className="space-y-4 select-none pb-8 text-slate-200">
+    <div className="space-y-5 select-none pb-8 text-[#e8edf2]">
       {/* Top Banner: Format Toggle & Info */}
-      <div className="bg-[#111827] border border-[#1e293b] rounded-lg p-3.5 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-sm">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded bg-[#151d29] border border-[#1e293b] flex items-center justify-center text-emerald-400">
-            <TrendingUp className="w-5 h-5" />
+      <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
+        <div className="flex items-center space-x-3.5">
+          <div className="w-12 h-12 rounded-xl bg-[#10151c] border border-[#1e2733] flex items-center justify-center text-[#e2b64a] shadow-inner">
+            <Trophy className="w-6 h-6" />
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className="text-base font-bold text-white tracking-wide">
-                ICM Official World Cricket Rankings
-              </h1>
-              <span className="text-[10px] bg-[#142646] text-emerald-400 font-mono px-1.5 py-0.5 rounded border border-emerald-900/60 font-bold">
-                Ratings Engine
+              <span className="dugout-kicker text-[11px] text-[#e2b64a]">World Standings</span>
+              <span className="text-[10px] bg-[#10151c] text-[#8fb2d9] font-mono px-2 py-0.5 rounded-full border border-[#1e2733] font-bold">
+                Dynamic Ratings
               </span>
             </div>
-            <p className="text-xs text-slate-400">
-              Deterministic rating model reflecting international match results, opponent strength and decay
+            <h1 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight mt-0.5">
+              ICC Official World Cricket Rankings
+            </h1>
+            <p className="text-xs text-[#8b97a3] mt-0.5">
+              Deterministic rating model reflecting international results, opponent strength and decay
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           {/* Format Tabs */}
-          <div className="flex bg-[#151d29] p-0.5 rounded border border-[#1e293b]">
+          <div className="flex bg-[#10151c] p-1 rounded-xl border border-[#1e2733]">
             {(['TEST', 'ODI', 'T20I'] as MatchFormat[]).map((fmt) => (
               <button
                 key={fmt}
                 onClick={() => setSelectedFormat(fmt)}
-                className={`px-3 py-1 text-xs font-bold rounded transition cursor-pointer ${
+                className={`px-3.5 py-1.5 text-xs font-bold rounded-lg uppercase tracking-wider transition cursor-pointer ${
                   selectedFormat === fmt
-                    ? 'bg-emerald-600 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-white'
+                    ? 'bg-gradient-to-r from-[#ffe9a8] to-[#e0ab3a] text-black shadow-sm font-extrabold'
+                    : 'text-[#8b97a3] hover:text-white'
                 }`}
               >
                 {fmt}
@@ -123,127 +126,127 @@ export const RankingsView: React.FC<RankingsViewProps> = ({ career, onSelectPlay
           <button
             onClick={() => setShowMethodologyModal(true)}
             title="View Rating Methodology"
-            className="text-xs text-slate-400 hover:text-white px-2 py-1 rounded bg-[#151d29] border border-[#1e293b] flex items-center gap-1 cursor-pointer"
+            className="text-xs text-[#8b97a3] hover:text-white px-3 py-2 rounded-xl bg-[#10151c] border border-[#1e2733] hover:border-[#8fb2d9] flex items-center gap-1.5 cursor-pointer uppercase font-semibold transition"
           >
-            <HelpCircle className="w-3.5 h-3.5 text-slate-400" />
+            <HelpCircle className="w-3.5 h-3.5 text-[#e2b64a]" />
             <span className="hidden sm:inline">Methodology</span>
           </button>
         </div>
       </div>
 
       {/* Primary Tabs: Team Rankings vs Player Rankings */}
-      <div className="flex items-center space-x-2 border-b border-[#1e293b] pb-2 text-xs">
+      <div className="flex items-center space-x-2 border-b border-[#1e2733] pb-3 text-xs">
         <button
           onClick={() => setActiveTab('TEAMS')}
-          className={`px-3 py-1.5 rounded font-bold transition cursor-pointer flex items-center gap-1.5 ${
+          className={`px-4 py-2 rounded-xl font-bold transition cursor-pointer flex items-center gap-2 uppercase tracking-wider ${
             activeTab === 'TEAMS'
-              ? 'bg-[#151d29] text-emerald-400 border border-[#1e293b]'
-              : 'text-slate-400 hover:text-white'
+              ? 'bg-[#10151c] text-[#e2b64a] border border-[#e2b64a]/40 shadow-xs'
+              : 'text-[#8b97a3] hover:text-white border border-transparent'
           }`}
         >
-          <Shield className="w-3.5 h-3.5" />
+          <Shield className="w-4 h-4" />
           <span>National Team Rankings</span>
         </button>
         <button
           onClick={() => setActiveTab('PLAYERS')}
-          className={`px-3 py-1.5 rounded font-bold transition cursor-pointer flex items-center gap-1.5 ${
+          className={`px-4 py-2 rounded-xl font-bold transition cursor-pointer flex items-center gap-2 uppercase tracking-wider ${
             activeTab === 'PLAYERS'
-              ? 'bg-[#151d29] text-emerald-400 border border-[#1e293b]'
-              : 'text-slate-400 hover:text-white'
+              ? 'bg-[#10151c] text-[#e2b64a] border border-[#e2b64a]/40 shadow-xs'
+              : 'text-[#8b97a3] hover:text-white border border-transparent'
           }`}
         >
-          <Award className="w-3.5 h-3.5" />
+          <Award className="w-4 h-4" />
           <span>Player Rankings ({selectedFormat})</span>
         </button>
       </div>
 
       {activeTab === 'TEAMS' ? (
-        <div className="space-y-4">
+        <div className="space-y-5">
           {/* Key Metrics Overview Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
             {/* World #1 Card */}
-            <div className="bg-[#111827] border border-[#1e293b] p-3 rounded-lg flex items-center justify-between">
+            <div className="bg-[#10151c] border border-[#e2b64a]/40 p-4 rounded-xl flex items-center justify-between shadow-xs">
               <div>
-                <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
-                  #1 Ranked Nation
+                <span className="dugout-kicker text-[10px] text-[#e2b64a] block mb-1">
+                  World #1 Nation
                 </span>
-                <div className="flex items-center space-x-2 mt-1">
-                  <span className="text-xl">{leaderTeam?.flagEmoji}</span>
-                  <span className="text-sm font-bold text-white">{leaderTeam?.name}</span>
+                <div className="flex items-center space-x-2.5 mt-1">
+                  <CountryFlag countryCode={leaderTeam?.code || ''} size="sm" />
+                  <span className="text-sm font-black text-white uppercase">{leaderTeam?.name}</span>
                 </div>
               </div>
               <div className="text-right font-mono">
-                <span className="text-emerald-400 font-bold text-base">{leaderTeam?.rating}</span>
-                <span className="text-[10px] text-slate-400 block">Rating Pts</span>
+                <span className="text-[#ffe9a8] font-black text-xl">{leaderTeam?.rating}</span>
+                <span className="dugout-kicker text-[9px] text-[#8b97a3] block">Rating Pts</span>
               </div>
             </div>
 
             {/* User Country Position */}
-            <div className="bg-[#111827] border border-[#1e293b] p-3 rounded-lg flex items-center justify-between">
+            <div className="bg-[#10151c] border border-[#1e2733] p-4 rounded-xl flex items-center justify-between shadow-xs">
               <div>
-                <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                <span className="dugout-kicker text-[10px] text-[#8fb2d9] block mb-1">
                   Your Nation Position
                 </span>
-                <div className="flex items-center space-x-2 mt-1">
-                  <span className="text-xl">{userEntry?.flagEmoji}</span>
-                  <span className="text-base font-bold font-mono text-emerald-400">
+                <div className="flex items-center space-x-2.5 mt-1">
+                  <CountryFlag countryCode={userEntry?.code || ''} size="sm" />
+                  <span className="text-lg font-black font-mono text-[#e2b64a]">
                     #{userEntry?.position || '-'}
                   </span>
-                  <span className="text-xs text-white font-medium">{userEntry?.name}</span>
+                  <span className="text-xs text-white font-bold">{userEntry?.name}</span>
                 </div>
               </div>
               <div className="text-right font-mono">
-                <span className="text-white font-bold text-base">{userEntry?.rating || '-'}</span>
-                <span className="text-[10px] text-slate-400 block">Rating Pts</span>
+                <span className="text-white font-black text-xl">{userEntry?.rating || '-'}</span>
+                <span className="dugout-kicker text-[9px] text-[#8b97a3] block">Rating Pts</span>
               </div>
             </div>
 
             {/* Gap to Next Rank */}
-            <div className="bg-[#111827] border border-[#1e293b] p-3 rounded-lg flex items-center justify-between">
+            <div className="bg-[#10151c] border border-[#1e2733] p-4 rounded-xl flex items-center justify-between shadow-xs">
               <div>
-                <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                <span className="dugout-kicker text-[10px] text-[#8b97a3] block mb-1">
                   Gap to Next Rank
                 </span>
                 <div className="mt-1">
                   {nextTargetEntry ? (
-                    <span className="text-sm font-bold text-amber-300">
+                    <span className="text-sm font-bold text-[#ffe9a8]">
                       {ptsDifferenceToNext > 0 ? `${ptsDifferenceToNext} pts behind` : 'Tied'}
                     </span>
                   ) : (
-                    <span className="text-sm font-bold text-emerald-400">Top of World</span>
+                    <span className="text-sm font-black text-[#3fca86] uppercase">Top of World</span>
                   )}
                 </div>
               </div>
               <div className="text-right">
-                <span className="text-[11px] text-slate-400 font-mono">
-                  {nextTargetEntry ? `Target: #${nextTargetEntry.position} ${nextTargetEntry.code}` : 'Lead Defended'}
+                <span className="text-[11px] text-[#8b97a3] font-mono">
+                  {nextTargetEntry ? `Target: #${nextTargetEntry.position} ${nextTargetEntry.code}` : 'Rank 1 Crown'}
                 </span>
               </div>
             </div>
 
             {/* Movement / Trend */}
-            <div className="bg-[#111827] border border-[#1e293b] p-3 rounded-lg flex items-center justify-between">
+            <div className="bg-[#10151c] border border-[#1e2733] p-4 rounded-xl flex items-center justify-between shadow-xs">
               <div>
-                <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                <span className="dugout-kicker text-[10px] text-[#8b97a3] block mb-1">
                   Recent Trend
                 </span>
                 <div className="flex items-center space-x-1.5 mt-1 font-mono text-sm">
                   {userEntry && userEntry.previousPosition > userEntry.position ? (
-                    <span className="text-emerald-400 font-bold flex items-center">
+                    <span className="text-[#3fca86] font-bold flex items-center">
                       <TrendingUp className="w-4 h-4 mr-1" /> +{userEntry.previousPosition - userEntry.position} Places
                     </span>
                   ) : userEntry && userEntry.previousPosition < userEntry.position ? (
-                    <span className="text-rose-400 font-bold flex items-center">
+                    <span className="text-[#ff5470] font-bold flex items-center">
                       <TrendingDown className="w-4 h-4 mr-1" /> -{userEntry.position - userEntry.previousPosition} Places
                     </span>
                   ) : (
-                    <span className="text-slate-400 flex items-center">
+                    <span className="text-[#8b97a3] flex items-center">
                       <Minus className="w-4 h-4 mr-1" /> Steady
                     </span>
                   )}
                 </div>
               </div>
-              <div className="text-right font-mono text-[10px] text-slate-400">
+              <div className="text-right font-mono text-[10px] text-[#8b97a3]">
                 Prev: #{userEntry?.previousPosition || userEntry?.position}
               </div>
             </div>
@@ -251,25 +254,25 @@ export const RankingsView: React.FC<RankingsViewProps> = ({ career, onSelectPlay
 
           {/* Real SVG Ranking Progression Chart from Snapshots */}
           {userHistoricalData.length > 1 && (
-            <div className="bg-[#111827] border border-[#1e293b] p-3.5 rounded-lg space-y-2">
-              <div className="flex items-center justify-between border-b border-[#1e293b] pb-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                  <BarChart2 className="w-3.5 h-3.5 text-emerald-400" />
+            <div className="bg-[#070a0e] border border-[#1e2733] p-5 rounded-2xl space-y-3 shadow-xl">
+              <div className="flex items-center justify-between border-b border-[#1e2733] pb-3">
+                <span className="dugout-kicker text-xs text-[#e2b64a] flex items-center gap-2">
+                  <BarChart2 className="w-4 h-4 text-[#e2b64a]" />
                   {userEntry?.name} {selectedFormat} Rating History Progression
                 </span>
-                <span className="text-[10px] text-slate-400 font-mono">
+                <span className="text-[10px] text-[#8b97a3] font-mono uppercase tracking-wider">
                   Saved snapshots: {userHistoricalData.length} records
                 </span>
               </div>
 
-              {/* Simple Clean Responsive SVG Line Chart */}
-              <div className="h-28 w-full pt-2">
+              {/* Clean Responsive SVG Line Chart */}
+              <div className="h-32 w-full pt-2">
                 {(() => {
                   const minRating = Math.min(...userHistoricalData.map((d) => d.rating)) - 5;
                   const maxRating = Math.max(...userHistoricalData.map((d) => d.rating)) + 5;
                   const range = Math.max(10, maxRating - minRating);
                   const width = 600;
-                  const height = 90;
+                  const height = 100;
                   const padding = 20;
 
                   const points = userHistoricalData.map((d, idx) => {
@@ -283,22 +286,22 @@ export const RankingsView: React.FC<RankingsViewProps> = ({ career, onSelectPlay
                   return (
                     <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-full overflow-visible">
                       {/* Grid Lines */}
-                      <line x1={padding} y1={padding} x2={width - padding} y2={padding} stroke="#1e293b" strokeDasharray="3 3" />
-                      <line x1={padding} y1={height / 2} x2={width - padding} y2={height / 2} stroke="#1e293b" strokeDasharray="3 3" />
-                      <line x1={padding} y1={height - padding} x2={width - padding} y2={height - padding} stroke="#1e293b" />
+                      <line x1={padding} y1={padding} x2={width - padding} y2={padding} stroke="#1e2733" strokeDasharray="3 3" />
+                      <line x1={padding} y1={height / 2} x2={width - padding} y2={height / 2} stroke="#1e2733" strokeDasharray="3 3" />
+                      <line x1={padding} y1={height - padding} x2={width - padding} y2={height - padding} stroke="#1e2733" />
 
                       {/* Line */}
-                      <path d={pathStr} fill="none" stroke="#10b981" strokeWidth="2.5" />
+                      <path d={pathStr} fill="none" stroke="#e2b64a" strokeWidth="2.5" />
 
                       {/* Data Points */}
                       {points.map((p, idx) => (
                         <g key={idx}>
-                          <circle cx={p.x} cy={p.y} r="4" fill="#0b0e14" stroke="#10b981" strokeWidth="2" />
+                          <circle cx={p.x} cy={p.y} r="4.5" fill="#070a0e" stroke="#e2b64a" strokeWidth="2.5" />
                           <text
                             x={p.x}
                             y={p.y - 8}
                             textAnchor="middle"
-                            fill="#e2e8f0"
+                            fill="#ffe9a8"
                             fontSize="9"
                             fontFamily="monospace"
                             fontWeight="bold"
@@ -314,28 +317,30 @@ export const RankingsView: React.FC<RankingsViewProps> = ({ career, onSelectPlay
             </div>
           )}
 
-          {/* Full National Team Rankings Table */}
-          <div className="bg-[#111827] border border-[#1e293b] rounded-lg overflow-hidden">
-            <div className="p-3 bg-[#151d29] border-b border-[#1e293b] flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-300">
-                Official {selectedFormat} Table Standings
+          {/* Full National Team Rankings Table in Dugout Style */}
+          <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl overflow-hidden shadow-2xl">
+            <div className="p-4 bg-[#10151c] border-b border-[#1e2733] flex items-center justify-between">
+              <span className="dugout-kicker text-xs text-[#e2b64a]">
+                Official {selectedFormat} Championship Standings
               </span>
-              <span className="text-[10px] text-slate-400 font-mono">10 Full ICC Members</span>
+              <span className="text-[10px] text-[#8b97a3] font-mono uppercase tracking-wider">
+                Full ICC Test &amp; White-Ball Nations
+              </span>
             </div>
 
             <div className="overflow-x-auto">
               <table className="w-full text-xs text-left">
-                <thead className="bg-[#0e131d] text-slate-400 font-mono text-[10px] uppercase border-b border-[#1e293b]">
+                <thead className="bg-[#070a0e] text-[#8b97a3] font-mono text-[10px] uppercase border-b border-[#1e2733] tracking-wider">
                   <tr>
-                    <th className="py-2.5 px-3 text-center">Pos</th>
-                    <th className="py-2.5 px-3">Country</th>
-                    <th className="py-2.5 px-3 text-center">Matches</th>
-                    <th className="py-2.5 px-3 text-center">Points</th>
-                    <th className="py-2.5 px-3 text-right">Rating</th>
-                    <th className="py-2.5 px-3 text-center">Movement</th>
+                    <th className="py-3 px-4 text-center">Pos</th>
+                    <th className="py-3 px-4">Country</th>
+                    <th className="py-3 px-3 text-center">Matches</th>
+                    <th className="py-3 px-3 text-center">Points</th>
+                    <th className="py-3 px-4 text-right">Rating</th>
+                    <th className="py-3 px-4 text-center">Movement</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1e293b]/60">
+                <tbody className="divide-y divide-[#1e2733]">
                   {teamEntries.map((entry) => {
                     const isUser = entry.teamId === userTeamId;
                     const movement = entry.previousPosition - entry.position;
@@ -343,58 +348,60 @@ export const RankingsView: React.FC<RankingsViewProps> = ({ career, onSelectPlay
                     return (
                       <tr
                         key={entry.teamId}
-                        className={`transition ${
-                          isUser ? 'bg-[#142646]/40 hover:bg-[#142646]/60' : 'hover:bg-[#151d29]'
+                        className={`transition-colors ${
+                          isUser ? 'bg-[#e2b64a]/10 hover:bg-[#e2b64a]/15 font-semibold' : 'hover:bg-[#10151c]'
                         }`}
                       >
-                        <td className="py-2.5 px-3 text-center font-mono font-bold">
+                        <td className="py-3 px-4 text-center font-mono font-bold">
                           <span
-                            className={`w-6 h-6 rounded inline-flex items-center justify-center ${
+                            className={`w-7 h-7 rounded-lg inline-flex items-center justify-center ${
                               entry.position === 1
-                                ? 'bg-amber-950 text-amber-300 border border-amber-700/60 font-black'
+                                ? 'bg-gradient-to-r from-[#ffe9a8] to-[#e0ab3a] text-black font-black shadow-sm'
                                 : entry.position <= 3
-                                ? 'bg-[#151d29] text-emerald-400 border border-[#1e293b]'
-                                : 'text-slate-400'
+                                ? 'bg-[#10151c] text-[#8fb2d9] border border-[#1e2733]'
+                                : 'text-[#8b97a3]'
                             }`}
                           >
                             {entry.position}
                           </span>
                         </td>
-                        <td className="py-2.5 px-3">
-                          <div className="flex items-center space-x-2">
-                            <span className="text-base">{entry.flagEmoji}</span>
-                            <span className={`font-semibold ${isUser ? 'text-emerald-300' : 'text-white'}`}>
+                        <td className="py-3 px-4">
+                          <div className="flex items-center space-x-2.5">
+                            <CountryFlag countryCode={entry.code} size="xs" />
+                            <span className={`font-bold ${isUser ? 'text-[#ffe9a8]' : 'text-white'}`}>
                               {entry.name}
                             </span>
-                            <span className="text-[10px] font-mono text-slate-400">({entry.code})</span>
+                            <span className="text-[10px] font-mono text-[#8b97a3]">({entry.code})</span>
                             {isUser && (
-                              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">
+                              <span className="text-[9px] font-black px-1.5 py-0.2 rounded bg-[#e2b64a] text-black uppercase tracking-wider">
                                 MANAGED
                               </span>
                             )}
                           </div>
                         </td>
-                        <td className="py-2.5 px-3 text-center font-mono text-slate-300">
+                        <td className="py-3 px-3 text-center font-mono text-[#c3ccd6]">
                           {entry.matches}
                         </td>
-                        <td className="py-2.5 px-3 text-center font-mono text-slate-300">
+                        <td className="py-3 px-3 text-center font-mono text-[#c3ccd6]">
                           {entry.points}
                         </td>
-                        <td className="py-2.5 px-3 text-right font-mono font-bold text-white text-sm">
-                          {entry.rating}
+                        <td className="py-3 px-4 text-right font-mono font-black text-white text-base">
+                          <span className={entry.position === 1 ? 'text-[#ffe9a8]' : 'text-white'}>
+                            {entry.rating}
+                          </span>
                         </td>
-                        <td className="py-2.5 px-3 text-center font-mono">
+                        <td className="py-3 px-4 text-center font-mono">
                           {movement > 0 ? (
-                            <span className="text-emerald-400 font-bold inline-flex items-center">
-                              <TrendingUp className="w-3 h-3 mr-0.5" /> +{movement}
+                            <span className="text-[#3fca86] font-bold inline-flex items-center">
+                              <TrendingUp className="w-3.5 h-3.5 mr-0.5" /> +{movement}
                             </span>
                           ) : movement < 0 ? (
-                            <span className="text-rose-400 font-bold inline-flex items-center">
-                              <TrendingDown className="w-3 h-3 mr-0.5" /> {movement}
+                            <span className="text-[#ff5470] font-bold inline-flex items-center">
+                              <TrendingDown className="w-3.5 h-3.5 mr-0.5" /> {movement}
                             </span>
                           ) : (
-                            <span className="text-slate-500 inline-flex items-center">
-                              <Minus className="w-3 h-3 mr-0.5" /> 0
+                            <span className="text-[#556375] inline-flex items-center">
+                              <Minus className="w-3.5 h-3.5 mr-0.5" /> 0
                             </span>
                           )}
                         </td>
@@ -410,17 +417,17 @@ export const RankingsView: React.FC<RankingsViewProps> = ({ career, onSelectPlay
         /* Player Rankings Section (9 Tables: Format x Category) */
         <div className="space-y-4">
           {/* Sub-Category Filter & Minimum Eligibility Slider */}
-          <div className="bg-[#111827] border border-[#1e293b] p-3 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+          <div className="bg-[#070a0e] border border-[#1e2733] p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
             {/* Category Toggle */}
-            <div className="flex bg-[#151d29] p-0.5 rounded border border-[#1e293b]">
+            <div className="flex bg-[#10151c] p-1 rounded-xl border border-[#1e2733]">
               {(['BATTER', 'BOWLER', 'ALL_ROUNDER'] as PlayerRankingCategory[]).map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setPlayerCategory(cat)}
-                  className={`px-3 py-1 font-bold rounded transition cursor-pointer ${
+                  className={`px-3.5 py-1.5 font-bold rounded-lg transition cursor-pointer uppercase tracking-wider ${
                     playerCategory === cat
-                      ? 'bg-emerald-600 text-white shadow-sm'
-                      : 'text-slate-400 hover:text-white'
+                      ? 'bg-gradient-to-r from-[#ffe9a8] to-[#e0ab3a] text-black shadow-sm font-extrabold'
+                      : 'text-[#8b97a3] hover:text-white'
                   }`}
                 >
                   {cat.replace(/_/g, ' ')}S
@@ -429,17 +436,17 @@ export const RankingsView: React.FC<RankingsViewProps> = ({ career, onSelectPlay
             </div>
 
             {/* Minimum Eligibility Filter */}
-            <div className="flex items-center space-x-2">
-              <span className="text-slate-400 font-medium text-[11px]">Minimum Matches:</span>
+            <div className="flex items-center space-x-2.5">
+              <span className="dugout-kicker text-[10px] text-[#8b97a3]">Minimum Matches:</span>
               <div className="flex items-center space-x-1">
                 {[0, 1, 3, 5, 10].map((count) => (
                   <button
                     key={count}
                     onClick={() => setMinInningsFilter(count)}
-                    className={`px-2 py-0.5 rounded text-[11px] font-mono transition cursor-pointer ${
+                    className={`px-2.5 py-1 rounded-md text-[11px] font-mono transition cursor-pointer ${
                       minInningsFilter === count
-                        ? 'bg-emerald-600 text-white font-bold'
-                        : 'bg-[#151d29] text-slate-400 hover:text-white border border-[#1e293b]'
+                        ? 'bg-[#e2b64a] text-black font-black'
+                        : 'bg-[#10151c] text-[#8b97a3] hover:text-white border border-[#1e2733]'
                     }`}
                   >
                     {count}+
@@ -450,100 +457,102 @@ export const RankingsView: React.FC<RankingsViewProps> = ({ career, onSelectPlay
           </div>
 
           {/* Player Rankings Table */}
-          <div className="bg-[#111827] border border-[#1e293b] rounded-lg overflow-hidden">
-            <div className="p-3 bg-[#151d29] border-b border-[#1e293b] flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-300">
+          <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl overflow-hidden shadow-2xl">
+            <div className="p-4 bg-[#10151c] border-b border-[#1e2733] flex items-center justify-between">
+              <span className="dugout-kicker text-xs text-[#e2b64a]">
                 Top International {selectedFormat} {playerCategory}s
               </span>
-              <span className="text-[10px] text-slate-400 font-mono">
+              <span className="text-[10px] text-[#8b97a3] font-mono uppercase tracking-wider">
                 {displayedPlayerRankings.length} Players Qualified
               </span>
             </div>
 
             <div className="overflow-x-auto">
               <table className="w-full text-xs text-left">
-                <thead className="bg-[#0e131d] text-slate-400 font-mono text-[10px] uppercase border-b border-[#1e293b]">
+                <thead className="bg-[#070a0e] text-[#8b97a3] font-mono text-[10px] uppercase border-b border-[#1e2733] tracking-wider">
                   <tr>
-                    <th className="py-2.5 px-3 text-center">Rank</th>
-                    <th className="py-2.5 px-3">Player</th>
-                    <th className="py-2.5 px-3">Country</th>
-                    <th className="py-2.5 px-3">Role</th>
-                    <th className="py-2.5 px-3 text-center">Matches</th>
-                    <th className="py-2.5 px-3 text-center">Stats Snapshot</th>
-                    <th className="py-2.5 px-3 text-right">Rating</th>
-                    <th className="py-2.5 px-3 text-center">Trend</th>
+                    <th className="py-3 px-4 text-center">Rank</th>
+                    <th className="py-3 px-4">Player</th>
+                    <th className="py-3 px-3">Country</th>
+                    <th className="py-3 px-3">Role</th>
+                    <th className="py-3 px-3 text-center">Matches</th>
+                    <th className="py-3 px-3 text-center">Stats Snapshot</th>
+                    <th className="py-3 px-4 text-right">Rating</th>
+                    <th className="py-3 px-4 text-center">Trend</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1e293b]/60">
+                <tbody className="divide-y divide-[#1e2733]">
                   {displayedPlayerRankings.length === 0 ? (
                     <tr>
-                      <td colSpan={8} className="py-6 text-center text-slate-400">
+                      <td colSpan={8} className="py-12 text-center text-[#8b97a3]">
                         No players meet the qualification criteria for this category.
                       </td>
                     </tr>
                   ) : (
-                    displayedPlayerRankings.slice(0, 25).map((entry) => {
+                    displayedPlayerRankings.slice(0, 30).map((entry) => {
                       const isUserPlayer = entry.countryId === userTeamId;
                       const movement = entry.movement;
 
                       return (
                         <tr
                           key={entry.playerId}
-                          className={`transition ${
-                            isUserPlayer ? 'bg-[#142646]/30 hover:bg-[#142646]/50' : 'hover:bg-[#151d29]'
+                          className={`transition-colors ${
+                            isUserPlayer ? 'bg-[#e2b64a]/10 hover:bg-[#e2b64a]/15' : 'hover:bg-[#10151c]'
                           }`}
                         >
-                          <td className="py-2.5 px-3 text-center font-mono font-bold">
+                          <td className="py-3 px-4 text-center font-mono font-bold">
                             <span
-                              className={`w-6 h-6 rounded inline-flex items-center justify-center ${
+                              className={`w-7 h-7 rounded-lg inline-flex items-center justify-center ${
                                 entry.rank === 1
-                                  ? 'bg-amber-950 text-amber-300 border border-amber-700/60 font-black'
+                                  ? 'bg-gradient-to-r from-[#ffe9a8] to-[#e0ab3a] text-black font-black shadow-sm'
                                   : entry.rank <= 3
-                                  ? 'bg-[#151d29] text-emerald-400 border border-[#1e293b]'
-                                  : 'text-slate-400'
+                                  ? 'bg-[#10151c] text-[#8fb2d9] border border-[#1e2733]'
+                                  : 'text-[#8b97a3]'
                               }`}
                             >
                               {entry.rank}
                             </span>
                           </td>
-                          <td className="py-2.5 px-3">
+                          <td className="py-3 px-4">
                             <span
                               onClick={() => {
                                 const p = career?.emergingPlayers?.find((x) => x.id === entry.playerId);
                                 if (p) onSelectPlayer(p);
                               }}
-                              className="font-bold text-white hover:text-emerald-400 cursor-pointer"
+                              className="font-bold text-white hover:text-[#e2b64a] cursor-pointer"
                             >
                               {entry.playerName}
                             </span>
                           </td>
-                          <td className="py-2.5 px-3">
-                            <span className="font-mono text-slate-300">{entry.countryName}</span>
+                          <td className="py-3 px-3">
+                            <span className="font-mono text-[#c3ccd6]">{entry.countryName}</span>
                           </td>
-                          <td className="py-2.5 px-3 text-slate-400 text-[11px]">
+                          <td className="py-3 px-3 text-[#8b97a3] text-[11px] uppercase font-mono">
                             {entry.category}
                           </td>
-                          <td className="py-2.5 px-3 text-center font-mono text-slate-300">
+                          <td className="py-3 px-3 text-center font-mono text-[#c3ccd6]">
                             {entry.matchesPlayed}
                           </td>
-                          <td className="py-2.5 px-3 text-center font-mono text-[11px] text-slate-300">
+                          <td className="py-3 px-3 text-center font-mono text-[11px] text-[#ffe9a8] font-bold">
                             {entry.highlightStats || '-'}
                           </td>
-                          <td className="py-2.5 px-3 text-right font-mono font-bold text-white">
-                            {entry.rating}
+                          <td className="py-3 px-4 text-right font-mono font-black text-white text-base">
+                            <span className={entry.rank === 1 ? 'text-[#ffe9a8]' : 'text-white'}>
+                              {entry.rating}
+                            </span>
                           </td>
-                          <td className="py-2.5 px-3 text-center font-mono">
+                          <td className="py-3 px-4 text-center font-mono">
                             {movement > 0 ? (
-                              <span className="text-emerald-400 font-bold inline-flex items-center">
-                                <TrendingUp className="w-3 h-3 mr-0.5" /> +{movement}
+                              <span className="text-[#3fca86] font-bold inline-flex items-center">
+                                <TrendingUp className="w-3.5 h-3.5 mr-0.5" /> +{movement}
                               </span>
                             ) : movement < 0 ? (
-                              <span className="text-rose-400 font-bold inline-flex items-center">
-                                <TrendingDown className="w-3 h-3 mr-0.5" /> {movement}
+                              <span className="text-[#ff5470] font-bold inline-flex items-center">
+                                <TrendingDown className="w-3.5 h-3.5 mr-0.5" /> {movement}
                               </span>
                             ) : (
-                              <span className="text-slate-500 inline-flex items-center">
-                                <Minus className="w-3 h-3 mr-0.5" /> 0
+                              <span className="text-[#556375] inline-flex items-center">
+                                <Minus className="w-3.5 h-3.5 mr-0.5" /> 0
                               </span>
                             )}
                           </td>
@@ -560,44 +569,44 @@ export const RankingsView: React.FC<RankingsViewProps> = ({ career, onSelectPlay
 
       {/* Methodology Modal */}
       {showMethodologyModal && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#111827] border border-[#1e293b] rounded-lg p-5 max-w-lg w-full space-y-3.5 shadow-xl text-xs">
-            <div className="flex items-center justify-between border-b border-[#1e293b] pb-2.5">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <HelpCircle className="w-4 h-4 text-emerald-400" />
+        <div className="fixed inset-0 bg-black/85 backdrop-blur-sm flex items-center justify-center z-50 p-4 select-none">
+          <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-6 max-w-lg w-full space-y-4 shadow-2xl text-xs text-[#e8edf2]">
+            <div className="flex items-center justify-between border-b border-[#1e2733] pb-3">
+              <h3 className="text-sm font-black text-white flex items-center gap-2 uppercase tracking-wide">
+                <HelpCircle className="w-4 h-4 text-[#e2b64a]" />
                 ICM Official Rating Methodology
               </h3>
               <button
                 onClick={() => setShowMethodologyModal(false)}
-                className="text-slate-400 hover:text-white"
+                className="text-[#8b97a3] hover:text-white"
               >
                 ✕
               </button>
             </div>
 
-            <p className="text-slate-300 leading-relaxed">
+            <p className="text-[#c3ccd6] leading-relaxed">
               The ICM International Rating System is a deterministic in-game model separate from tournament standings:
             </p>
 
-            <ul className="list-disc pl-5 space-y-1.5 text-slate-300">
+            <ul className="list-disc pl-5 space-y-2 text-[#c3ccd6]">
               <li>
-                <strong>Opponent Strength:</strong> Wins against higher-rated nations earn larger rating bonuses; losses against lower-ranked teams incur heavier penalties.
+                <strong className="text-white">Opponent Strength:</strong> Wins against higher-rated nations earn larger rating bonuses; losses against lower-ranked teams incur heavier penalties.
               </li>
               <li>
-                <strong>Format-Specific Scaling:</strong> Test matches possess longer cycles, while T20Is fluctuate more dynamically reflecting format volatility.
+                <strong className="text-white">Format-Specific Scaling:</strong> Test matches possess longer cycles, while T20Is fluctuate more dynamically reflecting format volatility.
               </li>
               <li>
-                <strong>Decay &amp; Recency:</strong> Performance points decay steadily each season to ensure current form outweighs distant historical triumphs.
+                <strong className="text-white">Decay &amp; Recency:</strong> Performance points decay steadily each season to ensure current form outweighs distant historical triumphs.
               </li>
               <li>
-                <strong>Player Rankings:</strong> Weighted composite of batting average, strike rate, wicket haul frequency and economy rates in each isolated format.
+                <strong className="text-white">Player Rankings:</strong> Weighted composite of batting average, strike rate, wicket haul frequency and economy rates in each isolated format.
               </li>
             </ul>
 
-            <div className="pt-2 border-t border-[#1e293b] text-right">
+            <div className="pt-3 border-t border-[#1e2733] text-right">
               <button
                 onClick={() => setShowMethodologyModal(false)}
-                className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-1.5 rounded cursor-pointer"
+                className="btn-gold px-5 py-2 text-xs"
               >
                 Close
               </button>

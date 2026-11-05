@@ -16,27 +16,27 @@ const SIZE_STYLES = {
   xs: {
     container: 'w-6 h-6 text-[10px]',
     flag: 'xs' as const,
-    icon: 'text-[9px]',
+    badge: 'text-[7px] px-1',
   },
   sm: {
     container: 'w-8 h-8 text-xs',
     flag: 'xs' as const,
-    icon: 'text-[10px]',
+    badge: 'text-[8px] px-1',
   },
   md: {
     container: 'w-10 h-10 text-sm',
     flag: 'sm' as const,
-    icon: 'text-xs',
+    badge: 'text-[9px] px-1.5',
   },
   lg: {
     container: 'w-14 h-14 text-base font-bold',
     flag: 'sm' as const,
-    icon: 'text-sm',
+    badge: 'text-[10px] px-2',
   },
   xl: {
     container: 'w-20 h-20 text-xl font-black',
     flag: 'md' as const,
-    icon: 'text-base',
+    badge: 'text-xs px-2.5',
   },
 };
 
@@ -47,37 +47,42 @@ function getInitials(name: string): string {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
 
-function getRoleColors(role: string): { bg: string; text: string; label: string } {
+function getRoleBadge(role: string): { label: string; text: string; border: string; bg: string } {
   switch (role) {
     case 'BATSMAN':
       return {
-        bg: 'from-amber-600 to-amber-900 border-amber-500/40',
-        text: 'text-amber-200',
         label: 'BAT',
+        text: 'text-[#ffe9a8]',
+        border: 'border-[#e2b64a]/50',
+        bg: 'bg-[#2c2412]/90',
       };
     case 'BOWLER':
       return {
-        bg: 'from-emerald-600 to-teal-900 border-emerald-500/40',
-        text: 'text-emerald-200',
         label: 'BOWL',
+        text: 'text-[#3fca86]',
+        border: 'border-[#3fca86]/50',
+        bg: 'bg-[#0e2c1d]/90',
       };
     case 'ALL_ROUNDER':
       return {
-        bg: 'from-purple-600 to-indigo-900 border-purple-500/40',
-        text: 'text-purple-200',
         label: 'AR',
+        text: 'text-[#8fb2d9]',
+        border: 'border-[#8fb2d9]/50',
+        bg: 'bg-[#10151c]/90',
       };
     case 'WICKET_KEEPER':
       return {
-        bg: 'from-sky-600 to-blue-900 border-sky-500/40',
-        text: 'text-sky-200',
         label: 'WK',
+        text: 'text-amber-300',
+        border: 'border-amber-400/50',
+        bg: 'bg-amber-950/90',
       };
     default:
       return {
-        bg: 'from-slate-700 to-slate-900 border-slate-600',
-        text: 'text-slate-200',
         label: 'CR',
+        text: 'text-[#c3ccd6]',
+        border: 'border-[#1e2733]',
+        bg: 'bg-[#070a0e]/90',
       };
   }
 }
@@ -93,7 +98,7 @@ export const PlayerAvatar: React.FC<PlayerAvatarProps> = ({
   const [imageFailed, setImageFailed] = useState(false);
   const headshotUrl = getPlayerHeadshotUrl(player.id);
   const sizeConfig = SIZE_STYLES[size] || SIZE_STYLES.md;
-  const roleConfig = getRoleColors(player.role);
+  const roleConfig = getRoleBadge(player.role);
   const initials = getInitials(player.shortName || player.name);
 
   const showPhoto = Boolean(headshotUrl) && !imageFailed;
@@ -101,12 +106,17 @@ export const PlayerAvatar: React.FC<PlayerAvatarProps> = ({
   return (
     <div
       onClick={onClick}
-      className={`relative inline-flex shrink-0 select-none ${onClick ? 'cursor-pointer hover:opacity-90 transition' : ''} ${className}`}
+      className={`relative inline-flex shrink-0 select-none ${onClick ? 'cursor-pointer hover:opacity-95 hover:scale-[1.02] transition' : ''} ${className}`}
     >
       <div
-        className={`${sizeConfig.container} rounded-full overflow-hidden border flex items-center justify-center font-bold tracking-wider shadow-inner ${
-          showPhoto ? 'bg-slate-900 border-slate-700' : `bg-gradient-to-br ${roleConfig.bg} text-white`
+        className={`${sizeConfig.container} rounded-xl overflow-hidden border border-[#1e2733] flex items-center justify-center font-bold tracking-wider shadow-lg ${
+          showPhoto
+            ? 'bg-[#070a0e]'
+            : 'bg-gradient-to-br from-[#10151c] via-[#070a0e] to-[#000000] text-[#e8edf2]'
         }`}
+        style={{
+          boxShadow: showPhoto ? '0 2px 10px rgba(0,0,0,0.7)' : 'inset 0 0 12px rgba(226,182,74,0.08)',
+        }}
       >
         {showPhoto ? (
           <img
@@ -117,7 +127,9 @@ export const PlayerAvatar: React.FC<PlayerAvatarProps> = ({
             loading="lazy"
           />
         ) : (
-          <span className="drop-shadow-sm font-semibold">{initials}</span>
+          <span className="font-extrabold text-[#ffe9a8] tracking-widest drop-shadow-sm">
+            {initials}
+          </span>
         )}
       </div>
 
@@ -127,7 +139,7 @@ export const PlayerAvatar: React.FC<PlayerAvatarProps> = ({
           <CountryFlag
             countryCode={player.countryId}
             size={sizeConfig.flag}
-            className="border border-slate-900 shadow-md"
+            className="border border-[#1e2733] shadow-md"
           />
         </div>
       )}
@@ -135,7 +147,7 @@ export const PlayerAvatar: React.FC<PlayerAvatarProps> = ({
       {/* Role Badge Indicator */}
       {showRoleBadge && (
         <span
-          className={`absolute -top-1 -right-1 px-1 py-0.2 rounded text-[8px] font-black uppercase tracking-wider bg-slate-950/90 border border-slate-700 ${roleConfig.text}`}
+          className={`absolute -top-1 -right-1 rounded font-black uppercase tracking-wider border shadow-md font-sans ${sizeConfig.badge} ${roleConfig.text} ${roleConfig.border} ${roleConfig.bg}`}
         >
           {roleConfig.label}
         </span>

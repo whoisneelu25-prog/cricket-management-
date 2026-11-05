@@ -11,15 +11,12 @@ import {
   CheckCircle2,
   Users,
   FastForward,
-  Globe,
-  Briefcase,
-  FileText,
   Clock,
-  Newspaper,
   Sliders,
-  ChevronRight,
   TrendingDown,
   Minus,
+  MapPin,
+  Flame,
 } from 'lucide-react';
 import { CareerSave, Match, Player } from '../../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
@@ -27,7 +24,6 @@ import { getEffectivePlayersByCountry } from '../../data/squads';
 import { getNextUserMatchInfo } from '../../store/careerStore';
 import { CalendarAdvanceMode, CalendarAdvancementResult } from '../../engine/worldSimulation';
 import { isTerminalMatchStatus } from '../../engine/matchEngine';
-import { sortTournamentTable } from '../../engine/tournamentEngine';
 import { CountryFlag } from '../common/CountryFlag';
 
 interface DashboardViewProps {
@@ -112,12 +108,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
   const recentFormPills = recentUserCompleted.slice(0, 5).map((m) => {
     const isWin =
-      (m.winnerTeamId === career.selectedTeamId) ||
+      m.winnerTeamId === career.selectedTeamId ||
       (m.resultText && m.resultText.toLowerCase().includes(team?.name?.toLowerCase() || ''));
     const isTieOrDraw = m.status === 'DRAW' || m.status === 'TIE';
-    if (isWin) return { text: 'W', bg: 'bg-emerald-600 text-white' };
-    if (isTieOrDraw) return { text: 'D', bg: 'bg-slate-600 text-white' };
-    return { text: 'L', bg: 'bg-rose-600 text-white' };
+    if (isWin) return { text: 'W', bg: 'bg-[#3fca86] text-[#070a0e] font-black' };
+    if (isTieOrDraw) return { text: 'D', bg: 'bg-[#8fb2d9] text-[#070a0e] font-bold' };
+    return { text: 'L', bg: 'bg-[#ff5470] text-white font-black' };
   });
 
   // Upcoming 5 User Fixtures
@@ -138,63 +134,69 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
   const teamMorale = career.teamMorale ?? 80;
 
+  // Stadium image for hero backdrop
+  const stadiumImage =
+    nextMatch?.format === 'TEST'
+      ? '/assets/stadiums/jaitley-day.jpg'
+      : '/assets/stadiums/chepauk-night.jpg';
+
   return (
-    <div className="space-y-4 select-none pb-8 text-slate-200">
+    <div className="space-y-5 select-none pb-10 text-[#e8edf2] max-w-7xl mx-auto">
       {/* 1. Calendar Advancement Control Bar */}
-      <div className="bg-[#111827] border border-[#1e293b] rounded-lg p-3 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-sm">
+      <div className="bg-[#070a0e] border border-[#1e2733] rounded-xl p-3 sm:p-4 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-lg">
         <div className="flex items-center space-x-3">
-          <div className="bg-[#151d29] border border-emerald-900/60 px-3 py-1.5 rounded flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-emerald-400" />
+          <div className="bg-[#10151c] border border-[#e2b64a]/30 px-3 py-1.5 rounded-lg flex items-center gap-2.5">
+            <Calendar className="w-4 h-4 text-[#e2b64a]" />
             <div>
-              <span className="text-[10px] uppercase font-bold text-slate-400 block leading-none">
-                Career Date
+              <span className="text-[9.5px] uppercase font-extrabold tracking-widest text-[#8b97a3] block font-display leading-tight">
+                Current Date
               </span>
               <span className="text-sm font-bold font-mono text-white">
                 {career.currentDate}
               </span>
             </div>
           </div>
-          <div className="text-xs text-slate-400">
-            Managing <strong className="text-white">{team?.name}</strong> •{' '}
-            <span className="text-emerald-400 font-medium">International Pro Tour</span>
+          <div className="text-xs text-[#8b97a3]">
+            Managing <strong className="text-white font-display">{team?.name}</strong> •{' '}
+            <span className="text-[#e2b64a] font-semibold">2026/27 International Cycle</span>
           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => onAdvanceCalendar('ONE_DAY')}
-            className="bg-[#151d29] hover:bg-[#1c2738] text-slate-200 border border-[#26354a] text-xs font-semibold px-3 py-1.5 rounded transition cursor-pointer flex items-center gap-1.5"
+            className="bg-[#10151c] hover:bg-[#151d29] text-[#c3ccd6] hover:text-white border border-[#1e2733] hover:border-[#33404f] text-xs font-semibold px-3 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5"
           >
-            <Clock className="w-3.5 h-3.5 text-slate-400" />
+            <Clock className="w-3.5 h-3.5 text-[#8b97a3]" />
             <span>+1 Day</span>
           </button>
           <button
             onClick={() => onAdvanceCalendar('ONE_WEEK')}
-            className="bg-[#151d29] hover:bg-[#1c2738] text-slate-200 border border-[#26354a] text-xs font-semibold px-3 py-1.5 rounded transition cursor-pointer flex items-center gap-1.5"
+            className="bg-[#10151c] hover:bg-[#151d29] text-[#c3ccd6] hover:text-white border border-[#1e2733] hover:border-[#33404f] text-xs font-semibold px-3 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5"
           >
-            <FastForward className="w-3.5 h-3.5 text-slate-400" />
+            <FastForward className="w-3.5 h-3.5 text-[#8b97a3]" />
             <span>+1 Week</span>
           </button>
           <button
             onClick={() => onAdvanceCalendar('NEXT_EVENT')}
-            className="bg-[#151d29] hover:bg-[#1c2738] text-amber-300 border border-amber-900/50 text-xs font-semibold px-3 py-1.5 rounded transition cursor-pointer flex items-center gap-1.5"
+            className="bg-[#10151c] hover:bg-[#151d29] text-[#ffe9a8] border border-[#e2b64a]/40 text-xs font-semibold px-3 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5"
           >
-            <Calendar className="w-3.5 h-3.5 text-amber-400" />
+            <Calendar className="w-3.5 h-3.5 text-[#e2b64a]" />
             <span>Next Event</span>
           </button>
           <button
             onClick={() => onAdvanceCalendar('NEXT_MATCH')}
-            className="bg-[#10b981] hover:bg-[#059669] text-[#0b0e14] text-xs font-bold px-3.5 py-1.5 rounded transition cursor-pointer flex items-center gap-1.5 shadow-sm"
+            className="btn-gold text-xs px-3.5 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5 shadow-md active:scale-95"
           >
             <FastForward className="w-3.5 h-3.5 fill-current" />
-            <span>Advance to Next Match</span>
+            <span>Simulate to Next Match</span>
           </button>
 
           {onRestSquadDay && (
             <button
               onClick={onRestSquadDay}
               title="Rest squad (-15% fatigue)"
-              className="bg-[#151d29] hover:bg-[#1c2738] text-emerald-400 border border-emerald-900/60 text-xs font-medium px-2.5 py-1.5 rounded transition cursor-pointer"
+              className="bg-[#10151c] hover:bg-[#151d29] text-[#3fca86] border border-[#3fca86]/40 text-xs font-semibold px-2.5 py-1.5 rounded-lg transition cursor-pointer"
             >
               Rest Squad
             </button>
@@ -204,14 +206,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
       {/* Calendar Alert Toast */}
       {calendarAlert && calendarAlert.pausedReason !== 'TARGET_REACHED' && (
-        <div className="bg-[#1c1b18] border border-amber-500/50 rounded-lg p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in">
-          <div className="flex items-start gap-2.5">
-            <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+        <div className="bg-[#10151c] border-2 border-[#e2b64a] rounded-xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xl">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-[#e2b64a] shrink-0 mt-0.5" />
             <div className="text-xs">
-              <span className="font-bold uppercase text-amber-300 tracking-wider mr-2">
-                Action Required — {calendarAlert.pausedReason.replace(/_/g, ' ')}:
+              <span className="font-extrabold uppercase text-[#ffe9a8] tracking-widest font-display mr-2">
+                Managerial Action Required — {calendarAlert.pausedReason.replace(/_/g, ' ')}:
               </span>
-              <span className="text-slate-200">{calendarAlert.pausedMessage}</span>
+              <span className="text-[#e8edf2] font-medium">{calendarAlert.pausedMessage}</span>
             </div>
           </div>
           <div className="flex items-center gap-2 shrink-0">
@@ -220,7 +222,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               onOpenTourSelection && (
                 <button
                   onClick={() => onOpenTourSelection(calendarAlert.targetTourId!)}
-                  className="bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs px-3 py-1 rounded cursor-pointer"
+                  className="btn-gold text-xs px-3.5 py-1.5 rounded-lg cursor-pointer"
                 >
                   Select Tour Squad
                 </button>
@@ -229,7 +231,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               calendarAlert.targetMatchId && (
                 <button
                   onClick={() => onOpenMatchPreparation(calendarAlert.targetMatchId!)}
-                  className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3 py-1 rounded cursor-pointer"
+                  className="btn-gold text-xs px-3.5 py-1.5 rounded-lg cursor-pointer"
                 >
                   Prepare Match XI
                 </button>
@@ -237,7 +239,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             {onDismissCalendarAlert && (
               <button
                 onClick={onDismissCalendarAlert}
-                className="text-slate-400 hover:text-white text-xs px-2 py-1 cursor-pointer"
+                className="text-[#8b97a3] hover:text-white text-xs px-2.5 py-1.5 rounded hover:bg-[#1e2733] cursor-pointer"
               >
                 ✕
               </button>
@@ -246,538 +248,517 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
       )}
 
-      {/* 2. Top Nation Overview Banner */}
-      <div className="bg-[#111827] border border-[#1e293b] rounded-lg p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex items-center space-x-3.5">
-          <div className="w-12 h-12 rounded-lg bg-[#141f36] border border-slate-800 flex items-center justify-center p-1 shadow-sm">
-            <CountryFlag countryCode={team?.code || career.selectedTeamId} size="md" />
-          </div>
-          <div>
-            <div className="flex items-center space-x-2">
-              <h1 className="text-xl font-bold text-white tracking-wide">{team?.name}</h1>
-              <span className="text-[10px] bg-[#142646] text-emerald-400 font-mono px-2 py-0.5 rounded font-bold border border-emerald-900/60">
-                {team?.code}
-              </span>
-            </div>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Head Coach: <span className="text-slate-200 font-semibold">{career.manager.name}</span> • Record:{' '}
-              <span className="text-white font-mono font-medium">
-                {career.manager.matchesManaged}M ({career.manager.matchesWon}W {career.manager.matchesLost}L {career.manager.matchesDrawn}D)
-              </span>
-            </p>
-          </div>
+      {/* 2. PROMINENT NEXT INTERNATIONAL MATCH HERO STAGE */}
+      <div className="relative rounded-2xl overflow-hidden border border-[#1e2733] shadow-2xl bg-[#070a0e]">
+        {/* Stadium Background Photo with Scrim Gradients */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src={stadiumImage}
+            alt="Stadium Atmosphere"
+            className="w-full h-full object-cover object-center filter brightness-[0.45] saturate-[0.85] contrast-[1.1]"
+            onError={(e) => {
+              (e.currentTarget as HTMLElement).style.display = 'none';
+            }}
+          />
+          {/* Dual wash scrims inspired by .v2-mt-wash-a / .v2-mt-wash-b */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#000000] via-[#000000]/85 to-[#000000]/50" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#070a0e] via-transparent to-[#000000]/70" />
         </div>
 
-        {/* Board Confidence & Team Morale */}
-        <div className="flex items-center space-x-4 bg-[#151d29] border border-[#1e293b] px-4 py-2 rounded-lg">
-          <div>
-            <div className="flex justify-between items-center text-[11px] text-slate-400 gap-3 mb-1">
-              <span>Board Confidence:</span>
-              <span className="font-mono font-bold text-emerald-400">
-                {career.manager.boardConfidence}%
+        {/* Content Layer */}
+        <div className="relative z-10 p-5 sm:p-7 space-y-5">
+          {/* Top Kicker Bar */}
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#1e2733]/80 pb-3">
+            <div className="flex items-center space-x-2.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#e2b64a] animate-pulse" />
+              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#e2b64a] font-display">
+                Next International Fixture
               </span>
-            </div>
-            <div className="w-28 bg-[#1e293b] h-1.5 rounded-full overflow-hidden">
-              <div
-                className="bg-emerald-500 h-full rounded-full"
-                style={{ width: `${Math.min(100, career.manager.boardConfidence)}%` }}
-              />
-            </div>
-          </div>
-
-          <div className="border-l border-[#1e293b] pl-4">
-            <div className="flex justify-between items-center text-[11px] text-slate-400 gap-3 mb-1">
-              <span>Team Morale:</span>
-              <span className="font-mono font-bold text-sky-400">
-                {teamMorale}%
-              </span>
-            </div>
-            <div className="w-28 bg-[#1e293b] h-1.5 rounded-full overflow-hidden">
-              <div
-                className="bg-sky-500 h-full rounded-full"
-                style={{ width: `${Math.min(100, teamMorale)}%` }}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 3. Next Match Hero Card & Team Overview Panel (2 Columns) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-        {/* Next Match Card (7 columns) */}
-        <div className="lg:col-span-7 bg-[#111827] border border-[#1e293b] rounded-lg p-4 flex flex-col justify-between">
-          <div>
-            {/* Header / Format & Timing */}
-            <div className="flex items-center justify-between border-b border-[#1e293b] pb-2.5 mb-3">
-              <div className="flex items-center space-x-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
-                  Next Match
-                </span>
-                {nextMatch && (
-                  <span className="text-[10px] bg-[#142646] text-emerald-300 border border-emerald-900/60 px-1.5 py-0.5 rounded font-mono font-bold">
-                    {nextMatch.format}
-                  </span>
-                )}
-                {nextMatch?.lineupConfirmed && (
-                  <span className="text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-800/60 px-1.5 py-0.5 rounded font-mono flex items-center gap-1">
-                    <CheckCircle2 className="w-3 h-3" /> Ready
-                  </span>
-                )}
-              </div>
-
               {nextMatch && (
-                <div className="text-xs font-mono">
-                  <span className="bg-[#151d29] text-amber-300 border border-[#1e293b] px-2 py-0.5 rounded font-bold">
-                    {nextInfo.daysRemaining === 0
-                      ? 'TODAY'
-                      : `${nextInfo.daysRemaining}d to go`}
-                  </span>
-                </div>
+                <span className="text-[10px] bg-[#2c2412] text-[#ffe9a8] border border-[#e2b64a]/50 px-2 py-0.5 rounded font-mono font-extrabold">
+                  {nextMatch.format}
+                </span>
+              )}
+              {nextMatch?.lineupConfirmed && (
+                <span className="text-[10px] bg-[#0e2c1d] text-[#3fca86] border border-[#3fca86]/50 px-2 py-0.5 rounded font-mono font-bold flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3" /> Playing XI Ready
+                </span>
               )}
             </div>
 
-            {nextMatch ? (
-              <div className="space-y-3">
-                {/* Matchup Banner */}
-                <div className="flex items-center justify-between bg-[#151d29] border border-[#1e293b] p-3.5 rounded-lg">
-                  {/* Home / Away */}
-                  <div className="flex items-center space-x-3">
-                    <CountryFlag countryCode={team?.code || career.selectedTeamId} size="md" />
-                    <div>
-                      <span className="text-[10px] font-mono uppercase text-emerald-400 font-bold">
-                        {userIsHome ? 'Home' : 'Away'}
-                      </span>
-                      <h3 className="text-base font-bold text-white">{team?.name}</h3>
-                    </div>
-                  </div>
-
-                  <div className="text-center px-2">
-                    <span className="text-xs font-mono font-bold text-slate-300 bg-[#0e131d] px-2.5 py-1 rounded border border-[#1e293b]">
-                      VS
-                    </span>
-                    <span className="text-[10px] text-emerald-400 font-mono block mt-1">
-                      {nextInfo.seriesScoreText || nextMatch.seriesName}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center space-x-3 text-right">
-                    <div>
-                      <span className="text-[10px] font-mono uppercase text-slate-400 font-bold">
-                        {userIsHome ? 'Visitor' : 'Host'}
-                      </span>
-                      <h3 className="text-base font-bold text-white">
-                        {opponent?.name || oppTeamId}
-                      </h3>
-                    </div>
-                    <CountryFlag countryCode={opponent?.code || oppTeamId || ''} size="md" />
-                  </div>
-                </div>
-
-                {/* Details Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                  <div className="bg-[#151d29] p-2 rounded border border-[#1e293b]">
-                    <span className="text-[10px] text-slate-400 block uppercase">Series</span>
-                    <span className="text-white font-medium truncate block mt-0.5">
-                      {nextMatch.seriesName || 'Bilateral Series'}
-                    </span>
-                  </div>
-                  <div className="bg-[#151d29] p-2 rounded border border-[#1e293b]">
-                    <span className="text-[10px] text-slate-400 block uppercase">Venue</span>
-                    <span className="text-white font-medium truncate block mt-0.5">
-                      {nextMatch.venue?.split(',')[0]}
-                    </span>
-                  </div>
-                  <div className="bg-[#151d29] p-2 rounded border border-[#1e293b]">
-                    <span className="text-[10px] text-slate-400 block uppercase">Date</span>
-                    <span className="text-emerald-300 font-mono font-bold block mt-0.5">
-                      {nextMatch.date}
-                    </span>
-                  </div>
-                  <div className="bg-[#151d29] p-2 rounded border border-[#1e293b]">
-                    <span className="text-[10px] text-slate-400 block uppercase">Status</span>
-                    <span className="text-sky-300 font-mono font-medium block mt-0.5">
-                      {nextMatch.status.replace('_', ' ')}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="bg-[#151d29] border border-[#1e293b] rounded-lg p-5 text-center text-xs text-slate-400">
-                No immediate fixtures scheduled. Advance the calendar to generate the next international tour.
+            {nextMatch && (
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-mono font-bold bg-[#10151c]/90 text-[#ffe9a8] border border-[#e2b64a]/40 px-2.5 py-1 rounded-lg">
+                  {nextInfo.daysRemaining === 0 ? 'MATCH DAY TODAY' : `${nextInfo.daysRemaining} Days Remaining`}
+                </span>
               </div>
             )}
           </div>
 
-          {/* Action CTAs */}
-          {nextMatch && (
-            <div className="mt-4 pt-3 border-t border-[#1e293b] flex items-center justify-between gap-3">
-              <div className="text-xs text-slate-400 font-mono">
-                Squad available: <span className="text-white font-bold">{fitCount} fit</span>
+          {nextMatch ? (
+            <div className="space-y-4">
+              {/* Matchup Header with Giant Typography */}
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-6 py-2">
+                {/* Home / User Country */}
+                <div className="flex items-center space-x-4">
+                  <CountryFlag
+                    countryCode={team?.code || career.selectedTeamId}
+                    size="lg"
+                    className="border-2 border-[#1e2733] shadow-xl"
+                  />
+                  <div>
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#3fca86] font-bold block">
+                      {userIsHome ? 'Host Nation' : 'Touring Nation'}
+                    </span>
+                    <h2 className="text-2xl sm:text-3xl font-black text-white font-display tracking-tight">
+                      {team?.name}
+                    </h2>
+                    <span className="text-xs text-[#8b97a3] font-mono">
+                      Rating: {team?.ratingPoints[nextMatch.format] || 100} pts
+                    </span>
+                  </div>
+                </div>
+
+                {/* VS Badge & Series Context */}
+                <div className="text-center px-4">
+                  <div className="w-12 h-12 rounded-full bg-[#10151c] border-2 border-[#e2b64a]/40 flex items-center justify-center font-display font-black text-xs text-[#ffe9a8] mx-auto shadow-lg">
+                    VS
+                  </div>
+                  <span className="text-[11px] text-[#e2b64a] font-mono font-bold block mt-2">
+                    {nextInfo.seriesScoreText || nextMatch.seriesName || 'Bilateral Series'}
+                  </span>
+                </div>
+
+                {/* Away / Opponent Country */}
+                <div className="flex items-center space-x-4 text-right">
+                  <div>
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#8fb2d9] font-bold block">
+                      {userIsHome ? 'Opponent / Visitor' : 'Opponent / Host'}
+                    </span>
+                    <h2 className="text-2xl sm:text-3xl font-black text-white font-display tracking-tight">
+                      {opponent?.name || oppTeamId}
+                    </h2>
+                    <span className="text-xs text-[#8b97a3] font-mono">
+                      Rating: {opponent?.ratingPoints[nextMatch.format] || 95} pts
+                    </span>
+                  </div>
+                  <CountryFlag
+                    countryCode={opponent?.code || oppTeamId || ''}
+                    size="lg"
+                    className="border-2 border-[#1e2733] shadow-xl"
+                  />
+                </div>
               </div>
 
-              <div className="flex items-center space-x-2">
-                <button
-                  onClick={() => onOpenMatchPreparation(nextMatch.id)}
-                  className="bg-[#151d29] hover:bg-[#1c2738] text-white border border-[#26354a] font-bold text-xs px-3.5 py-1.5 rounded transition cursor-pointer flex items-center gap-1.5"
-                >
-                  <Sliders className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Prepare for Match</span>
-                </button>
+              {/* Match Venue, Pitch & Conditions Strip */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                <div className="bg-[#10151c]/90 border border-[#1e2733] p-2.5 rounded-xl">
+                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#8b97a3] block font-display">
+                    Venue
+                  </span>
+                  <span className="text-xs font-bold text-white truncate block mt-0.5">
+                    {nextMatch.venue || 'International Ground'}
+                  </span>
+                </div>
+                <div className="bg-[#10151c]/90 border border-[#1e2733] p-2.5 rounded-xl">
+                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#8b97a3] block font-display">
+                    Scheduled Date
+                  </span>
+                  <span className="text-xs font-mono font-bold text-[#ffe9a8] block mt-0.5">
+                    {nextMatch.date}
+                  </span>
+                </div>
+                <div className="bg-[#10151c]/90 border border-[#1e2733] p-2.5 rounded-xl">
+                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#8b97a3] block font-display">
+                    Pitch Conditions
+                  </span>
+                  <span className="text-xs font-semibold text-[#8fb2d9] block mt-0.5">
+                    {typeof nextMatch.pitch === 'string' ? nextMatch.pitch : nextMatch.pitch?.name || nextMatch.pitch?.type || 'Standard'} Surface
+                  </span>
+                </div>
+                <div className="bg-[#10151c]/90 border border-[#1e2733] p-2.5 rounded-xl">
+                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#8b97a3] block font-display">
+                    Weather Outlook
+                  </span>
+                  <span className="text-xs font-semibold text-[#3fca86] block mt-0.5">
+                    {typeof nextMatch.weather === 'string' ? nextMatch.weather : nextMatch.weather?.description || nextMatch.weather?.type || 'Clear'}
+                  </span>
+                </div>
+              </div>
 
-                {nextInfo.daysRemaining === 0 && (
+              {/* Action Buttons */}
+              <div className="pt-2 flex flex-wrap items-center justify-between gap-3">
+                <div className="text-xs text-[#8b97a3] font-mono">
+                  Squad Readiness: <strong className="text-white">{fitCount} Players Match-Fit</strong>
+                </div>
+
+                <div className="flex items-center space-x-3">
                   <button
-                    onClick={() => onNavigateToMatch(nextMatch.id)}
-                    className="bg-[#10b981] hover:bg-[#059669] text-[#0b0e14] font-black text-xs px-4 py-1.5 rounded transition cursor-pointer flex items-center gap-1.5 shadow-sm"
+                    onClick={() => onOpenMatchPreparation(nextMatch.id)}
+                    className="bg-[#10151c] hover:bg-[#1a2330] text-[#e8edf2] hover:text-white border border-[#1e2733] hover:border-[#e2b64a]/60 font-bold text-xs px-4 py-2 rounded-xl transition cursor-pointer flex items-center gap-2 shadow-md"
                   >
-                    <Play className="w-3.5 h-3.5 fill-current" />
-                    <span>Play Match</span>
+                    <Sliders className="w-4 h-4 text-[#e2b64a]" />
+                    <span>Prepare Match XI & Orders</span>
                   </button>
-                )}
+
+                  {nextInfo.daysRemaining === 0 && (
+                    <button
+                      onClick={() => onNavigateToMatch(nextMatch.id)}
+                      className="btn-gold text-xs px-5 py-2 rounded-xl transition cursor-pointer flex items-center gap-2 shadow-lg active:scale-95"
+                    >
+                      <Play className="w-4 h-4 fill-current" />
+                      <span>Take the Field (Play)</span>
+                    </button>
+                  )}
+                </div>
               </div>
+            </div>
+          ) : (
+            <div className="bg-[#10151c]/80 border border-[#1e2733] rounded-xl p-8 text-center text-xs text-[#8b97a3]">
+              No international fixtures currently active. Advance calendar or view Tours schedule.
             </div>
           )}
         </div>
+      </div>
 
-        {/* Team Overview Panel (5 columns) */}
-        <div className="lg:col-span-5 bg-[#111827] border border-[#1e293b] rounded-lg p-4 flex flex-col justify-between">
+      {/* 3. ICC RANKINGS & SQUAD HEALTH SECTION (2 COLUMNS) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        {/* ICC World Rankings Status (7 Columns) */}
+        <div className="lg:col-span-7 bg-[#070a0e] border border-[#1e2733] rounded-xl p-4 sm:p-5 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between border-b border-[#1e293b] pb-2.5 mb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                <Users className="w-3.5 h-3.5 text-emerald-400" /> Team Overview & Fitness
+            <div className="flex items-center justify-between border-b border-[#1e2733] pb-3 mb-4">
+              <span className="text-xs font-extrabold uppercase tracking-widest text-[#e8edf2] flex items-center gap-2 font-display">
+                <Trophy className="w-4 h-4 text-[#e2b64a]" /> ICC Official Team Rankings
+              </span>
+              {onNavigateToRankings && (
+                <button
+                  onClick={onNavigateToRankings}
+                  className="text-[11px] text-[#e2b64a] hover:text-[#ffe9a8] font-bold cursor-pointer font-display"
+                >
+                  Full Tables →
+                </button>
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {/* Test Ranking */}
+              <div className="bg-[#10151c] border border-[#1e2733] p-3 rounded-xl flex flex-col justify-between">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#8b97a3] font-display">
+                    Test Cricket
+                  </span>
+                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#070a0e] text-[#8fb2d9] border border-[#1e2733]">
+                    {testRanking.rating} pts
+                  </span>
+                </div>
+                <div className="my-2 flex items-baseline gap-2">
+                  <span className="text-3xl font-black text-white font-display">
+                    #{testRanking.rank}
+                  </span>
+                  <span className="text-xs text-[#8b97a3] font-display">in the World</span>
+                </div>
+                <div className="text-[10px] font-mono text-[#3fca86] flex items-center gap-1">
+                  {testRanking.movement > 0 ? (
+                    <>
+                      <TrendingUp className="w-3 h-3" /> +{testRanking.movement} places
+                    </>
+                  ) : testRanking.movement < 0 ? (
+                    <>
+                      <TrendingDown className="w-3 h-3 text-[#ff5470]" />{' '}
+                      <span className="text-[#ff5470]">{testRanking.movement}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Minus className="w-3 h-3 text-[#8b97a3]" /> Stable
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* ODI Ranking */}
+              <div className="bg-[#10151c] border border-[#1e2733] p-3 rounded-xl flex flex-col justify-between">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#8b97a3] font-display">
+                    One-Day Int.
+                  </span>
+                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#070a0e] text-[#8fb2d9] border border-[#1e2733]">
+                    {odiRanking.rating} pts
+                  </span>
+                </div>
+                <div className="my-2 flex items-baseline gap-2">
+                  <span className="text-3xl font-black text-white font-display">
+                    #{odiRanking.rank}
+                  </span>
+                  <span className="text-xs text-[#8b97a3] font-display">in the World</span>
+                </div>
+                <div className="text-[10px] font-mono text-[#3fca86] flex items-center gap-1">
+                  {odiRanking.movement > 0 ? (
+                    <>
+                      <TrendingUp className="w-3 h-3" /> +{odiRanking.movement} places
+                    </>
+                  ) : (
+                    <>
+                      <Minus className="w-3 h-3 text-[#8b97a3]" /> Stable
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* T20I Ranking */}
+              <div className="bg-[#10151c] border border-[#1e2733] p-3 rounded-xl flex flex-col justify-between">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#8b97a3] font-display">
+                    Twenty20 Int.
+                  </span>
+                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#070a0e] text-[#8fb2d9] border border-[#1e2733]">
+                    {t20Ranking.rating} pts
+                  </span>
+                </div>
+                <div className="my-2 flex items-baseline gap-2">
+                  <span className="text-3xl font-black text-white font-display">
+                    #{t20Ranking.rank}
+                  </span>
+                  <span className="text-xs text-[#8b97a3] font-display">in the World</span>
+                </div>
+                <div className="text-[10px] font-mono text-[#3fca86] flex items-center gap-1">
+                  {t20Ranking.movement > 0 ? (
+                    <>
+                      <TrendingUp className="w-3 h-3" /> +{t20Ranking.movement} places
+                    </>
+                  ) : (
+                    <>
+                      <Minus className="w-3 h-3 text-[#8b97a3]" /> Stable
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Recent International Form Strip */}
+          <div className="mt-4 pt-3 border-t border-[#1e2733] flex items-center justify-between">
+            <span className="text-xs font-semibold text-[#8b97a3]">Recent Form (Last 5):</span>
+            <div className="flex items-center space-x-1.5">
+              {recentFormPills.length > 0 ? (
+                recentFormPills.map((p, idx) => (
+                  <span
+                    key={idx}
+                    className={`w-6 h-6 rounded-md text-[10px] flex items-center justify-center font-mono ${p.bg}`}
+                  >
+                    {p.text}
+                  </span>
+                ))
+              ) : (
+                <span className="text-xs text-[#8b97a3]">No completed fixtures</span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Squad Workload & Availability (5 Columns) */}
+        <div className="lg:col-span-5 bg-[#070a0e] border border-[#1e2733] rounded-xl p-4 sm:p-5 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between border-b border-[#1e2733] pb-3 mb-4">
+              <span className="text-xs font-extrabold uppercase tracking-widest text-[#e8edf2] flex items-center gap-2 font-display">
+                <Users className="w-4 h-4 text-[#3fca86]" /> Squad Health & Workload
               </span>
               <button
                 onClick={onNavigateToSquad}
-                className="text-[11px] text-emerald-400 hover:text-emerald-300 font-medium cursor-pointer"
+                className="text-[11px] text-[#e2b64a] hover:text-[#ffe9a8] font-bold cursor-pointer font-display"
               >
-                Manage Squad →
+                Squad Hub →
               </button>
             </div>
 
             <div className="space-y-3">
-              {/* Availability & Fitness Metrics */}
-              <div className="grid grid-cols-3 gap-2 text-center text-xs">
-                <div className="bg-[#151d29] p-2 rounded border border-[#1e293b]">
-                  <span className="text-[10px] text-slate-400 block uppercase">Squad Fit</span>
-                  <span className="text-white font-mono font-bold text-sm">
+              <div className="grid grid-cols-3 gap-2.5 text-center">
+                <div className="bg-[#10151c] p-2.5 rounded-xl border border-[#1e2733]">
+                  <span className="text-[9.5px] text-[#8b97a3] uppercase font-extrabold tracking-wider block font-display">
+                    Fit / Total
+                  </span>
+                  <span className="text-base font-black text-white font-mono mt-0.5 block">
                     {fitCount}/{squad.length}
                   </span>
                 </div>
-                <div className="bg-[#151d29] p-2 rounded border border-[#1e293b]">
-                  <span className="text-[10px] text-slate-400 block uppercase">Avg Fitness</span>
-                  <span className="text-emerald-400 font-mono font-bold text-sm">
+                <div className="bg-[#10151c] p-2.5 rounded-xl border border-[#1e2733]">
+                  <span className="text-[9.5px] text-[#8b97a3] uppercase font-extrabold tracking-wider block font-display">
+                    Avg Fitness
+                  </span>
+                  <span className="text-base font-black text-[#3fca86] font-mono mt-0.5 block">
                     {avgFitness}%
                   </span>
                 </div>
-                <div className="bg-[#151d29] p-2 rounded border border-[#1e293b]">
-                  <span className="text-[10px] text-slate-400 block uppercase">Team Morale</span>
-                  <span className="text-sky-400 font-mono font-bold text-sm">
+                <div className="bg-[#10151c] p-2.5 rounded-xl border border-[#1e2733]">
+                  <span className="text-[9.5px] text-[#8b97a3] uppercase font-extrabold tracking-wider block font-display">
+                    Morale
+                  </span>
+                  <span className="text-base font-black text-[#8fb2d9] font-mono mt-0.5 block">
                     {teamMorale}%
                   </span>
                 </div>
               </div>
 
-              {/* Recent Form Pills */}
-              <div className="bg-[#151d29] p-2.5 rounded border border-[#1e293b] flex items-center justify-between">
-                <span className="text-xs text-slate-300 font-medium">Recent Form (Last 5):</span>
-                <div className="flex items-center space-x-1.5">
-                  {recentFormPills.length > 0 ? (
-                    recentFormPills.map((p, idx) => (
-                      <span
-                        key={idx}
-                        className={`w-5 h-5 rounded text-[10px] font-bold flex items-center justify-center font-mono ${p.bg}`}
-                      >
-                        {p.text}
-                      </span>
-                    ))
-                  ) : (
-                    <span className="text-xs text-slate-400">No recent matches</span>
-                  )}
-                </div>
-              </div>
-
               {/* Injured List */}
-              <div className="bg-[#151d29] p-2.5 rounded border border-[#1e293b]">
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-xs font-semibold text-slate-300">Injury List</span>
-                  <span className="text-[10px] font-mono text-slate-400">
+              <div className="bg-[#10151c] p-3 rounded-xl border border-[#1e2733]">
+                <div className="flex items-center justify-between text-xs mb-2">
+                  <span className="font-bold text-[#e8edf2] font-display">Medical Room</span>
+                  <span className="text-[10px] text-[#ff5470] font-mono font-bold">
                     {injuredPlayers.length} Injured
                   </span>
                 </div>
-                {injuredPlayers.length === 0 ? (
-                  <p className="text-xs text-emerald-400">✓ No injuries reported. Full squad available.</p>
-                ) : (
-                  <div className="space-y-1">
-                    {injuredPlayers.slice(0, 3).map((p) => (
+                {injuredPlayers.length > 0 ? (
+                  <div className="space-y-1.5 max-h-24 overflow-y-auto">
+                    {injuredPlayers.map((p) => (
                       <div
                         key={p.id}
                         onClick={() => onSelectPlayer(p)}
-                        className="flex items-center justify-between text-xs p-1 rounded bg-[#111827] hover:bg-[#1a2538] cursor-pointer transition"
+                        className="flex items-center justify-between text-xs bg-[#070a0e] p-2 rounded-lg border border-[#1e2733] cursor-pointer hover:border-[#ff5470]/50 transition"
                       >
-                        <span className="font-medium text-rose-300 truncate">{p.shortName}</span>
-                        <span className="text-[10px] font-mono text-slate-400">
-                          {p.injuryType || 'Injury'} ({p.injuryDaysRemaining || 7}d)
+                        <span className="font-bold text-white">{p.name}</span>
+                        <span className="text-[10px] text-[#ff5470] font-mono">
+                          {p.injuryDaysRemaining ? `${Math.ceil(p.injuryDaysRemaining / 7)}w out` : '1w out'}
                         </span>
                       </div>
                     ))}
+                  </div>
+                ) : (
+                  <div className="text-[11px] text-[#3fca86] font-medium flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5" /> Full squad match-fit and ready for selection.
                   </div>
                 )}
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* 4. Team Rankings Cards (Test, ODI, T20I) */}
-      <div className="bg-[#111827] border border-[#1e293b] rounded-lg p-4">
-        <div className="flex items-center justify-between border-b border-[#1e293b] pb-2.5 mb-3">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-            <TrendingUp className="w-3.5 h-3.5 text-emerald-400" /> ICC World Team Rankings
-          </span>
-          {onNavigateToRankings && (
-            <button
-              onClick={onNavigateToRankings}
-              className="text-[11px] text-emerald-400 hover:text-emerald-300 font-medium cursor-pointer"
-            >
-              Full Rankings Table →
-            </button>
-          )}
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {/* Test Card */}
-          <div className="bg-[#151d29] border border-[#1e293b] rounded p-3 flex items-center justify-between">
-            <div>
-              <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
-                Test Rankings
-              </span>
-              <div className="flex items-baseline space-x-2 mt-1">
-                <span className="text-2xl font-bold font-mono text-white">#{testRanking.rank}</span>
-                <span className="text-xs font-mono text-emerald-400">{testRanking.rating} pts</span>
-              </div>
-            </div>
-            <div className="flex items-center space-x-1 text-xs font-mono">
-              {testRanking.movement > 0 ? (
-                <span className="text-emerald-400 flex items-center font-bold">
-                  <TrendingUp className="w-3.5 h-3.5 mr-0.5" /> +{testRanking.movement}
-                </span>
-              ) : testRanking.movement < 0 ? (
-                <span className="text-rose-400 flex items-center font-bold">
-                  <TrendingDown className="w-3.5 h-3.5 mr-0.5" /> {testRanking.movement}
-                </span>
-              ) : (
-                <span className="text-slate-500 flex items-center">
-                  <Minus className="w-3.5 h-3.5 mr-0.5" /> 0
-                </span>
-              )}
-            </div>
-          </div>
-
-          {/* ODI Card */}
-          <div className="bg-[#151d29] border border-[#1e293b] rounded p-3 flex items-center justify-between">
-            <div>
-              <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
-                ODI Rankings
-              </span>
-              <div className="flex items-baseline space-x-2 mt-1">
-                <span className="text-2xl font-bold font-mono text-white">#{odiRanking.rank}</span>
-                <span className="text-xs font-mono text-sky-400">{odiRanking.rating} pts</span>
-              </div>
-            </div>
-            <div className="flex items-center space-x-1 text-xs font-mono">
-              {odiRanking.movement > 0 ? (
-                <span className="text-emerald-400 flex items-center font-bold">
-                  <TrendingUp className="w-3.5 h-3.5 mr-0.5" /> +{odiRanking.movement}
-                </span>
-              ) : odiRanking.movement < 0 ? (
-                <span className="text-rose-400 flex items-center font-bold">
-                  <TrendingDown className="w-3.5 h-3.5 mr-0.5" /> {odiRanking.movement}
-                </span>
-              ) : (
-                <span className="text-slate-500 flex items-center">
-                  <Minus className="w-3.5 h-3.5 mr-0.5" /> 0
-                </span>
-              )}
-            </div>
-          </div>
-
-          {/* T20I Card */}
-          <div className="bg-[#151d29] border border-[#1e293b] rounded p-3 flex items-center justify-between">
-            <div>
-              <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
-                T20I Rankings
-              </span>
-              <div className="flex items-baseline space-x-2 mt-1">
-                <span className="text-2xl font-bold font-mono text-white">#{t20Ranking.rank}</span>
-                <span className="text-xs font-mono text-emerald-400">{t20Ranking.rating} pts</span>
-              </div>
-            </div>
-            <div className="flex items-center space-x-1 text-xs font-mono">
-              {t20Ranking.movement > 0 ? (
-                <span className="text-emerald-400 flex items-center font-bold">
-                  <TrendingUp className="w-3.5 h-3.5 mr-0.5" /> +{t20Ranking.movement}
-                </span>
-              ) : t20Ranking.movement < 0 ? (
-                <span className="text-rose-400 flex items-center font-bold">
-                  <TrendingDown className="w-3.5 h-3.5 mr-0.5" /> {t20Ranking.movement}
-                </span>
-              ) : (
-                <span className="text-slate-500 flex items-center">
-                  <Minus className="w-3.5 h-3.5 mr-0.5" /> 0
-                </span>
-              )}
-            </div>
+          <div className="mt-4 pt-3 border-t border-[#1e2733] flex items-center justify-between text-xs text-[#8b97a3]">
+            <span>National Pool: {squad.length} Players</span>
+            <span className="font-mono text-[#ffe9a8]">All Capped</span>
           </div>
         </div>
       </div>
 
-      {/* 5. Upcoming Fixtures & Recent Results (2 Columns) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Upcoming Fixtures (Next 5) */}
-        <div className="bg-[#111827] border border-[#1e293b] rounded-lg p-4">
-          <div className="flex items-center justify-between border-b border-[#1e293b] pb-2.5 mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5 text-emerald-400" /> Upcoming Fixtures (Next 5)
+      {/* 4. RECENT MATCH RESULTS & UPCOMING FIXTURES */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        {/* Recent Results (7 Columns) */}
+        <div className="lg:col-span-7 bg-[#070a0e] border border-[#1e2733] rounded-xl p-4 sm:p-5">
+          <div className="flex items-center justify-between border-b border-[#1e2733] pb-3 mb-4">
+            <span className="text-xs font-extrabold uppercase tracking-widest text-[#e8edf2] flex items-center gap-2 font-display">
+              <Activity className="w-4 h-4 text-[#e2b64a]" /> Recent Match Results
             </span>
-            {onNavigateToFixtures && (
+            <div className="flex items-center gap-2">
               <button
-                onClick={onNavigateToFixtures}
-                className="text-[11px] text-emerald-400 hover:text-emerald-300 font-medium cursor-pointer"
+                onClick={() => setResultsFilter('USER')}
+                className={`text-[10px] font-bold px-2 py-0.5 rounded transition ${
+                  resultsFilter === 'USER'
+                    ? 'bg-[#2c2412] text-[#ffe9a8] border border-[#e2b64a]/50'
+                    : 'text-[#8b97a3] hover:text-white'
+                }`}
               >
-                All Fixtures →
+                My Country
               </button>
-            )}
-          </div>
-
-          <div className="space-y-1.5">
-            {upcomingFixtures.length === 0 ? (
-              <p className="text-xs text-slate-400 py-3 text-center">No upcoming fixtures scheduled.</p>
-            ) : (
-              upcomingFixtures.map((m) => {
-                const oppId = m.homeTeamId === career.selectedTeamId ? m.awayTeamId : m.homeTeamId;
-                const opp = INTERNATIONAL_TEAMS.find((t) => t.id === oppId);
-                return (
-                  <div
-                    key={m.id}
-                    className="p-2 rounded bg-[#151d29] border border-[#1e293b] flex items-center justify-between text-xs"
-                  >
-                    <div className="flex items-center space-x-2.5">
-                      <span className="text-[10px] font-bold font-mono px-1.5 py-0.5 rounded bg-[#10243d] text-emerald-400 border border-emerald-900/40">
-                        {m.format}
-                      </span>
-                      <span className="font-semibold text-white">
-                        vs {opp?.name || oppId}
-                      </span>
-                    </div>
-                    <div className="text-right font-mono text-[11px]">
-                      <span className="text-slate-300">{m.date}</span>
-                      <span className="text-slate-500 mx-1">•</span>
-                      <span className="text-slate-400">{m.venue?.split(',')[0]}</span>
-                    </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
-        </div>
-
-        {/* Recent Results (Last 5 with Scorecard inspection) */}
-        <div className="bg-[#111827] border border-[#1e293b] rounded-lg p-4">
-          <div className="flex items-center justify-between border-b border-[#1e293b] pb-2.5 mb-3">
-            <div className="flex items-center space-x-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                <FileText className="w-3.5 h-3.5 text-emerald-400" /> Recent Results
-              </span>
-              <div className="flex items-center bg-[#151d29] p-0.5 rounded border border-[#1e293b] text-[10px]">
-                <button
-                  onClick={() => setResultsFilter('USER')}
-                  className={`px-2 py-0.5 rounded font-medium transition cursor-pointer ${
-                    resultsFilter === 'USER'
-                      ? 'bg-emerald-600 text-white font-bold'
-                      : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  My Team
-                </button>
-                <button
-                  onClick={() => setResultsFilter('ALL')}
-                  className={`px-2 py-0.5 rounded font-medium transition cursor-pointer ${
-                    resultsFilter === 'ALL'
-                      ? 'bg-emerald-600 text-white font-bold'
-                      : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  World
-                </button>
-              </div>
+              <button
+                onClick={() => setResultsFilter('ALL')}
+                className={`text-[10px] font-bold px-2 py-0.5 rounded transition ${
+                  resultsFilter === 'ALL'
+                    ? 'bg-[#2c2412] text-[#ffe9a8] border border-[#e2b64a]/50'
+                    : 'text-[#8b97a3] hover:text-white'
+                }`}
+              >
+                All World
+              </button>
             </div>
-            <span className="text-[10px] text-slate-400 font-mono">Click for Scorecard</span>
           </div>
 
-          <div className="space-y-1.5">
-            {displayedResults.length === 0 ? (
-              <p className="text-xs text-slate-400 py-3 text-center">No completed matches found.</p>
-            ) : (
+          <div className="space-y-2.5">
+            {displayedResults.length > 0 ? (
               displayedResults.map((m) => (
                 <div
                   key={m.id}
                   onClick={() => onInspectScorecard(m)}
-                  className="p-2 rounded bg-[#151d29] hover:bg-[#1a2538] border border-[#1e293b] flex items-center justify-between text-xs cursor-pointer transition group"
+                  className="bg-[#10151c] border border-[#1e2733] hover:border-[#e2b64a]/50 rounded-xl p-3 flex items-center justify-between text-xs cursor-pointer transition shadow-sm"
                 >
-                  <div>
+                  <div className="flex items-center space-x-3">
+                    <span className="text-[10px] font-extrabold font-mono px-1.5 py-0.5 rounded bg-[#070a0e] text-[#8fb2d9] border border-[#1e2733]">
+                      {m.format}
+                    </span>
                     <div className="flex items-center space-x-2">
-                      <span className="font-bold text-white">
-                        {m.homeTeamId} vs {m.awayTeamId}
-                      </span>
-                      <span className="text-[10px] font-mono text-emerald-400">
-                        {m.format}
-                      </span>
+                      <CountryFlag countryCode={m.homeTeamId} size="xs" />
+                      <span className="font-bold text-white">{m.homeTeamId}</span>
+                      <span className="text-[#8b97a3] text-[11px]">vs</span>
+                      <span className="font-bold text-white">{m.awayTeamId}</span>
+                      <CountryFlag countryCode={m.awayTeamId} size="xs" />
                     </div>
-                    <p className="text-[11px] text-slate-400 truncate max-w-[280px]">
-                      {m.resultText || 'Match finished'}
-                    </p>
                   </div>
+
                   <div className="text-right">
-                    <span className="text-[10px] font-mono text-slate-400 block">{m.date}</span>
-                    <span className="text-[10px] text-emerald-400 group-hover:underline">View →</span>
+                    <span className="font-bold text-[#e8edf2] block truncate max-w-[240px]">
+                      {m.resultText || 'Match Completed'}
+                    </span>
+                    <span className="text-[10px] text-[#8b97a3] font-mono">{m.date}</span>
                   </div>
                 </div>
               ))
+            ) : (
+              <div className="text-xs text-[#8b97a3] text-center py-6">
+                No recent matches completed yet.
+              </div>
             )}
           </div>
         </div>
-      </div>
 
-      {/* 6. News & Notifications Wire */}
-      <div className="bg-[#111827] border border-[#1e293b] rounded-lg p-4">
-        <div className="flex items-center justify-between border-b border-[#1e293b] pb-2.5 mb-3">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-            <Newspaper className="w-3.5 h-3.5 text-sky-400" /> News &amp; Notification Feed
-          </span>
-          <button
-            onClick={onNavigateToNews}
-            className="text-[11px] text-sky-400 hover:text-sky-300 font-medium cursor-pointer"
-          >
-            All News →
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {(career.news || []).slice(0, 4).map((item) => (
-            <div
-              key={item.id}
-              className="bg-[#151d29] border border-[#1e293b] p-3 rounded space-y-1 text-xs"
-            >
-              <div className="flex items-center justify-between text-[10px] font-mono text-slate-400">
-                <span className="text-emerald-400 uppercase font-semibold">
-                  {item.category.replace('_', ' ')}
-                </span>
-                <span>{item.timestamp}</span>
-              </div>
-              <h4 className="font-bold text-white leading-snug">{item.title}</h4>
-              <p className="text-[11px] text-slate-400 line-clamp-2">{item.summary}</p>
+        {/* Upcoming Fixtures Schedule (5 Columns) */}
+        <div className="lg:col-span-5 bg-[#070a0e] border border-[#1e2733] rounded-xl p-4 sm:p-5 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between border-b border-[#1e2733] pb-3 mb-4">
+              <span className="text-xs font-extrabold uppercase tracking-widest text-[#e8edf2] flex items-center gap-2 font-display">
+                <Calendar className="w-4 h-4 text-[#e2b64a]" /> Upcoming Fixtures
+              </span>
+              {onNavigateToFixtures && (
+                <button
+                  onClick={onNavigateToFixtures}
+                  className="text-[11px] text-[#e2b64a] hover:text-[#ffe9a8] font-bold cursor-pointer font-display"
+                >
+                  Full Schedule →
+                </button>
+              )}
             </div>
-          ))}
+
+            <div className="space-y-2.5">
+              {upcomingFixtures.length > 0 ? (
+                upcomingFixtures.map((f) => (
+                  <div
+                    key={f.id}
+                    className="bg-[#10151c] border border-[#1e2733] rounded-xl p-2.5 flex items-center justify-between text-xs"
+                  >
+                    <div className="flex items-center space-x-2.5">
+                      <span className="text-[9.5px] font-mono font-bold px-1.5 py-0.5 rounded bg-[#070a0e] text-[#ffe9a8] border border-[#e2b64a]/30">
+                        {f.format}
+                      </span>
+                      <div className="font-semibold text-[#e8edf2]">
+                        {f.homeTeamId === career.selectedTeamId ? `vs ${f.awayTeamId}` : `@ ${f.homeTeamId}`}
+                      </div>
+                    </div>
+                    <div className="text-right font-mono text-[11px] text-[#8fb2d9]">
+                      {f.date}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="text-xs text-[#8b97a3] text-center py-6">
+                  No upcoming bilateral fixtures scheduled.
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-4 pt-3 border-t border-[#1e2733] text-right">
+            <button
+              onClick={onNavigateToNews}
+              className="text-[11px] text-[#8b97a3] hover:text-white transition cursor-pointer"
+            >
+              Latest International Press & Wire →
+            </button>
+          </div>
         </div>
       </div>
     </div>

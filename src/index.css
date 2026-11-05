@@ -2,52 +2,290 @@
 
 @layer base {
   :root {
-    --bg-dark: #080c14;
-    --bg-surface: #0e1626;
-    --bg-card: #141f36;
-    --border-subtle: #1e2c4a;
-    --border-highlight: #2a3d66;
-    --accent-emerald: #10b981;
-    --accent-blue: #0284c7;
-    --accent-sky: #38bdf8;
-    --accent-gold: #f59e0b;
-    --accent-rose: #ef4444;
+    --bg: #000000;
+    --card: #070a0e;
+    --panel: #070a0e;
+    --panel-2: #10151c;
+    --border: #1e2733;
+    --border-strong: #33404f;
+    --text: #e8edf2;
+    --desc: #c3ccd6;
+    --muted: #8b97a3;
+    --accent: #e2b64a;
+    --accent-100: #2c2412;
+    --accent-200: #453718;
+    --gradient-gold: linear-gradient(90deg, #ffe9a8, #e0ab3a);
+    --gradient-light: linear-gradient(90deg, #1c2740, #322a11);
+    --green: #3fca86;
+    --green-100: #0e2c1d;
+    --green-200: #14402a;
+    --red: #ff5470;
+    --red-100: #331420;
+    --magenta: #ff3d7f;
+    --magenta-100: #33101f;
+    --steel: #8fb2d9;
+    --shadow-lift: 0 1px 18px rgba(0, 0, 0, 0.5);
+    --radius: 12px;
   }
 
   body {
-    background-color: #080c14;
-    color: #f8fafc;
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #000000;
+    color: #e8edf2;
+    font-family: 'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     overflow-x: hidden;
     user-select: none;
   }
 
   h1, h2, h3, h4, h5, h6, .font-heading {
-    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
-    letter-spacing: -0.02em;
+    font-family: 'Archivo', sans-serif;
+    letter-spacing: -0.01em;
   }
 
-  /* Cricket scoreboards & tabular figures */
+  .font-display {
+    font-family: 'Archivo', sans-serif;
+  }
+
   .tabular-nums {
+    font-feature-settings: "tnum";
     font-variant-numeric: tabular-nums;
   }
 }
 
-/* Custom crisp scrollbars for sports management tables */
+/* Pitch Background Motif */
+.pitch-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, .42), rgba(0, 0, 0, .34) 45%, rgba(0, 0, 0, .42));
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, .42), rgba(0, 0, 0, .34) 45%, rgba(0, 0, 0, .42));
+}
+
+.pitch-bg svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.pitch-bg :where(line, circle, path, rect, ellipse) {
+  fill: none;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.pb-boundary {
+  stroke: rgba(226, 182, 74, .35);
+  stroke-width: 1.25;
+}
+
+.pb-ring {
+  stroke: rgba(226, 182, 74, .22);
+  stroke-width: 1;
+  stroke-dasharray: 7 9;
+}
+
+.pb-square {
+  stroke: rgba(255, 233, 168, .14);
+  stroke-width: 1;
+}
+
+.pb-crease {
+  stroke: rgba(255, 233, 168, .38);
+  stroke-width: 1.1;
+}
+
+.pb-stumps line {
+  stroke: rgba(226, 182, 74, .7);
+  stroke-width: 1.6;
+}
+
+.pb-draw {
+  stroke-dasharray: var(--len, 1200);
+  stroke-dashoffset: var(--len, 1200);
+  animation: pbdraw var(--dur, 26s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes pbdraw {
+  0% {
+    stroke-dashoffset: var(--len, 1200);
+  }
+  16% {
+    stroke-dashoffset: 0;
+  }
+  64% {
+    stroke-dashoffset: 0;
+  }
+  82% {
+    stroke-dashoffset: calc(var(--len, 1200) * -1);
+  }
+  to {
+    stroke-dashoffset: calc(var(--len, 1200) * -1);
+  }
+}
+
+.pb-fade {
+  animation: pbfade var(--dur, 30s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes pbfade {
+  0%, to {
+    opacity: 0;
+  }
+  18%, 70% {
+    opacity: 1;
+  }
+}
+
+.pb-ball {
+  fill: rgba(226, 182, 74, .85);
+  stroke: none;
+  offset-rotate: 0deg;
+  animation: pbball var(--dur, 24s) cubic-bezier(.16, .62, .3, 1) infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes pbball {
+  0% {
+    offset-distance: 0;
+    opacity: 0;
+  }
+  1.5% {
+    offset-distance: 0;
+    opacity: 1;
+  }
+  13% {
+    offset-distance: 85%;
+    opacity: 1;
+  }
+  17% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+  to {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pb-draw {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .pb-fade {
+    animation: none;
+    opacity: 0.6;
+  }
+  .pb-ball {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* Skewed Timeline Dots from The Dugout */
+.dugout-dot {
+  min-width: 19px;
+  height: 18px;
+  padding: 0 4px;
+  box-sizing: border-box;
+  transform: skewX(-12deg);
+  border-radius: 3px;
+  background: rgba(232, 237, 242, .06);
+  border: 1px solid rgba(232, 237, 242, .15);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dugout-dot span {
+  transform: skewX(12deg);
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-size: 10px;
+  color: #c7d0d9;
+}
+
+.dugout-dot.boundary,
+.dugout-dot.six {
+  background: rgba(226, 182, 74, .2);
+  border-color: rgba(226, 182, 74, .6);
+}
+
+.dugout-dot.boundary span,
+.dugout-dot.six span {
+  color: #ffe9a8;
+}
+
+.dugout-dot.wicket {
+  background: rgba(255, 61, 127, .2);
+  border-color: rgba(255, 61, 127, .6);
+}
+
+.dugout-dot.wicket span {
+  color: #ff3d7f;
+}
+
+/* Dugout Section Kicker */
+.dugout-kicker {
+  font-family: 'Archivo', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #e2b64a;
+}
+
+/* Gold Gradient Button */
+.btn-gold {
+  background: linear-gradient(90deg, #ffe9a8, #e0ab3a);
+  color: #070a0e;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 12px rgba(226, 182, 74, 0.25);
+}
+
+.btn-gold:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 4px 18px rgba(226, 182, 74, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-gold:active {
+  transform: translateY(0);
+}
+
+/* Dark Dugout Card */
+.dugout-card {
+  background: #070a0e;
+  border: 1px solid #1e2733;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+.dugout-panel {
+  background: #10151c;
+  border: 1px solid #1e2733;
+  border-radius: 10px;
+}
+
+/* Custom sports management scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #081020;
+  background: #000000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1b2e50;
+  background: #1e2733;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #254070;
+  background: #33404f;
 }

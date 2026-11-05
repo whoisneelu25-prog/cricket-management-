@@ -15,12 +15,15 @@ import {
   Calendar,
   Trophy,
   Activity,
+  Award,
 } from 'lucide-react';
 import { CareerSave, Match, Player } from '../../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
 import { getEffectivePlayersByCountry, getEffectivePlayer } from '../../data/squads';
 import { selectAIPlayingXIForMatch } from '../../engine/aiTeamEngine';
 import { getNextUserMatchInfo } from '../../store/careerStore';
+import { CountryFlag } from '../common/CountryFlag';
+import { PlayerAvatar } from '../common/PlayerAvatar';
 
 interface MatchPreparationModalProps {
   career: CareerSave;
@@ -74,7 +77,7 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
     ? career.tours.find((t) => t.id === match.tourId)
     : undefined;
 
-  // Format-specific tour squad IDs (Phase 7 step 1: Load format-specific tour squad)
+  // Format-specific tour squad IDs
   const formatSquadIds = useMemo(() => {
     const tourFmtIds = activeTour?.squadAnnounced
       ? activeTour.formatSquads?.[match.format] || activeTour.tourSquadIds
@@ -117,7 +120,6 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
   const initialUserXI = useMemo(() => {
     const matchXI = userIsHome ? match.homeXI : match.awayXI;
     if (matchXI && matchXI.length === 11) {
-      // Auto-replace injured players if any
       const healthyIds = matchXI.filter((id) => {
         const p = getEffectivePlayer(id, career);
         return p && !p.isInjured;
@@ -250,140 +252,164 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
     }
   };
 
-  const handleMoveOrder = (index: number, dir: 'UP' | 'DOWN') => {
+  const handleMoveOrder = (index: number, direction: 'UP' | 'DOWN') => {
+    if (direction === 'UP' && index === 0) return;
+    if (direction === 'DOWN' && index === playingXI.length - 1) return;
     setSavedNotice(false);
-    const target = dir === 'UP' ? index - 1 : index + 1;
-    if (target < 0 || target >= playingXI.length) return;
-    const copy = [...playingXI];
-    const tmp = copy[index];
-    copy[index] = copy[target];
-    copy[target] = tmp;
-    setPlayingXI(copy);
+    const targetIdx = direction === 'UP' ? index - 1 : index + 1;
+    const next = [...playingXI];
+    const temp = next[index];
+    next[index] = next[targetIdx];
+    next[targetIdx] = temp;
+    setPlayingXI(next);
   };
 
-  const resolveConfirmedBowlingRotation = (): string[] => {
-    const chosen = effectiveSelectedBowlerIds;
-    if (chosen.length > 0) return chosen;
-    return xiPlayers
-      .filter((p) => p.id !== wicketKeeperId && (p.role === 'BOWLER' || p.role === 'ALL_ROUNDER'))
-      .map((b) => b.id);
-  };
+  const handleSaveAndConfirm = (): CareerSave | null => {
+    if (!canConfirm) return null;
+    const finalBowlers =
+      effectiveSelectedBowlerIds.length >= 4
+        ? effectiveSelectedBowlerIds
+        : xiPlayers
+            .filter((p) => p.id !== wicketKeeperId && (p.role === 'BOWLER' || p.role === 'ALL_ROUNDER'))
+            .map((p) => p.id);
 
-  const handleConfirmOnly = () => {
-    if (!canConfirm) return;
-    onConfirmLineup(match.id, {
-      playingXI,
-      captainId: playingXI.includes(captainId) ? captainId : playingXI[0],
-      wicketKeeperId: playingXI.includes(wicketKeeperId) ? wicketKeeperId : playingXI[0],
-      bowlingRotation: resolveConfirmedBowlingRotation(),
-    });
-    setSavedNotice(true);
-  };
-
-  const handleConfirmAndPlay = () => {
-    if (!canConfirm) return;
     const updatedCareer = onConfirmLineup(match.id, {
       playingXI,
-      captainId: playingXI.includes(captainId) ? captainId : playingXI[0],
-      wicketKeeperId: playingXI.includes(wicketKeeperId) ? wicketKeeperId : playingXI[0],
-      bowlingRotation: resolveConfirmedBowlingRotation(),
+      captainId,
+      wicketKeeperId,
+      bowlingRotation: finalBowlers,
     });
+    setSavedNotice(true);
+    return updatedCareer;
+  };
+
+  const handleStartNow = () => {
+    const updatedCareer = handleSaveAndConfirm();
+    if (!updatedCareer) return;
     onStartPreparedMatch(updatedCareer, match.id, daysRemaining > 0);
   };
 
-  const filteredPool = eligiblePool.filter(
-    (p) => roleFilter === 'ALL' || p.role === roleFilter
-  );
+  const filteredPool = eligiblePool.filter((p) => {
+    if (roleFilter === 'ALL') return true;
+    if (roleFilter === 'BAT') return p.role === 'BATTER';
+    if (roleFilter === 'BOWL') return p.role === 'BOWLER';
+    if (roleFilter === 'AR') return p.role === 'ALL_ROUNDER';
+    if (roleFilter === 'WK') return p.isWicketKeeper || p.role === 'WICKETKEEPER_BATTER';
+    return true;
+  });
+
+  const stadiumPhoto =
+    match.format === 'TEST'
+      ? '/assets/stadiums/jaitley-day.jpg'
+      : '/assets/stadiums/chepauk-night.jpg';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-5 bg-black/80 backdrop-blur-xs select-none animate-in fade-in duration-150">
-      <div className="bg-[#0e1525] border border-[#243247] w-full max-w-6xl max-h-[94vh] rounded-xl shadow-2xl flex flex-col overflow-hidden text-slate-200">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-[#121d33] via-[#162642] to-[#121d33] border-b border-[#243247] p-4 sm:p-5 flex items-start justify-between gap-4">
-          <div className="space-y-1">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[11px] font-black uppercase tracking-wider bg-emerald-950 text-emerald-400 border border-emerald-700/60 px-2.5 py-0.5 rounded font-mono">
-                {match.format} PRE-MATCH PREPARATION
-              </span>
-              <span className="text-[11px] font-bold bg-sky-950 text-sky-300 border border-sky-800/50 px-2 py-0.5 rounded font-mono">
-                {locationLabel}
-              </span>
-              <span className="text-[11px] font-mono text-slate-300 bg-[#0b101b] px-2 py-0.5 rounded border border-[#243247]">
-                {daysRemaining === 0 ? 'MATCH DAY TODAY' : `In ${daysRemaining} Day${daysRemaining === 1 ? '' : 's'} (${match.date})`}
-              </span>
-              {savedNotice && (
-                <span className="text-[11px] font-bold bg-emerald-600/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3" /> Lineup Confirmed (READY)
-                </span>
-              )}
-            </div>
-            <h2 className="text-lg sm:text-xl font-black text-white flex items-center gap-2 mt-1">
-              <span>{userTeam?.flagEmoji} {userTeam?.name}</span>
-              <span className="text-slate-400 text-sm font-mono">vs</span>
-              <span>{oppTeam?.flagEmoji} {oppTeam?.name}</span>
-            </h2>
-            <div className="flex flex-wrap items-center gap-3 text-xs text-slate-400">
-              <span className="flex items-center gap-1 text-slate-200 font-semibold">
-                <Trophy className="w-3.5 h-3.5 text-amber-400" />
-                {match.seriesName || 'International Fixture'}
-              </span>
-              <span>•</span>
-              <span className="flex items-center gap-1">
-                <MapPin className="w-3.5 h-3.5 text-emerald-400" />
-                {match.venue}
-              </span>
-              <span>•</span>
-              <span className="text-emerald-400 font-mono font-semibold">
-                {nextInfo.nextMatch?.id === match.id ? nextInfo.seriesScoreText : match.stage || 'Official Fixture'}
-              </span>
-            </div>
+    <div className="fixed inset-0 z-50 bg-[#000000]/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 select-none animate-in fade-in">
+      <div className="bg-[#070a0e] border border-[#1e2733] w-full max-w-6xl max-h-[94vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden text-[#e8edf2]">
+        {/* Header with Stadium Banner Underlay */}
+        <div className="relative overflow-hidden border-b border-[#1e2733] p-5 sm:p-6">
+          <div className="absolute inset-0 z-0">
+            <img
+              src={stadiumPhoto}
+              alt="Stadium Backdrop"
+              className="w-full h-full object-cover object-center filter brightness-[0.3] saturate-[0.8]"
+              onError={(e) => {
+                (e.currentTarget as HTMLElement).style.display = 'none';
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#070a0e] via-[#070a0e]/90 to-[#070a0e]/60" />
           </div>
 
-          <button
-            onClick={onClose}
-            aria-label="Close match preparation"
-            className="text-slate-400 hover:text-white p-1.5 rounded hover:bg-[#243247] transition cursor-pointer"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="relative z-10 flex items-start justify-between gap-4">
+            <div className="space-y-1.5">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-[10px] font-black uppercase tracking-widest bg-[#2c2412] text-[#ffe9a8] border border-[#e2b64a]/50 px-2.5 py-0.5 rounded font-display">
+                  {match.format} MATCH PREPARATION
+                </span>
+                <span className="text-[10px] font-extrabold bg-[#10151c] text-[#8fb2d9] border border-[#1e2733] px-2 py-0.5 rounded font-mono">
+                  {locationLabel}
+                </span>
+                <span className="text-[10px] font-mono text-[#8b97a3] bg-[#070a0e] px-2 py-0.5 rounded border border-[#1e2733]">
+                  {daysRemaining === 0 ? 'MATCH DAY TODAY' : `In ${daysRemaining} Day${daysRemaining === 1 ? '' : 's'} (${match.date})`}
+                </span>
+                {savedNotice && (
+                  <span className="text-[10px] font-bold bg-[#0e2c1d] text-[#3fca86] border border-[#3fca86]/50 px-2 py-0.5 rounded flex items-center gap-1 font-mono">
+                    <CheckCircle2 className="w-3 h-3" /> Lineup Confirmed
+                  </span>
+                )}
+              </div>
+
+              <h2 className="text-xl sm:text-2xl font-black text-white flex items-center gap-3 mt-1 font-display">
+                <span className="flex items-center gap-2">
+                  <CountryFlag countryCode={userTeam?.code || userTeamId} size="md" />
+                  {userTeam?.name}
+                </span>
+                <span className="text-[#e2b64a] text-sm font-bold font-mono">VS</span>
+                <span className="flex items-center gap-2">
+                  <CountryFlag countryCode={oppTeam?.code || oppTeamId} size="md" />
+                  {oppTeam?.name}
+                </span>
+              </h2>
+
+              <div className="flex flex-wrap items-center gap-3 text-xs text-[#8b97a3]">
+                <span className="flex items-center gap-1.5 text-[#e8edf2] font-semibold">
+                  <Trophy className="w-3.5 h-3.5 text-[#e2b64a]" />
+                  {match.seriesName || 'International Fixture'}
+                </span>
+                <span>•</span>
+                <span className="flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-[#3fca86]" />
+                  {match.venue}
+                </span>
+              </div>
+            </div>
+
+            <button
+              onClick={onClose}
+              aria-label="Close match preparation"
+              className="text-[#8b97a3] hover:text-white p-2 rounded-lg bg-[#10151c] border border-[#1e2733] hover:border-[#33404f] transition cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
-          {/* Pitch, Weather & AI Opposition Report */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5">
+          {/* Pitch, Weather & Opposition Scouting */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div className="bg-[#131d31] border border-[#243247] p-3 rounded-lg">
-              <span className="text-[10px] font-bold uppercase text-emerald-400 tracking-wider flex items-center gap-1.5">
+            <div className="bg-[#10151c] border border-[#1e2733] p-3 rounded-xl">
+              <span className="text-[10px] font-extrabold uppercase text-[#e2b64a] tracking-wider flex items-center gap-1.5 font-display">
                 <Layers className="w-3.5 h-3.5" /> Pitch Surface Report
               </span>
-              <div className="text-sm font-bold text-white mt-1">{match.pitch.name}</div>
-              <div className="flex items-center gap-3 text-[11px] text-slate-400 font-mono mt-1">
-                <span>Pace: <strong className="text-slate-200">{match.pitch.paceBonus >= 0 ? `+${match.pitch.paceBonus}` : match.pitch.paceBonus}</strong></span>
-                <span>Spin: <strong className="text-slate-200">{match.pitch.spinBonus >= 0 ? `+${match.pitch.spinBonus}` : match.pitch.spinBonus}</strong></span>
-                <span>Wear: <strong className="text-slate-200">{match.pitch.wearFactor}</strong></span>
+              <div className="text-sm font-bold text-white mt-1 font-display">{match.pitch.name}</div>
+              <div className="flex items-center gap-3 text-[11px] text-[#8b97a3] font-mono mt-1">
+                <span>Pace: <strong className="text-white">{match.pitch.paceBonus >= 0 ? `+${match.pitch.paceBonus}` : match.pitch.paceBonus}</strong></span>
+                <span>Spin: <strong className="text-white">{match.pitch.spinBonus >= 0 ? `+${match.pitch.spinBonus}` : match.pitch.spinBonus}</strong></span>
+                <span>Wear: <strong className="text-white">{match.pitch.wearFactor}</strong></span>
               </div>
             </div>
 
-            <div className="bg-[#131d31] border border-[#243247] p-3 rounded-lg">
-              <span className="text-[10px] font-bold uppercase text-sky-400 tracking-wider flex items-center gap-1.5">
-                <CloudSun className="w-3.5 h-3.5" /> Overhead & Weather
+            <div className="bg-[#10151c] border border-[#1e2733] p-3 rounded-xl">
+              <span className="text-[10px] font-extrabold uppercase text-[#8fb2d9] tracking-wider flex items-center gap-1.5 font-display">
+                <CloudSun className="w-3.5 h-3.5" /> Overhead Weather
               </span>
-              <div className="text-sm font-bold text-white mt-1">
-                {match.weather.type.replace(/_/g, ' ')} (Swing {match.weather.swingBonus >= 0 ? `+${match.weather.swingBonus}` : match.weather.swingBonus})
+              <div className="text-sm font-bold text-white mt-1 font-display">
+                {match.weather.type.replace(/_/g, ' ')}
               </div>
-              <p className="text-[11px] text-slate-400 mt-1 truncate">
-                {match.weather.description}
+              <p className="text-[11px] text-[#8b97a3] mt-1 truncate">
+                {match.weather.description} (Swing {match.weather.swingBonus >= 0 ? `+${match.weather.swingBonus}` : match.weather.swingBonus})
               </p>
             </div>
 
-            <div className="bg-[#131d31] border border-[#243247] p-3 rounded-lg">
-              <span className="text-[10px] font-bold uppercase text-amber-400 tracking-wider flex items-center gap-1.5">
-                <Activity className="w-3.5 h-3.5" /> Opponent Scouting ({oppTeam?.code})
+            <div className="bg-[#10151c] border border-[#1e2733] p-3 rounded-xl">
+              <span className="text-[10px] font-extrabold uppercase text-[#3fca86] tracking-wider flex items-center gap-1.5 font-display">
+                <Activity className="w-3.5 h-3.5" /> Opponent Intelligence
               </span>
-              <div className="text-sm font-bold text-white mt-1">
-                AI Philosophy: {oppStrategy.replace('_', ' ')}
+              <div className="text-sm font-bold text-white mt-1 font-display">
+                {oppTeam?.name} ({oppStrategy.replace('_', ' ')})
               </div>
-              <p className="text-[11px] text-slate-400 mt-1 truncate">
+              <p className="text-[11px] text-[#8b97a3] mt-1 truncate font-mono">
                 Capt: {getEffectivePlayer(oppAIConfig.captainId, career)?.shortName || 'TBA'} • WK: {getEffectivePlayer(oppAIConfig.wicketKeeperId, career)?.shortName || 'TBA'}
               </p>
             </div>
@@ -391,46 +417,40 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
 
           {/* Validation Alerts */}
           {(playingXI.length !== 11 || injuredInXI.length > 0 || !hasWK || bowlingOptions.length < 4) && (
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               {playingXI.length !== 11 && (
-                <div className="bg-amber-950/60 border border-amber-700/60 text-amber-200 px-3 py-2 rounded text-xs flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
-                  <span>Select exactly 11 players to confirm your Playing XI (currently {playingXI.length}/11).</span>
+                <div className="bg-[#2c2412] border border-[#e2b64a]/50 text-[#ffe9a8] px-3.5 py-2 rounded-xl text-xs flex items-center gap-2.5">
+                  <AlertTriangle className="w-4 h-4 text-[#e2b64a] shrink-0" />
+                  <span>Select exactly 11 players to finalize your Playing XI ({playingXI.length}/11 selected).</span>
                 </div>
               )}
               {injuredInXI.length > 0 && (
-                <div className="bg-rose-950/60 border border-rose-700/60 text-rose-200 px-3 py-2 rounded text-xs flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />
-                  <span>Injured player(s) in XI: {injuredInXI.map((p) => p.shortName).join(', ')}. Replace before confirming.</span>
+                <div className="bg-[#331420] border border-[#ff5470]/50 text-[#ff5470] px-3.5 py-2 rounded-xl text-xs flex items-center gap-2.5">
+                  <AlertTriangle className="w-4 h-4 text-[#ff5470] shrink-0" />
+                  <span>Injured player(s) in XI: {injuredInXI.map((p) => p.shortName).join(', ')}. Replace before taking the field.</span>
                 </div>
               )}
               {!hasWK && (
-                <div className="bg-amber-950/40 border border-amber-800/50 text-amber-300 px-3 py-1.5 rounded text-xs flex items-center gap-2">
-                  <AlertTriangle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                <div className="bg-[#10151c] border border-[#e2b64a]/30 text-[#ffe9a8] px-3.5 py-1.5 rounded-xl text-xs flex items-center gap-2">
+                  <AlertTriangle className="w-3.5 h-3.5 text-[#e2b64a] shrink-0" />
                   <span>Advisory: Designate a specialist wicketkeeper (WK) in your Playing XI.</span>
-                </div>
-              )}
-              {bowlingOptions.length < 4 && (
-                <div className="bg-amber-950/40 border border-amber-800/50 text-amber-300 px-3 py-1.5 rounded text-xs flex items-center gap-2">
-                  <AlertTriangle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                  <span>Advisory: Only {bowlingOptions.length} bowling options selected (5+ recommended).</span>
                 </div>
               )}
             </div>
           )}
 
-          {/* 3-Column Selector: User Playing XI (5) | Eligible Squad Pool (5) | Opponent Projected XI (2) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-            {/* User Playing XI & Batting Order */}
-            <div className="lg:col-span-5 bg-[#121a2b] border border-[#243247] rounded-lg p-3.5 space-y-2.5">
-              <div className="flex items-center justify-between border-b border-[#243247] pb-2">
+          {/* 3-Column Squad Interface */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+            {/* Playing XI List (5 Columns) */}
+            <div className="lg:col-span-5 bg-[#10151c] border border-[#1e2733] rounded-xl p-4 space-y-3">
+              <div className="flex items-center justify-between border-b border-[#1e2733] pb-2.5">
                 <div>
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
-                    <Shield className="w-3.5 h-3.5" />
+                  <h3 className="text-xs font-extrabold uppercase tracking-widest text-[#e2b64a] flex items-center gap-2 font-display">
+                    <Shield className="w-4 h-4" />
                     <span>{userTeam?.name} Playing XI ({playingXI.length}/11)</span>
                   </h3>
-                  <span className="text-[10px] text-slate-400">
-                    Bowling Options: <strong className="text-white">{bowlingOptions.length}</strong> • Batting Order 1–11
+                  <span className="text-[10px] text-[#8b97a3] font-mono">
+                    Batting Slots 1–11 • Bowlers: <strong className="text-white">{bowlingOptions.length}</strong>
                   </span>
                 </div>
               </div>
@@ -449,28 +469,29 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
                   return (
                     <div
                       key={p.id}
-                      className="bg-[#182338] border border-[#273650] rounded p-2 flex items-center justify-between text-xs"
+                      className="bg-[#070a0e] border border-[#1e2733] hover:border-[#33404f] rounded-xl p-2.5 flex items-center justify-between text-xs transition shadow-sm"
                     >
-                      <div className="flex items-center gap-2 min-w-0">
-                        <span className="w-5 h-5 rounded-full bg-[#0d1422] border border-[#273650] text-[10px] font-mono font-bold text-slate-400 flex items-center justify-center shrink-0">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <span className="w-5 h-5 rounded-md bg-[#10151c] border border-[#1e2733] text-[10px] font-mono font-bold text-[#8fb2d9] flex items-center justify-center shrink-0">
                           {idx + 1}
                         </span>
+                        <PlayerAvatar player={p} size="xs" showFlag={false} />
                         <div className="truncate">
-                          <div className="flex items-center gap-1">
-                            <span className="font-bold text-white truncate">{p.shortName}</span>
+                          <div className="flex items-center gap-1.5">
+                            <span className="font-bold text-white truncate font-display">{p.shortName}</span>
                             {isC && (
-                              <span className="text-[9px] bg-amber-600 text-white px-1 rounded font-bold">
+                              <span className="text-[8.5px] bg-[#2c2412] text-[#ffe9a8] border border-[#e2b64a]/50 px-1 rounded font-black font-mono">
                                 C
                               </span>
                             )}
                             {isWK && (
-                              <span className="text-[9px] bg-sky-600 text-white px-1 rounded font-bold">
+                              <span className="text-[8.5px] bg-amber-950 text-amber-300 border border-amber-400/50 px-1 rounded font-black font-mono">
                                 WK
                               </span>
                             )}
                           </div>
-                          <span className="text-[10px] text-slate-400 font-mono">
-                            {p.role.replace('_', ' ')} • {rtg} RTG • Fat {p.workloadFatigue || 10}%
+                          <span className="text-[10px] text-[#8b97a3] font-mono">
+                            {p.role} • {rtg} RTG
                           </span>
                         </div>
                       </div>
@@ -479,16 +500,16 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
                         <button
                           onClick={() => handleMoveOrder(idx, 'UP')}
                           disabled={idx === 0}
-                          className="p-0.5 text-slate-400 hover:text-white disabled:opacity-25 cursor-pointer"
-                          title="Move Up"
+                          className="p-1 text-[#8b97a3] hover:text-white disabled:opacity-20 cursor-pointer"
+                          title="Move Up Order"
                         >
                           <ArrowUp className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => handleMoveOrder(idx, 'DOWN')}
                           disabled={idx === xiPlayers.length - 1}
-                          className="p-0.5 text-slate-400 hover:text-white disabled:opacity-25 cursor-pointer"
-                          title="Move Down"
+                          className="p-1 text-[#8b97a3] hover:text-white disabled:opacity-20 cursor-pointer"
+                          title="Move Down Order"
                         >
                           <ArrowDown className="w-3.5 h-3.5" />
                         </button>
@@ -497,10 +518,10 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
                             setSavedNotice(false);
                             setCaptainId(p.id);
                           }}
-                          className={`text-[10px] px-1.5 py-0.5 rounded font-bold cursor-pointer ${
-                            isC ? 'bg-amber-600 text-white' : 'bg-[#0e1525] text-slate-400 hover:text-white'
+                          className={`text-[9.5px] px-1.5 py-0.5 rounded font-bold cursor-pointer ${
+                            isC ? 'bg-[#2c2412] text-[#ffe9a8] border border-[#e2b64a]' : 'bg-[#10151c] text-[#8b97a3] hover:text-white'
                           }`}
-                          title="Assign Captain"
+                          title="Set as Captain"
                         >
                           C
                         </button>
@@ -510,28 +531,28 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
                             setWicketKeeperId(p.id);
                             setSelectedBowlerIds((prev) => prev.filter((id) => id !== p.id));
                           }}
-                          className={`text-[10px] px-1.5 py-0.5 rounded font-bold cursor-pointer ${
-                            isWK ? 'bg-sky-600 text-white' : 'bg-[#0e1525] text-slate-400 hover:text-white'
+                          className={`text-[9.5px] px-1.5 py-0.5 rounded font-bold cursor-pointer ${
+                            isWK ? 'bg-amber-950 text-amber-300 border border-amber-400' : 'bg-[#10151c] text-[#8b97a3] hover:text-white'
                           }`}
-                          title="Assign Wicketkeeper"
+                          title="Set as Wicketkeeper"
                         >
                           WK
                         </button>
                         <button
                           disabled={isWK}
                           onClick={() => handleToggleBowlerOption(p.id)}
-                          className={`text-[10px] px-1.5 py-0.5 rounded font-bold cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed ${
+                          className={`text-[9.5px] px-1.5 py-0.5 rounded font-bold cursor-pointer disabled:opacity-30 ${
                             effectiveSelectedBowlerIds.includes(p.id)
-                              ? 'bg-emerald-700 text-white'
-                              : 'bg-[#0e1525] text-slate-400 hover:text-white'
+                              ? 'bg-[#0e2c1d] text-[#3fca86] border border-[#3fca86]'
+                              : 'bg-[#10151c] text-[#8b97a3] hover:text-white'
                           }`}
-                          title="Toggle Bowling Option"
+                          title="Nominate Bowler"
                         >
                           BOWL
                         </button>
                         <button
                           onClick={() => handleToggleXI(p)}
-                          className="text-[10px] px-1.5 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800/60 hover:bg-rose-900 font-bold cursor-pointer ml-0.5"
+                          className="text-[10px] px-1.5 py-0.5 rounded bg-[#331420] text-[#ff5470] border border-[#ff5470]/40 hover:bg-[#ff5470]/20 font-bold cursor-pointer ml-1"
                         >
                           ✕
                         </button>
@@ -542,17 +563,12 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
               </div>
             </div>
 
-            {/* Available Format Squad Pool */}
-            <div className="lg:col-span-4 bg-[#121a2b] border border-[#243247] rounded-lg p-3.5 space-y-2.5">
-              <div className="flex items-center justify-between border-b border-[#243247] pb-2 gap-2">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-sky-400 flex items-center gap-1.5">
-                  <Users className="w-3.5 h-3.5" />
-                  <span>
-                    {poolMode === 'TOUR_SQUAD' && formatSquadIds
-                      ? `${match.format} Tour Squad (${eligiblePool.length})`
-                      : `National Squad Pool (${eligiblePool.length})`}
-                  </span>
-                </h3>
+            {/* Eligible Squad Pool (4 Columns) */}
+            <div className="lg:col-span-4 bg-[#10151c] border border-[#1e2733] rounded-xl p-4 space-y-3">
+              <div className="flex items-center justify-between border-b border-[#1e2733] pb-2.5">
+                <span className="text-xs font-extrabold uppercase tracking-widest text-[#8fb2d9] flex items-center gap-2 font-display">
+                  <Users className="w-4 h-4" /> Available Pool ({filteredPool.length})
+                </span>
                 {formatSquadIds && (
                   <button
                     onClick={() =>
@@ -560,30 +576,31 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
                         prev === 'TOUR_SQUAD' ? 'NATIONAL_POOL' : 'TOUR_SQUAD'
                       )
                     }
-                    className="text-[10px] font-bold text-emerald-400 hover:text-emerald-300 underline cursor-pointer shrink-0"
+                    className="text-[10px] text-[#e2b64a] hover:underline font-mono"
                   >
-                    {poolMode === 'TOUR_SQUAD' ? 'View Full Pool' : `View ${match.format} Squad`}
+                    {poolMode === 'TOUR_SQUAD' ? 'Tour Squad' : 'National Pool'}
                   </button>
                 )}
               </div>
 
-              <div className="flex items-center gap-1 overflow-x-auto pb-1">
-                {['ALL', 'BATTER', 'ALL_ROUNDER', 'WICKETKEEPER_BATTER', 'BOWLER'].map((r) => (
+              {/* Role Filter Tabs */}
+              <div className="flex items-center gap-1 bg-[#070a0e] p-1 rounded-lg border border-[#1e2733] text-[10px] font-bold">
+                {(['ALL', 'BAT', 'BOWL', 'AR', 'WK'] as const).map((r) => (
                   <button
                     key={r}
                     onClick={() => setRoleFilter(r)}
-                    className={`px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer whitespace-nowrap ${
+                    className={`flex-1 py-1 rounded transition cursor-pointer ${
                       roleFilter === r
-                        ? 'bg-emerald-600 text-white'
-                        : 'bg-[#182338] text-slate-400 hover:text-white'
+                        ? 'bg-[#2c2412] text-[#ffe9a8] border border-[#e2b64a]/50'
+                        : 'text-[#8b97a3] hover:text-white'
                     }`}
                   >
-                    {r === 'WICKETKEEPER_BATTER' ? 'WK' : r.replace('_', ' ')}
+                    {r}
                   </button>
                 ))}
               </div>
 
-              <div className="space-y-1.5 max-h-[345px] overflow-y-auto pr-1">
+              <div className="space-y-1.5 max-h-[330px] overflow-y-auto pr-1">
                 {filteredPool.map((p) => {
                   const inXI = playingXI.includes(p.id);
                   const rtg =
@@ -596,77 +613,80 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
                   return (
                     <div
                       key={p.id}
-                      className={`border rounded p-2 flex items-center justify-between text-xs ${
+                      onClick={() => !inXI && handleToggleXI(p)}
+                      className={`p-2 rounded-xl border flex items-center justify-between text-xs transition ${
                         inXI
-                          ? 'bg-[#182338]/40 border-emerald-900/40 opacity-60'
+                          ? 'bg-[#070a0e]/50 border-[#1e2733]/40 opacity-40 cursor-default'
                           : p.isInjured
-                          ? 'bg-rose-950/20 border-rose-900/40 opacity-75'
-                          : 'bg-[#182338] border-[#273650]'
+                          ? 'bg-[#331420]/30 border-[#ff5470]/30 opacity-60 cursor-not-allowed'
+                          : 'bg-[#070a0e] border-[#1e2733] hover:border-[#e2b64a]/50 cursor-pointer'
                       }`}
                     >
-                      <div className="min-w-0 pr-2">
-                        <div className="flex items-center gap-1.5">
-                          <span className="font-bold text-white truncate">{p.shortName}</span>
-                          <span className="text-[9px] text-slate-400 font-mono bg-[#0e1525] px-1 rounded">
-                            {p.role === 'WICKETKEEPER_BATTER' ? 'WK' : p.role.replace('_', ' ')}
+                      <div className="flex items-center gap-2 min-w-0">
+                        <PlayerAvatar player={p} size="xs" showFlag={false} />
+                        <div className="truncate">
+                          <span className="font-bold text-white block truncate font-display">{p.shortName}</span>
+                          <span className="text-[10px] text-[#8b97a3] font-mono">
+                            {p.role} • {rtg} RTG
                           </span>
-                          {p.isInjured && (
-                            <span className="text-[9px] bg-rose-950 text-rose-300 px-1 rounded font-bold">
-                              INJ ({p.injuryDaysRemaining}d)
-                            </span>
-                          )}
                         </div>
-                        <span className="text-[10px] text-slate-400 font-mono block">
-                          {rtg} RTG • Form {p.currentForm ?? 80} • Fat {p.workloadFatigue || 10}%
-                        </span>
                       </div>
 
-                      <button
-                        disabled={p.isInjured || (!inXI && playingXI.length >= 11)}
-                        onClick={() => handleToggleXI(p)}
-                        className={`text-[10px] px-2 py-1 rounded font-bold shrink-0 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed ${
-                          inXI
-                            ? 'bg-rose-950 text-rose-300 border border-rose-800'
-                            : 'bg-emerald-600 hover:bg-emerald-500 text-white'
-                        }`}
-                      >
-                        {inXI ? 'Remove' : '+ Select'}
-                      </button>
+                      <div className="text-right shrink-0">
+                        {inXI ? (
+                          <span className="text-[10px] text-[#3fca86] font-mono font-bold">In XI</span>
+                        ) : p.isInjured ? (
+                          <span className="text-[10px] text-[#ff5470] font-mono">Injured</span>
+                        ) : (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleToggleXI(p);
+                            }}
+                            className="text-[10px] bg-[#2c2412] hover:bg-[#453718] text-[#ffe9a8] border border-[#e2b64a]/50 px-2 py-0.5 rounded font-extrabold cursor-pointer"
+                          >
+                            + Select
+                          </button>
+                        )}
+                      </div>
                     </div>
                   );
                 })}
               </div>
             </div>
 
-            {/* Opponent Projected XI (Read-only) */}
-            <div className="lg:col-span-3 bg-[#121a2b] border border-[#243247] rounded-lg p-3.5 space-y-2.5">
-              <div className="border-b border-[#243247] pb-2">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-amber-400">
-                  {oppTeam?.name} Projected XI
-                </h3>
-                <span className="text-[10px] text-slate-400">AI Selection (Read-Only)</span>
+            {/* Opponent Projected Lineup (3 Columns) */}
+            <div className="lg:col-span-3 bg-[#10151c] border border-[#1e2733] rounded-xl p-4 space-y-3">
+              <div className="border-b border-[#1e2733] pb-2.5">
+                <span className="text-xs font-extrabold uppercase tracking-widest text-[#3fca86] flex items-center gap-2 font-display">
+                  <Activity className="w-4 h-4" /> {oppTeam?.code} Projected XI
+                </span>
+                <span className="text-[10px] text-[#8b97a3] block mt-0.5">
+                  AI Tactical Setup & Bowlers
+                </span>
               </div>
 
-              <div className="space-y-1 max-h-[380px] overflow-y-auto pr-1">
+              <div className="space-y-1.5 max-h-[380px] overflow-y-auto pr-1">
                 {oppAIConfig.playingXI.map((id, idx) => {
-                  const op = getEffectivePlayer(id, career);
-                  if (!op) return null;
+                  const p = getEffectivePlayer(id, career);
                   const isC = id === oppAIConfig.captainId;
                   const isWK = id === oppAIConfig.wicketKeeperId;
+                  const isBowl = oppAIConfig.bowlingRotation?.includes(id);
+
                   return (
                     <div
                       key={id}
-                      className="bg-[#182338]/70 border border-[#243247] px-2 py-1.5 rounded flex items-center justify-between text-[11px]"
+                      className="bg-[#070a0e] border border-[#1e2733] rounded-lg p-2 flex items-center justify-between text-xs"
                     >
-                      <span className="text-slate-200 truncate">
-                        <span className="text-slate-500 font-mono mr-1">{idx + 1}.</span>
-                        {op.shortName}
-                        {isC && <strong className="ml-1 text-amber-400 text-[9px]">(C)</strong>}
-                        {isWK && <strong className="ml-1 text-sky-400 text-[9px]">(WK)</strong>}
-                      </span>
-                      <span className="text-[9px] text-slate-400 font-mono shrink-0 ml-1">
-                        {op.role === 'WICKETKEEPER_BATTER' ? 'WK' : op.role.slice(0, 3)}
-                      </span>
+                      <div className="flex items-center gap-2 truncate">
+                        <span className="text-[9px] font-mono text-[#8b97a3]">{idx + 1}.</span>
+                        <span className="font-semibold text-[#e8edf2] truncate">{p?.shortName || id}</span>
+                      </div>
+                      <div className="flex items-center gap-1 font-mono text-[8px] shrink-0">
+                        {isC && <span className="px-1 rounded bg-[#2c2412] text-[#ffe9a8] font-bold">C</span>}
+                        {isWK && <span className="px-1 rounded bg-amber-950 text-amber-300 font-bold">WK</span>}
+                        {isBowl && <span className="px-1 rounded bg-[#0e2c1d] text-[#3fca86]">BOWL</span>}
+                      </div>
                     </div>
                   );
                 })}
@@ -675,41 +695,31 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
           </div>
         </div>
 
-        {/* Footer Actions */}
-        <div className="bg-[#121a2b] border-t border-[#243247] p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-3">
-          <button
-            onClick={onClose}
-            className="text-xs text-slate-400 hover:text-white px-3 py-2 rounded border border-[#243247] bg-[#182338] cursor-pointer font-semibold"
-          >
-            Back to Dashboard
-          </button>
+        {/* Modal Action Footer */}
+        <div className="bg-[#10151c] border-t border-[#1e2733] p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3">
+          <div className="text-xs text-[#8b97a3] font-mono">
+            Lineup Status:{' '}
+            <strong className={canConfirm ? 'text-[#3fca86]' : 'text-[#ff5470]'}>
+              {canConfirm ? '11 Valid Players Designated' : 'Incomplete Lineup'}
+            </strong>
+          </div>
 
-          <div className="flex flex-wrap items-center gap-2.5">
+          <div className="flex items-center space-x-3">
             <button
+              onClick={handleSaveAndConfirm}
               disabled={!canConfirm}
-              onClick={handleConfirmOnly}
-              className="bg-[#1b2a44] hover:bg-[#24385a] disabled:opacity-40 text-sky-300 border border-sky-700/50 font-bold text-xs px-4 py-2 rounded transition cursor-pointer flex items-center gap-1.5"
+              className="bg-[#070a0e] hover:bg-[#1a2330] text-[#ffe9a8] border border-[#e2b64a]/50 disabled:opacity-40 font-bold text-xs px-4 py-2 rounded-xl transition cursor-pointer shadow-md"
             >
-              <CheckCircle2 className="w-3.5 h-3.5" />
-              <span>Confirm Lineup (Mark READY)</span>
+              Save Lineup Configuration
             </button>
 
             <button
+              onClick={handleStartNow}
               disabled={!canConfirm}
-              onClick={handleConfirmAndPlay}
-              className="bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 text-white font-bold text-xs px-5 py-2 rounded shadow-lg transition cursor-pointer flex items-center gap-1.5"
+              className="btn-gold disabled:opacity-40 text-xs px-5 py-2 rounded-xl transition cursor-pointer flex items-center gap-2 shadow-lg active:scale-95"
             >
-              {daysRemaining > 0 ? (
-                <>
-                  <FastForward className="w-3.5 h-3.5" />
-                  <span>Confirm & Advance to Match Day ({daysRemaining}d)</span>
-                </>
-              ) : (
-                <>
-                  <Play className="w-3.5 h-3.5 fill-current" />
-                  <span>Confirm & Start Match Toss</span>
-                </>
-              )}
+              <Play className="w-4 h-4 fill-current" />
+              <span>{daysRemaining === 0 ? 'Take the Field (Start Match)' : 'Simulate & Start Match'}</span>
             </button>
           </div>
         </div>
@@ -717,4 +727,3 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
     </div>
   );
 };
-

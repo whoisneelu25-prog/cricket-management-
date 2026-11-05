@@ -41,6 +41,7 @@ import {
 import { TrainingFocus } from './engine/playerDevelopmentEngine';
 import { INTERNATIONAL_TEAMS } from './data/teams';
 import { ALL_PLAYERS } from './data/squads';
+import { PitchBackground } from './components/common/PitchBackground';
 import { TopBar } from './components/navigation/TopBar';
 import { Sidebar } from './components/navigation/Sidebar';
 import { DashboardView } from './components/dashboard/DashboardView';
@@ -585,7 +586,10 @@ export default function App() {
   }
 
   return (
-    <div className="flex h-screen bg-[#070c18] text-slate-200 overflow-hidden select-none font-sans">
+    <div className="flex h-screen bg-[#000000] text-[#e8edf2] overflow-hidden select-none font-sans relative">
+      {/* Dugout SVG Pitch Background underlay */}
+      <PitchBackground />
+
       {/* Sidebar Navigation */}
       <Sidebar
         activeTab={activeTab}
@@ -594,10 +598,11 @@ export default function App() {
         isMatchReady={career?.fixtures.some((f) => f.date === career.currentDate && f.status !== 'COMPLETED')}
         isCollapsed={isSidebarCollapsed}
         onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+        selectedTeam={career ? INTERNATIONAL_TEAMS.find((t) => t.id === career.selectedTeamId) : undefined}
       />
 
       {/* Main Content Viewport */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative z-10">
         {/* Top Header */}
         <TopBar
           career={career}
@@ -607,7 +612,7 @@ export default function App() {
         />
 
         {/* Scrollable Workspace */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 bg-[#070c18]">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 bg-[#000000]/60 backdrop-blur-[1px]">
           {activeTab === 'DASHBOARD' && career && (
             <DashboardView
               career={career}

@@ -18,6 +18,7 @@ import {
   AlertTriangle,
   Plane,
   RotateCcw,
+  Sparkles,
 } from 'lucide-react';
 import { CareerSave, Match, MatchFormat, Player, Tour, TourType } from '../../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
@@ -28,6 +29,7 @@ import {
   scheduleCustomInternationalTour,
   validateCustomTourSchedule,
 } from '../../engine/tourEngine';
+import { CountryFlag } from '../common/CountryFlag';
 
 interface ToursViewProps {
   career: CareerSave;
@@ -96,16 +98,16 @@ export const ToursView: React.FC<ToursViewProps> = ({
   }, [activeTour, tourMatches, career.currentDate]);
 
   const progressionStages = [
-    { step: 1, label: 'Tour Scheduled' },
-    { step: 2, label: 'Selection Window' },
-    { step: 3, label: 'Squad Deadline' },
-    { step: 4, label: 'Announcement' },
-    { step: 5, label: 'Pre-Tour Camp' },
-    { step: 6, label: 'First Match Day' },
-    { step: 7, label: 'Series In Progress' },
-    { step: 8, label: 'Deciding Fixtures' },
-    { step: 9, label: 'Series Concluded' },
-    { step: 10, label: 'Trophy & Review' },
+    { step: 1, label: 'Scheduled' },
+    { step: 2, label: 'Selection' },
+    { step: 3, label: 'Deadline' },
+    { step: 4, label: 'Announced' },
+    { step: 5, label: 'Pre-Camp' },
+    { step: 6, label: 'First Match' },
+    { step: 7, label: 'In Progress' },
+    { step: 8, label: 'Deciders' },
+    { step: 9, label: 'Concluded' },
+    { step: 10, label: 'Trophy' },
   ];
 
   // Schedule Custom Tour Submit Handler
@@ -148,41 +150,42 @@ export const ToursView: React.FC<ToursViewProps> = ({
   };
 
   return (
-    <div className="space-y-4 select-none pb-8 text-slate-200">
-      {/* Top Banner: Header + Schedule Tour CTA */}
-      <div className="bg-[#111827] border border-[#1e293b] rounded-lg p-3.5 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-sm">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded bg-[#151d29] border border-[#1e293b] flex items-center justify-center text-emerald-400">
-            <Plane className="w-5 h-5" />
+    <div className="space-y-5 select-none pb-8 text-[#e8edf2]">
+      {/* Top Banner: Header + Schedule Tour CTA in Dugout Style */}
+      <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
+        <div className="flex items-center space-x-3.5">
+          <div className="w-12 h-12 rounded-xl bg-[#10151c] border border-[#1e2733] flex items-center justify-center text-[#e2b64a] shadow-inner">
+            <Plane className="w-6 h-6" />
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className="text-base font-bold text-white tracking-wide">
-                Bilateral International Tours &amp; Series
-              </h1>
-              <span className="text-[10px] bg-[#142646] text-emerald-400 font-mono px-1.5 py-0.5 rounded border border-emerald-900/60 font-bold">
+              <span className="dugout-kicker text-[11px] text-[#e2b64a]">Bilateral Series</span>
+              <span className="text-[10px] bg-[#10151c] text-[#8fb2d9] font-mono px-2 py-0.5 rounded-full border border-[#1e2733] font-bold">
                 Tours Hub
               </span>
             </div>
-            <p className="text-xs text-slate-400">
-              Multi-format bilateral series, independent format trophies, touring squad management and real tour records
+            <h1 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight mt-0.5">
+              International Tours &amp; Trophies
+            </h1>
+            <p className="text-xs text-[#8b97a3] mt-0.5">
+              Multi-format bilateral series, independent trophies, touring squad management and series honors
             </p>
           </div>
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2.5">
           <button
             onClick={() => setShowScheduleModal(true)}
-            className="bg-[#10b981] hover:bg-[#059669] text-[#0b0e14] text-xs font-bold px-3 py-1.5 rounded transition cursor-pointer flex items-center gap-1.5 shadow-sm"
+            className="btn-gold flex items-center gap-1.5 text-xs py-2.5 px-4"
           >
-            <Plus className="w-3.5 h-3.5" />
+            <Plus className="w-3.5 h-3.5 stroke-[3]" />
             <span>Schedule New Tour</span>
           </button>
         </div>
       </div>
 
       {/* Tour Selector Horizontal Strip */}
-      <div className="flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-thin scrollbar-thumb-slate-800">
+      <div className="flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-thin">
         {tours.map((t) => {
           const isSelected = t.id === activeTour?.id;
           const userIn = t.hostTeamId === career.selectedTeamId || t.visitingTeamId === career.selectedTeamId;
@@ -190,15 +193,15 @@ export const ToursView: React.FC<ToursViewProps> = ({
             <button
               key={t.id}
               onClick={() => setSelectedTourId(t.id)}
-              className={`px-3 py-1.5 rounded text-xs font-bold whitespace-nowrap transition cursor-pointer flex items-center space-x-1.5 border ${
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition cursor-pointer flex items-center space-x-2 border uppercase tracking-wider ${
                 isSelected
-                  ? 'bg-emerald-600 text-white border-emerald-500 shadow-sm'
-                  : 'bg-[#111827] text-slate-400 hover:text-white border-[#1e293b]'
+                  ? 'bg-gradient-to-r from-[#ffe9a8] to-[#e0ab3a] text-black border-transparent shadow-sm font-extrabold'
+                  : 'bg-[#070a0e] text-[#8b97a3] hover:text-white border-[#1e2733]'
               }`}
             >
               <span>{t.name}</span>
               {userIn && (
-                <span className="bg-emerald-950 text-emerald-300 font-mono text-[9px] px-1 py-0.2 rounded border border-emerald-800">
+                <span className="bg-[#10151c] text-[#ffe9a8] font-mono text-[9px] px-1.5 py-0.2 rounded border border-[#1e2733]">
                   MY NATION
                 </span>
               )}
@@ -208,36 +211,43 @@ export const ToursView: React.FC<ToursViewProps> = ({
       </div>
 
       {activeTour && (
-        <div className="space-y-4">
+        <div className="space-y-5">
           {/* Active Tour Overview & 10-Step Progression Tracker */}
-          <div className="bg-[#111827] border border-[#1e293b] rounded-lg p-4 space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#1e293b] pb-3">
+          <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-5 space-y-4 shadow-xl">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#1e2733] pb-4">
               <div>
                 <div className="flex items-center space-x-2">
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#152336] text-emerald-400 border border-emerald-900/60 font-mono">
+                  <span className="text-[10px] font-black px-2 py-0.5 rounded bg-[#10151c] text-[#e2b64a] border border-[#1e2733] font-mono uppercase tracking-wider">
                     {activeTour.tourType || 'BILATERAL_TOUR'}
                   </span>
-                  <span className="text-xs text-slate-400 font-mono">
+                  <span className="text-xs text-[#8b97a3] font-mono">
                     {activeTour.startDate} → {activeTour.endDate}
                   </span>
                 </div>
-                <h2 className="text-lg font-bold text-white mt-1">{activeTour.name}</h2>
-                <p className="text-xs text-slate-400">
-                  Host: <strong className="text-white">{hostTeam?.name || activeTour.hostTeamId}</strong> • Visitor:{' '}
-                  <strong className="text-white">{visitingTeam?.name || activeTour.visitingTeamId}</strong>
-                </p>
+                <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight mt-1">{activeTour.name}</h2>
+                <div className="flex items-center space-x-3 text-xs text-[#8b97a3] mt-1">
+                  <div className="flex items-center space-x-1.5">
+                    <CountryFlag countryCode={hostTeam?.code || ''} size="xs" />
+                    <span>Host: <strong className="text-white">{hostTeam?.name || activeTour.hostTeamId}</strong></span>
+                  </div>
+                  <span>•</span>
+                  <div className="flex items-center space-x-1.5">
+                    <CountryFlag countryCode={visitingTeam?.code || ''} size="xs" />
+                    <span>Visitor: <strong className="text-white">{visitingTeam?.name || activeTour.visitingTeamId}</strong></span>
+                  </div>
+                </div>
               </div>
 
               <div className="flex items-center space-x-3">
                 <div className="text-right">
-                  <span className="text-[10px] text-slate-400 block uppercase font-semibold">Status</span>
+                  <span className="dugout-kicker text-[10px] text-[#8b97a3] block mb-0.5">Series Status</span>
                   <span
-                    className={`font-mono font-bold text-xs ${
+                    className={`font-mono font-black text-xs uppercase tracking-wider ${
                       activeTour.status === 'COMPLETED'
-                        ? 'text-emerald-400'
+                        ? 'text-[#3fca86]'
                         : activeTour.status === 'IN_PROGRESS'
-                        ? 'text-sky-400'
-                        : 'text-amber-400'
+                        ? 'text-[#8fb2d9]'
+                        : 'text-[#e2b64a]'
                     }`}
                   >
                     {activeTour.status.replace(/_/g, ' ')}
@@ -247,7 +257,7 @@ export const ToursView: React.FC<ToursViewProps> = ({
                 {isUserInvolved && onOpenTourSelection && (
                   <button
                     onClick={() => onOpenTourSelection(activeTour.id)}
-                    className="bg-[#151d29] hover:bg-[#1f2c42] text-emerald-400 border border-emerald-900/60 text-xs font-bold px-3 py-1.5 rounded transition cursor-pointer flex items-center gap-1.5"
+                    className="bg-[#10151c] hover:bg-[#161d27] text-[#e2b64a] border border-[#1e2733] hover:border-[#e2b64a] text-xs font-bold px-3.5 py-2 rounded-xl transition cursor-pointer flex items-center gap-1.5 uppercase tracking-wider"
                   >
                     <UserCheck className="w-3.5 h-3.5" />
                     <span>{activeTour.squadAnnounced ? 'Tour Squad' : 'Announce Squad'}</span>
@@ -257,8 +267,8 @@ export const ToursView: React.FC<ToursViewProps> = ({
             </div>
 
             {/* 10-Step Progression Tracker */}
-            <div className="space-y-1.5">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
+            <div className="space-y-2">
+              <span className="dugout-kicker text-[10px] text-[#8b97a3] block">
                 Tour Progression Lifecycle (Stage {progression.stageIndex}/10: {progression.label})
               </span>
               <div className="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-10 gap-1.5">
@@ -268,15 +278,15 @@ export const ToursView: React.FC<ToursViewProps> = ({
                   return (
                     <div
                       key={st.step}
-                      className={`p-1.5 rounded text-center border transition text-[10px] ${
+                      className={`p-2 rounded-xl text-center border transition text-[10px] ${
                         isCurrent
-                          ? 'bg-emerald-950/60 border-emerald-500 text-emerald-300 font-bold'
+                          ? 'bg-[#e2b64a]/10 border-[#e2b64a] text-[#ffe9a8] font-bold shadow-xs'
                           : isDone
-                          ? 'bg-[#151d29] border-emerald-900/40 text-slate-400 font-medium'
-                          : 'bg-[#0e131d] border-[#1e293b] text-slate-600'
+                          ? 'bg-[#10151c] border-[#3fca86]/40 text-[#3fca86] font-medium'
+                          : 'bg-[#070a0e] border-[#1e2733] text-[#556375]'
                       }`}
                     >
-                      <span className="font-mono block text-[9px]">Step {st.step}</span>
+                      <span className="font-mono block text-[9px] uppercase">Step {st.step}</span>
                       <span className="truncate block mt-0.5">{st.label}</span>
                     </div>
                   );
@@ -285,8 +295,8 @@ export const ToursView: React.FC<ToursViewProps> = ({
             </div>
           </div>
 
-          {/* Independent Per-Format Series Standings */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          {/* Independent Per-Format Series Standings in Dugout Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
             {(['TEST', 'ODI', 'T20I'] as MatchFormat[]).map((fmt) => {
               const series = activeTour.series?.[fmt];
               if (!series) return null;
@@ -301,36 +311,36 @@ export const ToursView: React.FC<ToursViewProps> = ({
               return (
                 <div
                   key={fmt}
-                  className="bg-[#111827] border border-[#1e293b] rounded-lg p-3 space-y-2"
+                  className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-4 space-y-3 shadow-xl"
                 >
-                  <div className="flex items-center justify-between border-b border-[#1e293b] pb-1.5">
-                    <span className="text-xs font-bold font-mono text-emerald-400">
+                  <div className="flex items-center justify-between border-b border-[#1e2733] pb-2">
+                    <span className="dugout-kicker text-xs text-[#e2b64a]">
                       {fmt} SERIES
                     </span>
-                    <span className="text-[10px] font-mono text-slate-400">
+                    <span className="text-[10px] font-mono text-[#8b97a3] uppercase">
                       {matchCount} Match{matchCount > 1 ? 'es' : ''}
                     </span>
                   </div>
 
-                  <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center justify-between text-xs py-1">
                     <div>
-                      <span className="font-bold text-white block">{activeTour.hostTeamId}</span>
-                      <span className="text-xl font-bold font-mono text-emerald-400">
+                      <span className="font-bold text-white block uppercase tracking-wide">{activeTour.hostTeamId}</span>
+                      <span className="text-2xl font-black font-mono text-white mt-0.5 block">
                         {homeWins}
                       </span>
                     </div>
-                    <div className="text-center font-mono text-slate-500 text-[11px]">
+                    <div className="text-center font-mono text-[#8b97a3] text-xs">
                       {drawsOrTies > 0 ? `${drawsOrTies} ${fmt === 'TEST' ? 'Draws' : 'Ties'}` : 'VS'}
                     </div>
                     <div className="text-right">
-                      <span className="font-bold text-white block">{activeTour.visitingTeamId}</span>
-                      <span className="text-xl font-bold font-mono text-emerald-400">
+                      <span className="font-bold text-white block uppercase tracking-wide">{activeTour.visitingTeamId}</span>
+                      <span className="text-2xl font-black font-mono text-white mt-0.5 block">
                         {awayWins}
                       </span>
                     </div>
                   </div>
 
-                  <div className="text-[11px] text-slate-400 font-medium border-t border-[#1e293b] pt-1 text-center">
+                  <div className="text-[11px] text-[#c3ccd6] font-medium border-t border-[#1e2733] pt-2 text-center uppercase tracking-wider">
                     {isConcluded
                       ? winner === 'Drawn'
                         ? 'Series Drawn'
@@ -342,95 +352,95 @@ export const ToursView: React.FC<ToursViewProps> = ({
             })}
           </div>
 
-          {/* Real Tour Statistics (Computed strictly from completed tour matches) */}
+          {/* Real Tour Statistics */}
           {tourStats && tourStats.matchesPlayed > 0 && (
-            <div className="bg-[#111827] border border-[#1e293b] rounded-lg p-4 space-y-3">
-              <div className="flex items-center justify-between border-b border-[#1e293b] pb-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                  <Award className="w-3.5 h-3.5 text-amber-400" />
+            <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-5 space-y-4 shadow-xl">
+              <div className="flex items-center justify-between border-b border-[#1e2733] pb-3">
+                <span className="dugout-kicker text-xs text-[#e2b64a] flex items-center gap-2">
+                  <Award className="w-4 h-4 text-[#e2b64a]" />
                   Official Tour Honors &amp; Statistical Leaders
                 </span>
-                <span className="text-[10px] text-slate-400 font-mono">
+                <span className="text-[10px] text-[#8b97a3] font-mono uppercase tracking-wider">
                   From {tourStats.matchesPlayed} Completed Tour Matches
                 </span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
                 {/* Top Run Scorer */}
-                <div className="bg-[#151d29] p-3 rounded border border-[#1e293b]">
-                  <span className="text-[10px] text-slate-400 uppercase block font-semibold">
+                <div className="bg-[#10151c] p-3.5 rounded-xl border border-[#1e2733]">
+                  <span className="dugout-kicker text-[10px] text-[#8b97a3] block mb-1">
                     Top Run Scorer
                   </span>
                   {tourStats.leadingRunScorer ? (
                     <div className="mt-1">
-                      <span className="font-bold text-white block text-sm">
+                      <span className="font-black text-white block text-sm">
                         {tourStats.leadingRunScorer.playerName}
                       </span>
-                      <span className="text-emerald-400 font-mono text-[11px]">
+                      <span className="text-[#3fca86] font-mono font-bold text-[11px] mt-0.5 block">
                         {tourStats.leadingRunScorer.runs} runs (avg{' '}
                         {tourStats.leadingRunScorer.average.toFixed(1)})
                       </span>
                     </div>
                   ) : (
-                    <span className="text-slate-500 mt-1 block">No batting data</span>
+                    <span className="text-[#556375] mt-1 block">No batting data</span>
                   )}
                 </div>
 
                 {/* Top Wicket Taker */}
-                <div className="bg-[#151d29] p-3 rounded border border-[#1e293b]">
-                  <span className="text-[10px] text-slate-400 uppercase block font-semibold">
+                <div className="bg-[#10151c] p-3.5 rounded-xl border border-[#1e2733]">
+                  <span className="dugout-kicker text-[10px] text-[#8b97a3] block mb-1">
                     Top Wicket Taker
                   </span>
                   {tourStats.leadingWicketTaker ? (
                     <div className="mt-1">
-                      <span className="font-bold text-white block text-sm">
+                      <span className="font-black text-white block text-sm">
                         {tourStats.leadingWicketTaker.playerName}
                       </span>
-                      <span className="text-sky-400 font-mono text-[11px]">
+                      <span className="text-[#8fb2d9] font-mono font-bold text-[11px] mt-0.5 block">
                         {tourStats.leadingWicketTaker.wickets} wickets (avg{' '}
-                        {tourStats.leadingWicketTaker.average.toFixed(1)}, econ {tourStats.leadingWicketTaker.economy.toFixed(1)})
+                        {tourStats.leadingWicketTaker.average.toFixed(1)})
                       </span>
                     </div>
                   ) : (
-                    <span className="text-slate-500 mt-1 block">No bowling data</span>
+                    <span className="text-[#556375] mt-1 block">No bowling data</span>
                   )}
                 </div>
 
                 {/* Best Innings Performance */}
-                <div className="bg-[#151d29] p-3 rounded border border-[#1e293b]">
-                  <span className="text-[10px] text-slate-400 uppercase block font-semibold">
-                    Best Batting Performance
+                <div className="bg-[#10151c] p-3.5 rounded-xl border border-[#1e2733]">
+                  <span className="dugout-kicker text-[10px] text-[#8b97a3] block mb-1">
+                    Best Batting Knock
                   </span>
                   {tourStats.bestBattingPerformance ? (
                     <div className="mt-1">
-                      <span className="font-bold text-white block text-sm">
+                      <span className="font-black text-white block text-sm">
                         {tourStats.bestBattingPerformance.playerName}
                       </span>
-                      <span className="text-amber-400 font-mono text-[11px]">
+                      <span className="text-[#ffe9a8] font-mono font-bold text-[11px] mt-0.5 block">
                         {tourStats.bestBattingPerformance.runs} runs ({tourStats.bestBattingPerformance.description})
                       </span>
                     </div>
                   ) : (
-                    <span className="text-slate-500 mt-1 block">None recorded</span>
+                    <span className="text-[#556375] mt-1 block">None recorded</span>
                   )}
                 </div>
 
                 {/* Player of the Series */}
-                <div className="bg-[#151d29] p-3 rounded border border-[#1e293b]">
-                  <span className="text-[10px] text-slate-400 uppercase block font-semibold">
+                <div className="bg-[#10151c] p-3.5 rounded-xl border border-[#1e2733]">
+                  <span className="dugout-kicker text-[10px] text-[#e2b64a] block mb-1">
                     Player of the Series
                   </span>
                   {tourStats.playerOfTheSeries ? (
                     <div className="mt-1">
-                      <span className="font-bold text-white block text-sm">
+                      <span className="font-black text-white block text-sm">
                         {tourStats.playerOfTheSeries.playerName}
                       </span>
-                      <span className="text-emerald-400 text-[11px] block mt-0.5">
+                      <span className="text-[#3fca86] text-[11px] font-semibold block mt-0.5">
                         {tourStats.playerOfTheSeries.reason}
                       </span>
                     </div>
                   ) : (
-                    <span className="text-slate-500 mt-1 block">Decided at tour conclusion</span>
+                    <span className="text-[#556375] mt-1 block">Awarded at tour conclusion</span>
                   )}
                 </div>
               </div>
@@ -438,23 +448,23 @@ export const ToursView: React.FC<ToursViewProps> = ({
           )}
 
           {/* Tour Fixtures & Results List */}
-          <div className="bg-[#111827] border border-[#1e293b] rounded-lg p-4 space-y-3">
-            <div className="flex items-center justify-between border-b border-[#1e293b] pb-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-emerald-400" />
+          <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-5 space-y-4 shadow-xl">
+            <div className="flex items-center justify-between border-b border-[#1e2733] pb-3">
+              <span className="dugout-kicker text-xs text-[#e2b64a] flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-[#e2b64a]" />
                 Tour Fixture Schedule ({tourMatches.length} Matches)
               </span>
 
               {/* Format Filter */}
-              <div className="flex bg-[#151d29] p-0.5 rounded border border-[#1e293b] text-[10px]">
+              <div className="flex bg-[#10151c] p-1 rounded-xl border border-[#1e2733] text-[10px]">
                 {(['ALL', 'TEST', 'ODI', 'T20I'] as const).map((fmt) => (
                   <button
                     key={fmt}
                     onClick={() => setActiveFormatFilter(fmt)}
-                    className={`px-2 py-0.5 rounded font-medium transition cursor-pointer ${
+                    className={`px-3 py-1 rounded-lg font-bold uppercase tracking-wider transition cursor-pointer ${
                       activeFormatFilter === fmt
-                        ? 'bg-emerald-600 text-white font-bold'
-                        : 'text-slate-400 hover:text-white'
+                        ? 'bg-gradient-to-r from-[#ffe9a8] to-[#e0ab3a] text-black shadow-xs'
+                        : 'text-[#8b97a3] hover:text-white'
                     }`}
                   >
                     {fmt}
@@ -463,9 +473,9 @@ export const ToursView: React.FC<ToursViewProps> = ({
               </div>
             </div>
 
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               {displayedMatches.length === 0 ? (
-                <p className="text-xs text-slate-400 py-4 text-center">
+                <p className="text-xs text-[#8b97a3] py-8 text-center">
                   No fixtures match the selected filter.
                 </p>
               ) : (
@@ -479,20 +489,26 @@ export const ToursView: React.FC<ToursViewProps> = ({
                         onNavigateToMatch(m.id);
                       }
                     }}
-                    className="bg-[#151d29] hover:bg-[#1a2538] border border-[#1e293b] p-2.5 rounded flex items-center justify-between text-xs cursor-pointer transition"
+                    className="bg-[#10151c] hover:bg-[#161d27] border border-[#1e2733] hover:border-[#8fb2d9] p-3 rounded-xl flex items-center justify-between text-xs cursor-pointer transition group"
                   >
-                    <div className="flex items-center space-x-3">
-                      <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-[#10243d] text-emerald-400 border border-emerald-900/50">
+                    <div className="flex items-center space-x-3.5">
+                      <span className={`text-[10px] font-mono font-black px-2 py-0.5 rounded uppercase tracking-wider ${
+                        m.format === 'TEST'
+                          ? 'bg-[#ff3d7f]/20 text-[#ff5470] border border-[#ff3d7f]/40'
+                          : m.format === 'ODI'
+                          ? 'bg-[#8fb2d9]/20 text-[#8fb2d9] border border-[#8fb2d9]/40'
+                          : 'bg-[#3fca86]/20 text-[#3fca86] border border-[#3fca86]/40'
+                      }`}>
                         {m.format}
                       </span>
                       <div>
-                        <div className="font-bold text-white flex items-center gap-1.5">
+                        <div className="font-bold text-white group-hover:text-[#e2b64a] transition-colors flex items-center gap-2">
                           <span>{m.homeTeamId} vs {m.awayTeamId}</span>
-                          <span className="text-slate-400 font-normal text-[11px]">
+                          <span className="text-[#8b97a3] font-normal text-[11px]">
                             ({m.matchNumber ? `Match ${m.matchNumber}` : 'Fixture'})
                           </span>
                         </div>
-                        <div className="text-[11px] text-slate-400">
+                        <div className="text-[11px] text-[#8b97a3] mt-0.5">
                           {m.venue} • {m.date}
                         </div>
                       </div>
@@ -500,18 +516,18 @@ export const ToursView: React.FC<ToursViewProps> = ({
 
                     <div className="text-right">
                       <span
-                        className={`font-mono text-[11px] font-bold block ${
+                        className={`font-mono text-xs font-bold block ${
                           m.status === 'COMPLETED'
-                            ? 'text-emerald-400'
+                            ? 'text-[#3fca86]'
                             : m.status === 'IN_PROGRESS'
-                            ? 'text-rose-400 animate-pulse'
-                            : 'text-slate-300'
+                            ? 'text-[#ff5470] animate-pulse'
+                            : 'text-[#c3ccd6]'
                         }`}
                       >
                         {m.resultText || m.status.replace(/_/g, ' ')}
                       </span>
                       {m.status === 'COMPLETED' && (
-                        <span className="text-[10px] text-slate-500 hover:text-emerald-400">
+                        <span className="text-[10px] text-[#8b97a3] hover:text-[#e2b64a] uppercase font-semibold">
                           Inspect Scorecard →
                         </span>
                       )}
@@ -524,40 +540,40 @@ export const ToursView: React.FC<ToursViewProps> = ({
         </div>
       )}
 
-      {/* Schedule Custom Tour Modal */}
+      {/* Schedule Custom Tour Modal in Dugout Style */}
       {showScheduleModal && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#111827] border border-[#1e293b] rounded-lg p-5 max-w-lg w-full space-y-4 shadow-xl text-xs">
-            <div className="flex items-center justify-between border-b border-[#1e293b] pb-2.5">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <Plus className="w-4 h-4 text-emerald-400" />
+        <div className="fixed inset-0 bg-black/85 backdrop-blur-sm flex items-center justify-center z-50 p-4 select-none">
+          <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-6 max-w-lg w-full space-y-4 shadow-2xl text-xs text-[#e8edf2]">
+            <div className="flex items-center justify-between border-b border-[#1e2733] pb-3">
+              <h3 className="text-sm font-black text-white flex items-center gap-2 uppercase tracking-wide">
+                <Plus className="w-4 h-4 text-[#e2b64a]" />
                 Schedule Custom International Tour
               </h3>
               <button
                 onClick={() => setShowScheduleModal(false)}
-                className="text-slate-400 hover:text-white"
+                className="text-[#8b97a3] hover:text-white"
               >
                 ✕
               </button>
             </div>
 
             {scheduleError && (
-              <div className="p-2.5 rounded bg-rose-950/40 border border-rose-800 text-rose-300 flex items-center gap-2">
-                <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+              <div className="p-3 rounded-xl bg-[#ff3d7f]/20 border border-[#ff3d7f]/40 text-[#ff5470] flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 shrink-0" />
                 <span>{scheduleError}</span>
               </div>
             )}
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[10px] text-slate-400 block mb-1">Host Nation</label>
+                <label className="dugout-kicker text-[9px] text-[#8b97a3] block mb-1">Host Nation</label>
                 <select
                   value={customHost}
                   onChange={(e) => setCustomHost(e.target.value)}
-                  className="w-full bg-[#151d29] border border-[#1e293b] rounded p-2 text-white focus:outline-none"
+                  className="w-full bg-[#10151c] border border-[#1e2733] rounded-xl p-2 text-white focus:outline-none focus:border-[#e2b64a]"
                 >
                   {INTERNATIONAL_TEAMS.map((t) => (
-                    <option key={t.id} value={t.id}>
+                    <option key={t.id} value={t.id} className="bg-[#070a0e]">
                       {t.name} ({t.code})
                     </option>
                   ))}
@@ -565,14 +581,14 @@ export const ToursView: React.FC<ToursViewProps> = ({
               </div>
 
               <div>
-                <label className="text-[10px] text-slate-400 block mb-1">Visiting Nation</label>
+                <label className="dugout-kicker text-[9px] text-[#8b97a3] block mb-1">Visiting Nation</label>
                 <select
                   value={customVisitor}
                   onChange={(e) => setCustomVisitor(e.target.value)}
-                  className="w-full bg-[#151d29] border border-[#1e293b] rounded p-2 text-white focus:outline-none"
+                  className="w-full bg-[#10151c] border border-[#1e2733] rounded-xl p-2 text-white focus:outline-none focus:border-[#e2b64a]"
                 >
                   {INTERNATIONAL_TEAMS.map((t) => (
-                    <option key={t.id} value={t.id}>
+                    <option key={t.id} value={t.id} className="bg-[#070a0e]">
                       {t.name} ({t.code})
                     </option>
                   ))}
@@ -580,82 +596,82 @@ export const ToursView: React.FC<ToursViewProps> = ({
               </div>
 
               <div>
-                <label className="text-[10px] text-slate-400 block mb-1">Tour Type</label>
+                <label className="dugout-kicker text-[9px] text-[#8b97a3] block mb-1">Tour Type</label>
                 <select
                   value={customTourType}
                   onChange={(e) => setCustomTourType(e.target.value as TourType)}
-                  className="w-full bg-[#151d29] border border-[#1e293b] rounded p-2 text-white focus:outline-none"
+                  className="w-full bg-[#10151c] border border-[#1e2733] rounded-xl p-2 text-white focus:outline-none focus:border-[#e2b64a]"
                 >
-                  <option value="MULTI_FORMAT">Multi-Format Bilateral</option>
-                  <option value="TEST_ONLY">Test Match Series Only</option>
-                  <option value="WHITE_BALL_ONLY">White-Ball (ODI/T20I) Only</option>
-                  <option value="NEUTRAL_VENUE">Neutral Venue Bilateral</option>
+                  <option value="MULTI_FORMAT" className="bg-[#070a0e]">Multi-Format Bilateral</option>
+                  <option value="TEST_ONLY" className="bg-[#070a0e]">Test Match Series Only</option>
+                  <option value="WHITE_BALL_ONLY" className="bg-[#070a0e]">White-Ball (ODI/T20I) Only</option>
+                  <option value="NEUTRAL_VENUE" className="bg-[#070a0e]">Neutral Venue Bilateral</option>
                 </select>
               </div>
 
               <div>
-                <label className="text-[10px] text-slate-400 block mb-1">Start Date</label>
+                <label className="dugout-kicker text-[9px] text-[#8b97a3] block mb-1">Start Date</label>
                 <input
                   type="date"
                   value={customStartDate}
                   onChange={(e) => setCustomStartDate(e.target.value)}
-                  className="w-full bg-[#151d29] border border-[#1e293b] rounded p-2 text-white focus:outline-none font-mono"
+                  className="w-full bg-[#10151c] border border-[#1e2733] rounded-xl p-2 text-white focus:outline-none focus:border-[#e2b64a] font-mono"
                 />
               </div>
             </div>
 
             {/* Match Counts Config */}
-            <div className="bg-[#151d29] p-3 rounded border border-[#1e293b] space-y-2">
-              <span className="text-[10px] uppercase font-bold text-slate-400 block">
+            <div className="bg-[#10151c] p-3.5 rounded-xl border border-[#1e2733] space-y-2">
+              <span className="dugout-kicker text-[9px] text-[#8b97a3] block">
                 Format Match Counts
               </span>
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="text-[10px] text-slate-400 block mb-0.5">Test Matches</label>
+                  <label className="text-[10px] text-[#8b97a3] block mb-1">Test Matches</label>
                   <input
                     type="number"
                     min="0"
                     max="5"
                     value={customTestCount}
                     onChange={(e) => setCustomTestCount(Number(e.target.value))}
-                    className="w-full bg-[#111827] border border-[#1e293b] rounded p-1.5 text-white font-mono"
+                    className="w-full bg-[#070a0e] border border-[#1e2733] rounded-lg p-2 text-white font-mono text-center font-bold"
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] text-slate-400 block mb-0.5">ODIs</label>
+                  <label className="text-[10px] text-[#8b97a3] block mb-1">ODIs</label>
                   <input
                     type="number"
                     min="0"
                     max="5"
                     value={customOdiCount}
                     onChange={(e) => setCustomOdiCount(Number(e.target.value))}
-                    className="w-full bg-[#111827] border border-[#1e293b] rounded p-1.5 text-white font-mono"
+                    className="w-full bg-[#070a0e] border border-[#1e2733] rounded-lg p-2 text-white font-mono text-center font-bold"
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] text-slate-400 block mb-0.5">T20Is</label>
+                  <label className="text-[10px] text-[#8b97a3] block mb-1">T20Is</label>
                   <input
                     type="number"
                     min="0"
                     max="5"
                     value={customT20Count}
                     onChange={(e) => setCustomT20Count(Number(e.target.value))}
-                    className="w-full bg-[#111827] border border-[#1e293b] rounded p-1.5 text-white font-mono"
+                    className="w-full bg-[#070a0e] border border-[#1e2733] rounded-lg p-2 text-white font-mono text-center font-bold"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center justify-end space-x-2 pt-2 border-t border-[#1e293b]">
+            <div className="flex items-center justify-end space-x-2.5 pt-3 border-t border-[#1e2733]">
               <button
                 onClick={() => setShowScheduleModal(false)}
-                className="text-xs text-slate-400 hover:text-white px-3 py-1.5 rounded bg-[#151d29] border border-[#1e293b] cursor-pointer"
+                className="text-xs text-[#8b97a3] hover:text-white px-3.5 py-2 rounded-xl bg-[#10151c] border border-[#1e2733] cursor-pointer uppercase font-bold"
               >
                 Cancel
               </button>
               <button
                 onClick={handleCreateCustomTour}
-                className="text-xs font-bold text-[#0b0e14] px-4 py-1.5 rounded bg-[#10b981] hover:bg-[#059669] cursor-pointer shadow-sm"
+                className="btn-gold px-4 py-2 text-xs"
               >
                 Validate &amp; Schedule Tour
               </button>

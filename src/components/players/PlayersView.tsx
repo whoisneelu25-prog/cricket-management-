@@ -9,11 +9,14 @@ import {
   ChevronRight,
   TrendingUp,
   Sliders,
+  Sparkles,
 } from 'lucide-react';
 import { CareerSave, Player, MatchFormat } from '../../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
 import { ALL_PLAYERS, getEffectivePlayer } from '../../data/squads';
 import { getGranularPlayerRole } from '../../store/careerStore';
+import { CountryFlag } from '../common/CountryFlag';
+import { PlayerAvatar } from '../common/PlayerAvatar';
 
 interface PlayersViewProps {
   career: CareerSave;
@@ -61,44 +64,45 @@ export const PlayersView: React.FC<PlayersViewProps> = ({ career, onSelectPlayer
   const viewedTeam = INTERNATIONAL_TEAMS.find((t) => t.id === selectedCountry);
 
   return (
-    <div className="space-y-4 select-none pb-8 text-slate-200">
-      {/* Top Banner: Scouting & International Registry */}
-      <div className="bg-[#111827] border border-[#1e293b] rounded-lg p-3.5 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-sm">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded bg-[#151d29] border border-[#1e293b] flex items-center justify-center text-emerald-400">
-            <Search className="w-5 h-5" />
+    <div className="space-y-4 select-none pb-8 text-[#e8edf2]">
+      {/* Top Banner: Scouting & International Registry in Dugout Style */}
+      <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
+        <div className="flex items-center space-x-3.5">
+          <div className="w-12 h-12 rounded-xl bg-[#10151c] border border-[#1e2733] flex items-center justify-center text-[#e2b64a] shadow-inner">
+            <Search className="w-6 h-6" />
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className="text-base font-bold text-white tracking-wide">
-                International Player Scouting &amp; Registry
-              </h1>
-              <span className="text-[10px] bg-[#142646] text-emerald-400 font-mono px-1.5 py-0.5 rounded border border-emerald-900/60 font-bold">
+              <span className="dugout-kicker text-[11px] text-[#e2b64a]">Global Scouting</span>
+              <span className="text-[10px] bg-[#10151c] text-[#8fb2d9] font-mono px-2 py-0.5 rounded-full border border-[#1e2733] font-bold">
                 {allEffectivePlayers.length} Active Records
               </span>
             </div>
-            <p className="text-xs text-slate-400">
+            <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight uppercase mt-0.5">
+              International Player Registry
+            </h1>
+            <p className="text-xs text-[#8b97a3] mt-0.5">
               Scout domestic and international talent, inspect attributes, career milestones and format squad allocations
             </p>
           </div>
         </div>
 
         {/* Country Selector */}
-        <div className="flex items-center space-x-2 bg-[#151d29] border border-[#1e293b] px-3 py-1.5 rounded-lg text-xs">
-          <span className="text-slate-400 text-[11px]">Nation:</span>
+        <div className="flex items-center space-x-2.5 bg-[#10151c] border border-[#1e2733] px-3.5 py-2 rounded-xl text-xs">
+          <span className="dugout-kicker text-[10px] text-[#8b97a3]">Nation:</span>
           <select
             value={selectedCountry}
             onChange={(e) => setSelectedCountry(e.target.value)}
-            className="bg-transparent text-white font-bold focus:outline-none cursor-pointer"
+            className="bg-transparent text-white font-bold focus:outline-none cursor-pointer tracking-wide"
           >
-            <option value={career.selectedTeamId} className="bg-[#111827]">
+            <option value={career.selectedTeamId} className="bg-[#070a0e] text-[#ffe9a8]">
               ★ {INTERNATIONAL_TEAMS.find((t) => t.id === career.selectedTeamId)?.name} (Managed)
             </option>
-            <option value="ALL" className="bg-[#111827]">
+            <option value="ALL" className="bg-[#070a0e] text-white">
               All International Nations
             </option>
             {INTERNATIONAL_TEAMS.filter((t) => t.id !== career.selectedTeamId).map((t) => (
-              <option key={t.id} value={t.id} className="bg-[#111827]">
+              <option key={t.id} value={t.id} className="bg-[#070a0e] text-[#c3ccd6]">
                 {t.name} ({t.code})
               </option>
             ))}
@@ -107,13 +111,13 @@ export const PlayersView: React.FC<PlayersViewProps> = ({ career, onSelectPlayer
       </div>
 
       {/* Filter Strip: Search + Role + Format Squad Badges */}
-      <div className="bg-[#111827] border border-[#1e293b] p-3 rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
-        <div className="flex flex-wrap items-center gap-2">
+      <div className="bg-[#070a0e] border border-[#1e2733] p-4 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+        <div className="flex flex-wrap items-center gap-2.5">
           {/* Role Filter */}
           <select
             value={roleFilter}
             onChange={(e) => setRoleFilter(e.target.value)}
-            className="bg-[#151d29] border border-[#1e293b] text-white px-2.5 py-1.5 rounded focus:outline-none cursor-pointer"
+            className="bg-[#10151c] border border-[#1e2733] text-white px-3 py-2 rounded-lg focus:outline-none focus:border-[#e2b64a] cursor-pointer tracking-wider font-semibold"
           >
             <option value="ALL">All Roles</option>
             <option value="OPENING_BATTER">Opening Batter</option>
@@ -126,15 +130,15 @@ export const PlayersView: React.FC<PlayersViewProps> = ({ career, onSelectPlayer
 
           {/* Format Membership Filter (for managed nation) */}
           {selectedCountry === career.selectedTeamId && (
-            <div className="flex bg-[#151d29] p-0.5 rounded border border-[#1e293b]">
+            <div className="flex bg-[#10151c] p-1 rounded-lg border border-[#1e2733]">
               {(['ALL', 'TEST', 'ODI', 'T20I'] as const).map((fmt) => (
                 <button
                   key={fmt}
                   onClick={() => setFormatMembershipFilter(fmt)}
-                  className={`px-2.5 py-1 rounded text-[11px] font-bold transition cursor-pointer ${
+                  className={`px-3 py-1.5 rounded-md text-[11px] font-bold uppercase tracking-wider transition cursor-pointer ${
                     formatMembershipFilter === fmt
-                      ? 'bg-emerald-600 text-white'
-                      : 'text-slate-400 hover:text-white'
+                      ? 'bg-gradient-to-r from-[#ffe9a8] to-[#e0ab3a] text-black shadow-sm'
+                      : 'text-[#8b97a3] hover:text-white'
                   }`}
                 >
                   {fmt === 'ALL' ? 'All National' : `${fmt} Squad`}
@@ -145,136 +149,155 @@ export const PlayersView: React.FC<PlayersViewProps> = ({ career, onSelectPlayer
         </div>
 
         {/* Search Input */}
-        <div className="relative w-full md:w-64">
-          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
+        <div className="relative w-full md:w-72">
+          <Search className="w-4 h-4 text-[#8b97a3] absolute left-3 top-2.5" />
           <input
             type="text"
-            placeholder="Search by name..."
+            placeholder="Search by player name..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-[#151d29] border border-[#1e293b] pl-8 pr-3 py-1.5 rounded text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+            className="w-full bg-[#10151c] border border-[#1e2733] pl-9 pr-3 py-2 rounded-lg text-xs text-white placeholder-[#556375] focus:outline-none focus:border-[#e2b64a]"
           />
         </div>
       </div>
 
       {/* Players Data Table */}
-      <div className="bg-[#111827] border border-[#1e293b] rounded-lg overflow-hidden">
-        <div className="p-3 bg-[#151d29] border-b border-[#1e293b] flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-300">
-            Player Registry ({filteredPlayers.length} Profiles)
+      <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl overflow-hidden shadow-2xl">
+        <div className="p-4 bg-[#10151c] border-b border-[#1e2733] flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <span className="dugout-kicker text-xs text-[#e2b64a]">Player Registry</span>
+            <span className="text-[11px] font-mono font-bold text-[#c3ccd6]">
+              ({filteredPlayers.length} Profiles)
+            </span>
+          </div>
+          <span className="text-[10px] text-[#8b97a3] font-mono uppercase tracking-wider">
+            Click row for detailed attributes &amp; stats
           </span>
-          <span className="text-[10px] text-slate-400 font-mono">Click player for detailed stats</span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-xs text-left">
-            <thead className="bg-[#0e131d] text-slate-400 font-mono text-[10px] uppercase border-b border-[#1e293b]">
+            <thead className="bg-[#070a0e] text-[#8b97a3] font-mono text-[10px] uppercase border-b border-[#1e2733] tracking-wider">
               <tr>
-                <th className="py-2.5 px-3">Player</th>
-                <th className="py-2.5 px-2">Nation</th>
-                <th className="py-2.5 px-2">Role</th>
-                <th className="py-2.5 px-2">Style</th>
-                <th className="py-2.5 px-2 text-center">Age</th>
-                <th className="py-2.5 px-2 text-center">Rating</th>
-                <th className="py-2.5 px-2 text-center">Form</th>
-                <th className="py-2.5 px-2 text-center">Fitness</th>
-                <th className="py-2.5 px-3">Squad Memberships</th>
+                <th className="py-3 px-4">Player</th>
+                <th className="py-3 px-2">Nation</th>
+                <th className="py-3 px-2">Role</th>
+                <th className="py-3 px-2">Style</th>
+                <th className="py-3 px-2 text-center">Age</th>
+                <th className="py-3 px-2 text-center">Rating</th>
+                <th className="py-3 px-2 text-center">Form</th>
+                <th className="py-3 px-2 text-center">Fitness</th>
+                <th className="py-3 px-4">Squad Allocations</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#1e293b]/60">
+            <tbody className="divide-y divide-[#1e2733]">
               {filteredPlayers.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="py-6 text-center text-slate-400">
+                  <td colSpan={9} className="py-12 text-center text-[#8b97a3]">
                     No players found matching current filters.
                   </td>
                 </tr>
               ) : (
-                filteredPlayers.slice(0, 50).map((player) => {
+                filteredPlayers.slice(0, 60).map((player) => {
                   const role = getGranularPlayerRole(player);
                   const isTest = testSquadSet.has(player.id);
                   const isOdi = odiSquadSet.has(player.id);
                   const isT20 = t20SquadSet.has(player.id);
                   const nation = INTERNATIONAL_TEAMS.find((t) => t.id === player.countryId);
+                  const avgRating = Math.round((player.testRating + player.odiRating + player.t20Rating) / 3);
 
                   return (
                     <tr
                       key={player.id}
                       onClick={() => onSelectPlayer(player)}
-                      className="hover:bg-[#151d29] transition cursor-pointer"
+                      className="hover:bg-[#10151c] transition-colors cursor-pointer group"
                     >
-                      <td className="py-2.5 px-3">
-                        <div className="font-bold text-white hover:text-emerald-400 flex items-center gap-1.5">
-                          <span>{player.name}</span>
-                          {player.isInjured && (
-                            <span className="text-[9px] font-bold px-1 py-0.2 rounded bg-rose-950 text-rose-300 border border-rose-800">
-                              INJ
+                      <td className="py-3 px-4">
+                        <div className="flex items-center space-x-3">
+                          <PlayerAvatar player={player} size="sm" />
+                          <div>
+                            <div className="font-bold text-white group-hover:text-[#e2b64a] transition-colors flex items-center gap-1.5">
+                              <span>{player.name}</span>
+                              {player.isInjured && (
+                                <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#ff3d7f]/20 text-[#ff5470] border border-[#ff3d7f]/40 uppercase tracking-wider">
+                                  INJ
+                                </span>
+                              )}
+                            </div>
+                            <span className="text-[10px] text-[#8b97a3] font-mono">
+                              #{player.id.slice(0, 8)}
                             </span>
-                          )}
+                          </div>
                         </div>
                       </td>
-                      <td className="py-2.5 px-2 font-mono text-slate-300">
-                        {nation?.code || player.countryId}
+                      <td className="py-3 px-2 font-mono text-[#c3ccd6]">
+                        <div className="flex items-center space-x-1.5">
+                          <CountryFlag countryCode={nation?.code || player.countryId} size="xs" />
+                          <span>{nation?.code || player.countryId}</span>
+                        </div>
                       </td>
-                      <td className="py-2.5 px-2">
-                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#151d29] border border-[#1e293b] text-slate-300">
+                      <td className="py-3 px-2">
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#10151c] border border-[#1e2733] text-[#c3ccd6] uppercase tracking-wider">
                           {role.replace(/_/g, ' ')}
                         </span>
                       </td>
-                      <td className="py-2.5 px-2 text-slate-400 text-[11px]">
-                        {player.battingHand === 'LEFT_HAND' ? 'LHB' : 'RHB'} •{' '}
-                        {player.bowlingStyle?.replace(/_/g, ' ') || 'None'}
+                      <td className="py-3 px-2 text-[#8b97a3] text-[11px]">
+                        <span className="text-white font-medium">{player.battingHand === 'LEFT_HAND' ? 'LHB' : 'RHB'}</span> •{' '}
+                        <span>{player.bowlingStyle?.replace(/_/g, ' ') || 'None'}</span>
                       </td>
-                      <td className="py-2.5 px-2 text-center font-mono text-slate-300">
+                      <td className="py-3 px-2 text-center font-mono text-[#c3ccd6]">
                         {player.age || 26}
                       </td>
-                      <td className="py-2.5 px-2 text-center font-mono font-bold text-white">
-                        {Math.round((player.testRating + player.odiRating + player.t20Rating) / 3)}
+                      <td className="py-3 px-2 text-center font-mono font-bold text-white">
+                        <span className="text-[#ffe9a8] font-black">{avgRating}</span>
                       </td>
-                      <td className="py-2.5 px-2 text-center font-mono">
+                      <td className="py-3 px-2 text-center font-mono font-bold">
                         <span
                           className={`${
                             (player.currentForm || player.attributes?.currentForm || 75) >= 80
-                              ? 'text-emerald-400 font-bold'
+                              ? 'text-[#3fca86]'
                               : (player.currentForm || player.attributes?.currentForm || 75) >= 60
-                              ? 'text-slate-300'
-                              : 'text-rose-400'
+                              ? 'text-[#8fb2d9]'
+                              : 'text-[#ff5470]'
                           }`}
                         >
-                          {player.currentForm || player.attributes?.currentForm || 75}
+                          {player.currentForm || player.attributes?.currentForm || 75}%
                         </span>
                       </td>
-                      <td className="py-2.5 px-2 text-center font-mono">
+                      <td className="py-3 px-2 text-center font-mono font-bold">
                         <span
                           className={`${
                             (player.fitness || 90) >= 85
-                              ? 'text-emerald-400'
+                              ? 'text-[#3fca86]'
                               : (player.fitness || 90) >= 70
-                              ? 'text-amber-400'
-                              : 'text-rose-400 font-bold'
+                              ? 'text-[#e2b64a]'
+                              : 'text-[#ff5470]'
                           }`}
                         >
                           {player.fitness || 90}%
                         </span>
                       </td>
-                      <td className="py-2.5 px-3">
-                        <div className="flex items-center space-x-1">
+                      <td className="py-3 px-4">
+                        <div className="flex items-center space-x-1.5">
                           {isTest && (
-                            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-red-950/70 text-red-300 border border-red-800/60 font-mono">
+                            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#ff3d7f]/20 text-[#ff5470] border border-[#ff3d7f]/40 font-mono tracking-wider">
                               TEST
                             </span>
                           )}
                           {isOdi && (
-                            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-sky-950/70 text-sky-300 border border-sky-800/60 font-mono">
+                            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#8fb2d9]/20 text-[#8fb2d9] border border-[#8fb2d9]/40 font-mono tracking-wider">
                               ODI
                             </span>
                           )}
                           {isT20 && (
-                            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-950/70 text-emerald-300 border border-emerald-800/60 font-mono">
+                            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#3fca86]/20 text-[#3fca86] border border-[#3fca86]/40 font-mono tracking-wider">
                               T20I
                             </span>
                           )}
                           {!isTest && !isOdi && !isT20 && (
-                            <span className="text-[10px] text-slate-500 font-mono">Selection Pool</span>
+                            <span className="text-[10px] text-[#556375] font-mono uppercase tracking-wider">
+                              National Pool
+                            </span>
                           )}
                         </div>
                       </td>

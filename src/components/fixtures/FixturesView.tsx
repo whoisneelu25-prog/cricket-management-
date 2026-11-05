@@ -15,10 +15,12 @@ import {
   ChevronRight,
   Trophy,
   FileText,
+  Sparkles,
 } from 'lucide-react';
 import { CareerSave, Match, MatchFormat, CalendarEvent } from '../../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
 import { isPreMatchStatus, isTerminalMatchStatus } from '../../engine/matchEngine';
+import { CountryFlag } from '../common/CountryFlag';
 
 interface FixturesViewProps {
   career: CareerSave;
@@ -107,40 +109,50 @@ export const FixturesView: React.FC<FixturesViewProps> = ({
   }, [allMatches]);
 
   return (
-    <div className="space-y-4 select-none animate-in fade-in duration-150">
-      {/* Header */}
-      <div className="bg-[#121824] border border-[#1f293d] rounded-lg p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <Calendar className="w-5 h-5 text-emerald-400" />
-            International Cricket Calendar & Global Schedule
-          </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Current Date: <span className="text-emerald-400 font-bold font-mono">{career.currentDate}</span> • Multi-Year Dynamic Scheduling System
-          </p>
+    <div className="space-y-5 select-none pb-8 text-[#e8edf2]">
+      {/* Header in Dugout Style */}
+      <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl">
+        <div className="flex items-center space-x-3.5">
+          <div className="w-12 h-12 rounded-xl bg-[#10151c] border border-[#1e2733] flex items-center justify-center text-[#e2b64a] shadow-inner">
+            <Calendar className="w-6 h-6" />
+          </div>
+          <div>
+            <div className="flex items-center space-x-2">
+              <span className="dugout-kicker text-[11px] text-[#e2b64a]">Schedule &amp; Fixtures</span>
+              <span className="text-[10px] bg-[#10151c] text-[#8fb2d9] font-mono px-2 py-0.5 rounded-full border border-[#1e2733] font-bold">
+                {career.currentDate}
+              </span>
+            </div>
+            <h1 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight mt-0.5">
+              Global International Calendar
+            </h1>
+            <p className="text-xs text-[#8b97a3] mt-0.5">
+              Multi-Year Dynamic Scheduling System across Test, ODI, T20I and ICC Tournaments
+            </p>
+          </div>
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2.5">
           {onAdvanceToNextMatch && (
             <button
               onClick={onAdvanceToNextMatch}
-              className="bg-[#182234] hover:bg-[#202d42] text-slate-200 border border-[#243247] text-xs font-bold px-3 py-2 rounded transition cursor-pointer flex items-center space-x-1.5 shadow"
+              className="bg-[#10151c] hover:bg-[#161d27] text-[#c3ccd6] hover:text-white border border-[#1e2733] hover:border-[#e2b64a] text-xs font-bold px-4 py-2.5 rounded-xl transition cursor-pointer flex items-center space-x-2 shadow uppercase tracking-wider"
             >
-              <FastForward className="w-3.5 h-3.5 text-amber-400" />
+              <FastForward className="w-3.5 h-3.5 text-[#e2b64a]" />
               <span>Simulate to Next Match</span>
             </button>
           )}
         </div>
       </div>
 
-      {/* 7 Required Calendar View Selector Tabs */}
-      <div className="flex items-center space-x-1.5 overflow-x-auto pb-1 scrollbar-none border-b border-[#1f293d]">
+      {/* Calendar View Selector Tabs in Dugout Pill Bar */}
+      <div className="flex items-center space-x-1.5 overflow-x-auto pb-1 scrollbar-none border-b border-[#1e2733]">
         {[
           { id: 'UPCOMING', label: 'Upcoming Fixtures' },
           { id: 'COMPLETED', label: 'Completed Results' },
           { id: 'MONTHLY', label: 'Monthly Calendar' },
           { id: 'ANNUAL', label: 'Annual Calendar' },
-          { id: 'COUNTRY', label: 'Country Calendar' },
+          { id: 'COUNTRY', label: 'Country Schedule' },
           { id: 'FORMAT', label: 'Format-Specific' },
           { id: 'TOURNAMENTS', label: 'ICC Tournaments' },
           { id: 'EVENTS', label: 'Rest & Training Days' },
@@ -148,10 +160,10 @@ export const FixturesView: React.FC<FixturesViewProps> = ({
           <button
             key={tab.id}
             onClick={() => setViewType(tab.id as CalendarViewType)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition cursor-pointer ${
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition cursor-pointer uppercase tracking-wider ${
               viewType === tab.id
-                ? 'bg-emerald-600 text-white shadow'
-                : 'bg-[#121824] text-slate-400 hover:text-white border border-[#1f293d]'
+                ? 'bg-gradient-to-r from-[#ffe9a8] to-[#e0ab3a] text-black shadow-sm font-extrabold'
+                : 'bg-[#070a0e] text-[#8b97a3] hover:text-white border border-[#1e2733]'
             }`}
           >
             {tab.label}
@@ -161,15 +173,15 @@ export const FixturesView: React.FC<FixturesViewProps> = ({
 
       {/* View-Specific Secondary Filter Bars */}
       {viewType === 'MONTHLY' && (
-        <div className="flex items-center space-x-2 bg-[#121824] p-3 rounded-lg border border-[#1f293d]">
-          <span className="text-xs text-slate-400 font-semibold">Select Month:</span>
+        <div className="flex items-center space-x-3 bg-[#070a0e] p-4 rounded-xl border border-[#1e2733]">
+          <span className="dugout-kicker text-xs text-[#8b97a3]">Select Month:</span>
           <select
             value={selectedMonth}
             onChange={(e) => setSelectedMonth(e.target.value)}
-            className="bg-[#182234] border border-[#243247] text-white text-xs font-mono font-bold px-3 py-1.5 rounded outline-none cursor-pointer"
+            className="bg-[#10151c] border border-[#1e2733] text-white text-xs font-mono font-bold px-3 py-1.5 rounded-lg outline-none cursor-pointer tracking-wider"
           >
             {availableMonths.map((m) => (
-              <option key={m} value={m}>
+              <option key={m} value={m} className="bg-[#070a0e]">
                 {m}
               </option>
             ))}
@@ -178,8 +190,8 @@ export const FixturesView: React.FC<FixturesViewProps> = ({
       )}
 
       {viewType === 'ANNUAL' && (
-        <div className="flex items-center space-x-2 bg-[#121824] p-3 rounded-lg border border-[#1f293d] overflow-x-auto">
-          <span className="text-xs text-slate-400 font-semibold">Select Year:</span>
+        <div className="flex items-center space-x-2.5 bg-[#070a0e] p-4 rounded-xl border border-[#1e2733] overflow-x-auto">
+          <span className="dugout-kicker text-xs text-[#8b97a3]">Select Season:</span>
           {Array.from(
             new Set([
               '2026',
@@ -193,10 +205,10 @@ export const FixturesView: React.FC<FixturesViewProps> = ({
               <button
                 key={yr}
                 onClick={() => setSelectedYear(yr)}
-                className={`px-3 py-1 rounded text-xs font-mono font-bold cursor-pointer transition ${
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold cursor-pointer transition uppercase tracking-wider ${
                   selectedYear === yr
-                    ? 'bg-emerald-600 text-white'
-                    : 'bg-[#182234] text-slate-400 hover:text-white border border-[#243247]'
+                    ? 'bg-[#e2b64a] text-black font-black'
+                    : 'bg-[#10151c] text-[#8b97a3] hover:text-white border border-[#1e2733]'
                 }`}
               >
                 Season {yr}
@@ -206,16 +218,16 @@ export const FixturesView: React.FC<FixturesViewProps> = ({
       )}
 
       {viewType === 'COUNTRY' && (
-        <div className="flex items-center space-x-2 bg-[#121824] p-3 rounded-lg border border-[#1f293d] overflow-x-auto">
-          <span className="text-xs text-slate-400 font-semibold whitespace-nowrap">Filter Country (22 Nations):</span>
+        <div className="flex items-center space-x-3 bg-[#070a0e] p-4 rounded-xl border border-[#1e2733] overflow-x-auto">
+          <span className="dugout-kicker text-xs text-[#8b97a3] whitespace-nowrap">Nation:</span>
           <select
             value={selectedCountryId}
             onChange={(e) => setSelectedCountryId(e.target.value)}
-            className="bg-[#182234] border border-[#243247] text-white text-xs font-bold px-3 py-1.5 rounded outline-none cursor-pointer"
+            className="bg-[#10151c] border border-[#1e2733] text-white text-xs font-bold px-3 py-1.5 rounded-lg outline-none cursor-pointer tracking-wider"
           >
             {INTERNATIONAL_TEAMS.map((team) => (
-              <option key={team.id} value={team.id}>
-                {team.name} ({team.id})
+              <option key={team.id} value={team.id} className="bg-[#070a0e]">
+                {team.name} ({team.code})
               </option>
             ))}
           </select>
@@ -223,16 +235,16 @@ export const FixturesView: React.FC<FixturesViewProps> = ({
       )}
 
       {viewType === 'FORMAT' && (
-        <div className="flex items-center space-x-2 bg-[#121824] p-3 rounded-lg border border-[#1f293d]">
-          <span className="text-xs text-slate-400 font-semibold">Filter Match Format:</span>
+        <div className="flex items-center space-x-2.5 bg-[#070a0e] p-4 rounded-xl border border-[#1e2733]">
+          <span className="dugout-kicker text-xs text-[#8b97a3]">Format:</span>
           {(['ALL', 'TEST', 'ODI', 'T20I'] as const).map((fmt) => (
             <button
               key={fmt}
               onClick={() => setSelectedFormat(fmt)}
-              className={`px-3 py-1 rounded text-xs font-mono font-bold cursor-pointer transition ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold cursor-pointer transition uppercase tracking-wider ${
                 selectedFormat === fmt
-                  ? 'bg-emerald-600 text-white'
-                  : 'bg-[#182234] text-slate-400 hover:text-white border border-[#243247]'
+                  ? 'bg-gradient-to-r from-[#ffe9a8] to-[#e0ab3a] text-black'
+                  : 'bg-[#10151c] text-[#8b97a3] hover:text-white border border-[#1e2733]'
               }`}
             >
               {fmt}
@@ -243,41 +255,41 @@ export const FixturesView: React.FC<FixturesViewProps> = ({
 
       {/* EVENTS VIEW (Rest Days, Training Days, Travel, Squad Deadlines) */}
       {viewType === 'EVENTS' ? (
-        <div className="bg-[#121824] border border-[#1f293d] rounded-lg p-4 space-y-2">
-          <h4 className="text-sm font-bold text-white mb-3">
-            Scheduled Squad Periods, Rest Days & Announcement Deadlines
+        <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-5 space-y-3 shadow-xl">
+          <h4 className="dugout-kicker text-xs text-[#e2b64a] mb-3">
+            Scheduled Squad Periods, Rest Days &amp; Announcement Deadlines
           </h4>
           <div className="space-y-2 max-h-[600px] overflow-y-auto pr-1">
             {events.map((ev) => (
               <div
                 key={ev.id}
-                className="bg-[#182234] border border-[#243247] p-3 rounded-lg flex items-center justify-between text-xs"
+                className="bg-[#10151c] border border-[#1e2733] hover:border-[#8fb2d9]/60 p-3.5 rounded-xl flex items-center justify-between text-xs transition"
               >
-                <div className="space-y-0.5">
-                  <div className="flex items-center space-x-2">
+                <div className="space-y-1">
+                  <div className="flex items-center space-x-2.5">
                     <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+                      className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded uppercase tracking-wider ${
                         ev.type === 'USER_MATCH' || ev.type === 'WORLD_MATCH'
-                          ? 'bg-emerald-950 text-emerald-400 border border-emerald-800/40'
+                          ? 'bg-[#3fca86]/20 text-[#3fca86] border border-[#3fca86]/40'
                           : ev.type === 'REST_DAY'
-                          ? 'bg-blue-950 text-blue-400 border border-blue-800/40'
+                          ? 'bg-[#8fb2d9]/20 text-[#8fb2d9] border border-[#8fb2d9]/40'
                           : ev.type === 'TRAINING_DAY'
-                          ? 'bg-purple-950 text-purple-400 border border-purple-800/40'
+                          ? 'bg-[#e2b64a]/20 text-[#ffe9a8] border border-[#e2b64a]/40'
                           : ev.type === 'TRAVEL_DAY'
-                          ? 'bg-amber-950 text-amber-400 border border-amber-800/40'
-                          : 'bg-rose-950 text-rose-400 border border-rose-800/40'
+                          ? 'bg-[#ffe9a8]/10 text-[#ffe9a8] border border-[#ffe9a8]/30'
+                          : 'bg-[#ff3d7f]/20 text-[#ff5470] border border-[#ff3d7f]/40'
                       }`}
                     >
                       {ev.type.replace('_', ' ')}
                     </span>
-                    <span className="font-bold text-white">{ev.title}</span>
-                    <span className="text-slate-400 font-mono text-[11px]">{ev.date}</span>
+                    <span className="font-bold text-white text-sm">{ev.title}</span>
+                    <span className="text-[#8b97a3] font-mono text-[11px]">{ev.date}</span>
                   </div>
-                  <p className="text-[11px] text-slate-400">{ev.description}</p>
+                  <p className="text-[11px] text-[#c3ccd6]">{ev.description}</p>
                 </div>
 
                 {ev.isSimulated && (
-                  <span className="text-[10px] text-slate-500 font-mono">Passed</span>
+                  <span className="text-[10px] text-[#556375] font-mono uppercase tracking-wider">Passed</span>
                 )}
               </div>
             ))}
@@ -285,10 +297,14 @@ export const FixturesView: React.FC<FixturesViewProps> = ({
         </div>
       ) : (
         /* FIXTURES LIST VIEW */
-        <div className="space-y-3">
-          <div className="flex items-center justify-between text-xs text-slate-400 px-1">
-            <span>Showing {filteredMatches.length} International Fixtures</span>
-            <span>Worldwide Multi-Format Sync</span>
+        <div className="space-y-3.5">
+          <div className="flex items-center justify-between text-xs text-[#8b97a3] px-1">
+            <span className="dugout-kicker text-[10px] text-[#8b97a3]">
+              Showing {filteredMatches.length} International Fixtures
+            </span>
+            <span className="text-[10px] font-mono text-[#556375] uppercase">
+              Worldwide Multi-Format Sync
+            </span>
           </div>
 
           {filteredMatches.length > 0 ? (
@@ -305,78 +321,92 @@ export const FixturesView: React.FC<FixturesViewProps> = ({
               return (
                 <div
                   key={fixture.id}
-                  className={`bg-[#121824] border rounded-lg p-4 transition ${
+                  className={`bg-[#070a0e] border rounded-2xl p-4 sm:p-5 transition-all shadow-md ${
                     isLive
-                      ? 'border-emerald-500 shadow-md bg-[#131d2c]'
+                      ? 'border-[#e2b64a] shadow-[#e2b64a]/10 bg-gradient-to-r from-[#10151c] to-[#070a0e]'
                       : isCompleted
-                      ? 'border-[#1f293d] opacity-90'
-                      : 'border-[#1f293d] hover:border-[#2f3f5a]'
+                      ? 'border-[#1e2733] opacity-90'
+                      : 'border-[#1e2733] hover:border-[#33404f]'
                   }`}
                 >
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div className="space-y-1">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800/40">
+                    <div className="space-y-2">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className={`text-[10px] font-black font-mono px-2 py-0.5 rounded uppercase tracking-wider ${
+                          fixture.format === 'TEST'
+                            ? 'bg-[#ff3d7f]/20 text-[#ff5470] border border-[#ff3d7f]/40'
+                            : fixture.format === 'ODI'
+                            ? 'bg-[#8fb2d9]/20 text-[#8fb2d9] border border-[#8fb2d9]/40'
+                            : 'bg-[#3fca86]/20 text-[#3fca86] border border-[#3fca86]/40'
+                        }`}>
                           {fixture.format}
                         </span>
                         <span className="text-xs font-bold text-white">{fixture.seriesName}</span>
-                        <span className="text-xs text-slate-400 font-mono">Date: {fixture.date || 'TBD'}</span>
+                        <span className="text-xs text-[#8b97a3] font-mono">Date: <strong className="text-white">{fixture.date || 'TBD'}</strong></span>
                         {isUserFixture && (
-                          <span className="text-[10px] bg-emerald-900/60 text-emerald-300 px-1.5 py-0.2 rounded font-mono border border-emerald-700/50">
-                            USER MATCH
+                          <span className="text-[10px] bg-[#e2b64a] text-black font-black px-2 py-0.5 rounded uppercase tracking-wider">
+                            YOUR MATCH
                           </span>
                         )}
                         {fixture.competitionId && (
-                          <span className="text-[10px] bg-amber-950 text-amber-300 px-1.5 py-0.2 rounded font-mono border border-amber-800/40">
+                          <span className="text-[10px] bg-[#10151c] text-[#ffe9a8] px-2 py-0.5 rounded font-mono border border-[#1e2733] uppercase">
                             {fixture.competitionId.toUpperCase()}
                           </span>
                         )}
                       </div>
 
-                      <div className="flex items-center space-x-2 text-xs text-slate-400">
-                        <MapPin className="w-3.5 h-3.5 text-slate-500" />
-                        <span>{fixture.venue}</span>
+                      <div className="flex flex-wrap items-center gap-2 text-xs text-[#8b97a3]">
+                        <div className="flex items-center gap-1">
+                          <MapPin className="w-3.5 h-3.5 text-[#e2b64a]" />
+                          <span>{fixture.venue}</span>
+                        </div>
                         <span>•</span>
-                        <span className="text-slate-300">Pitch: {fixture.pitch.name}</span>
+                        <span>Pitch: <strong className="text-[#c3ccd6]">{typeof fixture.pitch === 'string' ? fixture.pitch : fixture.pitch.name}</strong></span>
                         <span>•</span>
-                        <span className="text-slate-300">Weather: {fixture.weather.description || fixture.weather.type}</span>
+                        <span>Weather: <strong className="text-[#c3ccd6]">{typeof fixture.weather === 'string' ? fixture.weather : fixture.weather.description || fixture.weather.type}</strong></span>
                       </div>
 
                       {/* Teams & Scores */}
                       <div className="flex items-center space-x-3 pt-1">
-                        <span className="text-sm font-bold text-white">
-                          {homeTeam?.name || fixture.homeTeamId}
-                        </span>
-                        <span className="text-xs text-slate-500 font-mono">vs</span>
-                        <span className="text-sm font-bold text-white">
-                          {awayTeam?.name || fixture.awayTeamId}
-                        </span>
+                        <div className="flex items-center space-x-2">
+                          <CountryFlag countryCode={homeTeam?.code || ''} size="xs" />
+                          <span className="text-base font-black text-white uppercase tracking-tight">
+                            {homeTeam?.name || fixture.homeTeamId}
+                          </span>
+                        </div>
+                        <span className="text-xs text-[#8b97a3] font-mono uppercase font-bold">vs</span>
+                        <div className="flex items-center space-x-2">
+                          <CountryFlag countryCode={awayTeam?.code || ''} size="xs" />
+                          <span className="text-base font-black text-white uppercase tracking-tight">
+                            {awayTeam?.name || fixture.awayTeamId}
+                          </span>
+                        </div>
                       </div>
 
                       {/* Completed Score Line */}
                       {isCompleted && inn1 && (
-                        <div className="text-xs font-mono font-bold text-slate-200 pt-1">
+                        <div className="text-xs font-mono font-bold text-[#c3ccd6] pt-1">
                           <span>
-                            {inn1.battingTeamId}: {inn1.totalRuns}/{inn1.wickets} ({inn1.completedOvers}.{inn1.ballsInCurrentOver} ov)
+                            {inn1.battingTeamId}: <strong className="text-white">{inn1.totalRuns}/{inn1.wickets}</strong> ({inn1.completedOvers}.{inn1.ballsInCurrentOver} ov)
                           </span>
                           {inn2 && (
                             <span className="ml-3">
-                              vs {inn2.battingTeamId}: {inn2.totalRuns}/{inn2.wickets} ({inn2.completedOvers}.{inn2.ballsInCurrentOver} ov)
+                              vs {inn2.battingTeamId}: <strong className="text-white">{inn2.totalRuns}/{inn2.wickets}</strong> ({inn2.completedOvers}.{inn2.ballsInCurrentOver} ov)
                             </span>
                           )}
-                          <p className="text-[11px] text-emerald-400 font-sans mt-0.5">{fixture.resultText}</p>
+                          <p className="text-xs text-[#3fca86] font-sans font-bold mt-1">{fixture.resultText}</p>
                         </div>
                       )}
                     </div>
 
                     {/* Actions */}
-                    <div className="flex items-center space-x-2 self-start md:self-center">
+                    <div className="flex items-center space-x-2.5 self-start md:self-center">
                       {isCompleted ? (
                         <button
                           onClick={() => onInspectScorecard && onInspectScorecard(fixture)}
-                          className="text-xs font-bold text-emerald-300 bg-emerald-950/70 hover:bg-emerald-900/80 border border-emerald-700/50 px-3 py-1.5 rounded transition cursor-pointer flex items-center space-x-1.5"
+                          className="text-xs font-bold text-[#8fb2d9] bg-[#10151c] hover:bg-[#161d27] border border-[#1e2733] hover:border-[#8fb2d9] px-3.5 py-2 rounded-xl transition cursor-pointer flex items-center space-x-1.5 uppercase tracking-wider"
                         >
-                          <FileText className="w-3.5 h-3.5 text-emerald-400" />
+                          <FileText className="w-3.5 h-3.5" />
                           <span>View Scorecard</span>
                         </button>
                       ) : isUserFixture ? (
@@ -384,22 +414,22 @@ export const FixturesView: React.FC<FixturesViewProps> = ({
                           {!isLive && onOpenMatchPreparation && (
                             <button
                               onClick={() => onOpenMatchPreparation(fixture.id)}
-                              className="bg-[#182234] hover:bg-[#243247] text-sky-300 border border-sky-700/50 font-bold text-xs px-3 py-2 rounded transition cursor-pointer"
+                              className="bg-[#10151c] hover:bg-[#161d27] text-[#c3ccd6] hover:text-white border border-[#1e2733] hover:border-[#e2b64a] font-bold text-xs px-3.5 py-2.5 rounded-xl transition cursor-pointer uppercase tracking-wider"
                             >
                               Prepare XI
                             </button>
                           )}
                           <button
                             onClick={() => onSelectMatch(fixture.id)}
-                            className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3.5 py-2 rounded transition cursor-pointer flex items-center space-x-1.5 shadow"
+                            className="btn-gold flex items-center space-x-2 text-xs py-2.5 px-4"
                           >
-                            <Play className="w-3.5 h-3.5 fill-white" />
+                            <Play className="w-3.5 h-3.5 fill-black" />
                             <span>{isLive ? 'Resume Match' : 'Match Centre'}</span>
                           </button>
                         </div>
                       ) : (
-                        <span className="text-xs font-mono text-slate-400 bg-[#182234] border border-[#243247] px-3 py-1.5 rounded">
-                          AI Fixture
+                        <span className="text-xs font-mono text-[#8b97a3] bg-[#10151c] border border-[#1e2733] px-3 py-1.5 rounded-xl uppercase tracking-wider">
+                          AI Simulation
                         </span>
                       )}
                     </div>
@@ -408,7 +438,7 @@ export const FixturesView: React.FC<FixturesViewProps> = ({
               );
             })
           ) : (
-            <div className="bg-[#121824] border border-[#1f293d] rounded-lg p-8 text-center text-slate-500 text-xs">
+            <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-12 text-center text-[#8b97a3] text-xs">
               No international fixtures match the selected view criteria.
             </div>
           )}

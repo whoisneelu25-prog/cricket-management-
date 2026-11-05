@@ -7,12 +7,14 @@ import {
   MapPin,
   FileText,
   Crown,
+  Sparkles,
 } from 'lucide-react';
 import { CareerSave, Match, TournamentEdition, TournamentTableEntry } from '../../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
 import { INITIAL_TOURNAMENT_EDITIONS } from '../../data/tournamentData';
 import { sortTournamentTable } from '../../engine/tournamentEngine';
 import { isTerminalMatchStatus } from '../../engine/matchEngine';
+import { CountryFlag } from '../common/CountryFlag';
 
 interface TournamentsViewProps {
   career?: CareerSave;
@@ -74,86 +76,91 @@ export const TournamentsView: React.FC<TournamentsViewProps> = ({
     qualifyCount: number,
     title?: string
   ) => (
-    <div className="bg-[#121824] border border-[#1f293d] rounded-lg overflow-hidden">
+    <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl overflow-hidden shadow-2xl">
       {title && (
-        <div className="bg-[#162033] border-b border-[#1f293d] px-4 py-2.5 flex items-center justify-between">
-          <span className="text-xs font-black uppercase tracking-wider text-emerald-400">
+        <div className="bg-[#10151c] border-b border-[#1e2733] px-5 py-3.5 flex items-center justify-between">
+          <span className="dugout-kicker text-xs text-[#e2b64a]">
             {title}
           </span>
-          <span className="text-[10px] font-mono text-slate-400">
+          <span className="text-[10px] font-mono text-[#8b97a3] uppercase tracking-wider">
             Top {qualifyCount} Qualify
           </span>
         </div>
       )}
       <div className="overflow-x-auto">
         <table className="w-full text-xs text-left">
-          <thead className="bg-[#182234] text-slate-400 text-[11px] uppercase font-mono border-b border-[#1f293d]">
+          <thead className="bg-[#070a0e] text-[#8b97a3] text-[10px] uppercase font-mono border-b border-[#1e2733] tracking-wider">
             <tr>
-              <th className="p-3 text-center">Pos</th>
-              <th className="p-3">Team</th>
-              <th className="p-3 text-center">P</th>
-              <th className="p-3 text-center">W</th>
-              <th className="p-3 text-center">L</th>
+              <th className="py-3 px-4 text-center">Pos</th>
+              <th className="py-3 px-4">Team</th>
+              <th className="py-3 px-3 text-center">P</th>
+              <th className="py-3 px-3 text-center">W</th>
+              <th className="py-3 px-3 text-center">L</th>
               {currentEdition.format === 'TEST' ? (
-                <th className="p-3 text-center">D</th>
+                <th className="py-3 px-3 text-center">D</th>
               ) : (
-                <th className="p-3 text-center">T</th>
+                <th className="py-3 px-3 text-center">T</th>
               )}
-              <th className="p-3 text-center">Pts</th>
+              <th className="py-3 px-3 text-center">Pts</th>
               {currentEdition.rules.usePCT ? (
-                <th className="p-3 text-center text-emerald-400 font-bold">PCT (%)</th>
+                <th className="py-3 px-4 text-center text-[#e2b64a] font-bold">PCT (%)</th>
               ) : (
-                <th className="p-3 text-center text-emerald-400 font-bold">NRR</th>
+                <th className="py-3 px-4 text-center text-[#e2b64a] font-bold">NRR</th>
               )}
-              <th className="p-3 text-center">Status</th>
+              <th className="py-3 px-4 text-center">Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#1f293d]">
+          <tbody className="divide-y divide-[#1e2733]">
             {rows.map((row, idx) => {
               const isQualifying = idx < qualifyCount;
               const isUserRow = row.teamId === career?.selectedTeamId;
+              const teamData = INTERNATIONAL_TEAMS.find((t) => t.id === row.teamId);
+
               return (
                 <tr
                   key={row.teamId}
-                  className={`hover:bg-[#182234]/60 transition ${
+                  className={`hover:bg-[#10151c] transition-colors ${
                     isUserRow
-                      ? 'bg-emerald-950/25'
+                      ? 'bg-[#e2b64a]/10 hover:bg-[#e2b64a]/15 font-semibold'
                       : isQualifying
-                      ? 'bg-[#182234]/20'
+                      ? 'bg-[#10151c]/40'
                       : ''
                   }`}
                 >
-                  <td className="p-3 text-center font-bold font-mono">
+                  <td className="py-3 px-4 text-center font-bold font-mono">
                     <span
-                      className={`w-5 h-5 rounded inline-flex items-center justify-center ${
+                      className={`w-7 h-7 rounded-lg inline-flex items-center justify-center ${
                         idx === 0
-                          ? 'bg-amber-500/20 text-amber-400 font-black'
+                          ? 'bg-gradient-to-r from-[#ffe9a8] to-[#e0ab3a] text-black font-black shadow-xs'
                           : idx === 1
-                          ? 'bg-slate-500/20 text-slate-300 font-bold'
-                          : 'text-slate-500'
+                          ? 'bg-[#10151c] text-[#8fb2d9] border border-[#1e2733] font-bold'
+                          : 'text-[#8b97a3]'
                       }`}
                     >
                       {idx + 1}
                     </span>
                   </td>
-                  <td className="p-3">
-                    <span className="font-bold text-white">{row.teamName}</span>
-                    <span className="text-[10px] text-slate-400 font-mono ml-2">
-                      ({row.teamId})
-                    </span>
+                  <td className="py-3 px-4">
+                    <div className="flex items-center space-x-2.5">
+                      <CountryFlag countryCode={teamData?.code || row.teamId} size="xs" />
+                      <span className={`font-bold ${isUserRow ? 'text-[#ffe9a8]' : 'text-white'}`}>{row.teamName}</span>
+                      <span className="text-[10px] text-[#8b97a3] font-mono">
+                        ({row.teamId})
+                      </span>
+                    </div>
                   </td>
-                  <td className="p-3 text-center font-mono text-slate-300">{row.played}</td>
-                  <td className="p-3 text-center font-mono text-emerald-400 font-bold">
+                  <td className="py-3 px-3 text-center font-mono text-[#c3ccd6]">{row.played}</td>
+                  <td className="py-3 px-3 text-center font-mono text-[#3fca86] font-bold">
                     {row.won}
                   </td>
-                  <td className="p-3 text-center font-mono text-rose-400">{row.lost}</td>
-                  <td className="p-3 text-center font-mono text-slate-400">
+                  <td className="py-3 px-3 text-center font-mono text-[#ff5470]">{row.lost}</td>
+                  <td className="py-3 px-3 text-center font-mono text-[#8b97a3]">
                     {currentEdition.format === 'TEST' ? row.drawn : row.tied}
                   </td>
-                  <td className="p-3 text-center font-mono text-white font-black">
+                  <td className="py-3 px-3 text-center font-mono text-white font-black">
                     {row.points}
                   </td>
-                  <td className="p-3 text-center font-mono text-emerald-400 font-black">
+                  <td className="py-3 px-4 text-center font-mono text-[#ffe9a8] font-black text-sm">
                     {currentEdition.rules.usePCT
                       ? `${row.pointsPercentage || 0}%`
                       : row.netRunRate !== undefined
@@ -162,17 +169,17 @@ export const TournamentsView: React.FC<TournamentsViewProps> = ({
                         : `${row.netRunRate.toFixed(3)}`
                       : '0.000'}
                   </td>
-                  <td className="p-3 text-center">
+                  <td className="py-3 px-4 text-center">
                     {currentEdition.winnerTeamId === row.teamId ? (
-                      <span className="text-[10px] font-black text-amber-300 bg-amber-950/70 px-2 py-0.5 rounded border border-amber-700/60">
+                      <span className="text-[10px] font-black text-black bg-gradient-to-r from-[#ffe9a8] to-[#e0ab3a] px-2.5 py-0.5 rounded uppercase tracking-wider shadow-sm">
                         CHAMPION
                       </span>
                     ) : isQualifying && row.played > 0 ? (
-                      <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/40">
+                      <span className="text-[10px] font-bold text-[#3fca86] bg-[#3fca86]/20 px-2 py-0.5 rounded border border-[#3fca86]/40 uppercase tracking-wider">
                         Qualifying Zone
                       </span>
                     ) : (
-                      <span className="text-[10px] text-slate-500 font-mono">
+                      <span className="text-[10px] text-[#556375] font-mono uppercase tracking-wider">
                         {row.played > 0 ? 'In Contention' : 'Scheduled'}
                       </span>
                     )}
@@ -187,29 +194,39 @@ export const TournamentsView: React.FC<TournamentsViewProps> = ({
   );
 
   return (
-    <div className="space-y-4 select-none animate-in fade-in duration-150">
-      {/* Header */}
-      <div className="bg-[#121824] border border-[#1f293d] rounded-lg p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <Trophy className="w-5 h-5 text-amber-400" />
-            ICC Major Tournaments &amp; Championships
-          </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Live standings, Net Run Rate, WTC Points Percentage, Knockout Brackets &amp; Champions calculated strictly from real match results.
-          </p>
+    <div className="space-y-5 select-none pb-8 text-[#e8edf2]">
+      {/* Header in Dugout Style */}
+      <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl">
+        <div className="flex items-center space-x-3.5">
+          <div className="w-12 h-12 rounded-xl bg-[#10151c] border border-[#1e2733] flex items-center justify-center text-[#e2b64a] shadow-inner">
+            <Trophy className="w-6 h-6" />
+          </div>
+          <div>
+            <div className="flex items-center space-x-2">
+              <span className="dugout-kicker text-[11px] text-[#e2b64a]">ICC Competitions</span>
+              <span className="text-[10px] bg-[#10151c] text-[#8fb2d9] font-mono px-2 py-0.5 rounded-full border border-[#1e2733] font-bold">
+                Championships
+              </span>
+            </div>
+            <h1 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight mt-0.5">
+              ICC Major Tournaments
+            </h1>
+            <p className="text-xs text-[#8b97a3] mt-0.5">
+              Live standings, Net Run Rate, WTC Points Percentage, Knockout Brackets &amp; Champions
+            </p>
+          </div>
         </div>
 
         {/* Tournament Edition Switcher */}
-        <div className="flex items-center space-x-1.5 overflow-x-auto pb-1 bg-[#182234] border border-[#243247] p-1 rounded-lg">
+        <div className="flex items-center space-x-2 overflow-x-auto pb-1 bg-[#10151c] border border-[#1e2733] p-1.5 rounded-xl">
           {tournamentEditions.map((t) => (
             <button
               key={t.id}
               onClick={() => setSelectedTournamentId(t.id)}
-              className={`px-3 py-1.5 rounded text-xs font-semibold whitespace-nowrap transition cursor-pointer ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition cursor-pointer uppercase tracking-wider ${
                 selectedTournamentId === t.id
-                  ? 'bg-emerald-600 text-white shadow'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-gradient-to-r from-[#ffe9a8] to-[#e0ab3a] text-black shadow-sm font-extrabold'
+                  : 'text-[#8b97a3] hover:text-white'
               }`}
             >
               {t.competitionType} ({t.year})
@@ -219,53 +236,61 @@ export const TournamentsView: React.FC<TournamentsViewProps> = ({
       </div>
 
       {/* Tournament Info Banner */}
-      <div className="bg-gradient-to-r from-[#121824] via-[#162133] to-[#121824] border border-[#1f293d] rounded-lg p-5">
+      <div className="bg-gradient-to-r from-[#10151c] via-[#070a0e] to-[#10151c] border border-[#1e2733] rounded-2xl p-5 shadow-xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[11px] font-black px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800/40">
+              <span className={`text-[10px] font-black font-mono px-2 py-0.5 rounded uppercase tracking-wider ${
+                currentEdition.format === 'TEST'
+                  ? 'bg-[#ff3d7f]/20 text-[#ff5470] border border-[#ff3d7f]/40'
+                  : currentEdition.format === 'ODI'
+                  ? 'bg-[#8fb2d9]/20 text-[#8fb2d9] border border-[#8fb2d9]/40'
+                  : 'bg-[#3fca86]/20 text-[#3fca86] border border-[#3fca86]/40'
+              }`}>
                 {currentEdition.format}
               </span>
-              <span className="text-xs text-slate-400 font-mono">
-                Cycle: {currentEdition.season} • Host:{' '}
-                {INTERNATIONAL_TEAMS.find((t) => t.id === currentEdition.hostCountryId)?.name ||
-                  currentEdition.hostCountryId ||
-                  'Multi-Nation'}
+              <span className="text-xs text-[#8b97a3] font-mono">
+                Cycle: <strong className="text-white">{currentEdition.season}</strong> • Host:{' '}
+                <strong className="text-white">
+                  {INTERNATIONAL_TEAMS.find((t) => t.id === currentEdition.hostCountryId)?.name ||
+                    currentEdition.hostCountryId ||
+                    'Multi-Nation'}
+                </strong>
               </span>
-              <span className="text-xs text-amber-400 font-bold">
-                {currentEdition.status.replace('_', ' ')}
-                {currentEdition.currentStage ? ` (${currentEdition.currentStage.replace('_', ' ')})` : ''}
+              <span className="text-xs text-[#e2b64a] font-bold uppercase tracking-wider font-mono">
+                {currentEdition.status.replace(/_/g, ' ')}
+                {currentEdition.currentStage ? ` (${currentEdition.currentStage.replace(/_/g, ' ')})` : ''}
               </span>
             </div>
-            <h3 className="text-xl font-bold text-white mt-1">{currentEdition.name}</h3>
-            <p className="text-xs text-slate-300 max-w-2xl mt-1">{currentEdition.description}</p>
+            <h3 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight mt-1.5">{currentEdition.name}</h3>
+            <p className="text-xs text-[#c3ccd6] max-w-2xl mt-1 leading-relaxed">{currentEdition.description}</p>
 
             {/* Champion & Honours Ribbon if Completed */}
             {currentEdition.winnerTeamId && (
-              <div className="mt-3 flex flex-wrap items-center gap-3 text-xs bg-amber-950/40 border border-amber-700/50 px-3 py-2 rounded-lg">
-                <span className="font-black text-amber-300 flex items-center gap-1">
-                  <Crown className="w-4 h-4 text-amber-400" />
+              <div className="mt-3.5 flex flex-wrap items-center gap-3 text-xs bg-[#e2b64a]/10 border border-[#e2b64a]/40 p-3 rounded-xl shadow-xs">
+                <span className="font-black text-[#ffe9a8] flex items-center gap-1.5 uppercase tracking-wide">
+                  <Crown className="w-4 h-4 text-[#e2b64a]" />
                   Champion:{' '}
                   {currentEdition.table.find((r) => r.teamId === currentEdition.winnerTeamId)?.teamName ||
                     currentEdition.winnerTeamId}
                 </span>
                 {currentEdition.playerOfTheTournament && (
-                  <span className="text-slate-300 font-mono">
+                  <span className="text-[#8b97a3] font-mono">
                     • POTT: <strong className="text-white">{currentEdition.playerOfTheTournament.playerName}</strong>
                   </span>
                 )}
                 {currentEdition.leadingRunScorer && (
-                  <span className="text-slate-300 font-mono">
-                    • Most Runs:{' '}
-                    <strong className="text-emerald-400">
+                  <span className="text-[#8b97a3] font-mono">
+                    • Top Run Scorer:{' '}
+                    <strong className="text-[#3fca86]">
                       {currentEdition.leadingRunScorer.playerName} ({currentEdition.leadingRunScorer.runs})
                     </strong>
                   </span>
                 )}
                 {currentEdition.leadingWicketTaker && (
-                  <span className="text-slate-300 font-mono">
-                    • Most Wickets:{' '}
-                    <strong className="text-sky-400">
+                  <span className="text-[#8b97a3] font-mono">
+                    • Top Wicket Taker:{' '}
+                    <strong className="text-[#8fb2d9]">
                       {currentEdition.leadingWicketTaker.playerName} ({currentEdition.leadingWicketTaker.wickets})
                     </strong>
                   </span>
@@ -275,13 +300,13 @@ export const TournamentsView: React.FC<TournamentsViewProps> = ({
           </div>
 
           {currentEdition.competitionType === 'WTC' && (
-            <div className="bg-[#0b0f17]/80 border border-amber-500/30 p-3.5 rounded-xl text-center min-w-[200px]">
-              <Landmark className="w-6 h-6 text-amber-400 mx-auto mb-1" />
-              <span className="text-[10px] font-bold text-slate-400 block uppercase">
+            <div className="bg-[#070a0e] border border-[#e2b64a]/30 p-4 rounded-xl text-center min-w-[220px] shadow-sm">
+              <Landmark className="w-6 h-6 text-[#e2b64a] mx-auto mb-1" />
+              <span className="dugout-kicker text-[10px] text-[#8b97a3] block">
                 Grand Final Venue
               </span>
-              <span className="text-xs font-bold text-white">Lord&apos;s, London</span>
-              <span className="text-[10px] text-emerald-400 block mt-1 font-mono">
+              <span className="text-sm font-black text-white block mt-0.5">Lord&apos;s, London</span>
+              <span className="text-[10px] text-[#3fca86] block mt-1 font-mono">
                 Cutoff: {currentEdition.cutoffDate || '2027-06-01'}
               </span>
             </div>
@@ -290,36 +315,36 @@ export const TournamentsView: React.FC<TournamentsViewProps> = ({
       </div>
 
       {/* Sub-nav: Standings vs Fixtures vs History */}
-      <div className="flex items-center space-x-2 border-b border-[#1f293d] pb-2 text-xs">
+      <div className="flex items-center space-x-2 border-b border-[#1e2733] pb-3 text-xs">
         <button
           onClick={() => setActiveTabSubView('STANDINGS')}
-          className={`px-3.5 py-1.5 font-bold rounded cursor-pointer transition ${
+          className={`px-4 py-2 font-bold rounded-xl cursor-pointer transition uppercase tracking-wider ${
             activeTabSubView === 'STANDINGS'
-              ? 'bg-emerald-600 text-white shadow'
-              : 'bg-[#182234] text-slate-400 hover:text-white border border-[#243247]'
+              ? 'bg-gradient-to-r from-[#ffe9a8] to-[#e0ab3a] text-black shadow-sm font-extrabold'
+              : 'bg-[#070a0e] text-[#8b97a3] hover:text-white border border-[#1e2733]'
           }`}
         >
           Points Table &amp; Knockouts
         </button>
         <button
           onClick={() => setActiveTabSubView('FIXTURES')}
-          className={`px-3.5 py-1.5 font-bold rounded cursor-pointer transition flex items-center space-x-1.5 ${
+          className={`px-4 py-2 font-bold rounded-xl cursor-pointer transition flex items-center space-x-2 uppercase tracking-wider ${
             activeTabSubView === 'FIXTURES'
-              ? 'bg-emerald-600 text-white shadow'
-              : 'bg-[#182234] text-slate-400 hover:text-white border border-[#243247]'
+              ? 'bg-gradient-to-r from-[#ffe9a8] to-[#e0ab3a] text-black shadow-sm font-extrabold'
+              : 'bg-[#070a0e] text-[#8b97a3] hover:text-white border border-[#1e2733]'
           }`}
         >
           <span>Matches &amp; Results</span>
-          <span className="bg-[#243247] text-slate-300 font-mono text-[10px] px-1.5 py-0.2 rounded">
+          <span className="bg-[#10151c] text-[#8fb2d9] font-mono text-[10px] px-2 py-0.5 rounded-full border border-[#1e2733]">
             {tournamentMatches.length}
           </span>
         </button>
         <button
           onClick={() => setActiveTabSubView('HISTORY')}
-          className={`px-3.5 py-1.5 font-bold rounded cursor-pointer transition ${
+          className={`px-4 py-2 font-bold rounded-xl cursor-pointer transition uppercase tracking-wider ${
             activeTabSubView === 'HISTORY'
-              ? 'bg-emerald-600 text-white shadow'
-              : 'bg-[#182234] text-slate-400 hover:text-white border border-[#243247]'
+              ? 'bg-gradient-to-r from-[#ffe9a8] to-[#e0ab3a] text-black shadow-sm font-extrabold'
+              : 'bg-[#070a0e] text-[#8b97a3] hover:text-white border border-[#1e2733]'
           }`}
         >
           Past Champions ({currentEdition.pastChampions?.length || 0})
@@ -328,11 +353,11 @@ export const TournamentsView: React.FC<TournamentsViewProps> = ({
 
       {/* STANDINGS VIEW */}
       {activeTabSubView === 'STANDINGS' && (
-        <div className="space-y-4">
+        <div className="space-y-5">
           {/* Knockout Bracket Cards if Semi-Finals / Final Exist */}
           {knockoutMatches.length > 0 && (
-            <div className="bg-[#121824] border border-amber-700/40 rounded-lg p-4 space-y-3">
-              <span className="text-xs font-black uppercase tracking-wider text-amber-400 block">
+            <div className="bg-[#070a0e] border border-[#e2b64a]/40 rounded-2xl p-5 space-y-3.5 shadow-xl">
+              <span className="dugout-kicker text-xs text-[#e2b64a] block">
                 Official Knockout Stage Bracket
               </span>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -342,17 +367,17 @@ export const TournamentsView: React.FC<TournamentsViewProps> = ({
                   return (
                     <div
                       key={km.id}
-                      className="bg-[#182234] border border-[#273854] p-3 rounded-lg flex flex-col justify-between gap-2 text-xs"
+                      className="bg-[#10151c] border border-[#1e2733] hover:border-[#8fb2d9] p-4 rounded-xl flex flex-col justify-between gap-3 text-xs transition shadow-xs"
                     >
                       <div>
-                        <div className="flex items-center justify-between text-[10px] font-mono text-amber-300">
-                          <span>{km.stage?.replace('_', ' ')}</span>
+                        <div className="flex items-center justify-between text-[10px] font-mono text-[#ffe9a8]">
+                          <span className="uppercase font-bold">{km.stage?.replace('_', ' ')}</span>
                           <span>{km.date}</span>
                         </div>
-                        <div className="font-bold text-white text-sm mt-1">
+                        <div className="font-black text-white text-base mt-1.5 uppercase tracking-wide">
                           {km.homeTeamId} vs {km.awayTeamId}
                         </div>
-                        <p className="text-[11px] text-slate-400 mt-0.5">
+                        <p className="text-[11px] text-[#8b97a3] mt-1">
                           {done ? km.resultText : km.venue}
                         </p>
                       </div>
@@ -360,20 +385,20 @@ export const TournamentsView: React.FC<TournamentsViewProps> = ({
                         {done ? (
                           <button
                             onClick={() => onInspectScorecard && onInspectScorecard(km)}
-                            className="text-[11px] font-bold text-emerald-300 bg-emerald-950/70 border border-emerald-700/50 px-2.5 py-1 rounded cursor-pointer flex items-center gap-1"
+                            className="text-[11px] font-bold text-[#8fb2d9] bg-[#070a0e] border border-[#1e2733] hover:border-[#8fb2d9] px-3 py-1.5 rounded-lg cursor-pointer flex items-center gap-1.5 uppercase tracking-wider"
                           >
-                            <FileText className="w-3 h-3" />
+                            <FileText className="w-3.5 h-3.5" />
                             <span>View Scorecard</span>
                           </button>
                         ) : isUserKm && onSelectMatch ? (
                           <button
                             onClick={() => onSelectMatch(km.id)}
-                            className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] px-3 py-1 rounded cursor-pointer"
+                            className="btn-gold text-[11px] px-3.5 py-1.5"
                           >
                             Play Knockout
                           </button>
                         ) : (
-                          <span className="text-[10px] font-mono text-slate-400">
+                          <span className="text-[10px] font-mono text-[#8b97a3] uppercase tracking-wider">
                             Scheduled AI Knockout
                           </span>
                         )}
@@ -387,26 +412,26 @@ export const TournamentsView: React.FC<TournamentsViewProps> = ({
 
           {/* Top 2 Qualification Card for WTC */}
           {currentEdition.competitionType === 'WTC' && finalist1 && finalist2 && (
-            <div className="bg-[#121824] border border-[#1f293d] rounded-lg p-4">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-400 block mb-2">
+            <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-5 shadow-xl">
+              <span className="dugout-kicker text-xs text-[#e2b64a] block mb-3">
                 WTC Lord&apos;s Final Qualification Race (Top 2 by PCT%)
               </span>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div className="bg-[#182234] border border-[#243247] p-3 rounded flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-xs font-black text-amber-400 font-mono">#1</span>
-                    <span className="text-sm font-bold text-white">{finalist1.teamName}</span>
+                <div className="bg-[#10151c] border border-[#e2b64a]/50 p-4 rounded-xl flex items-center justify-between shadow-xs">
+                  <div className="flex items-center space-x-3">
+                    <span className="w-6 h-6 rounded-lg bg-[#e2b64a] text-black font-black text-xs font-mono flex items-center justify-center">1</span>
+                    <span className="text-base font-black text-white">{finalist1.teamName}</span>
                   </div>
-                  <span className="text-xs font-bold text-emerald-400 font-mono">
+                  <span className="text-sm font-black text-[#ffe9a8] font-mono">
                     {finalist1.pointsPercentage || 0}% PCT ({finalist1.points} pts)
                   </span>
                 </div>
-                <div className="bg-[#182234] border border-[#243247] p-3 rounded flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-xs font-black text-slate-300 font-mono">#2</span>
-                    <span className="text-sm font-bold text-white">{finalist2.teamName}</span>
+                <div className="bg-[#10151c] border border-[#8fb2d9]/40 p-4 rounded-xl flex items-center justify-between shadow-xs">
+                  <div className="flex items-center space-x-3">
+                    <span className="w-6 h-6 rounded-lg bg-[#10151c] text-[#8fb2d9] border border-[#1e2733] font-bold text-xs font-mono flex items-center justify-center">2</span>
+                    <span className="text-base font-black text-white">{finalist2.teamName}</span>
                   </div>
-                  <span className="text-xs font-bold text-emerald-400 font-mono">
+                  <span className="text-sm font-black text-[#8fb2d9] font-mono">
                     {finalist2.pointsPercentage || 0}% PCT ({finalist2.points} pts)
                   </span>
                 </div>
@@ -416,7 +441,7 @@ export const TournamentsView: React.FC<TournamentsViewProps> = ({
 
           {/* Multi-Group Tables vs Single League Table */}
           {currentEdition.groups && currentEdition.groups.length > 0 ? (
-            <div className="space-y-4">
+            <div className="space-y-5">
               {currentEdition.groups.map((grp) => {
                 const grpRows = sortTournamentTable(
                   currentEdition.table.filter((r) => grp.teamIds.includes(r.teamId)),
@@ -463,42 +488,48 @@ export const TournamentsView: React.FC<TournamentsViewProps> = ({
               return (
                 <div
                   key={m.id}
-                  className="bg-[#121824] border border-[#1f293d] rounded-lg p-4 flex flex-col md:flex-row md:items-center justify-between gap-3"
+                  className="bg-[#070a0e] border border-[#1e2733] hover:border-[#8fb2d9]/60 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 transition shadow-md"
                 >
-                  <div className="space-y-1">
-                    <div className="flex items-center space-x-2">
-                      <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800/40">
+                  <div className="space-y-2">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className={`text-[10px] font-black font-mono px-2 py-0.5 rounded uppercase tracking-wider ${
+                        m.format === 'TEST'
+                          ? 'bg-[#ff3d7f]/20 text-[#ff5470] border border-[#ff3d7f]/40'
+                          : m.format === 'ODI'
+                          ? 'bg-[#8fb2d9]/20 text-[#8fb2d9] border border-[#8fb2d9]/40'
+                          : 'bg-[#3fca86]/20 text-[#3fca86] border border-[#3fca86]/40'
+                      }`}>
                         {m.format}
                       </span>
                       <span className="text-xs font-bold text-white">{m.seriesName}</span>
                       {m.stage && (
-                        <span className="text-[10px] font-mono bg-amber-950 text-amber-300 px-1.5 py-0.5 rounded border border-amber-800/40">
-                          {m.stage.replace('_', ' ')}
+                        <span className="text-[10px] font-mono bg-[#10151c] text-[#ffe9a8] px-2 py-0.5 rounded border border-[#1e2733] uppercase">
+                          {m.stage.replace(/_/g, ' ')}
                         </span>
                       )}
-                      <span className="text-slate-400 font-mono text-xs">{m.date}</span>
+                      <span className="text-[#8b97a3] font-mono text-xs">{m.date}</span>
                     </div>
 
-                    <div className="flex items-center space-x-2 text-xs text-slate-400">
-                      <MapPin className="w-3.5 h-3.5 text-slate-500" />
+                    <div className="flex items-center space-x-2 text-xs text-[#8b97a3]">
+                      <MapPin className="w-3.5 h-3.5 text-[#e2b64a]" />
                       <span>{m.venue}</span>
                     </div>
 
-                    <div className="text-xs font-bold text-white">
+                    <div className="text-sm font-black text-white uppercase tracking-tight">
                       {m.homeTeamId} vs {m.awayTeamId}
                     </div>
 
                     {isCompleted && inn1 && (
-                      <div className="text-xs font-mono font-bold text-slate-200">
+                      <div className="text-xs font-mono font-bold text-[#c3ccd6] pt-1">
                         <span>
-                          {inn1.battingTeamId}: {inn1.totalRuns}/{inn1.wickets}
+                          {inn1.battingTeamId}: <strong className="text-white">{inn1.totalRuns}/{inn1.wickets}</strong>
                         </span>
                         {inn2 && (
-                          <span className="ml-2">
-                            vs {inn2.battingTeamId}: {inn2.totalRuns}/{inn2.wickets}
+                          <span className="ml-3">
+                            vs {inn2.battingTeamId}: <strong className="text-white">{inn2.totalRuns}/{inn2.wickets}</strong>
                           </span>
                         )}
-                        <p className="text-[11px] text-emerald-400 font-sans mt-0.5">
+                        <p className="text-xs text-[#3fca86] font-sans font-bold mt-1">
                           {m.resultText}
                         </p>
                       </div>
@@ -509,21 +540,21 @@ export const TournamentsView: React.FC<TournamentsViewProps> = ({
                     {isCompleted ? (
                       <button
                         onClick={() => onInspectScorecard && onInspectScorecard(m)}
-                        className="text-[11px] font-bold text-emerald-300 bg-emerald-950/70 hover:bg-emerald-900/80 px-3 py-1.5 rounded border border-emerald-700/50 cursor-pointer flex items-center gap-1.5"
+                        className="text-xs font-bold text-[#8fb2d9] bg-[#10151c] hover:bg-[#161d27] px-3.5 py-2 rounded-xl border border-[#1e2733] hover:border-[#8fb2d9] cursor-pointer flex items-center gap-1.5 uppercase tracking-wider transition"
                       >
-                        <FileText className="w-3.5 h-3.5 text-emerald-400" />
+                        <FileText className="w-3.5 h-3.5" />
                         <span>View Scorecard</span>
                       </button>
                     ) : isUserFixture && onSelectMatch ? (
                       <button
                         onClick={() => onSelectMatch(m.id)}
-                        className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3 py-1.5 rounded transition cursor-pointer flex items-center space-x-1"
+                        className="btn-gold flex items-center space-x-2 text-xs py-2.5 px-4"
                       >
-                        <Play className="w-3 h-3 fill-white" />
+                        <Play className="w-3.5 h-3.5 fill-black" />
                         <span>Match Centre</span>
                       </button>
                     ) : (
-                      <span className="text-[11px] font-mono text-slate-400 bg-[#182234] border border-[#243247] px-2.5 py-1 rounded">
+                      <span className="text-[11px] font-mono text-[#8b97a3] bg-[#10151c] border border-[#1e2733] px-3 py-1.5 rounded-xl uppercase tracking-wider">
                         AI Fixture
                       </span>
                     )}
@@ -532,7 +563,7 @@ export const TournamentsView: React.FC<TournamentsViewProps> = ({
               );
             })
           ) : (
-            <div className="bg-[#121824] border border-[#1f293d] rounded-lg p-8 text-center text-slate-500 text-xs">
+            <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-12 text-center text-[#8b97a3] text-xs">
               No tournament fixtures currently scheduled. Advance calendar to generate upcoming rounds.
             </div>
           )}
@@ -541,30 +572,32 @@ export const TournamentsView: React.FC<TournamentsViewProps> = ({
 
       {/* HISTORY VIEW */}
       {activeTabSubView === 'HISTORY' && (
-        <div className="bg-[#121824] border border-[#1f293d] rounded-lg p-5 space-y-3">
-          <h4 className="text-sm font-bold text-white flex items-center gap-2 border-b border-[#1f293d] pb-3">
-            <Award className="w-4 h-4 text-amber-400" />
-            Past Champions &amp; Final Results
-          </h4>
+        <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-5 space-y-4 shadow-xl">
+          <div className="flex items-center justify-between border-b border-[#1e2733] pb-3">
+            <h4 className="dugout-kicker text-xs text-[#e2b64a] flex items-center gap-2">
+              <Award className="w-4 h-4 text-[#e2b64a]" />
+              Past Champions &amp; Final Results
+            </h4>
+          </div>
 
           <table className="w-full text-xs text-left">
-            <thead className="bg-[#182234] text-slate-400 text-[11px] uppercase font-mono">
+            <thead className="bg-[#070a0e] text-[#8b97a3] text-[10px] uppercase font-mono border-b border-[#1e2733] tracking-wider">
               <tr>
-                <th className="p-2.5">Year</th>
-                <th className="p-2.5">Host</th>
-                <th className="p-2.5">Champion</th>
-                <th className="p-2.5">Runner-Up</th>
-                <th className="p-2.5 text-right">Final Result</th>
+                <th className="py-3 px-3">Year</th>
+                <th className="py-3 px-3">Host</th>
+                <th className="py-3 px-3">Champion</th>
+                <th className="py-3 px-3">Runner-Up</th>
+                <th className="py-3 px-3 text-right">Final Result</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#1f293d]">
+            <tbody className="divide-y divide-[#1e2733]">
               {currentEdition.pastChampions?.map((pc, idx) => (
-                <tr key={idx} className="hover:bg-[#182234]/50 transition">
-                  <td className="p-2.5 font-bold font-mono text-white">{pc.year}</td>
-                  <td className="p-2.5 text-slate-300">{pc.host}</td>
-                  <td className="p-2.5 font-bold text-amber-400">{pc.winner}</td>
-                  <td className="p-2.5 text-slate-400">{pc.runnerUp}</td>
-                  <td className="p-2.5 text-right font-mono text-slate-300">{pc.finalResult}</td>
+                <tr key={idx} className="hover:bg-[#10151c] transition-colors">
+                  <td className="py-3 px-3 font-bold font-mono text-white">{pc.year}</td>
+                  <td className="py-3 px-3 text-[#c3ccd6]">{pc.host}</td>
+                  <td className="py-3 px-3 font-black text-[#ffe9a8]">{pc.winner}</td>
+                  <td className="py-3 px-3 text-[#8b97a3]">{pc.runnerUp}</td>
+                  <td className="py-3 px-3 text-right font-mono text-[#c3ccd6]">{pc.finalResult}</td>
                 </tr>
               ))}
             </tbody>
