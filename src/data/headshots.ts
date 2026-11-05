@@ -64,3 +64,4 @@ export const PLAYER_HEADSHOTS: Record<string, string> = {
 export function getPlayerHeadshotUrl(playerId: string): string | undefined {
   return PLAYER_HEADSHOTS[playerId];
 }
+

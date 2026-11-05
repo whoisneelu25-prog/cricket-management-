@@ -1,347 +1,539 @@
 import React, { useState } from 'react';
 import {
+  BattingAggression,
   BattingApproach,
-  ShotSelection,
-  BowlerTargetAction,
-  SituationalInstruction,
+  BowlingTactic,
+  FieldPreset,
   IndividualBatterInstruction,
-  TeamBattingGamePlan,
-  GeneralGamePlan,
-  TestGamePlan,
-  ODIGamePlan,
-  T20IGamePlan,
+  CustomScoringTarget,
+  PhaseScoringTargets,
   Match,
 } from '../../types/cricket';
 import { getPlayerById } from '../../engine/matchEngine';
-import { PlayerAvatar } from '../common/PlayerAvatar';
-import { Zap, Shield, Target, Flame } from 'lucide-react';
+import { evaluateScoringTargetProgress } from '../../engine/tacticalEngine';
+import { Flame, User, Target, Check, Plus, Trash2 } from 'lucide-react';
 
 interface BatterTacticsPanelProps {
   match: Match;
+  onUpdateTactics: (
+    battingAggression: BattingAggression,
+    bowlingTactic: BowlingTactic,
+    fieldPreset: FieldPreset
+  ) => void;
   onUpdateInstruction: (instruction: IndividualBatterInstruction) => void;
-  onUpdateGamePlan: (plan: TeamBattingGamePlan) => void;
+  onUpdateCustomTargets?: (targets: CustomScoringTarget[]) => void;
+  onUpdatePhaseTargets?: (phaseTargets: PhaseScoringTargets) => void;
 }
 
-const APPROACH_OPTIONS: { id: BattingApproach; label: string; desc: string; icon: string }[] = [
-  { id: 'VERY_DEFENSIVE', label: 'Very Defensive', desc: 'Dead bat, prioritize survival', icon: '🛡️' },
-  { id: 'DEFENSIVE', label: 'Defensive', desc: 'Patient accumulation, minimize risk', icon: '🔒' },
-  { id: 'BALANCED', label: 'Balanced', desc: 'Standard match rhythm, rotate strike', icon: '⚖️' },
-  { id: 'POSITIVE', label: 'Positive', desc: 'Intent to score, punish bad balls', icon: '✨' },
-  { id: 'AGGRESSIVE', label: 'Aggressive', desc: 'Calculated aerial risks & boundary hunt', icon: '⚡' },
-  { id: 'SMASH', label: 'Smash', desc: 'Maximum aggression & boundary intent (high risk)', icon: '💥' },
+const TEAM_APPROACH_OPTIONS: {
+  id: BattingAggression;
+  label: string;
+  desc: string;
+}[] = [
+  {
+    id: 'DEFENSIVE',
+    label: 'Defensive',
+    desc: 'Prioritise protecting wickets.',
+  },
+  {
+    id: 'BALANCED',
+    label: 'Balanced',
+    desc: 'Balance scoring and wicket preservation.',
+  },
+  {
+    id: 'ATTACKING',
+    label: 'Aggressive',
+    desc: 'Look for more scoring opportunities and accept calculated risks.',
+  },
+  {
+    id: 'SMASH',
+    label: 'Smash',
+    desc: 'Prioritise attacking shots and boundaries with greater dismissal risk.',
+  },
 ];
 
-const SHOT_SELECTION_OPTIONS: { id: ShotSelection; label: string }[] = [
-  { id: 'PLAY_STRAIGHT', label: 'Play Straight with the V' },
-  { id: 'TARGET_OFF', label: 'Target Off Side Corridor' },
-  { id: 'TARGET_LEG', label: 'Target Leg Side / On Side' },
-  { id: 'ALONG_GROUND', label: 'Keep Shots Along The Ground' },
-  { id: 'LOOK_FOR_BOUNDARIES', label: 'Look For Boundary Opportunities' },
-  { id: 'ROTATE_STRIKE', label: 'Rotate Strike & Quick Singles' },
-  { id: 'AVOID_RISKY_SHOTS', label: 'Avoid Risky Cross-Bat Shots' },
-  { id: 'ATTACK_SPIN', label: 'Attack Spin Bowling (Sweeps / Charges)' },
-  { id: 'ATTACK_PACE', label: 'Attack Fast Bowling (Punches / Pulls)' },
-  { id: 'PLAY_LATE_PACE', label: 'Play Late Under The Eyes' },
-];
-
-const BOWLER_TARGET_OPTIONS: { id: BowlerTargetAction; label: string }[] = [
-  { id: 'ATTACK', label: 'Attack Bowler' },
-  { id: 'DEFEND', label: 'Defend / Respect Bowler' },
-  { id: 'ROTATE_STRIKE', label: 'Rotate Strike Away From Bowler' },
-  { id: 'TARGET_WEAKNESS', label: 'Target Bowler Fatigue / Inaccuracy' },
-];
-
-const SITUATIONAL_OPTIONS: { id: SituationalInstruction; label: string }[] = [
-  { id: 'PROTECT_WICKET', label: 'Protect Wicket (Consolidate)' },
-  { id: 'BUILD_PARTNERSHIP', label: 'Build Partnership Steadily' },
-  { id: 'ACCELERATE', label: 'Accelerate Scoring Rate' },
-  { id: 'SURVIVE_SESSION', label: 'Survive Session To Break / Stumps' },
-  { id: 'ATTACK_POWERPLAY', label: 'Attack Powerplay Restrictions' },
-  { id: 'TARGET_DEATH', label: 'Explode in Death Overs' },
-  { id: 'PRESERVE_WICKETS', label: 'Preserve Wickets For Late Surge' },
+const INDIVIDUAL_BATTER_APPROACH_OPTIONS: {
+  id: BattingApproach;
+  label: string;
+  desc: string;
+}[] = [
+  {
+    id: 'DEFENSIVE',
+    label: 'Defensive',
+    desc: 'Prioritise protecting wickets.',
+  },
+  {
+    id: 'BALANCED',
+    label: 'Balanced',
+    desc: 'Balance scoring and wicket preservation.',
+  },
+  {
+    id: 'AGGRESSIVE',
+    label: 'Aggressive',
+    desc: 'Look for more scoring opportunities and accept calculated risks.',
+  },
+  {
+    id: 'SMASH',
+    label: 'Smash',
+    desc: 'Prioritise attacking shots and boundaries with greater dismissal risk.',
+  },
 ];
 
 export const BatterTacticsPanel: React.FC<BatterTacticsPanelProps> = ({
   match,
+  onUpdateTactics,
   onUpdateInstruction,
-  onUpdateGamePlan,
+  onUpdateCustomTargets,
+  onUpdatePhaseTargets,
 }) => {
   const currentInnings = match.innings[match.currentInningsIndex] || match.innings[0];
   const striker = currentInnings?.currentStrikerId ? getPlayerById(currentInnings.currentStrikerId) : null;
   const nonStriker = currentInnings?.currentNonStrikerId ? getPlayerById(currentInnings.currentNonStrikerId) : null;
 
-  const [activeBatterId, setActiveBatterId] = useState<string>(striker?.id || '');
-  const activeBatter = activeBatterId === striker?.id ? striker : nonStriker;
+  // Selected active batter (Striker by default)
+  const [selectedBatterId, setSelectedBatterId] = useState<string>(striker?.id || '');
+  const activeBatter = (selectedBatterId === nonStriker?.id ? nonStriker : striker) || striker || nonStriker;
 
+  // Custom target creation state
+  const [customOver, setCustomOver] = useState<number>(
+    Math.min(
+      match.format === 'T20I' ? 20 : match.format === 'ODI' ? 50 : 80,
+      Math.floor(currentInnings.completedOvers + 10)
+    )
+  );
+  const [customScore, setCustomScore] = useState<number>(currentInnings.totalRuns + 45);
+
+  const currentTeamApproach: BattingAggression = match.userTactics?.battingAggression || 'BALANCED';
+
+  // Current individual approach for the active batter
   const currentInstruction: IndividualBatterInstruction =
     (activeBatter && match.individualBatterInstructions?.[activeBatter.id]) || {
       playerId: activeBatter?.id || '',
       approach: 'BALANCED',
-      shotSelection: 'PLAY_STRAIGHT',
-      situationalInstruction: 'BUILD_PARTNERSHIP',
+      shotSelection: 'LOOK_FOR_BOUNDARIES',
     };
 
-  const isHome = match.userTeamId === match.homeTeamId;
-  const currentPlan = (isHome ? match.teamBattingGamePlans?.home : match.teamBattingGamePlans?.away) || 'BALANCED_BATTING';
+  const handleTeamApproachChange = (app: BattingAggression) => {
+    onUpdateTactics(
+      app,
+      match.userTactics?.bowlingTactic || 'BALANCED_CONTAIN',
+      match.userTactics?.fieldPreset || 'BALANCED_STANDARD'
+    );
+  };
 
-  const isTest = match.format === 'TEST';
-  const baselineSuccess = isTest ? 40 : 60;
-  const baselineFailure = isTest ? 60 : 40;
-
-  const handleApproachChange = (approach: BattingApproach) => {
+  const handleIndividualApproachChange = (app: BattingApproach) => {
     if (!activeBatter) return;
     onUpdateInstruction({
-      ...currentInstruction,
       playerId: activeBatter.id,
-      approach,
+      approach: app,
+      shotSelection: currentInstruction.shotSelection || 'LOOK_FOR_BOUNDARIES',
     });
   };
 
-  const handleShotSelectionChange = (shotSelection: ShotSelection) => {
-    if (!activeBatter) return;
-    onUpdateInstruction({
-      ...currentInstruction,
-      playerId: activeBatter.id,
-      shotSelection,
-    });
+  // Target helpers
+  const customTargets = match.customScoringTargets || [];
+  const phaseTargets = match.phaseScoringTargets;
+
+  const handleAddCustomTarget = () => {
+    if (customOver <= currentInnings.completedOvers || customScore <= currentInnings.totalRuns) {
+      return;
+    }
+    const newTarget: CustomScoringTarget = {
+      id: `target_${Date.now()}`,
+      targetScore: customScore,
+      targetOver: customOver,
+      label: `Over ${customOver} Milestone`,
+    };
+    if (onUpdateCustomTargets) {
+      onUpdateCustomTargets([...customTargets, newTarget]);
+    }
   };
 
-  const handleBowlerActionChange = (action: BowlerTargetAction) => {
-    if (!activeBatter) return;
-    onUpdateInstruction({
-      ...currentInstruction,
-      playerId: activeBatter.id,
-      bowlerInstruction: {
-        action,
-        targetBowlerId: currentInnings?.currentBowlerId,
-      },
-    });
+  const handleRemoveCustomTarget = (id: string) => {
+    if (onUpdateCustomTargets) {
+      onUpdateCustomTargets(customTargets.filter((t) => t.id !== id));
+    }
   };
 
-  const handleSituationalChange = (situationalInstruction: SituationalInstruction) => {
-    if (!activeBatter) return;
-    onUpdateInstruction({
-      ...currentInstruction,
-      playerId: activeBatter.id,
-      situationalInstruction,
-    });
+  const handlePhaseTargetChange = (phase: 'powerplay' | 'middle' | 'death', score: number) => {
+    if (!phaseTargets || !onUpdatePhaseTargets) return;
+    const updated: PhaseScoringTargets = { ...phaseTargets };
+    if (phase === 'powerplay' && updated.powerplayTarget) {
+      updated.powerplayTarget = { ...updated.powerplayTarget, targetScore: score };
+    } else if (phase === 'middle' && updated.middlePhaseTarget) {
+      updated.middlePhaseTarget = { ...updated.middlePhaseTarget, targetScore: score };
+    } else if (phase === 'death' && updated.deathPhaseTarget) {
+      updated.deathPhaseTarget = { ...updated.deathPhaseTarget, targetScore: score };
+    }
+    onUpdatePhaseTargets(updated);
+  };
+
+  // Evaluate active targets
+  const targetEval = evaluateScoringTargetProgress(
+    currentInnings.totalRuns,
+    currentInnings.completedOvers,
+    currentInnings.ballsInCurrentOver,
+    currentInnings.wickets,
+    customTargets,
+    match.format,
+    match.allocatedOversPerInnings
+  );
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'AHEAD_OF_PLAN':
+        return <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Ahead</span>;
+      case 'ON_TRACK':
+        return <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">On Track</span>;
+      case 'BEHIND_PLAN':
+        return <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">Behind</span>;
+      case 'TARGET_ACHIEVED':
+        return <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-400 border border-purple-500/30">Achieved</span>;
+      default:
+        return null;
+    }
   };
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-xl space-y-5">
-      {/* Batters Selector Tabs */}
-      <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-        <div className="flex items-center gap-3">
+    <div className="bg-[#0b101b] border border-[#1b263b] rounded-xl p-5 shadow-2xl space-y-6">
+      {/* Section Header */}
+      <div className="flex items-center justify-between border-b border-[#1b263b] pb-3">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+            <Flame className="w-4 h-4" />
+          </div>
+          <div>
+            <h3 className="text-sm font-bold text-white tracking-wide uppercase">Batting Settings</h3>
+            <p className="text-xs text-slate-400">In-match tactical controls for your national team</p>
+          </div>
+        </div>
+        <span className="text-xs font-mono px-2.5 py-1 rounded bg-[#131d30] border border-[#22314d] text-emerald-400 font-semibold">
+          {currentInnings.battingTeamName} Batting
+        </span>
+      </div>
+
+      {/* 2.A: TEAM BATTING APPROACH */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+            <span>A. Team Batting Approach</span>
+          </h4>
+          <span className="text-[11px] text-slate-400 font-mono">Applies to the entire team</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+          {TEAM_APPROACH_OPTIONS.map((opt) => {
+            const isActive = currentTeamApproach === opt.id;
+            return (
+              <button
+                key={opt.id}
+                onClick={() => handleTeamApproachChange(opt.id)}
+                className={`p-3 rounded-lg text-left transition cursor-pointer border ${
+                  isActive
+                    ? 'bg-emerald-950/40 border-emerald-500 text-white shadow-md'
+                    : 'bg-[#121a2c] border-[#1f2c45] text-slate-300 hover:border-slate-600 hover:bg-[#162138]'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className={`text-xs font-bold ${isActive ? 'text-emerald-400' : 'text-slate-200'}`}>
+                    {opt.label}
+                  </span>
+                  {isActive && <Check className="w-3.5 h-3.5 text-emerald-400" />}
+                </div>
+                <p className="text-[11px] text-slate-400 leading-snug">{opt.desc}</p>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 2.B: INDIVIDUAL BATTER APPROACH */}
+      <div className="space-y-3 border-t border-[#1b263b] pt-5">
+        <div className="flex items-center justify-between">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+            <User className="w-3.5 h-3.5 text-emerald-400" />
+            <span>B. Individual Batter Approach</span>
+          </h4>
+          <span className="text-[11px] text-slate-400 font-mono">Select batter to assign custom approach</span>
+        </div>
+
+        {/* Batter Selection Tabs (Striker vs Non-Striker) */}
+        <div className="flex flex-wrap gap-2">
           {striker && (
             <button
-              onClick={() => setActiveBatterId(striker.id)}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-bold transition ${
-                activeBatterId === striker.id
-                  ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300'
-                  : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-white'
+              onClick={() => setSelectedBatterId(striker.id)}
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition cursor-pointer border ${
+                activeBatter?.id === striker.id
+                  ? 'bg-emerald-600 text-white border-emerald-500 shadow-md'
+                  : 'bg-[#121a2c] border-[#1f2c45] text-slate-300 hover:text-white'
               }`}
             >
-              <PlayerAvatar player={striker} size="xs" showFlag={false} />
-              <span>{striker.shortName} ★ (Striker)</span>
+              <span>{striker.shortName}</span>
+              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-black/30 text-emerald-200">* Striker</span>
             </button>
           )}
 
           {nonStriker && (
             <button
-              onClick={() => setActiveBatterId(nonStriker.id)}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-bold transition ${
-                activeBatterId === nonStriker.id
-                  ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300'
-                  : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-white'
+              onClick={() => setSelectedBatterId(nonStriker.id)}
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition cursor-pointer border ${
+                activeBatter?.id === nonStriker.id
+                  ? 'bg-emerald-600 text-white border-emerald-500 shadow-md'
+                  : 'bg-[#121a2c] border-[#1f2c45] text-slate-300 hover:text-white'
               }`}
             >
-              <PlayerAvatar player={nonStriker} size="xs" showFlag={false} />
-              <span>{nonStriker.shortName} (Non-Striker)</span>
+              <span>{nonStriker.shortName}</span>
+              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-black/30 text-slate-300">Non-Striker</span>
             </button>
           )}
         </div>
 
-        {/* Aggression Calibration Pill */}
-        <div className="text-[11px] font-mono px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-slate-400">
-          Format Baseline ({match.format}):{' '}
-          <span className="text-emerald-400 font-bold">{baselineSuccess}% S</span> /{' '}
-          <span className="text-rose-400 font-bold">{baselineFailure}% F</span>
-        </div>
+        {/* Individual Approach 4 Options */}
+        {activeBatter && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 pt-1">
+            {INDIVIDUAL_BATTER_APPROACH_OPTIONS.map((opt) => {
+              const isActive = (currentInstruction.approach || 'BALANCED') === opt.id;
+              return (
+                <button
+                  key={opt.id}
+                  onClick={() => handleIndividualApproachChange(opt.id)}
+                  className={`p-3 rounded-lg text-left transition cursor-pointer border ${
+                    isActive
+                      ? 'bg-emerald-950/40 border-emerald-500 text-white shadow-md'
+                      : 'bg-[#121a2c] border-[#1f2c45] text-slate-300 hover:border-slate-600 hover:bg-[#162138]'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <span className={`text-xs font-bold ${isActive ? 'text-emerald-400' : 'text-slate-200'}`}>
+                      {opt.label}
+                    </span>
+                    {isActive && <Check className="w-3.5 h-3.5 text-emerald-400" />}
+                  </div>
+                  <p className="text-[11px] text-slate-400 leading-snug">{opt.desc}</p>
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
 
-      {activeBatter && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Batting Approach Selection */}
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-              <Flame className="w-3.5 h-3.5 text-amber-400" />
-              Batting Intent & Approach
-            </label>
-            <div className="grid grid-cols-1 gap-1.5">
-              {APPROACH_OPTIONS.map((opt) => {
-                const isSelected = currentInstruction.approach === opt.id;
+      {/* 2.C: SCORING TARGETS */}
+      <div className="space-y-4 border-t border-[#1b263b] pt-5">
+        <div className="flex items-center justify-between">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+            <Target className="w-3.5 h-3.5 text-emerald-400" />
+            <span>C. Scoring Targets & Innings Progression</span>
+          </h4>
+          <span className="text-[11px] text-slate-400 font-mono">
+            Current: {currentInnings.completedOvers}.{currentInnings.ballsInCurrentOver} ovs • {currentInnings.totalRuns}/{currentInnings.wickets}
+          </span>
+        </div>
+
+        {/* Format Specific Phase Targets for ODI & T20I */}
+        {phaseTargets && (match.format === 'ODI' || match.format === 'T20I') && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {/* Powerplay Target */}
+            {phaseTargets.powerplayTarget && (
+              <div className="bg-[#121a2c] p-3 rounded-lg border border-[#1f2c45] space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-200">
+                    {match.format === 'T20I' ? 'Powerplay (Ovs 1–6)' : 'Powerplay 1 (Ovs 1–10)'}
+                  </span>
+                  <span className="text-[10px] font-mono text-slate-400 bg-[#0e1626] px-1.5 py-0.5 rounded">
+                    By Ov {phaseTargets.powerplayTarget.targetOver}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-slate-400">Target Runs:</span>
+                  <input
+                    type="number"
+                    min="1"
+                    max="500"
+                    value={phaseTargets.powerplayTarget.targetScore}
+                    onChange={(e) => handlePhaseTargetChange('powerplay', parseInt(e.target.value) || 0)}
+                    className="w-20 bg-[#0b101b] border border-[#243555] rounded px-2 py-1 text-xs text-white font-mono"
+                  />
+                </div>
+                <div className="flex items-center justify-between text-[11px] pt-1 border-t border-[#1b263b] font-mono text-slate-400">
+                  <span>
+                    Rem: {Math.max(0, phaseTargets.powerplayTarget.targetScore - currentInnings.totalRuns)}r in{' '}
+                    {Math.max(0, phaseTargets.powerplayTarget.targetOver - currentInnings.completedOvers)} ovs
+                  </span>
+                  {currentInnings.completedOvers < phaseTargets.powerplayTarget.targetOver &&
+                    getStatusBadge(
+                      currentInnings.totalRuns >=
+                        (phaseTargets.powerplayTarget.targetScore / phaseTargets.powerplayTarget.targetOver) *
+                          currentInnings.completedOvers
+                        ? 'AHEAD_OF_PLAN'
+                        : 'BEHIND_PLAN'
+                    )}
+                </div>
+              </div>
+            )}
+
+            {/* Middle Phase Target */}
+            {phaseTargets.middlePhaseTarget && (
+              <div className="bg-[#121a2c] p-3 rounded-lg border border-[#1f2c45] space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-200">
+                    {match.format === 'T20I' ? 'Middle Overs (Ovs 7–15)' : 'Middle Phase (Ovs 11–40)'}
+                  </span>
+                  <span className="text-[10px] font-mono text-slate-400 bg-[#0e1626] px-1.5 py-0.5 rounded">
+                    By Ov {phaseTargets.middlePhaseTarget.targetOver}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-slate-400">Target Runs:</span>
+                  <input
+                    type="number"
+                    min="1"
+                    max="600"
+                    value={phaseTargets.middlePhaseTarget.targetScore}
+                    onChange={(e) => handlePhaseTargetChange('middle', parseInt(e.target.value) || 0)}
+                    className="w-20 bg-[#0b101b] border border-[#243555] rounded px-2 py-1 text-xs text-white font-mono"
+                  />
+                </div>
+                <div className="flex items-center justify-between text-[11px] pt-1 border-t border-[#1b263b] font-mono text-slate-400">
+                  <span>
+                    Rem: {Math.max(0, phaseTargets.middlePhaseTarget.targetScore - currentInnings.totalRuns)}r in{' '}
+                    {Math.max(0, phaseTargets.middlePhaseTarget.targetOver - currentInnings.completedOvers)} ovs
+                  </span>
+                  {currentInnings.completedOvers < phaseTargets.middlePhaseTarget.targetOver &&
+                    getStatusBadge(
+                      currentInnings.totalRuns >=
+                        (phaseTargets.middlePhaseTarget.targetScore / phaseTargets.middlePhaseTarget.targetOver) *
+                          currentInnings.completedOvers
+                        ? 'AHEAD_OF_PLAN'
+                        : 'BEHIND_PLAN'
+                    )}
+                </div>
+              </div>
+            )}
+
+            {/* Death Phase Target */}
+            {phaseTargets.deathPhaseTarget && (
+              <div className="bg-[#121a2c] p-3 rounded-lg border border-[#1f2c45] space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-200">
+                    {match.format === 'T20I' ? 'Death Overs (Ovs 16–20)' : 'Death Phase (Ovs 41–50)'}
+                  </span>
+                  <span className="text-[10px] font-mono text-slate-400 bg-[#0e1626] px-1.5 py-0.5 rounded">
+                    By Ov {phaseTargets.deathPhaseTarget.targetOver}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-slate-400">Target Runs:</span>
+                  <input
+                    type="number"
+                    min="1"
+                    max="600"
+                    value={phaseTargets.deathPhaseTarget.targetScore}
+                    onChange={(e) => handlePhaseTargetChange('death', parseInt(e.target.value) || 0)}
+                    className="w-20 bg-[#0b101b] border border-[#243555] rounded px-2 py-1 text-xs text-white font-mono"
+                  />
+                </div>
+                <div className="flex items-center justify-between text-[11px] pt-1 border-t border-[#1b263b] font-mono text-slate-400">
+                  <span>
+                    Rem: {Math.max(0, phaseTargets.deathPhaseTarget.targetScore - currentInnings.totalRuns)}r in{' '}
+                    {Math.max(0, phaseTargets.deathPhaseTarget.targetOver - currentInnings.completedOvers)} ovs
+                  </span>
+                  {currentInnings.completedOvers < phaseTargets.deathPhaseTarget.targetOver &&
+                    getStatusBadge(
+                      currentInnings.totalRuns >=
+                        (phaseTargets.deathPhaseTarget.targetScore / phaseTargets.deathPhaseTarget.targetOver) *
+                          currentInnings.completedOvers
+                        ? 'AHEAD_OF_PLAN'
+                        : 'BEHIND_PLAN'
+                    )}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Custom / Milestone Target Setter & Active List */}
+        <div className="bg-[#121a2c] p-3.5 rounded-lg border border-[#1f2c45] space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <span className="text-xs font-bold text-slate-200">
+              {match.format === 'TEST' ? 'Set Test Milestone Target' : 'Add Custom Over Milestone'}
+            </span>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 text-xs text-slate-300">
+                <span>Target Score:</span>
+                <input
+                  type="number"
+                  min="1"
+                  value={customScore}
+                  onChange={(e) => setCustomScore(parseInt(e.target.value) || 0)}
+                  className="w-16 bg-[#0b101b] border border-[#243555] rounded px-2 py-0.5 text-xs text-white font-mono"
+                />
+              </div>
+              <div className="flex items-center gap-1.5 text-xs text-slate-300">
+                <span>by Over:</span>
+                <input
+                  type="number"
+                  min={currentInnings.completedOvers + 1}
+                  value={customOver}
+                  onChange={(e) => setCustomOver(parseInt(e.target.value) || 0)}
+                  className="w-14 bg-[#0b101b] border border-[#243555] rounded px-2 py-0.5 text-xs text-white font-mono"
+                />
+              </div>
+              <button
+                onClick={handleAddCustomTarget}
+                className="flex items-center gap-1 px-2.5 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition cursor-pointer"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>Add</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Active Custom Targets List */}
+          {customTargets.length > 0 && (
+            <div className="space-y-2 pt-2 border-t border-[#1b263b]">
+              {customTargets.map((target) => {
+                const runsRemaining = Math.max(0, target.targetScore - currentInnings.totalRuns);
+                const oversRemaining = Math.max(0, target.targetOver - currentInnings.completedOvers);
+                const isPassed = currentInnings.completedOvers >= target.targetOver;
+                const isAchieved = currentInnings.totalRuns >= target.targetScore;
+                const status = isAchieved
+                  ? 'TARGET_ACHIEVED'
+                  : isPassed
+                  ? 'BEHIND_PLAN'
+                  : currentInnings.totalRuns >= (target.targetScore / target.targetOver) * currentInnings.completedOvers
+                  ? 'AHEAD_OF_PLAN'
+                  : 'BEHIND_PLAN';
+
                 return (
-                  <button
-                    key={opt.id}
-                    onClick={() => handleApproachChange(opt.id)}
-                    className={`flex items-center justify-between p-2 rounded-lg border text-left transition ${
-                      isSelected
-                        ? 'bg-emerald-600/20 border-emerald-500 text-white shadow-sm'
-                        : 'bg-slate-800/60 border-slate-700/60 text-slate-300 hover:bg-slate-800'
-                    }`}
+                  <div
+                    key={target.id}
+                    className="flex flex-wrap items-center justify-between gap-2 p-2 rounded bg-[#0b101b] border border-[#1b263b] text-xs font-mono"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="text-sm">{opt.icon}</span>
-                      <div>
-                        <div className="text-xs font-bold">{opt.label}</div>
-                        <div className="text-[10px] text-slate-400">{opt.desc}</div>
-                      </div>
-                    </div>
-                    {isSelected && (
-                      <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">
-                        Active
+                      <span className="font-bold text-white">
+                        {target.targetScore} runs by Over {target.targetOver}
                       </span>
-                    )}
-                  </button>
+                      <span className="text-[11px] text-slate-400">({target.label})</span>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <span className="text-slate-300 text-[11px]">
+                        Rem: <strong className="text-white">{runsRemaining}r</strong> in {oversRemaining} ovs
+                      </span>
+                      {getStatusBadge(status)}
+                      <button
+                        onClick={() => handleRemoveCustomTarget(target.id)}
+                        className="text-slate-500 hover:text-rose-400 transition cursor-pointer p-0.5"
+                        title="Remove Target"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
                 );
               })}
             </div>
-          </div>
-
-          {/* Specific Instruction Selectors */}
-          <div className="space-y-4">
-            {/* Shot Selection */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                <Target className="w-3.5 h-3.5 text-sky-400" />
-                Targeted Shot Selection
-              </label>
-              <select
-                value={currentInstruction.shotSelection}
-                onChange={(e) => handleShotSelectionChange(e.target.value as ShotSelection)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
-              >
-                {SHOT_SELECTION_OPTIONS.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Bowler Target Action */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                <Zap className="w-3.5 h-3.5 text-purple-400" />
-                Bowler-Specific Action
-              </label>
-              <select
-                value={currentInstruction.bowlerInstruction?.action || 'DEFEND'}
-                onChange={(e) => handleBowlerActionChange(e.target.value as BowlerTargetAction)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
-              >
-                {BOWLER_TARGET_OPTIONS.map((b) => (
-                  <option key={b.id} value={b.id}>
-                    {b.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Situational Instruction */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                <Shield className="w-3.5 h-3.5 text-emerald-400" />
-                Situational Match Order
-              </label>
-              <select
-                value={currentInstruction.situationalInstruction || 'BUILD_PARTNERSHIP'}
-                onChange={(e) => handleSituationalChange(e.target.value as SituationalInstruction)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
-              >
-                {SITUATIONAL_OPTIONS.map((si) => (
-                  <option key={si.id} value={si.id}>
-                    {si.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Team Batting Game Plan */}
-      <div className="pt-3 border-t border-slate-800">
-        <h4 className="text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider">
-          Team Batting Strategy ({match.format})
-        </h4>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-          <div>
-            <span className="text-slate-400 block mb-1">Overall Batting Philosophy:</span>
-            <select
-              value={currentPlan}
-              onChange={(e) => onUpdateGamePlan(e.target.value as TeamBattingGamePlan)}
-              className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white"
-            >
-              <option value="DEFENSIVE_ACCUMULATION">Defensive Accumulation</option>
-              <option value="BALANCED_BATTING">Balanced Batting</option>
-              <option value="POSITIVE_CRICKET">Positive Cricket</option>
-              <option value="AGGRESSIVE_BATTING">Aggressive Batting</option>
-              <option value="SMASH">Smash / Power Hitting</option>
-              <option value="ALL_OUT_ATTACK">All Out Attack</option>
-              <option value="BUILD_PARTNERSHIPS">Build Partnerships</option>
-              <option value="PROTECT_WICKETS">Protect Wickets</option>
-              <option value="ACCELERATE_SCORING">Accelerate Scoring</option>
-            </select>
-          </div>
-
-          <div>
-            <span className="text-slate-400 block mb-1">Format-Specific Tactical Role:</span>
-            {match.format === 'TEST' && (
-              <select
-                value={currentPlan}
-                onChange={(e) => onUpdateGamePlan(e.target.value as TeamBattingGamePlan)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white"
-              >
-                <option value="BUILD_LONG_INNINGS">Build Long Test Innings</option>
-                <option value="OCCUPY_CREASE">Occupy Crease (Bat For Time)</option>
-                <option value="COUNTERATTACK">Counterattack Pressure</option>
-                <option value="ATTACK_SPINNERS">Attack Opposition Spinners</option>
-                <option value="BAT_FOR_DRAW">Bat For Draw</option>
-                <option value="ACCELERATE_DECLARATION">Accelerate For Declaration</option>
-              </select>
-            )}
-
-            {match.format === 'ODI' && (
-              <select
-                value={currentPlan}
-                onChange={(e) => onUpdateGamePlan(e.target.value as TeamBattingGamePlan)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white"
-              >
-                <option value="CONSERVATIVE_OPENING">Conservative Opening (Solid Start)</option>
-                <option value="POWERPLAY_AGGRESSION">Powerplay 1 Aggression</option>
-                <option value="MIDDLE_ACCUMULATION">Middle Overs Accumulation</option>
-                <option value="ACCELERATE_30_OVERS">Accelerate After 30 Overs</option>
-                <option value="DEATH_OVER_ATTACK">Death Overs Attack</option>
-                <option value="CONTROLLED_CHASE">Controlled Run Chase</option>
-              </select>
-            )}
-
-            {match.format === 'T20I' && (
-              <select
-                value={currentPlan}
-                onChange={(e) => onUpdateGamePlan(e.target.value as TeamBattingGamePlan)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white"
-              >
-                <option value="POWERPLAY_ATTACK">Powerplay 1-6 Over Attack</option>
-                <option value="MIDDLE_ROTATION">Middle Overs Strike Rotation</option>
-                <option value="DEATH_ACCELERATION">Death Overs Finish</option>
-                <option value="ALL_OUT_ATTACK">All Out Boundary Attack</option>
-                <option value="DEFEND_LOW_TARGET">Defend Low Target</option>
-              </select>
-            )}
-          </div>
+          )}
         </div>
       </div>
     </div>
