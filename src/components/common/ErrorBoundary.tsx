@@ -24,6 +24,21 @@ export class ErrorBoundary extends Component<Props, State> {
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('ErrorBoundary caught an unhandled error:', error, errorInfo);
+    // Automatic transparent recovery for Vite HMR hook-order mismatch during active development
+    const isHookMismatch = Boolean(
+      error?.message?.includes('Rendered more hooks') ||
+      error?.message?.includes('Rendered fewer hooks') ||
+      error?.message?.includes('Rules of Hooks')
+    );
+    if (isHookMismatch && typeof window !== 'undefined') {
+      const reloadKey = 'icm_hook_reload_ts';
+      const lastReload = Number(sessionStorage.getItem(reloadKey) || '0');
+      const now = Date.now();
+      if (now - lastReload > 3000) {
+        sessionStorage.setItem(reloadKey, String(now));
+        window.location.reload();
+      }
+    }
   }
 
   public render() {

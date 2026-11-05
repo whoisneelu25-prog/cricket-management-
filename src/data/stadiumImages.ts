@@ -84,9 +84,7 @@ export interface ResolvedStadiumImage {
   blurPx: number;
 }
 
-function blurFor(asset: StadiumImageAsset): number {
-  if (asset.nativeWidth < 800) return 1.5;
-  if (asset.nativeWidth < 1400) return 0.5;
+function blurFor(_asset: StadiumImageAsset): number {
   return 0;
 }
 
@@ -164,10 +162,15 @@ export function resolveStadiumImage(
     }
   }
 
-  // 3. Neutral fallback (explicit fallback image if the caller supplied one)
+  // 3. Neutral fallback (high-quality cricket ground image rather than an empty black void)
+  const defaultFallback =
+    format === 'TEST'
+      ? '/assets/stadiums/lords-day.jpg'
+      : '/assets/stadiums/chepauk-night.jpg';
+
   return {
-    src: fallbackSrc || null,
-    label: venue || 'International Cricket Ground',
+    src: fallbackSrc || defaultFallback,
+    label: venue || 'International Cricket Stadium',
     matchType: 'NEUTRAL',
     hostCountryId,
     blurPx: 0,

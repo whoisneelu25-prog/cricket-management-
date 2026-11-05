@@ -433,7 +433,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
           venue={match.venue}
           hostCountryId={match.homeTeamId}
           format={match.format}
-          overlayOpacity={0.6}
+          overlayOpacity={0.5}
           showCaption={true}
         />
         <div className="relative z-10 match-panel-main rounded-2xl p-6 sm:p-10 max-w-2xl mx-auto my-8 text-center select-none shadow-2xl animate-in zoom-in-95 duration-200">
@@ -771,7 +771,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
         venue={match.venue}
         hostCountryId={match.homeTeamId}
         format={match.format}
-        overlayOpacity={0.55}
+        overlayOpacity={0.5}
         showCaption={true}
       />
 
