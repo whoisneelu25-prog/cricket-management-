@@ -15,6 +15,7 @@ import { CareerSave, Player, MatchFormat, GranularPlayerRole } from '../../types
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
 import { getCombinedFormatStats, getEffectivePlayer } from '../../data/squads';
 import { getGranularPlayerRole } from '../../store/careerStore';
+import { PlayerAvatar } from '../common/PlayerAvatar';
 
 interface PlayerProfileModalProps {
   player: Player | null;
@@ -128,9 +129,7 @@ export const PlayerProfileModal: React.FC<PlayerProfileModalProps> = ({
         {/* Header: Nation + Granular Role + Format Squad Badges */}
         <div className="bg-[#0e131d] border-b border-[#1e293b] p-4 flex items-start justify-between">
           <div className="flex items-center space-x-3.5">
-            <div className="w-12 h-12 rounded-full bg-[#151d29] border border-emerald-500/50 flex items-center justify-center text-2xl shadow-inner">
-              {team?.flagEmoji || '🏏'}
-            </div>
+            <PlayerAvatar player={player} size="lg" showFlag={true} />
             <div>
               <div className="flex flex-wrap items-center gap-2">
                 <h2 className="text-xl font-bold text-white tracking-wide">{player.name}</h2>

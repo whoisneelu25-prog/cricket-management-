@@ -7,9 +7,22 @@ import {
   BowlingTactic,
   FieldPreset,
   PitchCondition,
-  WeatherCondition
+  WeatherCondition,
+  IndividualBatterInstruction,
+  TeamBattingGamePlan,
+  CustomScoringTarget,
+  IndividualBowlingPlan,
+  BowlerSpellData,
+  CustomFieldLayout,
+  TacticalCalibrationSettings,
+  BowlingLine,
+  BowlingLength,
 } from '../types/cricket';
 import { getPowerplayPhase, isDismissalLegalForDelivery } from './rules';
+import {
+  calculateHighRiskActionProbabilities,
+  evaluateScoringTargetProgress,
+} from './tacticalEngine';
 
 export interface TestConditionsModifiersInput {
   effectivePaceBonus: number;
@@ -69,6 +82,15 @@ export interface DeliveryContext {
   isFreeHit?: boolean;
   allocatedOvers?: number;
   bowlingFielders?: FieldingPlayerRef[];
+
+  // Master Upgrade Extensions:
+  individualBatterInstruction?: IndividualBatterInstruction;
+  teamBattingGamePlan?: TeamBattingGamePlan;
+  customScoringTargets?: CustomScoringTarget[];
+  individualBowlingPlan?: IndividualBowlingPlan;
+  bowlerSpellData?: BowlerSpellData;
+  customFieldLayout?: CustomFieldLayout;
+  tacticalCalibration?: TacticalCalibrationSettings;
 }
 
 // Deterministic Mulberry32 PRNG for reproducible test runs
@@ -94,11 +116,13 @@ export function setSimulationSeed(seed?: number) {
 /**
  * Checks if bowler is a spinner or pacer
  */
-export function isSpinBowler(bowlingStyle: string): boolean {
+export function isSpinBowler(bowlingStyle?: string): boolean {
+  if (!bowlingStyle) return false;
+  const upper = bowlingStyle.toUpperCase();
   return (
-    bowlingStyle.includes('BREAK') ||
-    bowlingStyle.includes('SPIN') ||
-    bowlingStyle.includes('SLOW')
+    upper.includes('BREAK') ||
+    upper.includes('SPIN') ||
+    upper.includes('SLOW')
   );
 }
 
@@ -192,6 +216,73 @@ export function generateBallCommentary(
     default:
       return `${strikerName} collects ${outcome.runsOffBat} runs off ${bowlerName}.`;
   }
+}
+
+export function computeDeliveryPitchMap(
+  ctx: DeliveryContext,
+  isSpin: boolean,
+  seedHint: number
+): { line: BowlingLine; length: BowlingLength; xCm: number; yMeters: number } {
+  const rand = mulberry32(seedHint + 1717);
+  const line: BowlingLine = ctx.individualBowlingPlan?.line || (isSpin ? 'OUTSIDE_OFF' : 'FOURTH_STUMP');
+  const length: BowlingLength =
+    ctx.individualBowlingPlan?.length ||
+    (ctx.bowlingTactic === 'YORKER_DEATH'
+      ? 'YORKER'
+      : ctx.bowlingTactic === 'BOUNCER_SHORT'
+      ? 'SHORT'
+      : ctx.bowlingTactic === 'ATTACKING_FULL'
+      ? 'FULL'
+      : 'GOOD_LENGTH');
+
+  const acc = ctx.bowler.attributes.accuracy || 75;
+  const errorMargin = (100 - acc) * 0.15;
+  const lineBias = line === 'OUTSIDE_OFF' ? -22 : line === 'FOURTH_STUMP' ? -12 : line === 'LEG_STUMP' ? 14 : line === 'WIDE_OUTSIDE_OFF' ? -38 : 0;
+  const xCm = Math.round((rand() - 0.5) * errorMargin * 3 + lineBias);
+  const yBase = length === 'YORKER' ? 1.4 : length === 'FULL' ? 3.2 : length === 'GOOD_LENGTH' ? 5.4 : length === 'BACK_OF_A_LENGTH' ? 6.8 : 8.2;
+  const yMeters = Math.round((yBase + (rand() - 0.5) * 0.8) * 10) / 10;
+
+  return { line, length, xCm, yMeters };
+}
+
+export function computeDeliveryWagonWheel(
+  zone: 'COVER' | 'POINT' | 'MID_WICKET' | 'LONG_ON' | 'LONG_OFF' | 'FINE_LEG' | 'THIRD_MAN' | 'SQUARE_LEG' | 'STRAIGHT',
+  runs: number,
+  seedHint: number
+): { angleDegrees: number; distanceMeters: number; zone: string; isAerial: boolean } {
+  const rand = mulberry32(seedHint + 9109);
+  const zoneAngles: Record<string, number> = {
+    STRAIGHT: 0,
+    LONG_ON: 20,
+    MID_WICKET: 55,
+    SQUARE_LEG: 90,
+    FINE_LEG: 140,
+    THIRD_MAN: 220,
+    POINT: 270,
+    COVER: 315,
+    LONG_OFF: 345,
+  };
+  const baseAngle = zoneAngles[zone] ?? 0;
+  const jitter = Math.round((rand() - 0.5) * 22);
+  const angleDegrees = (baseAngle + jitter + 360) % 360;
+
+  const isBoundary = runs === 4 || runs === 6;
+  const isSix = runs === 6;
+  const distanceMeters = isSix
+    ? Math.round(78 + rand() * 26)
+    : runs === 4
+    ? Math.round(65 + rand() * 14)
+    : runs === 3
+    ? Math.round(45 + rand() * 15)
+    : runs === 2
+    ? Math.round(28 + rand() * 18)
+    : runs === 1
+    ? Math.round(15 + rand() * 15)
+    : Math.round(4 + rand() * 8);
+
+  const isAerial = isSix || (isBoundary && rand() < 0.40);
+
+  return { angleDegrees, distanceMeters, zone, isAerial };
 }
 
 /**
@@ -474,8 +565,51 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
     }
   }
 
-  // 5. Situational Batting Intent & Tactics
+  // 5. Situational Batting Intent, Custom Targets & Individual Instructions
   let effectiveAggression = battingAggression;
+
+  // 5.1 Apply Individual Batter Instruction if present for the striker
+  const batterInstruction = ctx.individualBatterInstruction;
+  if (batterInstruction) {
+    switch (batterInstruction.approach) {
+      case 'VERY_DEFENSIVE':
+        effectiveAggression = 'BLOCK';
+        break;
+      case 'DEFENSIVE':
+        effectiveAggression = 'DEFENSIVE';
+        break;
+      case 'BALANCED':
+        effectiveAggression = 'BALANCED';
+        break;
+      case 'POSITIVE':
+        effectiveAggression = 'BALANCED';
+        break;
+      case 'AGGRESSIVE':
+        effectiveAggression = 'ATTACKING';
+        break;
+      case 'SMASH':
+        effectiveAggression = 'SMASH';
+        break;
+    }
+
+    // Bowler-specific instruction against the active bowler
+    if (batterInstruction.bowlerInstruction?.targetBowlerId === bowler.id) {
+      switch (batterInstruction.bowlerInstruction.action) {
+        case 'ATTACK':
+          effectiveAggression = effectiveAggression === 'BLOCK' || effectiveAggression === 'DEFENSIVE' ? 'BALANCED' : 'ATTACKING';
+          break;
+        case 'DEFEND':
+          effectiveAggression = effectiveAggression === 'SMASH' || effectiveAggression === 'ATTACKING' ? 'BALANCED' : 'DEFENSIVE';
+          break;
+        case 'ROTATE_STRIKE':
+          // handled in singles/twos boost below
+          break;
+        case 'TARGET_WEAKNESS':
+          effectiveAggression = effectiveAggression === 'BLOCK' ? 'BALANCED' : 'ATTACKING';
+          break;
+      }
+    }
+  }
 
   // Dynamic Situational Adaptation:
   // If chasing in white ball and Required Run Rate is very high, shift aggression upwards
@@ -505,17 +639,147 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
       aggressionWicketRisk = 0.60;
       break;
     case 'BALANCED':
-      aggressionRunFactor = 1.0;
+      aggressionRunFactor = batterInstruction?.approach === 'POSITIVE' ? 1.12 : 1.0;
       aggressionWicketRisk = 1.0;
       break;
     case 'ATTACKING':
       aggressionRunFactor = format === 'TEST' ? 1.45 : 1.24;
-      aggressionWicketRisk = format === 'TEST' ? 1.55 : 1.30;
+      aggressionWicketRisk = format === 'TEST' ? 1.55 : 1.25;
       break;
     case 'SMASH':
-      aggressionRunFactor = format === 'TEST' ? 1.95 : 1.55;
-      aggressionWicketRisk = format === 'TEST' ? 2.45 : 1.78;
+      aggressionRunFactor = format === 'TEST' ? 1.95 : 1.58;
+      aggressionWicketRisk = format === 'TEST' ? 2.45 : 1.45;
       break;
+  }
+
+  // 5.2 Dynamic Scoring Target Influences (Ahead, On Track, Behind Plan)
+  if (ctx.customScoringTargets && ctx.customScoringTargets.length > 0) {
+    const targetEval = evaluateScoringTargetProgress(
+      currentScore,
+      overNumber,
+      ballInOver,
+      wicketsLost,
+      ctx.customScoringTargets,
+      format,
+      ctx.allocatedOvers
+    );
+    aggressionRunFactor *= targetEval.intentAdjustmentRunFactor;
+    aggressionWicketRisk *= targetEval.intentAdjustmentWicketRisk;
+  }
+
+  // 5.3 Situational Batter Instructions
+  if (batterInstruction?.situationalInstruction) {
+    switch (batterInstruction.situationalInstruction) {
+      case 'PROTECT_WICKET':
+      case 'PRESERVE_WICKETS':
+        aggressionRunFactor *= 0.78;
+        aggressionWicketRisk *= 0.62;
+        break;
+      case 'SURVIVE_SESSION':
+        aggressionRunFactor *= 0.45;
+        aggressionWicketRisk *= 0.40;
+        break;
+      case 'ACCELERATE':
+      case 'ATTACK_POWERPLAY':
+      case 'TARGET_DEATH':
+        aggressionRunFactor *= 1.22;
+        aggressionWicketRisk *= 1.18;
+        break;
+      case 'BUILD_PARTNERSHIP':
+        aggressionRunFactor *= 0.92;
+        aggressionWicketRisk *= 0.78;
+        break;
+    }
+  }
+
+  // 5.4 High-Risk Attacking Action Calibration (40/60 Test, 60/40 White-Ball Baseline)
+  const highRiskOutcome = calculateHighRiskActionProbabilities({
+    format,
+    batter: striker,
+    bowler,
+    approach: effectiveAggression,
+    shotSelection: batterInstruction?.shotSelection,
+    pitch,
+    isSpin,
+    fieldPreset: effectiveFieldPreset,
+    calibration: ctx.tacticalCalibration,
+    seedHint,
+  });
+
+  if (highRiskOutcome.isAttempted) {
+    if (highRiskOutcome.isSuccessful) {
+      aggressionRunFactor *= highRiskOutcome.scoringIntentBonus;
+      aggressionWicketRisk *= 0.95;
+    } else {
+      aggressionWicketRisk *= format === 'TEST' ? highRiskOutcome.riskMultiplier : 1.12;
+    }
+  }
+
+  // 5.5 Shot Selection Adjustments
+  if (batterInstruction?.shotSelection) {
+    switch (batterInstruction.shotSelection) {
+      case 'AVOID_RISKY_SHOTS':
+        aggressionRunFactor *= 0.82;
+        aggressionWicketRisk *= 0.68;
+        break;
+      case 'LOOK_FOR_BOUNDARIES':
+        aggressionRunFactor *= 1.15;
+        aggressionWicketRisk *= 1.14;
+        break;
+      case 'ROTATE_STRIKE':
+        aggressionRunFactor *= 1.05;
+        aggressionWicketRisk *= 0.85;
+        break;
+      case 'ATTACK_SPIN':
+        if (isSpin) {
+          aggressionRunFactor *= 1.20;
+          aggressionWicketRisk *= 1.12;
+        }
+        break;
+      case 'ATTACK_PACE':
+        if (!isSpin) {
+          aggressionRunFactor *= 1.18;
+          aggressionWicketRisk *= 1.12;
+        }
+        break;
+      case 'ALONG_GROUND':
+        aggressionRunFactor *= 0.88;
+        aggressionWicketRisk *= 0.75;
+        break;
+    }
+  }
+
+  // 5.6 Individual Bowling Plans & Bowler Fatigue Influences
+  const bowlingPlan = ctx.individualBowlingPlan;
+  if (bowlingPlan) {
+    switch (bowlingPlan.intention) {
+      case 'ATTACK_WICKETS':
+        aggressionWicketRisk *= 1.16;
+        aggressionRunFactor *= 1.05;
+        break;
+      case 'BUILD_PRESSURE':
+      case 'OUTSIDE_OFF_CONTAINMENT':
+        aggressionWicketRisk *= 0.95;
+        aggressionRunFactor *= 0.88;
+        break;
+      case 'RESTRICT_BOUNDARIES':
+      case 'DEFEND_RUNS':
+        aggressionRunFactor *= 0.85;
+        aggressionWicketRisk *= 0.90;
+        break;
+      case 'FORCE_MISTAKES':
+        aggressionWicketRisk *= 1.12;
+        break;
+    }
+  }
+
+  if (ctx.bowlerSpellData) {
+    if (ctx.bowlerSpellData.fatigue === 'HIGH') {
+      aggressionRunFactor *= 1.10;
+    } else if (ctx.bowlerSpellData.fatigue === 'EXHAUSTED') {
+      aggressionRunFactor *= 1.25;
+      aggressionWicketRisk *= 0.85;
+    }
   }
 
   if (format !== 'TEST' && ctx.isFreeHit) {
@@ -525,7 +789,7 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
 
   // Format baseline pacing
   let formatPaceBonus = 1.0;
-  if (format === 'T20I') formatPaceBonus = 1.46;
+  if (format === 'T20I') formatPaceBonus = 1.12;
   else if (format === 'ODI') formatPaceBonus = 1.12;
   else if (format === 'TEST') formatPaceBonus = 0.65;
 
@@ -706,9 +970,9 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
   if (format === 'TEST') {
     baseWicketProb = isTailender ? 0.036 : 0.0145;
   } else if (format === 'ODI') {
-    baseWicketProb = isTailender ? 0.042 : 0.019;
+    baseWicketProb = isTailender ? 0.038 : 0.0175;
   } else if (format === 'T20I') {
-    baseWicketProb = isTailender ? 0.055 : 0.033;
+    baseWicketProb = isTailender ? 0.040 : 0.022;
   }
 
   // Skill disparity: +bowlerSkill -batterMatchupSkill
@@ -896,6 +1160,7 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
       bowlerId: bowler.id,
       bowlerName: bowler.shortName,
       commentary: comm,
+      pitchMap: computeDeliveryPitchMap(ctx, isSpin, seedHint),
     };
   }
 
@@ -930,6 +1195,7 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
       bowlerId: bowler.id,
       bowlerName: bowler.shortName,
       commentary: comm,
+      pitchMap: computeDeliveryPitchMap(ctx, isSpin, seedHint),
     };
   }
 
@@ -985,30 +1251,28 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
         ? 0.90
         : 1.0;
 
-    probSix = 0.060 * boundaryMultiplier * sixGroundMod * (isWhiteBallDeath ? 1.20 : 1.0);
-    probFour = 0.132 * boundaryMultiplier * fourGroundMod * ropeProtectMod;
+    const isSmash = effectiveAggression === 'SMASH';
+    probSix = (isSmash ? 0.082 : 0.038) * boundaryMultiplier * sixGroundMod * (isWhiteBallDeath ? 1.20 : 1.0);
+    probFour = (isSmash ? 0.155 : 0.098) * boundaryMultiplier * fourGroundMod * ropeProtectMod;
     probThree = 0.010 * twoGroundMod;
-    probTwo = 0.074 * (striker.attributes.fitness / 85) * twoGroundMod * powerplaySingleTwoMod;
-    probOne = 0.35 * aggressionRunFactor * powerplaySingleTwoMod;
+    probTwo = 0.068 * (striker.attributes.fitness / 85) * twoGroundMod * powerplaySingleTwoMod;
+    probOne = (isSmash ? 0.22 : 0.30 * aggressionRunFactor) * powerplaySingleTwoMod;
   }
-
-  const totalRunsProb = probSix + probFour + probThree + probTwo + probOne;
-  const probDot = Math.max(0.12, (1 - totalRunsProb) * powerplayDotReduction);
 
   const rollRuns = activeRandom();
   let runs = 0;
-  if (rollRuns < probDot) {
-    runs = 0;
-  } else if (rollRuns < probDot + probOne) {
-    runs = 1;
-  } else if (rollRuns < probDot + probOne + probTwo) {
-    runs = 2;
-  } else if (rollRuns < probDot + probOne + probTwo + probThree) {
-    runs = 3;
-  } else if (rollRuns < probDot + probOne + probTwo + probThree + probFour) {
-    runs = 4;
-  } else {
+  if (rollRuns < probSix) {
     runs = 6;
+  } else if (rollRuns < probSix + probFour) {
+    runs = 4;
+  } else if (rollRuns < probSix + probFour + probThree) {
+    runs = 3;
+  } else if (rollRuns < probSix + probFour + probThree + probTwo) {
+    runs = 2;
+  } else if (rollRuns < probSix + probFour + probThree + probTwo + probOne) {
+    runs = 1;
+  } else {
+    runs = 0;
   }
 
   const shotZones: Array<'COVER' | 'POINT' | 'MID_WICKET' | 'LONG_ON' | 'LONG_OFF' | 'FINE_LEG' | 'THIRD_MAN' | 'SQUARE_LEG' | 'STRAIGHT'> = [
@@ -1039,5 +1303,7 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
     bowlerName: bowler.shortName,
     commentary,
     zone,
+    pitchMap: computeDeliveryPitchMap(ctx, isSpin, seedHint),
+    wagonWheel: computeDeliveryWagonWheel(zone, runs, seedHint),
   };
 }

@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { CareerSave, NotificationItem } from '../../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
+import { CountryFlag } from '../common/CountryFlag';
 
 interface TopBarProps {
   career: CareerSave | null;
@@ -64,9 +65,7 @@ export const TopBar: React.FC<TopBarProps> = ({
       <div className="flex items-center space-x-3 md:space-x-4">
         {/* Country Badge */}
         <div className="flex items-center space-x-2 bg-[#111827] border border-[#1e293b] px-2.5 py-1 rounded shadow-sm">
-          <span className="text-lg" role="img" aria-label={team?.name || 'Country'}>
-            {team?.flagEmoji || '🏏'}
-          </span>
+          <CountryFlag countryCode={team?.code || career.selectedTeamId} size="sm" />
           <span className="text-xs font-bold text-slate-100 tracking-wide">
             {team?.name || 'National Team'}
           </span>

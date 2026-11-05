@@ -2,23 +2,29 @@
 
 @layer base {
   :root {
-    --bg-dark: #070c18;
-    --bg-surface: #0c1527;
-    --bg-card: #101b30;
-    --border-subtle: #172847;
-    --border-highlight: #1e3a66;
+    --bg-dark: #080c14;
+    --bg-surface: #0e1626;
+    --bg-card: #141f36;
+    --border-subtle: #1e2c4a;
+    --border-highlight: #2a3d66;
     --accent-emerald: #10b981;
     --accent-blue: #0284c7;
     --accent-sky: #38bdf8;
     --accent-gold: #f59e0b;
+    --accent-rose: #ef4444;
   }
 
   body {
-    background-color: #070c18;
-    color: #e2e8f0;
+    background-color: #080c14;
+    color: #f8fafc;
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     overflow-x: hidden;
     user-select: none;
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-heading {
+    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    letter-spacing: -0.02em;
   }
 
   /* Cricket scoreboards & tabular figures */

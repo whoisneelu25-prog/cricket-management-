@@ -28,6 +28,7 @@ import { getNextUserMatchInfo } from '../../store/careerStore';
 import { CalendarAdvanceMode, CalendarAdvancementResult } from '../../engine/worldSimulation';
 import { isTerminalMatchStatus } from '../../engine/matchEngine';
 import { sortTournamentTable } from '../../engine/tournamentEngine';
+import { CountryFlag } from '../common/CountryFlag';
 
 interface DashboardViewProps {
   career: CareerSave;
@@ -248,8 +249,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       {/* 2. Top Nation Overview Banner */}
       <div className="bg-[#111827] border border-[#1e293b] rounded-lg p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center space-x-3.5">
-          <div className="w-12 h-12 rounded-lg bg-[#151d29] border border-[#1e293b] flex items-center justify-center text-3xl shadow-sm">
-            {team?.flagEmoji || '🏏'}
+          <div className="w-12 h-12 rounded-lg bg-[#141f36] border border-slate-800 flex items-center justify-center p-1 shadow-sm">
+            <CountryFlag countryCode={team?.code || career.selectedTeamId} size="md" />
           </div>
           <div>
             <div className="flex items-center space-x-2">
@@ -342,7 +343,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <div className="flex items-center justify-between bg-[#151d29] border border-[#1e293b] p-3.5 rounded-lg">
                   {/* Home / Away */}
                   <div className="flex items-center space-x-3">
-                    <span className="text-3xl">{team?.flagEmoji}</span>
+                    <CountryFlag countryCode={team?.code || career.selectedTeamId} size="md" />
                     <div>
                       <span className="text-[10px] font-mono uppercase text-emerald-400 font-bold">
                         {userIsHome ? 'Home' : 'Away'}
@@ -369,7 +370,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                         {opponent?.name || oppTeamId}
                       </h3>
                     </div>
-                    <span className="text-3xl">{opponent?.flagEmoji || '🏏'}</span>
+                    <CountryFlag countryCode={opponent?.code || oppTeamId || ''} size="md" />
                   </div>
                 </div>
 

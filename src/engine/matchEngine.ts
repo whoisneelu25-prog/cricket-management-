@@ -58,6 +58,29 @@ import {
   recordWhiteBallOverInSpellTracker,
   simulateWhiteBallSuperOver,
 } from './whiteBallEngine';
+import {
+  DEFAULT_TACTICAL_CALIBRATION,
+  initializeBowlerSpellData,
+  recordOverInSpellManager,
+  applyRestToBenchBowlers,
+  getStandardFieldPresets,
+  createDefaultPhaseTargets,
+  evaluateLBWReview,
+  evaluateCaughtBehindReview,
+  determineOppositionTactics,
+} from './tacticalEngine';
+import {
+  IndividualBatterInstruction,
+  IndividualBowlingPlan,
+  CustomScoringTarget,
+  PhaseScoringTargets,
+  CustomFieldLayout,
+  TeamBattingGamePlan,
+  DRSReviewType,
+  DRSReviewState,
+  DRSOutcome,
+  BowlerSpellData,
+} from '../types/cricket';
 
 export {
   takeNewBallInTestMatch,
@@ -74,6 +97,9 @@ export {
   applyPreMatchOversReduction,
   abandonWhiteBallMatch,
   concludeWhiteBallNoResult,
+  DEFAULT_TACTICAL_CALIBRATION,
+  getStandardFieldPresets,
+  createDefaultPhaseTargets,
 };
 export type { DeclarationStrategicSummary };
 
@@ -1224,6 +1250,8 @@ export function stepMatchBall(matchInput: Match): Match {
   }
 
   // 2. SIMULATE ACTIVE DELIVERY
+  match = ensureMatchTacticalSystemsInitialized(match);
+
   const striker = getPlayerById(currentInnings.currentStrikerId);
   const nonStriker = getPlayerById(currentInnings.currentNonStrikerId);
   const bowler = getPlayerById(currentInnings.currentBowlerId);
@@ -1237,6 +1265,39 @@ export function stepMatchBall(matchInput: Match): Match {
     match.isUserMatch &&
     interactiveUserPlayMode &&
     currentInnings.bowlingTeamId === match.userTeamId;
+
+  // Local Rule-Based Opposition Management (No external AI)
+  if (!isUserBatting && !match.individualBatterInstructions?.[striker.id]) {
+    const oppBat = determineOppositionTactics({
+      match,
+      currentInnings,
+      isBatting: true,
+      activeBowler: bowler,
+      activeStriker: striker,
+    });
+    if (oppBat.batterInstruction) {
+      match.individualBatterInstructions = {
+        ...(match.individualBatterInstructions || {}),
+        [striker.id]: oppBat.batterInstruction,
+      };
+    }
+  }
+
+  if (!isUserBowling && !match.individualBowlingPlans?.[bowler.id]) {
+    const oppBowl = determineOppositionTactics({
+      match,
+      currentInnings,
+      isBatting: false,
+      activeBowler: bowler,
+      activeStriker: striker,
+    });
+    if (oppBowl.bowlingPlan) {
+      match.individualBowlingPlans = {
+        ...(match.individualBowlingPlans || {}),
+        [bowler.id]: oppBowl.bowlingPlan,
+      };
+    }
+  }
 
   let activeAiTactics = match.aiTactics;
   if (match.format === 'TEST') {
@@ -1330,6 +1391,15 @@ export function stepMatchBall(matchInput: Match): Match {
     isFreeHit: currentInnings.isFreeHit,
     allocatedOvers,
     bowlingFielders,
+    individualBatterInstruction: match.individualBatterInstructions?.[striker.id],
+    teamBattingGamePlan: isUserBatting
+      ? (match.teamBattingGamePlans?.home || match.teamBattingGamePlans?.away)
+      : (match.teamBattingGamePlans?.away || match.teamBattingGamePlans?.home),
+    customScoringTargets: match.customScoringTargets,
+    individualBowlingPlan: match.individualBowlingPlans?.[bowler.id],
+    bowlerSpellData: match.bowlerSpellData?.[bowler.id],
+    customFieldLayout: match.activeFieldLayout,
+    tacticalCalibration: match.tacticalCalibration,
   });
 
   const nameMap: Record<string, string> = {};
@@ -1348,6 +1418,57 @@ export function stepMatchBall(matchInput: Match): Match {
     nameMap,
     match.format
   );
+
+  // Record Match Intelligence Deliveries (Wagon Wheel & Pitch Map)
+  let updatedWagonWheel = match.wagonWheelDeliveries || [];
+  if (ballOutcome.wagonWheel) {
+    updatedWagonWheel = [
+      ...updatedWagonWheel.slice(-300),
+      {
+        deliveryIndex,
+        strikerId: striker.id,
+        runs: ballOutcome.runsOffBat,
+        angleDegrees: ballOutcome.wagonWheel.angleDegrees,
+        distanceMeters: ballOutcome.wagonWheel.distanceMeters,
+        zone: ballOutcome.wagonWheel.zone as any,
+        isBoundary: ballOutcome.runsOffBat === 4 || ballOutcome.runsOffBat === 6,
+        isAerial: ballOutcome.wagonWheel.isAerial,
+      },
+    ];
+  }
+
+  let updatedPitchMap = match.pitchMapDeliveries || [];
+  if (ballOutcome.pitchMap) {
+    updatedPitchMap = [
+      ...updatedPitchMap.slice(-300),
+      {
+        deliveryIndex,
+        bowlerId: bowler.id,
+        strikerId: striker.id,
+        line: ballOutcome.pitchMap.line,
+        length: ballOutcome.pitchMap.length,
+        xCm: ballOutcome.pitchMap.xCm,
+        yMeters: ballOutcome.pitchMap.yMeters,
+        runs: ballOutcome.totalRuns,
+        isWicket: ballOutcome.isWicket,
+        isDot: ballOutcome.totalRuns === 0,
+      },
+    ];
+  }
+
+  // Update Bowler Spell Management & Workload Recovery on Over Completion
+  let updatedSpellData = match.bowlerSpellData ? { ...match.bowlerSpellData } : {};
+  if (ballOutcome.isLegalDelivery && updatedInnings.ballsInCurrentOver === 0) {
+    const curBowlerId = currentInnings.currentBowlerId;
+    if (updatedSpellData[curBowlerId]) {
+      updatedSpellData[curBowlerId] = recordOverInSpellManager(
+        updatedSpellData[curBowlerId],
+        bowler,
+        match.format
+      );
+    }
+    updatedSpellData = applyRestToBenchBowlers(updatedSpellData, curBowlerId);
+  }
 
   // White-ball over completion: record spell over and select next phase-aware bowler
   if (
@@ -1372,6 +1493,9 @@ export function stepMatchBall(matchInput: Match): Match {
     ...match,
     aiTactics: activeAiTactics,
     innings: updatedInningsList,
+    wagonWheelDeliveries: updatedWagonWheel,
+    pitchMapDeliveries: updatedPitchMap,
+    bowlerSpellData: updatedSpellData,
   };
 
   // Test cricket legal over completion:
@@ -1469,6 +1593,275 @@ export function stepMatchBall(matchInput: Match): Match {
 /**
  * Executes a validated captain's declaration in Test cricket, immediately ending the innings.
  */
+export function ensureMatchTacticalSystemsInitialized(match: Match): Match {
+  let updated = { ...match };
+
+  if (!updated.tacticalCalibration) {
+    updated.tacticalCalibration = { ...DEFAULT_TACTICAL_CALIBRATION };
+  }
+
+  if (!updated.drsReviewsRemaining) {
+    const defaultReviews = match.format === 'TEST' ? 3 : 2;
+    updated.drsReviewsRemaining = {
+      home: defaultReviews,
+      away: defaultReviews,
+    };
+  }
+
+  if (!updated.drsHistory) {
+    updated.drsHistory = [];
+  }
+
+  if (!updated.phaseScoringTargets && match.format !== 'TEST') {
+    updated.phaseScoringTargets = createDefaultPhaseTargets(match.format);
+  }
+
+  if (!updated.customScoringTargets || updated.customScoringTargets.length === 0) {
+    updated.customScoringTargets = [];
+    if (updated.phaseScoringTargets?.powerplayTarget) {
+      updated.customScoringTargets.push({ ...updated.phaseScoringTargets.powerplayTarget });
+    }
+    if (updated.phaseScoringTargets?.middlePhaseTarget) {
+      updated.customScoringTargets.push({ ...updated.phaseScoringTargets.middlePhaseTarget });
+    }
+    if (updated.phaseScoringTargets?.deathPhaseTarget) {
+      updated.customScoringTargets.push({ ...updated.phaseScoringTargets.deathPhaseTarget });
+    }
+  }
+
+  if (!updated.bowlerSpellData) {
+    const spellData: Record<string, BowlerSpellData> = {};
+    const allBowlerIds = Array.from(new Set([...(updated.homeXI || []), ...(updated.awayXI || [])]));
+    allBowlerIds.forEach((id) => {
+      const p = getPlayerById(id);
+      if (p) {
+        spellData[id] = initializeBowlerSpellData(p, match.format, match.pitch);
+      }
+    });
+    updated.bowlerSpellData = spellData;
+  }
+
+  if (!updated.individualBatterInstructions) {
+    updated.individualBatterInstructions = {};
+  }
+
+  if (!updated.individualBowlingPlans) {
+    updated.individualBowlingPlans = {};
+  }
+
+  if (!updated.savedFieldPresets || updated.savedFieldPresets.length === 0) {
+    const homeWk = updated.homeWicketKeeperId || updated.homeXI[0];
+    const presets = getStandardFieldPresets(updated.homeXI[updated.homeXI.length - 1], updated.homeXI, homeWk);
+    updated.savedFieldPresets = Object.values(presets);
+    if (!updated.activeFieldLayout) {
+      updated.activeFieldLayout = presets.BALANCED_STANDARD;
+    }
+  }
+
+  if (!updated.wagonWheelDeliveries) {
+    updated.wagonWheelDeliveries = [];
+  }
+  if (!updated.pitchMapDeliveries) {
+    updated.pitchMapDeliveries = [];
+  }
+
+  return updated;
+}
+
+export function executeDRSReview(
+  match: Match,
+  reviewType: DRSReviewType,
+  reviewingTeamId: string
+): { updatedMatch: Match; review: DRSReviewState } {
+  let m = ensureMatchTacticalSystemsInitialized(match);
+  const currentInnings = m.innings[m.currentInningsIndex] || m.innings[0];
+  const lastBall = currentInnings.recentBalls[currentInnings.recentBalls.length - 1];
+
+  const deliveryIndex =
+    m.currentInningsIndex * 10000 +
+    currentInnings.completedOvers * 6 +
+    currentInnings.ballsInCurrentOver +
+    currentInnings.extras.wides +
+    currentInnings.extras.noBalls;
+
+  const striker = getPlayerById(currentInnings.currentStrikerId);
+  const bowler = getPlayerById(currentInnings.currentBowlerId);
+  const isSpin = bowler.bowlingStyle ? bowler.bowlingStyle.toLowerCase().includes('spin') : false;
+
+  const originalDecision: 'OUT' | 'NOT_OUT' = lastBall?.isWicket ? 'OUT' : 'NOT_OUT';
+  const dismissalType: DismissalType = lastBall?.wicketDetails?.type || 'LBW';
+
+  let outcome: DRSOutcome = 'DECISION_STANDS';
+  let finalDecision: 'OUT' | 'NOT_OUT' = originalDecision;
+  let reason = '';
+  let ballTracking: DRSReviewState['ballTracking'] | undefined = undefined;
+  let ultraEdge: DRSReviewState['ultraEdge'] | undefined = undefined;
+
+  if (reviewType === 'LBW') {
+    const res = evaluateLBWReview({
+      deliveryIndex,
+      bowler,
+      striker,
+      pitch: m.pitch,
+      originalDecision,
+      isSpin,
+    });
+    outcome = res.outcome;
+    finalDecision = res.finalDecision;
+    reason = res.reason;
+    ballTracking = res.ballTracking;
+  } else {
+    const res = evaluateCaughtBehindReview({
+      deliveryIndex,
+      originalDecision,
+    });
+    outcome = res.outcome;
+    finalDecision = res.finalDecision;
+    reason = res.reason;
+    ultraEdge = res.ultraEdge;
+  }
+
+  const isHome = reviewingTeamId === m.homeTeamId;
+  const currentRemaining = isHome ? m.drsReviewsRemaining!.home : m.drsReviewsRemaining!.away;
+
+  // Review Retention Law: Retained if decision is OVERTURNED or if UMPIRE'S CALL
+  const retained = outcome === 'DECISION_OVERTURNED' || outcome === 'UMPIRES_CALL';
+  const newRemaining = retained ? currentRemaining : Math.max(0, currentRemaining - 1);
+
+  const updatedReviewsRemaining = {
+    home: isHome ? newRemaining : m.drsReviewsRemaining!.home,
+    away: !isHome ? newRemaining : m.drsReviewsRemaining!.away,
+  };
+
+  const review: DRSReviewState = {
+    id: `drs_${Date.now()}_${deliveryIndex}`,
+    matchId: m.id,
+    deliveryIndex,
+    overNumber: currentInnings.completedOvers,
+    ballInOver: currentInnings.ballsInCurrentOver,
+    reviewingTeamId,
+    originalDecision,
+    dismissalType,
+    strikerId: striker.id,
+    bowlerId: bowler.id,
+    reviewType,
+    outcome,
+    finalDecision,
+    reason,
+    ballTracking,
+    ultraEdge,
+    reviewsRemainingHome: updatedReviewsRemaining.home,
+    reviewsRemainingAway: updatedReviewsRemaining.away,
+    retained,
+  };
+
+  // If decision is OVERTURNED from OUT to NOT OUT, adjust scorecard
+  if (originalDecision === 'OUT' && finalDecision === 'NOT_OUT') {
+    if (lastBall && lastBall.isWicket) {
+      lastBall.isWicket = false;
+      lastBall.wicketDetails = undefined;
+      currentInnings.wickets = Math.max(0, currentInnings.wickets - 1);
+      currentInnings.fallOfWickets.pop();
+      const bScore = currentInnings.batters.find((b) => b.playerId === striker.id);
+      if (bScore) {
+        bScore.dismissal = undefined;
+      }
+    }
+  } else if (originalDecision === 'NOT_OUT' && finalDecision === 'OUT') {
+    if (lastBall) {
+      lastBall.isWicket = true;
+      lastBall.wicketDetails = {
+        type: dismissalType,
+        bowlerId: bowler.id,
+        bowlerName: bowler.shortName,
+        dismissedPlayerId: striker.id,
+        description: dismissalType === 'LBW' ? `lbw b ${bowler.shortName}` : `c †wk b ${bowler.shortName}`,
+      };
+      currentInnings.wickets += 1;
+    }
+  }
+
+  m = {
+    ...m,
+    drsReviewsRemaining: updatedReviewsRemaining,
+    drsHistory: [review, ...(m.drsHistory || [])],
+    activeDRSReview: review,
+  };
+
+  return { updatedMatch: m, review };
+}
+
+export function updateIndividualBatterInstruction(
+  match: Match,
+  instruction: IndividualBatterInstruction
+): Match {
+  return {
+    ...match,
+    individualBatterInstructions: {
+      ...(match.individualBatterInstructions || {}),
+      [instruction.playerId]: instruction,
+    },
+  };
+}
+
+export function updateIndividualBowlingPlan(
+  match: Match,
+  plan: IndividualBowlingPlan
+): Match {
+  return {
+    ...match,
+    individualBowlingPlans: {
+      ...(match.individualBowlingPlans || {}),
+      [plan.bowlerId]: plan,
+    },
+  };
+}
+
+export function updateCustomScoringTargets(
+  match: Match,
+  targets: CustomScoringTarget[]
+): Match {
+  return {
+    ...match,
+    customScoringTargets: targets,
+  };
+}
+
+export function updatePhaseScoringTargets(
+  match: Match,
+  phaseTargets: PhaseScoringTargets
+): Match {
+  return {
+    ...match,
+    phaseScoringTargets: phaseTargets,
+  };
+}
+
+export function updateActiveFieldLayout(
+  match: Match,
+  layout: CustomFieldLayout
+): Match {
+  return {
+    ...match,
+    activeFieldLayout: layout,
+  };
+}
+
+export function updateTeamBattingGamePlan(
+  match: Match,
+  teamId: string,
+  plan: TeamBattingGamePlan
+): Match {
+  const isHome = teamId === match.homeTeamId;
+  return {
+    ...match,
+    teamBattingGamePlans: {
+      home: isHome ? plan : (match.teamBattingGamePlans?.home || 'BALANCED_BATTING'),
+      away: !isHome ? plan : (match.teamBattingGamePlans?.away || 'BALANCED_BATTING'),
+    },
+  };
+}
+
 export function declareInnings(match: Match): Match {
   const check = validateTestDeclaration(match);
   if (!check.allowed) return match;

@@ -46,6 +46,7 @@ import {
   determineMatchOutcome,
   isPreMatchStatus,
   isTerminalMatchStatus,
+  ensureMatchTacticalSystemsInitialized,
   mulberry32,
 } from '../engine/matchEngine';
 import {
@@ -1597,9 +1598,11 @@ export function sanitizeCareerSave(career: CareerSave): CareerSave {
 
   // Sanitize scheduled user fixtures
   const sanitizedFixtures = (career.fixtures || []).map((m) => {
-    if (!isPreMatchStatus(m.status)) return m;
+    if (!isPreMatchStatus(m.status)) {
+      return ensureMatchTacticalSystemsInitialized(m);
+    }
     const cfg = sanitizedFormatSquads[m.format];
-    if (!cfg) return m;
+    if (!cfg) return ensureMatchTacticalSystemsInitialized(m);
 
     let homeXI = m.homeXI;
     let awayXI = m.awayXI;
@@ -1630,7 +1633,7 @@ export function sanitizeCareerSave(career: CareerSave): CareerSave {
       awayWk = aiAway?.wicketKeeperId || getDefaultWicketKeeperId(m.awayTeamId, m.format);
     }
 
-    return {
+    const updatedMatch: Match = {
       ...m,
       isUserMatch: true,
       userTeamId,
@@ -1641,6 +1644,7 @@ export function sanitizeCareerSave(career: CareerSave): CareerSave {
       homeWicketKeeperId: homeWk,
       awayWicketKeeperId: awayWk,
     };
+    return ensureMatchTacticalSystemsInitialized(updatedMatch);
   });
 
   // Sanitize user tours only (preserve AI tours intact)

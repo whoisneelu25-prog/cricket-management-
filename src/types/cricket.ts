@@ -273,6 +273,23 @@ export interface BallOutcome {
   commentary: string;
   shotType?: string;
   zone?: 'COVER' | 'POINT' | 'MID_WICKET' | 'LONG_ON' | 'LONG_OFF' | 'FINE_LEG' | 'THIRD_MAN' | 'SQUARE_LEG' | 'STRAIGHT';
+  pitchMap?: {
+    line: BowlingLine;
+    length: BowlingLength;
+    xCm: number;
+    yMeters: number;
+  };
+  wagonWheel?: {
+    angleDegrees: number;
+    distanceMeters: number;
+    zone: string;
+    isAerial: boolean;
+  };
+  drsDetails?: {
+    isReviewed?: boolean;
+    reviewId?: string;
+    reviewOutcome?: DRSOutcome;
+  };
 }
 
 export interface InningsState {
@@ -338,6 +355,305 @@ export type FieldPreset =
   | 'ATTACKING_SLIPS'
   | 'RING_INNER'
   | 'DEATH_PROTECT';
+
+// --- MASTER UPGRADE TACTICAL TYPES ---
+
+// 1. Individual Batter Instructions
+export type BattingApproach =
+  | 'VERY_DEFENSIVE'
+  | 'DEFENSIVE'
+  | 'BALANCED'
+  | 'POSITIVE'
+  | 'AGGRESSIVE'
+  | 'SMASH';
+
+export type ShotSelection =
+  | 'PLAY_STRAIGHT'
+  | 'TARGET_OFF'
+  | 'TARGET_LEG'
+  | 'ALONG_GROUND'
+  | 'LOOK_FOR_BOUNDARIES'
+  | 'ROTATE_STRIKE'
+  | 'AVOID_RISKY_SHOTS'
+  | 'ATTACK_SPIN'
+  | 'ATTACK_PACE'
+  | 'PLAY_LATE_PACE';
+
+export type BowlerTargetAction =
+  | 'ATTACK'
+  | 'DEFEND'
+  | 'ROTATE_STRIKE'
+  | 'TARGET_WEAKNESS';
+
+export type SituationalInstruction =
+  | 'PROTECT_WICKET'
+  | 'BUILD_PARTNERSHIP'
+  | 'ACCELERATE'
+  | 'SURVIVE_SESSION'
+  | 'ATTACK_POWERPLAY'
+  | 'TARGET_DEATH'
+  | 'PRESERVE_WICKETS';
+
+export interface IndividualBatterInstruction {
+  playerId: string;
+  approach: BattingApproach;
+  shotSelection: ShotSelection;
+  bowlerInstruction?: {
+    targetBowlerId?: string;
+    action: BowlerTargetAction;
+  };
+  situationalInstruction?: SituationalInstruction;
+}
+
+// 2. Team Batting Game Plans
+export type GeneralGamePlan =
+  | 'DEFENSIVE_ACCUMULATION'
+  | 'BALANCED_BATTING'
+  | 'POSITIVE_CRICKET'
+  | 'AGGRESSIVE_BATTING'
+  | 'SMASH'
+  | 'ALL_OUT_ATTACK'
+  | 'BUILD_PARTNERSHIPS'
+  | 'PROTECT_WICKETS'
+  | 'TARGET_SPECIFIC_BOWLERS'
+  | 'ACCELERATE_SCORING';
+
+export type TestGamePlan =
+  | 'OCCUPY_CREASE'
+  | 'BUILD_LONG_INNINGS'
+  | 'PROTECT_WICKETS'
+  | 'ROTATE_STRIKE'
+  | 'COUNTERATTACK'
+  | 'ATTACK_SPINNERS'
+  | 'BAT_FOR_DRAW'
+  | 'ACCELERATE_DECLARATION';
+
+export type ODIGamePlan =
+  | 'CONSERVATIVE_OPENING'
+  | 'POWERPLAY_AGGRESSION'
+  | 'BALANCED_POWERPLAY'
+  | 'BUILD_PARTNERSHIPS'
+  | 'MIDDLE_ACCUMULATION'
+  | 'ROTATE_STRIKE'
+  | 'ATTACK_SPIN'
+  | 'TARGET_WEAKER_BOWLERS'
+  | 'ACCELERATE_30_OVERS'
+  | 'DEATH_OVER_ATTACK'
+  | 'CONTROLLED_CHASE';
+
+export type T20IGamePlan =
+  | 'POWERPLAY_ATTACK'
+  | 'BALANCED_POWERPLAY'
+  | 'MIDDLE_ROTATION'
+  | 'SPIN_ATTACK'
+  | 'PACE_ATTACK'
+  | 'DEATH_ACCELERATION'
+  | 'SMASH'
+  | 'ALL_OUT_ATTACK'
+  | 'DEFEND_LOW_TARGET';
+
+export type TeamBattingGamePlan = GeneralGamePlan | TestGamePlan | ODIGamePlan | T20IGamePlan;
+
+// 3. Custom Scoring Targets & Phase Targets
+export type TargetStatus = 'AHEAD_OF_PLAN' | 'ON_TRACK' | 'BEHIND_PLAN' | 'TARGET_ACHIEVED';
+
+export interface CustomScoringTarget {
+  id: string;
+  targetScore: number;
+  targetOver: number;
+  label?: string;
+  achieved?: boolean;
+}
+
+export interface PhaseScoringTargets {
+  powerplayTarget?: CustomScoringTarget;
+  middlePhaseTarget?: CustomScoringTarget;
+  deathPhaseTarget?: CustomScoringTarget;
+  phaseBattingPlan?: string;
+}
+
+// 4. Individual Bowling Plans
+export type BowlingLine =
+  | 'OUTSIDE_OFF'
+  | 'FOURTH_STUMP'
+  | 'MIDDLE_STUMP'
+  | 'LEG_STUMP'
+  | 'WIDE_OUTSIDE_OFF'
+  | 'BODY_LINE';
+
+export type BowlingLength =
+  | 'YORKER'
+  | 'FULL'
+  | 'GOOD_LENGTH'
+  | 'BACK_OF_A_LENGTH'
+  | 'SHORT'
+  | 'BOUNCER';
+
+export type FastBowlingVariation =
+  | 'OUTSWING'
+  | 'INSWING'
+  | 'REVERSE_SWING'
+  | 'SLOWER_BALL'
+  | 'CUTTER'
+  | 'YORKER'
+  | 'BOUNCER';
+
+export type SpinBowlingVariation =
+  | 'OFF_BREAK'
+  | 'LEG_BREAK'
+  | 'GOOGLY'
+  | 'TOP_SPINNER'
+  | 'ARM_BALL'
+  | 'FLIGHTED'
+  | 'FASTER_DELIVERY';
+
+export type BowlingIntention =
+  | 'ATTACK_WICKETS'
+  | 'BUILD_PRESSURE'
+  | 'DEFEND_RUNS'
+  | 'FORCE_MISTAKES'
+  | 'TARGET_STUMPS'
+  | 'OUTSIDE_OFF_CONTAINMENT'
+  | 'BODY_LINE_ATTACK'
+  | 'RESTRICT_BOUNDARIES';
+
+export interface IndividualBowlingPlan {
+  bowlerId: string;
+  line: BowlingLine;
+  length: BowlingLength;
+  variation?: FastBowlingVariation | SpinBowlingVariation;
+  intention: BowlingIntention;
+  targetBatterId?: string;
+}
+
+// 5. Bowling Spells & Fatigue Management
+export type BowlerFatigueLevel = 'LOW' | 'MEDIUM' | 'HIGH' | 'EXHAUSTED';
+
+export interface BowlerSpellData {
+  bowlerId: string;
+  totalOvers: number;
+  currentSpellOvers: number;
+  targetSpellLength?: number;
+  spellHistory: number[];
+  restOversSinceLastSpell: number;
+  fatigue: BowlerFatigueLevel;
+  effectiveness: number; // 0-100%
+  recommendedRestOvers: number;
+  availableForSpell: boolean;
+  pitchSuitability: string;
+}
+
+// 6. Custom Field Placement & Legal Circle Restrictions
+export type FieldPosition =
+  | 'SLIP_1'
+  | 'SLIP_2'
+  | 'SLIP_3'
+  | 'GULLY'
+  | 'POINT'
+  | 'BACKWARD_POINT'
+  | 'COVER'
+  | 'EXTRA_COVER'
+  | 'MID_OFF'
+  | 'MID_ON'
+  | 'MIDWICKET'
+  | 'SQUARE_LEG'
+  | 'FINE_LEG'
+  | 'THIRD_MAN'
+  | 'LONG_ON'
+  | 'LONG_OFF'
+  | 'DEEP_COVER'
+  | 'DEEP_MIDWICKET'
+  | 'DEEP_SQUARE_LEG'
+  | 'SHORT_LEG'
+  | 'SILLY_POINT'
+  | 'LEG_SLIP'
+  | 'WICKETKEEPER';
+
+export interface CustomFieldPosition {
+  position: FieldPosition;
+  fielderId: string;
+  x: number; // 0-100%
+  y: number; // 0-100%
+  isDeep: boolean;
+  isLegSide: boolean;
+}
+
+export interface CustomFieldLayout {
+  id: string;
+  name: string;
+  positions: CustomFieldPosition[];
+  isLegal: boolean;
+  validationErrors?: string[];
+}
+
+// 7. Decision Review System (DRS)
+export type DRSReviewType = 'LBW' | 'CAUGHT_BEHIND' | 'CATCH';
+export type DRSOutcome = 'DECISION_OVERTURNED' | 'DECISION_STANDS' | 'UMPIRES_CALL';
+
+export interface DRSReviewState {
+  id: string;
+  matchId: string;
+  deliveryIndex: number;
+  overNumber: number;
+  ballInOver: number;
+  reviewingTeamId: string;
+  originalDecision: 'OUT' | 'NOT_OUT';
+  dismissalType: DismissalType;
+  strikerId: string;
+  bowlerId: string;
+  reviewType: DRSReviewType;
+  outcome: DRSOutcome;
+  finalDecision: 'OUT' | 'NOT_OUT';
+  reason: string;
+  ballTracking?: {
+    pitching: 'OUTSIDE_OFF' | 'IN_LINE' | 'OUTSIDE_LEG';
+    impact: 'IN_LINE' | 'OUTSIDE_OFF' | 'UMPIRES_CALL';
+    wickets: 'HITTING' | 'MISSING' | 'UMPIRES_CALL';
+    projectedHeightCm: number;
+  };
+  ultraEdge?: {
+    hasSpike: boolean;
+    spikeFrame: number;
+    spikeAmplitude: number;
+    gapToBatMm: number;
+  };
+  reviewsRemainingHome: number;
+  reviewsRemainingAway: number;
+  retained: boolean;
+}
+
+// 8. Match Intelligence Deliveries
+export interface WagonWheelShot {
+  deliveryIndex: number;
+  strikerId: string;
+  runs: number;
+  angleDegrees: number;
+  distanceMeters: number;
+  zone: 'COVER' | 'POINT' | 'MID_WICKET' | 'LONG_ON' | 'LONG_OFF' | 'FINE_LEG' | 'THIRD_MAN' | 'SQUARE_LEG' | 'STRAIGHT';
+  isBoundary: boolean;
+  isAerial: boolean;
+}
+
+export interface PitchMapDelivery {
+  deliveryIndex: number;
+  bowlerId: string;
+  strikerId: string;
+  line: BowlingLine;
+  length: BowlingLength;
+  xCm: number;
+  yMeters: number;
+  runs: number;
+  isWicket: boolean;
+  isDot: boolean;
+}
+
+// 9. Engine Tactical Calibration
+export interface TacticalCalibrationSettings {
+  testHighRiskSuccessBaseline: number; // 0.40
+  testHighRiskFailureBaseline: number; // 0.60
+  whiteBallHighRiskSuccessBaseline: number; // 0.60
+  whiteBallHighRiskFailureBaseline: number; // 0.40
+}
 
 export interface PitchCondition {
   name: string;
@@ -489,6 +805,29 @@ export interface Match {
   superOverRounds?: number;
   statsRecorded?: boolean;
   seed?: number;
+
+  // Master Upgrade: Tactical Systems & Custom Gameplay
+  teamBattingGamePlans?: {
+    home: TeamBattingGamePlan;
+    away: TeamBattingGamePlan;
+  };
+  individualBatterInstructions?: Record<string, IndividualBatterInstruction>;
+  customScoringTargets?: CustomScoringTarget[];
+  phaseScoringTargets?: PhaseScoringTargets;
+  individualBowlingPlans?: Record<string, IndividualBowlingPlan>;
+  bowlerSpellData?: Record<string, BowlerSpellData>;
+  currentSpellIntendedOvers?: Record<string, number>;
+  activeFieldLayout?: CustomFieldLayout;
+  savedFieldPresets?: CustomFieldLayout[];
+  drsReviewsRemaining?: {
+    home: number;
+    away: number;
+  };
+  drsHistory?: DRSReviewState[];
+  activeDRSReview?: DRSReviewState | null;
+  wagonWheelDeliveries?: WagonWheelShot[];
+  pitchMapDeliveries?: PitchMapDelivery[];
+  tacticalCalibration?: TacticalCalibrationSettings;
 }
 
 export interface TournamentTableEntry {

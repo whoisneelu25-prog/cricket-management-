@@ -7,6 +7,13 @@ import {
   BattingAggression,
   BowlingTactic,
   FieldPreset,
+  IndividualBatterInstruction,
+  IndividualBowlingPlan,
+  CustomScoringTarget,
+  PhaseScoringTargets,
+  CustomFieldLayout,
+  TeamBattingGamePlan,
+  DRSReviewType,
 } from './types/cricket';
 import {
   MainNavigationTab,
@@ -72,6 +79,14 @@ import {
   isPreMatchStatus,
   isTerminalMatchStatus,
   withCareerSimulationContext,
+  ensureMatchTacticalSystemsInitialized,
+  executeDRSReview,
+  updateIndividualBatterInstruction,
+  updateIndividualBowlingPlan,
+  updateCustomScoringTargets,
+  updatePhaseScoringTargets,
+  updateActiveFieldLayout,
+  updateTeamBattingGamePlan,
 } from './engine/matchEngine';
 import {
   DEFAULT_TEST_OVERS_PER_DAY,
@@ -262,6 +277,49 @@ export default function App() {
     });
   };
 
+  const handleUpdateBatterInstruction = (instruction: IndividualBatterInstruction) => {
+    if (!activeMatch || isTerminalMatchStatus(activeMatch.status)) return;
+    const next = updateIndividualBatterInstruction(activeMatch, instruction);
+    updateActiveMatch(next);
+  };
+
+  const handleUpdateBowlingPlan = (plan: IndividualBowlingPlan) => {
+    if (!activeMatch || isTerminalMatchStatus(activeMatch.status)) return;
+    const next = updateIndividualBowlingPlan(activeMatch, plan);
+    updateActiveMatch(next);
+  };
+
+  const handleUpdateCustomTargets = (targets: CustomScoringTarget[]) => {
+    if (!activeMatch || isTerminalMatchStatus(activeMatch.status)) return;
+    const next = updateCustomScoringTargets(activeMatch, targets);
+    updateActiveMatch(next);
+  };
+
+  const handleUpdatePhaseTargets = (targets: PhaseScoringTargets) => {
+    if (!activeMatch || isTerminalMatchStatus(activeMatch.status)) return;
+    const next = updatePhaseScoringTargets(activeMatch, targets);
+    updateActiveMatch(next);
+  };
+
+  const handleUpdateFieldLayout = (layout: CustomFieldLayout) => {
+    if (!activeMatch || isTerminalMatchStatus(activeMatch.status)) return;
+    const next = updateActiveFieldLayout(activeMatch, layout);
+    updateActiveMatch(next);
+  };
+
+  const handleUpdateGamePlan = (plan: TeamBattingGamePlan) => {
+    if (!activeMatch || isTerminalMatchStatus(activeMatch.status) || !career) return;
+    const next = updateTeamBattingGamePlan(activeMatch, career.selectedTeamId, plan);
+    updateActiveMatch(next);
+  };
+
+  const handleExecuteDRS = (reviewType: DRSReviewType) => {
+    if (!activeMatch || isTerminalMatchStatus(activeMatch.status) || !career) return;
+    const reviewingTeamId = career.selectedTeamId;
+    const { updatedMatch } = executeDRSReview(activeMatch, reviewType, reviewingTeamId);
+    updateActiveMatch(updatedMatch);
+  };
+
   const handleStartMatchWithToss = (choice: 'BAT' | 'BOWL') => {
     if (!activeMatch || !career) return;
     // Never allow completed or non-user matches to be started
@@ -330,7 +388,7 @@ export default function App() {
       )
     );
 
-    const startedMatch: Match = {
+    const startedMatch: Match = ensureMatchTacticalSystemsInitialized({
       ...freshMatch,
       status: 'IN_PROGRESS',
       tossWinnerId: userTeamId,
@@ -356,7 +414,7 @@ export default function App() {
               freshMatch.whiteBallConditions ??
               createWhiteBallConditions(freshMatch, getMatchSeed(freshMatch, 5)),
           }),
-    };
+    });
 
     updateActiveMatch(startedMatch, workingCareer);
   };
@@ -698,6 +756,13 @@ export default function App() {
                 setPrepMatchId(nextMatchId);
               }}
               onOpenMatchPreparation={(matchId) => setPrepMatchId(matchId)}
+              onUpdateBatterInstruction={handleUpdateBatterInstruction}
+              onUpdateBowlingPlan={handleUpdateBowlingPlan}
+              onUpdateCustomTargets={handleUpdateCustomTargets}
+              onUpdatePhaseTargets={handleUpdatePhaseTargets}
+              onUpdateFieldLayout={handleUpdateFieldLayout}
+              onUpdateGamePlan={handleUpdateGamePlan}
+              onExecuteDRS={handleExecuteDRS}
             />
           )}
 

@@ -18,6 +18,9 @@ import {
   Flag,
   AlertCircle,
   Users,
+  Eye,
+  Target,
+  Compass,
 } from 'lucide-react';
 import {
   CareerSave,
@@ -26,12 +29,27 @@ import {
   BattingAggression,
   BowlingTactic,
   FieldPreset,
-  Player
+  Player,
+  IndividualBatterInstruction,
+  IndividualBowlingPlan,
+  CustomScoringTarget,
+  PhaseScoringTargets,
+  CustomFieldLayout,
+  TeamBattingGamePlan,
+  DRSReviewType,
 } from '../../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
 import { ALL_PLAYERS, getEffectivePlayer } from '../../data/squads';
+import { CountryFlag } from '../common/CountryFlag';
+import { PlayerAvatar } from '../common/PlayerAvatar';
 import { ScorecardModal } from './ScorecardModal';
 import { PostMatchSummaryView } from './PostMatchSummaryView';
+import { WagonWheelPitchMap } from './WagonWheelPitchMap';
+import { InteractiveFieldEditor } from './InteractiveFieldEditor';
+import { DRSReviewModal } from './DRSReviewModal';
+import { BatterTacticsPanel } from './BatterTacticsPanel';
+import { BowlingTacticsPanel } from './BowlingTacticsPanel';
+import { ScoringTargetsPanel } from './ScoringTargetsPanel';
 import {
   getPlayerById,
   isPreMatchStatus,
@@ -64,6 +82,13 @@ interface MatchCentreViewProps {
   onContinueToDashboard?: () => void;
   onPrepareNextMatch?: (nextMatchId: string) => void;
   onOpenMatchPreparation?: (matchId: string) => void;
+  onUpdateBatterInstruction?: (instruction: IndividualBatterInstruction) => void;
+  onUpdateBowlingPlan?: (plan: IndividualBowlingPlan) => void;
+  onUpdateCustomTargets?: (targets: CustomScoringTarget[]) => void;
+  onUpdatePhaseTargets?: (phaseTargets: PhaseScoringTargets) => void;
+  onUpdateFieldLayout?: (layout: CustomFieldLayout) => void;
+  onUpdateGamePlan?: (plan: TeamBattingGamePlan) => void;
+  onExecuteDRS?: (reviewType: DRSReviewType) => void;
 }
 
 export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
@@ -83,12 +108,29 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
   onContinueToDashboard,
   onPrepareNextMatch,
   onOpenMatchPreparation,
+  onUpdateBatterInstruction,
+  onUpdateBowlingPlan,
+  onUpdateCustomTargets,
+  onUpdatePhaseTargets,
+  onUpdateFieldLayout,
+  onUpdateGamePlan,
+  onExecuteDRS,
 }) => {
   const [showScorecard, setShowScorecard] = useState(false);
   const [showDeclareModal, setShowDeclareModal] = useState(false);
+  const [showDRSModal, setShowDRSModal] = useState(false);
+  const [tacticalTab, setTacticalTab] = useState<
+    'SCOREBOARD' | 'BATTING' | 'BOWLING' | 'TARGETS' | 'FIELD' | 'INTELLIGENCE'
+  >('SCOREBOARD');
   const [isAutoPlaying, setIsAutoPlaying] = useState(false);
   const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
   const commentaryScrollRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (match.activeDRSReview) {
+      setShowDRSModal(true);
+    }
+  }, [match.activeDRSReview]);
 
   const homeTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.homeTeamId);
   const awayTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.awayTeamId);
@@ -302,23 +344,27 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
           {match.venue} • Pitch: <span className="text-emerald-400 font-medium">{match.pitch.name}</span> • Weather: <span className="text-amber-300 font-medium">{match.weather.type.replace('_', ' ')}</span>
         </p>
 
-        <div className="my-8 bg-[#182234] border border-[#243247] p-5 rounded-lg flex items-center justify-around">
-          <div className="text-center">
-            <span className="text-4xl block mb-2">{homeTeam?.flagEmoji}</span>
+        <div className="my-8 bg-[#141f36] border border-slate-800 p-5 rounded-xl flex items-center justify-around shadow-inner">
+          <div className="flex flex-col items-center">
+            <div className="mb-2">
+              <CountryFlag countryCode={homeTeam?.code || ''} size="lg" />
+            </div>
             <h4 className="font-bold text-sm text-white">{homeTeam?.name}</h4>
-            <span className="text-[10px] text-slate-400 font-mono">
+            <span className="text-[10px] text-slate-400 font-mono mt-1">
               Captain: {(getEffectivePlayer(match.homeCaptainId, career) || getPlayerById(match.homeCaptainId)).shortName}
             </span>
           </div>
 
-          <span className="text-xs font-mono font-bold text-slate-400 bg-[#0d131f] px-3 py-1 rounded border border-[#243247]">
+          <span className="text-xs font-mono font-bold text-slate-400 bg-slate-900 px-3 py-1 rounded border border-slate-700">
             VS
           </span>
 
-          <div className="text-center">
-            <span className="text-4xl block mb-2">{awayTeam?.flagEmoji}</span>
+          <div className="flex flex-col items-center">
+            <div className="mb-2">
+              <CountryFlag countryCode={awayTeam?.code || ''} size="lg" />
+            </div>
             <h4 className="font-bold text-sm text-white">{awayTeam?.name}</h4>
-            <span className="text-[10px] text-slate-400 font-mono">
+            <span className="text-[10px] text-slate-400 font-mono mt-1">
               Captain: {(getEffectivePlayer(match.awayCaptainId, career) || getPlayerById(match.awayCaptainId)).shortName}
             </span>
           </div>
@@ -483,6 +529,22 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
 
           <div className="flex items-center space-x-2">
             <button
+              onClick={() => setShowDRSModal(true)}
+              className="flex items-center space-x-1.5 text-xs bg-indigo-950/80 hover:bg-indigo-900 text-indigo-300 border border-indigo-700/60 px-3 py-1.5 rounded transition cursor-pointer font-bold shadow"
+            >
+              <Eye className="w-3.5 h-3.5 text-indigo-400" />
+              <span>
+                DRS (
+                {match.drsReviewsRemaining
+                  ? match.userTeamId === match.homeTeamId
+                    ? match.drsReviewsRemaining.home
+                    : match.drsReviewsRemaining.away
+                  : 2}
+                )
+              </span>
+            </button>
+
+            <button
               onClick={() => setShowScorecard(true)}
               className="flex items-center space-x-1.5 text-xs bg-[#182234] hover:bg-[#243247] text-slate-200 border border-[#243247] px-3 py-1.5 rounded transition cursor-pointer font-medium"
             >
@@ -496,8 +558,15 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
         <div className="pt-4 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
           {/* Main Batting Team Score (7 cols) */}
           <div className="md:col-span-7 flex items-center space-x-4">
-            <div className="w-14 h-14 rounded-lg bg-[#182234] border border-[#243247] flex items-center justify-center text-3xl shadow">
-              {currentInnings?.battingTeamId === homeTeam?.id ? homeTeam?.flagEmoji : awayTeam?.flagEmoji}
+            <div className="w-14 h-14 rounded-lg bg-[#182234] border border-[#243247] flex items-center justify-center p-1 shadow">
+              <CountryFlag
+                countryCode={
+                  currentInnings?.battingTeamId === homeTeam?.id
+                    ? homeTeam?.code || ''
+                    : awayTeam?.code || ''
+                }
+                size="lg"
+              />
             </div>
 
             <div>
@@ -845,8 +914,128 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
         </div>
       </div>
 
+      {/* Tactical Center Tab Navigation */}
+      <div className="bg-[#141f36] border border-slate-800 rounded-xl p-1.5 flex flex-wrap items-center gap-1.5 shadow">
+        <button
+          onClick={() => setTacticalTab('SCOREBOARD')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+            tacticalTab === 'SCOREBOARD'
+              ? 'bg-emerald-600 text-white shadow-md'
+              : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+          }`}
+        >
+          <Activity className="w-3.5 h-3.5" />
+          <span>Match Flow & Scoreboard</span>
+        </button>
+
+        <button
+          onClick={() => setTacticalTab('BATTING')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+            tacticalTab === 'BATTING'
+              ? 'bg-emerald-600 text-white shadow-md'
+              : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+          }`}
+        >
+          <Flame className="w-3.5 h-3.5" />
+          <span>Batting Plans</span>
+        </button>
+
+        <button
+          onClick={() => setTacticalTab('BOWLING')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+            tacticalTab === 'BOWLING'
+              ? 'bg-emerald-600 text-white shadow-md'
+              : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+          }`}
+        >
+          <Shield className="w-3.5 h-3.5" />
+          <span>Bowling & Spells</span>
+        </button>
+
+        <button
+          onClick={() => setTacticalTab('TARGETS')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+            tacticalTab === 'TARGETS'
+              ? 'bg-emerald-600 text-white shadow-md'
+              : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+          }`}
+        >
+          <Target className="w-3.5 h-3.5" />
+          <span>Scoring Targets</span>
+        </button>
+
+        <button
+          onClick={() => setTacticalTab('FIELD')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+            tacticalTab === 'FIELD'
+              ? 'bg-emerald-600 text-white shadow-md'
+              : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+          }`}
+        >
+          <Compass className="w-3.5 h-3.5" />
+          <span>Field Editor</span>
+        </button>
+
+        <button
+          onClick={() => setTacticalTab('INTELLIGENCE')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+            tacticalTab === 'INTELLIGENCE'
+              ? 'bg-emerald-600 text-white shadow-md'
+              : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+          }`}
+        >
+          <Zap className="w-3.5 h-3.5" />
+          <span>Match Intelligence</span>
+        </button>
+      </div>
+
+      {/* Tab Panels */}
+      {tacticalTab === 'BATTING' && (
+        <BatterTacticsPanel
+          match={match}
+          onUpdateInstruction={(instruction) =>
+            onUpdateBatterInstruction && onUpdateBatterInstruction(instruction)
+          }
+          onUpdateGamePlan={(plan) => onUpdateGamePlan && onUpdateGamePlan(plan)}
+        />
+      )}
+
+      {tacticalTab === 'BOWLING' && (
+        <BowlingTacticsPanel
+          match={match}
+          onUpdateBowlingPlan={(plan) =>
+            onUpdateBowlingPlan && onUpdateBowlingPlan(plan)
+          }
+          onChangeBowler={onChangeBowler}
+        />
+      )}
+
+      {tacticalTab === 'TARGETS' && (
+        <ScoringTargetsPanel
+          match={match}
+          onUpdateCustomTargets={(targets) =>
+            onUpdateCustomTargets && onUpdateCustomTargets(targets)
+          }
+          onUpdatePhaseTargets={(phaseTargets) =>
+            onUpdatePhaseTargets && onUpdatePhaseTargets(phaseTargets)
+          }
+        />
+      )}
+
+      {tacticalTab === 'FIELD' && (
+        <InteractiveFieldEditor
+          format={match.format}
+          currentLayout={match.activeFieldLayout}
+          completedOvers={currentInnings?.completedOvers || 0}
+          allocatedOvers={match.allocatedOversPerInnings || 50}
+          onSaveLayout={(layout) => onUpdateFieldLayout && onUpdateFieldLayout(layout)}
+        />
+      )}
+
+      {tacticalTab === 'INTELLIGENCE' && <WagonWheelPitchMap match={match} />}
+
       {/* 2. Interactive Batters & Bowler Status Bar */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      <div className={`grid grid-cols-1 lg:grid-cols-12 gap-4 ${tacticalTab !== 'SCOREBOARD' ? 'hidden' : ''}`}>
         {/* Active Batters (7 cols) */}
         <div className="lg:col-span-7 bg-[#121824] border border-[#1f293d] rounded-lg p-4">
           <h3 className="text-xs uppercase font-bold text-slate-400 tracking-wider mb-2.5 flex flex-wrap items-center justify-between gap-2">
@@ -1276,6 +1465,18 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
       {/* Full Scorecard Modal */}
       {showScorecard && (
         <ScorecardModal match={match} onClose={() => setShowScorecard(false)} />
+      )}
+
+      {/* DRS Review Modal */}
+      {showDRSModal && (
+        <DRSReviewModal
+          match={match}
+          activeReview={match.activeDRSReview || undefined}
+          onExecuteDRS={(type) => {
+            if (onExecuteDRS) onExecuteDRS(type);
+          }}
+          onClose={() => setShowDRSModal(false)}
+        />
       )}
     </div>
   );
