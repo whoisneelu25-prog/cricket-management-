@@ -138,11 +138,12 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
 
   const currentInnings = match.innings[match.currentInningsIndex] || match.innings[0];
   const isMatchFinished = isTerminalMatchStatus(match.status);
+  const userTeamId = career?.selectedTeamId || match.userTeamId;
   const needsUserFollowOnChoice =
     match.format === 'TEST' &&
     (match.awaitingFollowOnDecision ||
       (match.isFollowOnEligible && match.followOnEnforced === undefined)) &&
-    match.innings[0]?.battingTeamId === match.userTeamId;
+    match.innings[0]?.battingTeamId === userTeamId;
 
   // Auto-play loop for smooth broadcast simulation
   useEffect(() => {
@@ -198,8 +199,8 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
     ? (currentInnings.bowlingTeamId === match.homeTeamId ? match.homeXI : match.awayXI)
     : [];
 
-  const isUserBatting = currentInnings?.battingTeamId === match.userTeamId;
-  const isUserBowling = currentInnings?.bowlingTeamId === match.userTeamId;
+  const isUserBatting = currentInnings?.battingTeamId === userTeamId;
+  const isUserBowling = currentInnings?.bowlingTeamId === userTeamId;
 
   // Allocated overs & Run Rate calculation
   const allocatedInningsOvers =
@@ -589,7 +590,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
               <span>
                 DRS (
                 {match.drsReviewsRemaining
-                  ? match.userTeamId === match.homeTeamId
+                  ? userTeamId === match.homeTeamId
                     ? match.drsReviewsRemaining.home
                     : match.drsReviewsRemaining.away
                   : 2}
@@ -711,10 +712,10 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                   {match.format !== 'TEST' ? (
                     <span>
                       {' '}
-                      from {whiteBallBallsRemaining} balls • {10 - currentInnings.wickets} wkts in hand
+                      from {whiteBallBallsRemaining} balls • {10 - (currentInnings?.wickets ?? 0)} wkts in hand
                     </span>
                   ) : (
-                    <span> ({10 - currentInnings.wickets} wkts in hand • ~{testOversRemaining} ov left)</span>
+                    <span> ({10 - (currentInnings?.wickets ?? 0)} wkts in hand • ~{testOversRemaining} ov left)</span>
                   )}
                 </p>
               </div>
@@ -722,9 +723,9 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
               <div className="text-right text-xs">
                 <span className="text-[#8b97a3] uppercase font-bold tracking-wider block font-display">1st Innings Status</span>
                 <span className="text-[#e8edf2] mt-0.5 font-black font-mono text-sm">
-                  {currentInnings.totalRuns < match.innings[0].totalRuns
-                    ? `Trail by ${match.innings[0].totalRuns - currentInnings.totalRuns} runs`
-                    : `Lead by ${currentInnings.totalRuns - match.innings[0].totalRuns} runs`}
+                  {(currentInnings?.totalRuns ?? 0) < (match.innings[0]?.totalRuns ?? 0)
+                    ? `Trail by ${(match.innings[0]?.totalRuns ?? 0) - (currentInnings?.totalRuns ?? 0)} runs`
+                    : `Lead by ${(currentInnings?.totalRuns ?? 0) - (match.innings[0]?.totalRuns ?? 0)} runs`}
                 </span>
               </div>
             ) : match.format === 'TEST' && match.currentInningsIndex === 2 && match.innings[1] ? (
@@ -732,10 +733,10 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                 <span className="text-[#8b97a3] uppercase font-bold tracking-wider block font-display">Lead / Deficit</span>
                 <span className="text-[#e8edf2] mt-0.5 font-black font-mono text-sm">
                   {match.followOnEnforced
-                    ? match.innings[1].totalRuns + currentInnings.totalRuns < match.innings[0].totalRuns
-                      ? `Trail by ${match.innings[0].totalRuns - (match.innings[1].totalRuns + currentInnings.totalRuns)} runs (f/o)`
-                      : `Lead by ${match.innings[1].totalRuns + currentInnings.totalRuns - match.innings[0].totalRuns} runs (f/o)`
-                    : `Overall Lead: ${match.innings[0].totalRuns + currentInnings.totalRuns - match.innings[1].totalRuns} runs`}
+                    ? (match.innings[1]?.totalRuns ?? 0) + (currentInnings?.totalRuns ?? 0) < (match.innings[0]?.totalRuns ?? 0)
+                      ? `Trail by ${(match.innings[0]?.totalRuns ?? 0) - ((match.innings[1]?.totalRuns ?? 0) + (currentInnings?.totalRuns ?? 0))} runs (f/o)`
+                      : `Lead by ${((match.innings[1]?.totalRuns ?? 0) + (currentInnings?.totalRuns ?? 0)) - (match.innings[0]?.totalRuns ?? 0)} runs (f/o)`
+                    : `Overall Lead: ${(match.innings[0]?.totalRuns ?? 0) + (currentInnings?.totalRuns ?? 0) - (match.innings[1]?.totalRuns ?? 0)} runs`}
                 </span>
               </div>
             ) : (
@@ -1075,7 +1076,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
             <div className="flex items-center space-x-2">
               {!isUserBatting && (
                 <span className="text-[10px] font-mono text-[#8b97a3] bg-[#10151c] px-2 py-0.5 rounded border border-[#1e2733]">
-                  AI Approach: {match.aiTactics.battingAggression}
+                  AI Approach: {match.aiTactics?.battingAggression || 'BALANCED'}
                 </span>
               )}
               {match.format === 'TEST' &&
@@ -1131,7 +1132,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                       {batter.fours}x4, {batter.sixes}x6
                     </span>
                     <span className="text-[#3fca86] font-bold text-xs w-12 text-right">
-                      SR {batter.strikeRate.toFixed(1)}
+                      SR {(batter.strikeRate ?? 0).toFixed(1)}
                     </span>
                   </div>
                 </div>
@@ -1217,7 +1218,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                     <span className="text-[#3fca86]">{activeBowler.wickets}</span> - {activeBowler.runs}
                   </div>
                   <span className="text-[10px] text-[#8b97a3]">
-                    Econ: {activeBowler.economy.toFixed(2)} • Maidens: {activeBowler.maidens} • Dots: {activeBowler.dots}
+                    Econ: {(activeBowler.economy ?? 0).toFixed(2)} • Maidens: {activeBowler.maidens ?? 0} • Dots: {activeBowler.dots ?? 0}
                   </span>
                 </div>
               </div>

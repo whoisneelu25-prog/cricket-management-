@@ -1607,19 +1607,19 @@ export function ensureMatchTacticalSystemsInitialized(match: Match): Match {
     updated.tacticalCalibration = { ...DEFAULT_TACTICAL_CALIBRATION };
   }
 
-  if (!updated.userTactics) {
+  if (!updated.userTactics || !updated.userTactics.battingAggression || !updated.userTactics.bowlingTactic) {
     updated.userTactics = {
-      battingAggression: 'BALANCED',
-      bowlingTactic: 'BALANCED_CONTAIN',
-      fieldPreset: 'BALANCED_STANDARD',
+      battingAggression: updated.userTactics?.battingAggression || 'BALANCED',
+      bowlingTactic: updated.userTactics?.bowlingTactic || 'BALANCED_CONTAIN',
+      fieldPreset: updated.userTactics?.fieldPreset || 'BALANCED_STANDARD',
     };
   }
 
-  if (!updated.aiTactics) {
+  if (!updated.aiTactics || !updated.aiTactics.battingAggression || !updated.aiTactics.bowlingTactic) {
     updated.aiTactics = {
-      battingAggression: 'BALANCED',
-      bowlingTactic: 'BALANCED_CONTAIN',
-      fieldPreset: 'BALANCED_STANDARD',
+      battingAggression: updated.aiTactics?.battingAggression || 'BALANCED',
+      bowlingTactic: updated.aiTactics?.bowlingTactic || 'BALANCED_CONTAIN',
+      fieldPreset: updated.aiTactics?.fieldPreset || 'BALANCED_STANDARD',
     };
   }
 

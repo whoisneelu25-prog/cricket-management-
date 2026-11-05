@@ -7,6 +7,8 @@ import {
   BowlingTactic,
   FieldPreset,
   WhiteBallMatchConditions,
+  PitchCondition,
+  WeatherCondition,
 } from '../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../data/teams';
 import { resolveVenueProfile } from '../data/venues';
@@ -68,34 +70,55 @@ export function createWhiteBallConditions(
   const clamp = (val: number, min: number, max: number) =>
     Math.max(min, Math.min(max, Math.round(val)));
 
+  const safePitch: PitchCondition =
+    match.pitch && typeof match.pitch === 'object' && (match.pitch as any).type
+      ? (match.pitch as PitchCondition)
+      : {
+          name: typeof match.pitch === 'string' ? match.pitch : 'Standard',
+          type: 'SPORTING_BALANCED',
+          paceBonus: 0,
+          spinBonus: 0,
+          bounceVariation: 0,
+          wearFactor: 1.0,
+        };
+
+  const safeWeather: WeatherCondition =
+    match.weather && typeof match.weather === 'object' && (match.weather as any).type
+      ? (match.weather as WeatherCondition)
+      : {
+          type: typeof match.weather === 'string' ? (match.weather as any) : 'SUNNY',
+          swingBonus: 6,
+          description: 'Clear conditions.',
+        };
+
   const basePace =
-    match.pitch.type === 'GREEN_SEAMER'
+    safePitch.type === 'GREEN_SEAMER'
       ? 76
-      : match.pitch.type === 'BATTER_PARADISE'
+      : safePitch.type === 'BATTER_PARADISE'
       ? 68
-      : match.pitch.type === 'DUSTBOWL_SPIN'
+      : safePitch.type === 'DUSTBOWL_SPIN'
       ? 44
       : 62;
-  const surfacePace = clamp(basePace + match.pitch.paceBonus * 0.8 + (rand() - 0.5) * 8, 25, 95);
+  const surfacePace = clamp(basePace + (safePitch.paceBonus || 0) * 0.8 + (rand() - 0.5) * 8, 25, 95);
 
   const baseBounce =
-    match.pitch.type === 'GREEN_SEAMER'
+    safePitch.type === 'GREEN_SEAMER'
       ? 74
-      : match.pitch.type === 'BATTER_PARADISE'
+      : safePitch.type === 'BATTER_PARADISE'
       ? 70
-      : match.pitch.type === 'DUSTBOWL_SPIN'
+      : safePitch.type === 'DUSTBOWL_SPIN'
       ? 48
       : 64;
-  const bounce = clamp(baseBounce + match.pitch.bounceVariation * 0.7 + (rand() - 0.5) * 8, 30, 95);
+  const bounce = clamp(baseBounce + (safePitch.bounceVariation || 0) * 0.7 + (rand() - 0.5) * 8, 30, 95);
 
   const seamMovement = clamp(
-    35 + match.pitch.paceBonus * 1.8 + (match.pitch.type === 'GREEN_SEAMER' ? 16 : 0) + (rand() - 0.5) * 10,
+    35 + (safePitch.paceBonus || 0) * 1.8 + (safePitch.type === 'GREEN_SEAMER' ? 16 : 0) + (rand() - 0.5) * 10,
     15,
     92
   );
 
   const spinAssistance = clamp(
-    40 + match.pitch.spinBonus * 1.9 + (match.pitch.type === 'DUSTBOWL_SPIN' ? 20 : 0) + (rand() - 0.5) * 10,
+    40 + (safePitch.spinBonus || 0) * 1.9 + (safePitch.type === 'DUSTBOWL_SPIN' ? 20 : 0) + (rand() - 0.5) * 10,
     15,
     95
   );
@@ -104,7 +127,7 @@ export function createWhiteBallConditions(
   let humidity = 52;
   let temperatureC = 27;
 
-  switch (match.weather.type) {
+  switch (safeWeather.type) {
     case 'OVERCAST_SWING':
       cloudCover = 82;
       humidity = 74;
@@ -646,6 +669,10 @@ export function selectWhiteBallOpeningBowler(
 
   const rand = mulberry32(seed + 1907);
 
+  const safePaceBonus = (pitch && typeof pitch === 'object') ? ((pitch as any).paceBonus || 0) : 0;
+  const safeSpinBonus = (pitch && typeof pitch === 'object') ? ((pitch as any).spinBonus || 0) : 0;
+  const safeSwingBonus = (weather && typeof weather === 'object') ? ((weather as any).swingBonus || 0) : 6;
+
   const scored = candidates.map((id) => {
     const p = getPlayerById(id);
     const spin = isSpinBowler(p.bowlingStyle);
@@ -654,13 +681,13 @@ export function selectWhiteBallOpeningBowler(
     if (!spin) {
       // New ball favours swing, seam, pace, and control
       score +=
-        p.attributes.swing * 0.32 +
-        p.attributes.seam * 0.20 +
-        p.attributes.pace * 0.18 +
-        (pitch.paceBonus + weather.swingBonus) * 0.35;
+        (p.attributes?.swing || 50) * 0.32 +
+        (p.attributes?.seam || 50) * 0.20 +
+        (p.attributes?.pace || 50) * 0.18 +
+        (safePaceBonus + safeSwingBonus) * 0.35;
     } else {
       // Spinners rarely open unless raging turner in T20I
-      score += format === 'T20I' && pitch.spinBonus >= 14 ? 8 : -24;
+      score += format === 'T20I' && safeSpinBonus >= 14 ? 8 : -24;
     }
 
     // Small match-specific jitter so #1 and #2 new-ball bowlers can alternate opening ends across matches

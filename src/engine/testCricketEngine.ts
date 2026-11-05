@@ -19,11 +19,22 @@ export const DEFAULT_NEW_BALL_OVERS = 80;
  * Returns initial dynamic weather state for Day 1 Morning of a Test match from venue baseline
  */
 export function createInitialTestWeather(
-  baseWeather: WeatherCondition,
+  baseWeather?: WeatherCondition | string,
   seed = 101
 ): TestDynamicWeather {
   const rand = mulberry32(seed + 41);
-  switch (baseWeather.type) {
+  const weatherType =
+    typeof baseWeather === 'string'
+      ? baseWeather
+      : baseWeather && typeof baseWeather === 'object'
+      ? baseWeather.type
+      : 'SUNNY';
+  const customDesc =
+    typeof baseWeather === 'object' && baseWeather?.description
+      ? baseWeather.description
+      : undefined;
+
+  switch (weatherType) {
     case 'OVERCAST_SWING':
       return {
         condition: 'OVERCAST',
@@ -31,7 +42,7 @@ export function createInitialTestWeather(
         temperatureC: 17 + Math.floor(rand() * 5),
         humidity: 68 + Math.floor(rand() * 16),
         lightLevel: 'GOOD',
-        description: baseWeather.description || 'Heavy cloud cover aiding prodigious seam and swing.',
+        description: customDesc || 'Heavy cloud cover aiding prodigious seam and swing.',
       };
     case 'RAIN_RISK':
       return {
@@ -40,7 +51,7 @@ export function createInitialTestWeather(
         temperatureC: 16 + Math.floor(rand() * 5),
         humidity: 78 + Math.floor(rand() * 15),
         lightLevel: 'FADING',
-        description: baseWeather.description || 'Brooding grey skies with passing showers in the vicinity.',
+        description: customDesc || 'Brooding grey skies with passing showers in the vicinity.',
       };
     case 'HUMID':
       return {
@@ -49,7 +60,7 @@ export function createInitialTestWeather(
         temperatureC: 29 + Math.floor(rand() * 5),
         humidity: 74 + Math.floor(rand() * 16),
         lightLevel: 'GOOD',
-        description: baseWeather.description || 'Warm, humid conditions offering conventional swing with the new ball.',
+        description: customDesc || 'Warm, humid conditions offering conventional swing with the new ball.',
       };
     case 'HAZY':
       return {
@@ -58,7 +69,7 @@ export function createInitialTestWeather(
         temperatureC: 27 + Math.floor(rand() * 6),
         humidity: 55 + Math.floor(rand() * 18),
         lightLevel: 'GOOD',
-        description: baseWeather.description || 'Warm hazy sunshine baking the surface.',
+        description: customDesc || 'Warm hazy sunshine baking the surface.',
       };
     case 'SUNNY':
     default:
@@ -68,7 +79,7 @@ export function createInitialTestWeather(
         temperatureC: 25 + Math.floor(rand() * 9),
         humidity: 36 + Math.floor(rand() * 20),
         lightLevel: 'GOOD',
-        description: baseWeather.description || 'Clear blue skies and bright sunshine.',
+        description: customDesc || 'Clear blue skies and bright sunshine.',
       };
   }
 }
@@ -76,12 +87,19 @@ export function createInitialTestWeather(
 /**
  * Computes initial Day 1 pitch wear (0-100) based on surface type
  */
-export function getInitialTestPitchWear(pitch: PitchCondition, seed = 101): number {
+export function getInitialTestPitchWear(pitch?: PitchCondition | string, seed = 101): number {
   const rand = mulberry32(seed + 73);
-  if (pitch.type === 'CRACKED_DAY5') return 42 + Math.round(rand() * 10);
-  if (pitch.type === 'DUSTBOWL_SPIN') return 14 + Math.round(rand() * 6);
-  if (pitch.type === 'GREEN_SEAMER') return 4 + Math.round(rand() * 4);
-  if (pitch.type === 'BATTER_PARADISE') return 5 + Math.round(rand() * 4);
+  const pType =
+    typeof pitch === 'string'
+      ? pitch
+      : pitch && typeof pitch === 'object'
+      ? pitch.type
+      : 'SPORTING_BALANCED';
+
+  if (pType === 'CRACKED_DAY5') return 42 + Math.round(rand() * 10);
+  if (pType === 'DUSTBOWL_SPIN') return 14 + Math.round(rand() * 6);
+  if (pType === 'GREEN_SEAMER') return 4 + Math.round(rand() * 4);
+  if (pType === 'BATTER_PARADISE') return 5 + Math.round(rand() * 4);
   return 7 + Math.round(rand() * 5);
 }
 
@@ -975,15 +993,27 @@ function scoreTestBowlerBaseAbility(p: Player, isWk: boolean): number {
 export function selectTestOpeningBowler(
   bowlingXI: string[],
   wicketKeeperId: string | undefined,
-  pitch: PitchCondition,
-  weather: WeatherCondition,
-  getPlayer: (id: string) => Player
+  pitch?: PitchCondition | string,
+  weather?: WeatherCondition | string,
+  getPlayer?: (id: string) => Player
 ): string {
+  const getP = getPlayer || ((id: string) => ({ id, shortName: 'Bowler', bowlingStyle: 'RIGHT_ARM_FAST_MEDIUM' } as Player));
   const candidates = bowlingXI
     .filter((id) => id !== wicketKeeperId)
-    .map((id) => ({ id, player: getPlayer(id) }));
+    .map((id) => ({ id, player: getP(id) }));
 
   if (candidates.length === 0) return bowlingXI[bowlingXI.length - 1] || 'b1';
+
+  const pType =
+    typeof pitch === 'string'
+      ? pitch
+      : pitch && typeof pitch === 'object'
+      ? pitch.type
+      : 'SPORTING_BALANCED';
+  const wSwing =
+    typeof weather === 'object' && weather?.swingBonus !== undefined
+      ? weather.swingBonus
+      : 6;
 
   candidates.sort((a, b) => {
     const aSpin = isSpinBowler(a.player.bowlingStyle);
@@ -991,10 +1021,10 @@ export function selectTestOpeningBowler(
     // Strongly prefer fast/swing/seam bowlers with the brand-new red ball unless pitch is extreme dustbowl with no pacers
     const aNewBall =
       scoreTestBowlerBaseAbility(a.player, false) +
-      (aSpin ? (pitch.type === 'DUSTBOWL_SPIN' ? -8 : -45) : 25 + (weather.swingBonus || 0) * 0.4);
+      (aSpin ? (pType === 'DUSTBOWL_SPIN' ? -8 : -45) : 25 + wSwing * 0.4);
     const bNewBall =
       scoreTestBowlerBaseAbility(b.player, false) +
-      (bSpin ? (pitch.type === 'DUSTBOWL_SPIN' ? -8 : -45) : 25 + (weather.swingBonus || 0) * 0.4);
+      (bSpin ? (pType === 'DUSTBOWL_SPIN' ? -8 : -45) : 25 + wSwing * 0.4);
     return bNewBall - aNewBall;
   });
 

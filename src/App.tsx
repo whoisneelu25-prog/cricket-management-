@@ -40,8 +40,9 @@ import {
 } from './engine/worldSimulation';
 import { TrainingFocus } from './engine/playerDevelopmentEngine';
 import { INTERNATIONAL_TEAMS } from './data/teams';
-import { ALL_PLAYERS, getDefaultPlayingXI, getDefaultWicketKeeperId } from './data/squads';
+import { ALL_PLAYERS, getDefaultPlayingXI, getDefaultWicketKeeperId, getDefaultCaptainId } from './data/squads';
 import { PitchBackground } from './components/common/PitchBackground';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { TopBar } from './components/navigation/TopBar';
 import { Sidebar } from './components/navigation/Sidebar';
 import { DashboardView } from './components/dashboard/DashboardView';
@@ -433,17 +434,36 @@ export default function App() {
       )
     );
 
+    const finalHomeXI = freshMatch.homeTeamId === battingTeamId ? battingXI : bowlingXI;
+    const finalAwayXI = freshMatch.awayTeamId === battingTeamId ? battingXI : bowlingXI;
+
     const startedMatch: Match = ensureMatchTacticalSystemsInitialized({
       ...freshMatch,
       status: 'IN_PROGRESS',
+      userTeamId,
+      isUserMatch: true,
       tossWinnerId: userTeamId,
       tossChoice: choice,
-      homeXI: freshMatch.homeTeamId === battingTeamId ? battingXI : bowlingXI,
-      awayXI: freshMatch.awayTeamId === battingTeamId ? battingXI : bowlingXI,
+      homeXI: finalHomeXI,
+      awayXI: finalAwayXI,
+      homeCaptainId:
+        freshMatch.homeCaptainId ||
+        finalHomeXI[0] ||
+        getDefaultCaptainId(freshMatch.homeTeamId, freshMatch.format),
+      awayCaptainId:
+        freshMatch.awayCaptainId ||
+        finalAwayXI[0] ||
+        getDefaultCaptainId(freshMatch.awayTeamId, freshMatch.format),
       homeWicketKeeperId:
-        freshMatch.homeTeamId === bowlingTeamId ? bowlingWkId : freshMatch.homeWicketKeeperId,
+        freshMatch.homeTeamId === bowlingTeamId
+          ? bowlingWkId
+          : freshMatch.homeWicketKeeperId ||
+            getDefaultWicketKeeperId(freshMatch.homeTeamId, freshMatch.format),
       awayWicketKeeperId:
-        freshMatch.awayTeamId === bowlingTeamId ? bowlingWkId : freshMatch.awayWicketKeeperId,
+        freshMatch.awayTeamId === bowlingTeamId
+          ? bowlingWkId
+          : freshMatch.awayWicketKeeperId ||
+            getDefaultWicketKeeperId(freshMatch.awayTeamId, freshMatch.format),
       currentInningsIndex: 0,
       innings: [innings1],
       ...(freshMatch.format === 'TEST'
@@ -663,7 +683,8 @@ export default function App() {
 
         {/* Scrollable Workspace */}
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 bg-[#000000]/60 backdrop-blur-[1px]">
-          {activeTab === 'DASHBOARD' && career && (
+          <ErrorBoundary onReset={() => setActiveTab('DASHBOARD')}>
+            {activeTab === 'DASHBOARD' && career && (
             <DashboardView
               career={career}
               calendarAlert={calendarAlert}
@@ -826,6 +847,21 @@ export default function App() {
             />
           )}
 
+          {activeTab === 'MATCH_CENTRE' && !activeMatch && (
+            <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-8 max-w-xl mx-auto my-12 text-center text-white">
+              <h3 className="text-xl font-bold font-display">No Active Match in Progress</h3>
+              <p className="text-xs text-[#8b97a3] mt-2 font-sans">
+                You do not currently have a match loaded. Select an upcoming fixture or start a new tour series.
+              </p>
+              <button
+                onClick={() => setActiveTab('DASHBOARD')}
+                className="btn-gold mt-6 text-xs px-6 py-2.5 rounded-xl cursor-pointer"
+              >
+                Return to Dashboard
+              </button>
+            </div>
+          )}
+
           {activeTab === 'FIXTURES' && career && (
             <FixturesView
               career={career}
@@ -887,6 +923,7 @@ export default function App() {
               onImportPlayerDataset={handleImportPlayerDataset}
             />
           )}
+          </ErrorBoundary>
         </main>
       </div>
 
