@@ -73,7 +73,7 @@ interface MatchCentreViewProps {
   onSimulateMatch: () => void;
   onUpdateTactics: (aggression: BattingAggression, bowlingTactic: BowlingTactic, fieldPreset: FieldPreset) => void;
   onChangeBowler: (bowlerId: string) => void;
-  onStartMatchWithToss: (choice: 'BAT' | 'BOWL') => void;
+  onStartMatchWithToss: (choice: 'BAT' | 'BOWL', tossWinnerId?: string) => void;
   onSelectPlayer: (player: Player) => void;
   onDeclareInnings?: () => void;
   onFollowOnDecision?: (enforce: boolean) => void;
@@ -122,12 +122,92 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
   const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
   const commentaryScrollRef = useRef<HTMLDivElement | null>(null);
 
+  // Interactive Coin Toss State
+  const [tossCaller, setTossCaller] = useState<'USER' | 'CPU'>('USER');
+  const [tossCall, setTossCall] = useState<'HEADS' | 'TAILS'>('HEADS');
+  const [isFlippingCoin, setIsFlippingCoin] = useState(false);
+  const [coinLanding, setCoinLanding] = useState<'HEADS' | 'TAILS' | null>(null);
+  const [tossWinnerTeamId, setTossWinnerTeamId] = useState<string | null>(null);
+  const [cpuDecision, setCpuDecision] = useState<'BAT' | 'BOWL' | null>(null);
+
   const homeTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.homeTeamId);
   const awayTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.awayTeamId);
 
   const currentInnings = match.innings[match.currentInningsIndex] || match.innings[0];
   const isMatchFinished = isTerminalMatchStatus(match.status);
   const userTeamId = career?.selectedTeamId || match.userTeamId;
+  const oppTeamId = match.homeTeamId === userTeamId ? match.awayTeamId : match.homeTeamId;
+  const userTeam = match.homeTeamId === userTeamId ? homeTeam : awayTeam;
+  const oppTeam = match.homeTeamId === userTeamId ? awayTeam : homeTeam;
+
+  const userCaptainId = match.homeTeamId === userTeamId ? match.homeCaptainId : match.awayCaptainId;
+  const oppCaptainId = match.homeTeamId === userTeamId ? match.awayCaptainId : match.homeCaptainId;
+  const userCaptain = userCaptainId
+    ? getEffectivePlayer(userCaptainId, career) || getPlayerById(userCaptainId)
+    : null;
+  const oppCaptain = oppCaptainId
+    ? getEffectivePlayer(oppCaptainId, career) || getPlayerById(oppCaptainId)
+    : null;
+
+  const handleFlipCoin = () => {
+    if (isFlippingCoin) return;
+    setIsFlippingCoin(true);
+    setCoinLanding(null);
+    setTossWinnerTeamId(null);
+    setCpuDecision(null);
+
+    const targetOutcome: 'HEADS' | 'TAILS' = Math.random() < 0.5 ? 'HEADS' : 'TAILS';
+    const effectiveCallerCall: 'HEADS' | 'TAILS' =
+      tossCaller === 'USER' ? tossCall : Math.random() < 0.5 ? 'HEADS' : 'TAILS';
+
+    setTimeout(() => {
+      const callerWon = effectiveCallerCall === targetOutcome;
+      const winnerId = callerWon
+        ? tossCaller === 'USER'
+          ? userTeamId
+          : oppTeamId
+        : tossCaller === 'USER'
+        ? oppTeamId
+        : userTeamId;
+
+      setCoinLanding(targetOutcome);
+      setTossWinnerTeamId(winnerId);
+
+      if (winnerId !== userTeamId) {
+        // Local rule-based AI decision based on match format, pitch conditions, and weather
+        const pitchType = typeof match.pitch === 'object' ? match.pitch?.type : 'BALANCED';
+        const weatherType = typeof match.weather === 'object' ? match.weather?.type : 'CLEAR';
+        let decision: 'BAT' | 'BOWL' = 'BAT';
+
+        if (match.format === 'TEST') {
+          // In Tests, captains overwhelmingly bat first unless seamer wicket with heavy overcast swing
+          if (pitchType === 'GREEN_SEAMER' || weatherType === 'RAIN_RISK' || weatherType === 'OVERCAST_SWING') {
+            decision = Math.random() < 0.65 ? 'BOWL' : 'BAT';
+          } else {
+            decision = 'BAT';
+          }
+        } else {
+          // In ODI / T20I: overcast/dew conditions favor bowling first
+          if (weatherType === 'OVERCAST_SWING' || weatherType === 'RAIN_RISK' || pitchType === 'GREEN_SEAMER') {
+            decision = 'BOWL';
+          } else if (pitchType === 'BATTER_PARADISE' || pitchType === 'DUSTBOWL_SPIN') {
+            decision = 'BAT';
+          } else {
+            decision = Math.random() < 0.55 ? 'BOWL' : 'BAT';
+          }
+        }
+        setCpuDecision(decision);
+      }
+
+      setIsFlippingCoin(false);
+    }, 850);
+  };
+
+  const handleResetToss = () => {
+    setCoinLanding(null);
+    setTossWinnerTeamId(null);
+    setCpuDecision(null);
+  };
   const needsUserFollowOnChoice =
     match.format === 'TEST' &&
     (match.awaitingFollowOnDecision ||
@@ -483,27 +563,193 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
           </div>
         </div>
 
-        <div className="space-y-3">
-          <p className="text-xs text-slate-300 font-medium">
-            As Captain, you have won the toss! Choose your match strategy:
-          </p>
+        {/* Interactive Dugout Coin Toss Chamber */}
+        <div className="space-y-4 pt-3 border-t border-[#1e2733]">
+          {/* Toss Step 1: Selection & Flip */}
+          {tossWinnerTeamId === null && (
+            <div className="space-y-4">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-[#10151c] p-3 rounded-xl border border-[#1e2733]">
+                <div className="text-left">
+                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#8b97a3] font-display block">
+                    Coin Call Duty
+                  </span>
+                  <span className="text-xs text-[#e8edf2] font-semibold">
+                    Who calls Heads or Tails in the air?
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5 bg-[#070a0e] p-1 rounded-lg border border-[#1e2733]">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setTossCaller('USER');
+                      handleResetToss();
+                    }}
+                    className={`text-xs px-3 py-1.5 rounded-md font-display font-bold transition cursor-pointer ${
+                      tossCaller === 'USER'
+                        ? 'bg-[#e2b64a] text-black shadow'
+                        : 'text-[#8b97a3] hover:text-white'
+                    }`}
+                  >
+                    I Will Call ({userCaptain?.shortName || 'You'})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setTossCaller('CPU');
+                      handleResetToss();
+                    }}
+                    className={`text-xs px-3 py-1.5 rounded-md font-display font-bold transition cursor-pointer ${
+                      tossCaller === 'CPU'
+                        ? 'bg-[#e2b64a] text-black shadow'
+                        : 'text-[#8b97a3] hover:text-white'
+                    }`}
+                  >
+                    Opponent Calls ({oppCaptain?.shortName || oppTeam?.name || 'CPU'})
+                  </button>
+                </div>
+              </div>
 
-          <div className="flex items-center justify-center gap-3">
-            <button
-              onClick={() => onStartMatchWithToss('BAT')}
-              className="btn-gold text-xs px-7 py-2.5 rounded-xl shadow-lg cursor-pointer transition active:scale-95 flex items-center space-x-2 font-display font-bold"
-            >
-              <Play className="w-4 h-4 fill-current" />
-              <span>Bat First</span>
-            </button>
-            <button
-              onClick={() => onStartMatchWithToss('BOWL')}
-              className="bg-[#10151c] hover:bg-[#1a2330] text-[#ffe9a8] hover:text-white border border-[#e2b64a]/50 font-display font-bold text-xs px-7 py-2.5 rounded-xl shadow-lg cursor-pointer transition active:scale-95 flex items-center space-x-2"
-            >
-              <Shield className="w-4 h-4 text-[#e2b64a]" />
-              <span>Bowl First</span>
-            </button>
-          </div>
+              {/* Call choice selection */}
+              {tossCaller === 'USER' ? (
+                <div className="bg-[#0e141f] p-3.5 rounded-xl border border-[#1e2733] space-y-2">
+                  <span className="text-[11px] font-bold text-[#c3ccd6] block">
+                    Select your call before the coin is flipped:
+                  </span>
+                  <div className="flex items-center justify-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setTossCall('HEADS')}
+                      className={`text-xs px-5 py-2 rounded-xl font-bold font-display border cursor-pointer transition ${
+                        tossCall === 'HEADS'
+                          ? 'bg-[#2c2412] text-[#ffe9a8] border-[#e2b64a] shadow-lg shadow-[#e2b64a]/20 scale-105'
+                          : 'bg-[#10151c] text-[#8b97a3] border-[#1e2733] hover:text-white'
+                      }`}
+                    >
+                      🪙 HEADS
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setTossCall('TAILS')}
+                      className={`text-xs px-5 py-2 rounded-xl font-bold font-display border cursor-pointer transition ${
+                        tossCall === 'TAILS'
+                          ? 'bg-[#2c2412] text-[#ffe9a8] border-[#e2b64a] shadow-lg shadow-[#e2b64a]/20 scale-105'
+                          : 'bg-[#10151c] text-[#8b97a3] border-[#1e2733] hover:text-white'
+                      }`}
+                    >
+                      🪙 TAILS
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="bg-[#0e141f] p-3.5 rounded-xl border border-[#1e2733] text-center">
+                  <span className="text-xs text-[#c3ccd6]">
+                    Opposition Captain <strong>{oppCaptain?.shortName || oppTeam?.name}</strong> will call in the air when you toss the coin.
+                  </span>
+                </div>
+              )}
+
+              {/* Coin flip button & visual */}
+              <div className="py-2 flex flex-col items-center justify-center space-y-3">
+                <div
+                  className={`w-16 h-16 rounded-full border-2 border-[#e2b64a] bg-gradient-to-tr from-[#e0ab3a] via-[#ffe9a8] to-[#e0ab3a] text-black font-black font-display flex items-center justify-center shadow-xl shadow-[#e2b64a]/25 text-sm select-none ${
+                    isFlippingCoin ? 'animate-spin' : ''
+                  }`}
+                >
+                  {isFlippingCoin ? 'ICM' : tossCall}
+                </div>
+
+                <div className="flex items-center justify-center gap-3">
+                  <button
+                    type="button"
+                    onClick={handleFlipCoin}
+                    disabled={isFlippingCoin}
+                    className="btn-gold text-xs px-8 py-2.5 rounded-xl shadow-xl cursor-pointer font-display font-bold flex items-center gap-2 active:scale-95 disabled:opacity-50"
+                  >
+                    <Coins className="w-4 h-4" />
+                    <span>{isFlippingCoin ? 'Coin in the Air...' : 'Flip the Coin'}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Toss Step 2: Coin Landed & Decision */}
+          {tossWinnerTeamId !== null && (
+            <div className="space-y-4 animate-in zoom-in-95 duration-200">
+              <div className="p-4 bg-gradient-to-r from-[#10151c] via-[#1a2330] to-[#10151c] border-2 border-[#e2b64a] rounded-xl text-center shadow-xl">
+                <div className="inline-flex items-center gap-2 bg-[#2c2412] px-3 py-1 rounded-full border border-[#e2b64a]/50 text-xs font-bold text-[#ffe9a8] mb-2 font-display">
+                  <span>Coin Result: <strong>{coinLanding}</strong></span>
+                </div>
+
+                {tossWinnerTeamId === userTeamId ? (
+                  <div className="space-y-3">
+                    <h3 className="text-base font-extrabold text-[#3fca86] font-display flex items-center justify-center gap-1.5">
+                      <CheckCircle className="w-5 h-5 text-[#3fca86]" />
+                      <span>{userTeam?.name || 'Your Team'} Won the Toss!</span>
+                    </h3>
+                    <p className="text-xs text-[#c3ccd6] max-w-md mx-auto">
+                      As Captain {userCaptain?.shortName ? `(${userCaptain.shortName})` : ''}, choose whether to bat first or bowl first:
+                    </p>
+                    <div className="flex items-center justify-center gap-3 pt-1">
+                      <button
+                        type="button"
+                        onClick={() => onStartMatchWithToss('BAT', userTeamId)}
+                        className="btn-gold text-xs px-7 py-2.5 rounded-xl shadow-lg cursor-pointer transition active:scale-95 flex items-center space-x-2 font-display font-bold"
+                      >
+                        <Play className="w-4 h-4 fill-current" />
+                        <span>Bat First</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => onStartMatchWithToss('BOWL', userTeamId)}
+                        className="bg-[#10151c] hover:bg-[#1a2330] text-[#ffe9a8] hover:text-white border border-[#e2b64a]/50 font-display font-bold text-xs px-7 py-2.5 rounded-xl shadow-lg cursor-pointer transition active:scale-95 flex items-center space-x-2"
+                      >
+                        <Shield className="w-4 h-4 text-[#e2b64a]" />
+                        <span>Bowl First</span>
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <h3 className="text-base font-extrabold text-[#8fb2d9] font-display">
+                      {oppTeam?.name || 'Opposition'} Won the Toss!
+                    </h3>
+                    <p className="text-xs text-[#e8edf2] max-w-md mx-auto">
+                      {oppCaptain?.shortName || oppTeam?.name} has elected to{' '}
+                      <strong className="text-[#ffe9a8] uppercase underline">
+                        {cpuDecision === 'BAT' ? 'Bat First' : 'Bowl First'}
+                      </strong>
+                      . Your team will{' '}
+                      <strong className="text-[#3fca86] uppercase underline">
+                        {cpuDecision === 'BAT' ? 'Bowl First' : 'Bat First'}
+                      </strong>
+                      .
+                    </p>
+                    <div className="flex items-center justify-center gap-3 pt-1">
+                      <button
+                        type="button"
+                        onClick={() => onStartMatchWithToss(cpuDecision || 'BAT', oppTeamId)}
+                        className="btn-gold text-xs px-8 py-2.5 rounded-xl shadow-xl cursor-pointer transition active:scale-95 flex items-center space-x-2 font-display font-bold"
+                      >
+                        <Play className="w-4 h-4 fill-current" />
+                        <span>Take the Field &amp; Start Match</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex justify-center">
+                <button
+                  type="button"
+                  onClick={handleResetToss}
+                  className="text-[11px] text-[#8b97a3] hover:text-[#e8edf2] underline cursor-pointer"
+                >
+                  Flip Again
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       </div>
@@ -916,6 +1162,46 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                 className="bg-[#182234] hover:bg-[#24344f] text-slate-100 border border-[#364968] font-bold text-xs px-4 py-2 rounded transition cursor-pointer"
               >
                 Bat Again
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Innings Break Banner when an innings completes but match continues */}
+        {currentInnings.isCompleted && !isMatchFinished && !needsUserFollowOnChoice && (
+          <div className="mt-4 p-4 bg-gradient-to-r from-[#10151c] via-[#161d28] to-[#070a0e] border-2 border-[#e2b64a]/80 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xl animate-in fade-in">
+            <div className="space-y-1">
+              <span className="text-xs font-black uppercase tracking-wider text-[#ffe9a8] flex items-center gap-1.5 font-display">
+                <CheckCircle className="w-4 h-4 text-[#e2b64a]" />
+                Innings {match.currentInningsIndex + 1} Concluded: {currentInnings.battingTeamName} {currentInnings.totalRuns}/{currentInnings.wickets} ({currentInnings.completedOvers}.{currentInnings.ballsInCurrentOver} ov)
+              </span>
+              <p className="text-xs text-[#c3ccd6]">
+                {match.format !== 'TEST' && match.currentInningsIndex === 0 ? (
+                  <span>
+                    Target for <strong>{currentInnings.bowlingTeamName}</strong>:{' '}
+                    <strong className="text-[#ffe9a8] font-mono text-sm">{currentInnings.totalRuns + 1} runs</strong>{' '}
+                    from {allocatedInningsOvers} overs.
+                  </span>
+                ) : match.format === 'TEST' ? (
+                  <span>
+                    {match.currentInningsIndex === 0
+                      ? `${currentInnings.bowlingTeamName} will bat in their 1st Innings.`
+                      : match.currentInningsIndex === 1
+                      ? `1st Innings Lead: ${Math.abs((match.innings[0]?.totalRuns || 0) - currentInnings.totalRuns)} runs.`
+                      : `Target chase approaching in 4th Innings.`}
+                  </span>
+                ) : (
+                  <span>Ready to start the next innings.</span>
+                )}
+              </p>
+            </div>
+            <div className="flex items-center space-x-2 shrink-0">
+              <button
+                onClick={onSimulateBall}
+                className="btn-gold text-xs px-5 py-2.5 rounded-xl font-bold font-display shadow-lg cursor-pointer flex items-center space-x-1.5 active:scale-95"
+              >
+                <Play className="w-3.5 h-3.5 fill-current" />
+                <span>Start Innings {match.currentInningsIndex + 2} ▶</span>
               </button>
             </div>
           </div>
@@ -1418,7 +1704,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                   className="btn-gold text-xs py-2 rounded-lg shadow-md transition cursor-pointer flex items-center justify-center space-x-1 active:scale-95"
                 >
                   <Play className="w-3.5 h-3.5 fill-current" />
-                  <span>Ball</span>
+                  <span>{currentInnings.isCompleted && !isMatchFinished ? 'Next Inn' : 'Ball'}</span>
                 </button>
 
                 <button

@@ -18,6 +18,7 @@ import {
   setFormatTargetSquadSize,
   validateUserManagementAction,
 } from '../store/careerStore';
+import { getNationFormatSelectionData } from '../data/formatSquadsData';
 import {
   initializeDetailedTeamRankings,
   getSortedTeamRankingEntries,
@@ -268,8 +269,11 @@ test('4. Format Squad Independence: Modifying ODI squad NEVER affects Test or T2
   const initialT20Squad = [...career.formatSquads.T20I.squadPlayerIds];
   const initialOdiSquad = [...career.formatSquads.ODI.squadPlayerIds];
 
-  // Pick a player not in ODI squad to add
-  const candidate = indPool.find((p) => !initialOdiSquad.includes(p.id)) || indPool[indPool.length - 1];
+  // Pick a player in the ODI selection pool not yet in ODI squad to add
+  const odiPoolData = getNationFormatSelectionData('IND', 'ODI');
+  const candidateId = (odiPoolData?.poolPlayerIds || []).find((id) => !initialOdiSquad.includes(id)) ||
+    (indPool.find((p) => !initialOdiSquad.includes(p.id)) || indPool[indPool.length - 1]).id;
+  const candidate = indPool.find((p) => p.id === candidateId) || indPool[0];
 
   // Add to ODI squad
   const { updatedCareer: afterAdd } = addPlayerToFormatSquad(career, 'ODI', candidate.id);

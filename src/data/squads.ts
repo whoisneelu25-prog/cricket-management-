@@ -9,21 +9,50 @@ import {
 import { INTERNATIONAL_PLAYERS } from './players';
 import masterPlayersJson from './master_players.json';
 import masterSquadsJson from './master_squads.json';
+import {
+  FORMAT_PLAYERS,
+  buildDefaultFormatSquadConfig,
+  getFormatSelectionPoolPlayers,
+  getDefaultFormatPlayingXI as getOfficialFormatXI,
+  getDefaultFormatCaptainId as getOfficialFormatCaptain,
+  getDefaultFormatViceCaptainId as getOfficialFormatViceCaptain,
+  getDefaultFormatWicketKeeperId as getOfficialFormatWicketKeeper,
+} from './formatSquadsData';
 
 const CORE_12 = new Set(['IND', 'AUS', 'ENG', 'PAK', 'RSA', 'NZL', 'SL', 'BAN', 'WI', 'AFG', 'IRE', 'ZIM']);
 
-export const ADDITIONAL_SQUAD_MEMBERS: Player[] = (masterPlayersJson as Player[]).filter(
+const formatPlayerMap = new Map(FORMAT_PLAYERS.map((p) => [p.id, p]));
+const masterList = (masterPlayersJson as Player[]).map((p) => {
+  const formatOverride = formatPlayerMap.get(p.id);
+  if (formatOverride) {
+    return {
+      ...p,
+      status: 'ACTIVE' as const,
+      formatEligibility: {
+        ...p.formatEligibility,
+        ...formatOverride.formatEligibility,
+      },
+      isWicketKeeper: p.isWicketKeeper || formatOverride.isWicketKeeper,
+      role: formatOverride.isWicketKeeper && p.role === 'BATTER' ? ('WICKETKEEPER_BATTER' as const) : p.role,
+    };
+  }
+  return p;
+});
+const masterIds = new Set(masterList.map((p) => p.id));
+const extraFormatPlayers = FORMAT_PLAYERS.filter((p) => !masterIds.has(p.id));
+
+export const ADDITIONAL_SQUAD_MEMBERS: Player[] = masterList.filter(
   (p) => !CORE_12.has(p.countryId)
 );
 
-export const ALL_PLAYERS: Player[] = (masterPlayersJson as Player[]);
+export const ALL_PLAYERS: Player[] = [...masterList, ...extraFormatPlayers];
 
 const SQUADS_MAP = masterSquadsJson as Record<string, Record<MatchFormat, FormatSquadConfig>>;
 
 export function getPlayersByCountry(countryId: string, activeMenOnly: boolean = true): Player[] {
-  const normalizedId = countryId === 'SRI' ? 'SL' : countryId === 'WIN' ? 'WI' : countryId;
+  const normalizedId = countryId === 'SRI' ? 'SL' : countryId === 'WIN' ? 'WI' : countryId === 'SA' ? 'RSA' : countryId;
   return ALL_PLAYERS.filter((p) => {
-    const match = p.countryId === normalizedId || p.countryId === countryId;
+    const match = p.countryId === normalizedId || p.countryId === countryId || (normalizedId === 'RSA' && p.countryId === 'SA');
     if (!match) return false;
     if (activeMenOnly) {
       return p.status === 'ACTIVE' && p.gender === 'MALE';
@@ -37,6 +66,11 @@ export function getAllPlayersByCountry(countryId: string): Player[] {
 }
 
 export function getFormatEligiblePlayers(countryId: string, format: MatchFormat): Player[] {
+  // Use format-specific selection pool from 12 nations dataset if available
+  const formatPool = getFormatSelectionPoolPlayers(countryId, format);
+  if (formatPool && formatPool.length >= 11) {
+    return formatPool;
+  }
   const pool = getPlayersByCountry(countryId, true);
   const eligible = pool.filter((p) => p.formatEligibility[format] && p.status === 'ACTIVE' && p.gender === 'MALE');
   if (eligible.length >= 11) return eligible;
@@ -235,7 +269,9 @@ export function getEffectivePlayersByCountry(
 }
 
 export function getDefaultCaptainId(countryId: string, format: MatchFormat = 'TEST'): string {
-  const normalizedId = countryId === 'SRI' ? 'SL' : countryId === 'WIN' ? 'WI' : countryId;
+  const official = getOfficialFormatCaptain(countryId, format);
+  if (official) return official;
+  const normalizedId = countryId === 'SRI' ? 'SL' : countryId === 'WIN' ? 'WI' : countryId === 'SA' ? 'RSA' : countryId;
   const cfg = SQUADS_MAP[normalizedId]?.[format];
   if (cfg && cfg.captainId) {
     const p = ALL_PLAYERS.find((x) => x.id === cfg.captainId);
@@ -246,7 +282,9 @@ export function getDefaultCaptainId(countryId: string, format: MatchFormat = 'TE
 }
 
 export function getDefaultViceCaptainId(countryId: string, format: MatchFormat = 'TEST'): string {
-  const normalizedId = countryId === 'SRI' ? 'SL' : countryId === 'WIN' ? 'WI' : countryId;
+  const official = getOfficialFormatViceCaptain(countryId, format);
+  if (official) return official;
+  const normalizedId = countryId === 'SRI' ? 'SL' : countryId === 'WIN' ? 'WI' : countryId === 'SA' ? 'RSA' : countryId;
   const cfg = SQUADS_MAP[normalizedId]?.[format];
   if (cfg && cfg.viceCaptainId) {
     const p = ALL_PLAYERS.find((x) => x.id === cfg.viceCaptainId);
@@ -257,7 +295,9 @@ export function getDefaultViceCaptainId(countryId: string, format: MatchFormat =
 }
 
 export function getDefaultWicketKeeperId(countryId: string, format: MatchFormat = 'TEST'): string {
-  const normalizedId = countryId === 'SRI' ? 'SL' : countryId === 'WIN' ? 'WI' : countryId;
+  const official = getOfficialFormatWicketKeeper(countryId, format);
+  if (official) return official;
+  const normalizedId = countryId === 'SRI' ? 'SL' : countryId === 'WIN' ? 'WI' : countryId === 'SA' ? 'RSA' : countryId;
   const cfg = SQUADS_MAP[normalizedId]?.[format];
   if (cfg && cfg.wicketKeeperId) {
     const p = ALL_PLAYERS.find((x) => x.id === cfg.wicketKeeperId);
@@ -269,7 +309,9 @@ export function getDefaultWicketKeeperId(countryId: string, format: MatchFormat 
 }
 
 export function getDefaultPlayingXI(countryId: string, format: MatchFormat = 'TEST'): string[] {
-  const normalizedId = countryId === 'SRI' ? 'SL' : countryId === 'WIN' ? 'WI' : countryId;
+  const officialXI = getOfficialFormatXI(countryId, format);
+  if (officialXI && officialXI.length === 11) return officialXI;
+  const normalizedId = countryId === 'SRI' ? 'SL' : countryId === 'WIN' ? 'WI' : countryId === 'SA' ? 'RSA' : countryId;
   const cfg = SQUADS_MAP[normalizedId]?.[format];
   if (cfg && cfg.playingXI && cfg.playingXI.length >= 11) {
     const allActive = cfg.playingXI.every((id) => {
@@ -285,7 +327,11 @@ export function getDefaultPlayingXI(countryId: string, format: MatchFormat = 'TE
 }
 
 export function getDefaultFormatSquadConfig(countryId: string, format: MatchFormat): FormatSquadConfig {
-  const normalizedId = countryId === 'SRI' ? 'SL' : countryId === 'WIN' ? 'WI' : countryId;
+  const officialCfg = buildDefaultFormatSquadConfig(countryId, format);
+  if (officialCfg && officialCfg.playingXI && officialCfg.playingXI.length === 11) {
+    return officialCfg;
+  }
+  const normalizedId = countryId === 'SRI' ? 'SL' : countryId === 'WIN' ? 'WI' : countryId === 'SA' ? 'RSA' : countryId;
   const pool = getFormatEligiblePlayers(normalizedId, format);
   const poolIds = new Set(pool.map((p) => p.id));
   const cfg = SQUADS_MAP[normalizedId]?.[format];

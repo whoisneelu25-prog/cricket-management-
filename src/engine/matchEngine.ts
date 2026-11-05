@@ -981,9 +981,12 @@ export function stepMatchBall(matchInput: Match): Match {
   }
 
   const currentInnings = match.innings[match.currentInningsIndex];
+  if (!currentInnings) {
+    return match;
+  }
 
   // 1. INNINGS TRANSITION STATE MACHINE
-  if (!currentInnings || currentInnings.isCompleted) {
+  if (currentInnings.isCompleted) {
     if (match.format === 'TEST') {
       // TEST 4-INNINGS SYSTEM
       if (match.currentInningsIndex === 0) {

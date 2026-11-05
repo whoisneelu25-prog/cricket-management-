@@ -33,6 +33,12 @@ import {
 } from '../engine/worldSimulation';
 import { OFFICIAL_SOURCES } from '../data/players';
 import {
+  getNationFormatSelectionData,
+  validateFormatSquad,
+  validatePlayingXI,
+  FORMAT_PLAYERS_MAP,
+} from '../data/formatSquadsData';
+import {
   INITIAL_ASHES_COMPETITION,
   INITIAL_BGT_COMPETITION,
   INITIAL_TOURNAMENT_EDITIONS,
@@ -725,6 +731,10 @@ export function addPlayerToFormatSquad(
   if (!doesPlayerBelongToUserCountry(career, playerId)) {
     return { updatedCareer: career, error: 'Player does not belong to your nation.' };
   }
+  const formatData = getNationFormatSelectionData(career.selectedTeamId, format);
+  if (formatData && formatData.poolPlayerIds.length > 0 && !formatData.poolPlayerIds.includes(playerId)) {
+    return { updatedCareer: career, error: 'Player is not in the format selection pool for ' + format + '.' };
+  }
   const cfg = career.formatSquads[format];
   if (!cfg) return { updatedCareer: career };
   const currentSquad = cfg.squadPlayerIds || [];
@@ -752,6 +762,116 @@ export function addPlayerToFormatSquad(
           squadPlayerIds: updatedSquad,
           reservePlayerIds: updatedReserves,
         },
+      },
+    },
+  };
+}
+
+export function saveFormatSquad(
+  career: CareerSave,
+  format: MatchFormat,
+  squadPlayerIds: string[],
+  captainId: string,
+  viceCaptainId: string,
+  targetSquadSize: number = 15
+): { updatedCareer: CareerSave; error?: string } {
+  const formatData = getNationFormatSelectionData(career.selectedTeamId, format);
+  const poolIds = formatData ? formatData.poolPlayerIds : [];
+  const validation = validateFormatSquad(squadPlayerIds, poolIds, 11, 20);
+  if (!validation.isValid) {
+    return { updatedCareer: career, error: validation.errors.join('; ') };
+  }
+
+  const currentCfg = career.formatSquads[format] || getDefaultFormatSquadConfig(career.selectedTeamId, format);
+  const updatedCfg: FormatSquadConfig = {
+    ...currentCfg,
+    squadPlayerIds,
+    targetSquadSize,
+    captainId,
+    viceCaptainId,
+    isConfirmed: true,
+  };
+
+  return {
+    updatedCareer: {
+      ...career,
+      formatSquads: {
+        ...career.formatSquads,
+        [format]: updatedCfg,
+      },
+    },
+  };
+}
+
+export function saveFormatPlayingXI(
+  career: CareerSave,
+  format: MatchFormat,
+  playingXI: string[],
+  captainId: string,
+  viceCaptainId: string,
+  wicketKeeperId: string,
+  bowlingRotation?: string[]
+): { updatedCareer: CareerSave; error?: string } {
+  const currentCfg = career.formatSquads[format] || getDefaultFormatSquadConfig(career.selectedTeamId, format);
+  const squadIds = currentCfg.squadPlayerIds || [];
+
+  const validation = validatePlayingXI({
+    playingXI,
+    squadPlayerIds: squadIds,
+    captainId,
+    viceCaptainId,
+    wicketKeeperId,
+    playersById: FORMAT_PLAYERS_MAP,
+  });
+  if (!validation.isValid) {
+    return { updatedCareer: career, error: validation.errors.join('; ') };
+  }
+
+  const updatedCfg: FormatSquadConfig = {
+    ...currentCfg,
+    playingXI,
+    captainId,
+    viceCaptainId,
+    wicketKeeperId,
+    bowlingRotation: bowlingRotation || currentCfg.bowlingRotation,
+  };
+
+  // Sync upcoming scheduled fixture for this format so match debut uses updated XI
+  const updatedFixtures = career.fixtures.map((f) => {
+    if (f.format === format && isPreMatchStatus(f.status)) {
+      const isHome = f.homeTeamId === career.selectedTeamId;
+      const isAway = f.awayTeamId === career.selectedTeamId;
+      if (isHome) {
+        return {
+          ...f,
+          homeXI: playingXI,
+          homeCaptainId: captainId,
+          homeWicketKeeperId: wicketKeeperId,
+          homeBowlingOptions: bowlingRotation || f.homeBowlingOptions,
+          lineupConfirmed: true,
+        };
+      }
+      if (isAway) {
+        return {
+          ...f,
+          awayXI: playingXI,
+          awayCaptainId: captainId,
+          awayWicketKeeperId: wicketKeeperId,
+          awayBowlingOptions: bowlingRotation || f.awayBowlingOptions,
+          lineupConfirmed: true,
+        };
+      }
+    }
+    return f;
+  });
+
+  return {
+    updatedCareer: {
+      ...career,
+      fixtures: updatedFixtures,
+      formatSquads: {
+        ...career.formatSquads,
+        [format]: updatedCfg,
       },
     },
   };

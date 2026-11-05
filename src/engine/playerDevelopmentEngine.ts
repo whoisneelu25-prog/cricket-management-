@@ -178,7 +178,8 @@ export function processSquadTrainingDay(
           changedAttr = 'Shot Selection';
         }
       } else if (focus === 'BOWLING') {
-        const isSpin = p.bowlingStyle.includes('BREAK') || p.bowlingStyle.includes('SPIN') || p.bowlingStyle.includes('SLOW');
+        const bStyle = p.bowlingStyle || '';
+        const isSpin = bStyle.includes('BREAK') || bStyle.includes('SPIN') || bStyle.includes('SLOW');
         const sub = Math.random();
         if (sub < 0.5) {
           p.attributes.accuracy = Math.min(99, +(p.attributes.accuracy + increment).toFixed(2));

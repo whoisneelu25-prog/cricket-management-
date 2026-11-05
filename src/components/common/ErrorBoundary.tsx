@@ -47,6 +47,15 @@ export class ErrorBoundary extends Component<Props, State> {
           <div className="mt-6 flex items-center justify-center gap-3">
             <button
               onClick={() => {
+                const isHookMismatch = Boolean(
+                  this.state.error?.message?.includes('Rendered more hooks') ||
+                  this.state.error?.message?.includes('Rendered fewer hooks') ||
+                  this.state.error?.message?.includes('Rules of Hooks')
+                );
+                if (isHookMismatch) {
+                  window.location.reload();
+                  return;
+                }
                 this.setState({ hasError: false, error: null });
                 if (this.props.onReset) this.props.onReset();
               }}

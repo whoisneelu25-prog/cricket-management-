@@ -165,37 +165,31 @@ export default function App() {
     if (!career) return undefined;
     if (activeMatchId) {
       const matchById = career.fixtures.find((f) => f.id === activeMatchId);
-      // If the match is valid and still playable (in-progress or scheduled/ready), return it!
-      if (matchById && !isTerminalMatchStatus(matchById.status)) {
+      if (matchById) {
         return matchById;
       }
-      // If activeMatchId is completed, check if there is an in-progress match first
-      const inProgress = career.fixtures.find((f) => f.status === 'IN_PROGRESS');
-      if (inProgress) return inProgress;
-      // If activeTab is MATCH_CENTRE and the matchById is completed, automatically prefer next pending match
-      const nextPending = career.fixtures.find((f) => !isTerminalMatchStatus(f.status));
-      if (nextPending && activeTab === 'MATCH_CENTRE' && matchById && isTerminalMatchStatus(matchById.status)) {
-        return nextPending;
-      }
-      if (matchById) return matchById;
     }
     const inProgress = career.fixtures.find((f) => f.status === 'IN_PROGRESS');
     if (inProgress) return inProgress;
     const nextPending = career.fixtures.find((f) => !isTerminalMatchStatus(f.status));
     return nextPending || career.fixtures[career.fixtures.length - 1];
-  }, [career, activeMatchId, activeTab]);
+  }, [career, activeMatchId]);
 
   // Helper to update active match in career store
   const updateActiveMatch = (updated: Match, baseCareer: CareerSave | null = career) => {
     if (!baseCareer) return;
     if (isTerminalMatchStatus(updated.status)) {
       const applied = applyUserMatchResult(baseCareer, updated);
-      const nextPending = applied.fixtures.find((f) => !isTerminalMatchStatus(f.status));
+      const updatedFixtures = applied.fixtures.map((f) =>
+        f.id === updated.id ? updated : f
+      );
       const nextCareer: CareerSave = {
         ...applied,
-        activeMatchId: nextPending?.id || undefined,
+        activeMatchId: updated.id,
+        fixtures: updatedFixtures,
+        savedAt: new Date().toISOString(),
       };
-      setActiveMatchId(nextPending?.id || null);
+      setActiveMatchId(updated.id);
       setCareer(nextCareer);
       saveCareerToStorage(nextCareer);
     } else {
@@ -342,7 +336,7 @@ export default function App() {
     updateActiveMatch(next);
   };
 
-  const handleStartMatchWithToss = (choice: 'BAT' | 'BOWL') => {
+  const handleStartMatchWithToss = (choice: 'BAT' | 'BOWL', tossWinnerId?: string) => {
     if (!activeMatch || !career) return;
     // Never allow completed or non-user matches to be started
     if (!isPreMatchStatus(activeMatch.status)) return;
@@ -365,15 +359,26 @@ export default function App() {
     const opponentTeamId =
       freshMatch.homeTeamId === userTeamId ? freshMatch.awayTeamId : freshMatch.homeTeamId;
 
+    const actualTossWinnerId = tossWinnerId || userTeamId;
+    const isUserWinner = actualTossWinnerId === userTeamId;
+
+    const battingTeamId = isUserWinner
+      ? choice === 'BAT'
+        ? userTeamId
+        : opponentTeamId
+      : choice === 'BAT'
+      ? opponentTeamId
+      : userTeamId;
+
+    const bowlingTeamId = battingTeamId === userTeamId ? opponentTeamId : userTeamId;
+
     const userTeam = INTERNATIONAL_TEAMS.find((t) => t.id === userTeamId);
     const oppTeam = INTERNATIONAL_TEAMS.find((t) => t.id === opponentTeamId);
 
-    const battingTeamId = choice === 'BAT' ? userTeamId : opponentTeamId;
     const battingTeamName =
-      choice === 'BAT' ? userTeam?.name || 'Home' : oppTeam?.name || 'Away';
-    const bowlingTeamId = choice === 'BAT' ? opponentTeamId : userTeamId;
+      battingTeamId === userTeamId ? userTeam?.name || 'Home' : oppTeam?.name || 'Away';
     const bowlingTeamName =
-      choice === 'BAT' ? oppTeam?.name || 'Away' : userTeam?.name || 'Home';
+      bowlingTeamId === userTeamId ? userTeam?.name || 'Home' : oppTeam?.name || 'Away';
 
     let battingXI =
       battingTeamId === freshMatch.homeTeamId ? freshMatch.homeXI : freshMatch.awayXI;
@@ -433,7 +438,7 @@ export default function App() {
       status: 'IN_PROGRESS',
       userTeamId,
       isUserMatch: true,
-      tossWinnerId: userTeamId,
+      tossWinnerId: actualTossWinnerId,
       tossChoice: choice,
       homeXI: finalHomeXI,
       awayXI: finalAwayXI,
@@ -804,6 +809,7 @@ export default function App() {
 
           {activeTab === 'MATCH_CENTRE' && activeMatch && (
             <MatchCentreView
+              key={activeMatch.id}
               match={activeMatch}
               career={career || undefined}
               onSimulateBall={handleSimulateBall}

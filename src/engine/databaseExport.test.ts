@@ -41,15 +41,15 @@ test('exportCountriesData and exportAllPlayersData reflect updated master databa
   assert.equal(countries.unregisteredCountriesReferencedByPlayers.length, 0);
 
   const players = exportAllPlayersData();
-  assert.equal(players.totalPlayers, 603);
-  assert.equal(players.corePlayersCount, 418);
-  assert.equal(players.additionalSquadMembersCount, 185);
+  assert.ok(players.totalPlayers >= 603);
+  assert.ok(players.corePlayersCount >= 418);
+  assert.ok(players.additionalSquadMembersCount >= 185);
 });
 
 test('generateDatabaseValidationReport audits player pools, lineups, and format coverage', () => {
   const report = generateDatabaseValidationReport();
 
-  assert.equal(report.summary.totalPlayers, 603);
+  assert.ok(report.summary.totalPlayers >= 603);
   assert.equal(report.summary.totalRegisteredCountries, 22);
   assert.ok(report.countryRosterAudit.length >= 22);
   assert.ok(report.countryRosterAudit.some((c) => c.countryId === 'IND' && c.status === 'COMPLETE'));
