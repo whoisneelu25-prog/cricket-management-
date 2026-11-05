@@ -16,7 +16,14 @@ import {
   PitchCondition,
   WeatherCondition,
 } from '../types/cricket';
-import { ALL_PLAYERS, createEmptyFormatStats, getEffectivePlayer } from '../data/squads';
+import {
+  ALL_PLAYERS,
+  createEmptyFormatStats,
+  getEffectivePlayer,
+  getDefaultPlayingXI,
+  getDefaultCaptainId,
+  getDefaultWicketKeeperId,
+} from '../data/squads';
 import { INTERNATIONAL_TEAMS } from '../data/teams';
 import { simulateDelivery, setSimulationSeed, mulberry32, FieldingPlayerRef } from './simulation';
 export { mulberry32 };
@@ -1598,6 +1605,41 @@ export function ensureMatchTacticalSystemsInitialized(match: Match): Match {
 
   if (!updated.tacticalCalibration) {
     updated.tacticalCalibration = { ...DEFAULT_TACTICAL_CALIBRATION };
+  }
+
+  if (!updated.userTactics) {
+    updated.userTactics = {
+      battingAggression: 'BALANCED',
+      bowlingTactic: 'BALANCED_CONTAIN',
+      fieldPreset: 'BALANCED_STANDARD',
+    };
+  }
+
+  if (!updated.aiTactics) {
+    updated.aiTactics = {
+      battingAggression: 'BALANCED',
+      bowlingTactic: 'BALANCED_CONTAIN',
+      fieldPreset: 'BALANCED_STANDARD',
+    };
+  }
+
+  if (!updated.homeXI || updated.homeXI.length < 11) {
+    updated.homeXI = getDefaultPlayingXI(updated.homeTeamId || 'IND', updated.format);
+  }
+  if (!updated.awayXI || updated.awayXI.length < 11) {
+    updated.awayXI = getDefaultPlayingXI(updated.awayTeamId || 'AUS', updated.format);
+  }
+  if (!updated.homeCaptainId) {
+    updated.homeCaptainId = getDefaultCaptainId(updated.homeTeamId || 'IND', updated.format);
+  }
+  if (!updated.awayCaptainId) {
+    updated.awayCaptainId = getDefaultCaptainId(updated.awayTeamId || 'AUS', updated.format);
+  }
+  if (!updated.homeWicketKeeperId) {
+    updated.homeWicketKeeperId = getDefaultWicketKeeperId(updated.homeTeamId || 'IND', updated.format);
+  }
+  if (!updated.awayWicketKeeperId) {
+    updated.awayWicketKeeperId = getDefaultWicketKeeperId(updated.awayTeamId || 'AUS', updated.format);
   }
 
   if (!updated.drsReviewsRemaining) {

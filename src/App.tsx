@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   CareerSave,
   Match,
@@ -40,7 +40,7 @@ import {
 } from './engine/worldSimulation';
 import { TrainingFocus } from './engine/playerDevelopmentEngine';
 import { INTERNATIONAL_TEAMS } from './data/teams';
-import { ALL_PLAYERS } from './data/squads';
+import { ALL_PLAYERS, getDefaultPlayingXI, getDefaultWicketKeeperId } from './data/squads';
 import { PitchBackground } from './components/common/PitchBackground';
 import { TopBar } from './components/navigation/TopBar';
 import { Sidebar } from './components/navigation/Sidebar';
@@ -135,7 +135,7 @@ export default function App() {
     }
   }, []);
 
-  // Quick Match from Main Menu (sets up exhibition career)
+  // Quick Match from Main Menu (sets up exhibition career and jumps straight to match)
   const handleStartQuickMatch = () => {
     const quickCareer = createNewCareerSave(
       'Head Coach',
@@ -145,29 +145,58 @@ export default function App() {
       'AGGRESSIVE'
     );
     quickCareer.saveName = 'Exhibition International Campaign';
+    const firstMatch =
+      quickCareer.fixtures.find((f) => !isTerminalMatchStatus(f.status)) ||
+      quickCareer.fixtures[0];
+    if (firstMatch) {
+      firstMatch.date = quickCareer.currentDate;
+      firstMatch.status = 'READY';
+      firstMatch.lineupConfirmed = true;
+      quickCareer.activeMatchId = firstMatch.id;
+      setActiveMatchId(firstMatch.id);
+    }
     setCareer(quickCareer);
     saveCareerToStorage(quickCareer);
     setViewState('IN_GAME');
-    setActiveTab('DASHBOARD');
+    setActiveTab('MATCH_CENTRE');
   };
 
-  // Active match resolution (strictly user fixtures only!)
-  const activeMatch = career
-    ? (activeMatchId ? career.fixtures.find((f) => f.id === activeMatchId) : undefined) ||
-      career.fixtures.find((f) => f.status === 'IN_PROGRESS') ||
-      career.fixtures.find((f) => !isTerminalMatchStatus(f.status)) ||
-      career.fixtures[career.fixtures.length - 1]
-    : undefined;
+  // Active match resolution (strictly user fixtures only, prioritizing active and pending matches)
+  const activeMatch: Match | undefined = useMemo(() => {
+    if (!career) return undefined;
+    if (activeMatchId) {
+      const matchById = career.fixtures.find((f) => f.id === activeMatchId);
+      // If the match is valid and still playable (in-progress or scheduled/ready), return it!
+      if (matchById && !isTerminalMatchStatus(matchById.status)) {
+        return matchById;
+      }
+      // If activeMatchId is completed, check if there is an in-progress match first
+      const inProgress = career.fixtures.find((f) => f.status === 'IN_PROGRESS');
+      if (inProgress) return inProgress;
+      // If activeTab is MATCH_CENTRE and the matchById is completed, automatically prefer next pending match
+      const nextPending = career.fixtures.find((f) => !isTerminalMatchStatus(f.status));
+      if (nextPending && activeTab === 'MATCH_CENTRE' && matchById && isTerminalMatchStatus(matchById.status)) {
+        return nextPending;
+      }
+      if (matchById) return matchById;
+    }
+    const inProgress = career.fixtures.find((f) => f.status === 'IN_PROGRESS');
+    if (inProgress) return inProgress;
+    const nextPending = career.fixtures.find((f) => !isTerminalMatchStatus(f.status));
+    return nextPending || career.fixtures[career.fixtures.length - 1];
+  }, [career, activeMatchId, activeTab]);
 
   // Helper to update active match in career store
   const updateActiveMatch = (updated: Match, baseCareer: CareerSave | null = career) => {
     if (!baseCareer) return;
     if (isTerminalMatchStatus(updated.status)) {
       const applied = applyUserMatchResult(baseCareer, updated);
+      const nextPending = applied.fixtures.find((f) => !isTerminalMatchStatus(f.status));
       const nextCareer: CareerSave = {
         ...applied,
-        activeMatchId: undefined,
+        activeMatchId: nextPending?.id || undefined,
       };
+      setActiveMatchId(nextPending?.id || null);
       setCareer(nextCareer);
       saveCareerToStorage(nextCareer);
     } else {
@@ -354,18 +383,33 @@ export default function App() {
     const bowlingTeamName =
       choice === 'BAT' ? oppTeam?.name || 'Away' : userTeam?.name || 'Home';
 
-    const battingXI =
+    let battingXI =
       battingTeamId === freshMatch.homeTeamId ? freshMatch.homeXI : freshMatch.awayXI;
-    const bowlingXI =
+    let bowlingXI =
       bowlingTeamId === freshMatch.homeTeamId ? freshMatch.homeXI : freshMatch.awayXI;
-    const bowlingWkId =
+
+    if (!battingXI || battingXI.length < 11) {
+      battingXI = getDefaultPlayingXI(battingTeamId, freshMatch.format);
+    }
+    if (!bowlingXI || bowlingXI.length < 11) {
+      bowlingXI = getDefaultPlayingXI(bowlingTeamId, freshMatch.format);
+    }
+
+    let bowlingWkId =
       bowlingTeamId === freshMatch.homeTeamId
         ? freshMatch.homeWicketKeeperId
         : freshMatch.awayWicketKeeperId;
-    const bowlingOptions =
+    if (!bowlingWkId) {
+      bowlingWkId = getDefaultWicketKeeperId(bowlingTeamId, freshMatch.format);
+    }
+
+    let bowlingOptions =
       bowlingTeamId === freshMatch.homeTeamId
         ? freshMatch.homeBowlingOptions
         : freshMatch.awayBowlingOptions;
+    if (!bowlingOptions || bowlingOptions.length === 0) {
+      bowlingOptions = bowlingXI.filter((id) => id !== bowlingWkId).slice(-5);
+    }
 
     const innings1 = withCareerSimulationContext(workingCareer, () =>
       createInitialInningsState(
@@ -394,6 +438,12 @@ export default function App() {
       status: 'IN_PROGRESS',
       tossWinnerId: userTeamId,
       tossChoice: choice,
+      homeXI: freshMatch.homeTeamId === battingTeamId ? battingXI : bowlingXI,
+      awayXI: freshMatch.awayTeamId === battingTeamId ? battingXI : bowlingXI,
+      homeWicketKeeperId:
+        freshMatch.homeTeamId === bowlingTeamId ? bowlingWkId : freshMatch.homeWicketKeeperId,
+      awayWicketKeeperId:
+        freshMatch.awayTeamId === bowlingTeamId ? bowlingWkId : freshMatch.awayWicketKeeperId,
       currentInningsIndex: 0,
       innings: [innings1],
       ...(freshMatch.format === 'TEST'
@@ -755,10 +805,15 @@ export default function App() {
               onDeclareInnings={handleDeclareInnings}
               onFollowOnDecision={handleFollowOnDecision}
               onTakeNewBall={handleTakeNewBall}
-              onContinueToDashboard={() => setActiveTab('DASHBOARD')}
-              onPrepareNextMatch={(nextMatchId) => {
+              onContinueToDashboard={() => {
+                const nextPending = career?.fixtures.find((f) => !isTerminalMatchStatus(f.status));
+                if (nextPending) setActiveMatchId(nextPending.id);
                 setActiveTab('DASHBOARD');
+              }}
+              onPrepareNextMatch={(nextMatchId) => {
+                setActiveMatchId(nextMatchId);
                 setPrepMatchId(nextMatchId);
+                setActiveTab('DASHBOARD');
               }}
               onOpenMatchPreparation={(matchId) => setPrepMatchId(matchId)}
               onUpdateBatterInstruction={handleUpdateBatterInstruction}

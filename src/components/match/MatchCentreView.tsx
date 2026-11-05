@@ -342,7 +342,16 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
 
         <h2 className="text-2xl font-black text-white mt-3">The Coin Toss & Match Debut</h2>
         <p className="text-xs text-slate-400 mt-1 max-w-md mx-auto">
-          {match.venue} • Pitch: <span className="text-emerald-400 font-medium">{match.pitch.name}</span> • Weather: <span className="text-amber-300 font-medium">{match.weather.type.replace('_', ' ')}</span>
+          {match.venue} • Pitch:{' '}
+          <span className="text-emerald-400 font-medium">
+            {typeof match.pitch === 'string' ? match.pitch : match.pitch?.name || 'Standard'}
+          </span>{' '}
+          • Weather:{' '}
+          <span className="text-amber-300 font-medium">
+            {typeof match.weather === 'string'
+              ? match.weather
+              : (match.weather?.type || 'CLEAR').replace('_', ' ')}
+          </span>
         </p>
 
         <div className="my-8 bg-[#141f36] border border-slate-800 p-5 rounded-xl flex items-center justify-around shadow-inner">
@@ -408,7 +417,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                         {isC && <span className="ml-1 text-[9px] bg-amber-950 text-amber-300 px-1 rounded font-bold">C</span>}
                         {isWk && <span className="ml-1 text-[9px] bg-sky-950 text-sky-300 px-1 rounded font-bold">WK</span>}
                       </span>
-                      <span className="text-[10px] text-slate-500 font-mono shrink-0 ml-1">{p.role.replace('_', ' ')}</span>
+                      <span className="text-[10px] text-slate-500 font-mono shrink-0 ml-1">{(p.role || 'ALL_ROUNDER').replace('_', ' ')}</span>
                     </div>
                   );
                 })}
@@ -433,7 +442,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                         {isC && <span className="ml-1 text-[9px] bg-amber-950 text-amber-300 px-1 rounded font-bold">C</span>}
                         {isWk && <span className="ml-1 text-[9px] bg-sky-950 text-sky-300 px-1 rounded font-bold">WK</span>}
                       </span>
-                      <span className="text-[10px] text-slate-500 font-mono shrink-0 ml-1">{p.role.replace('_', ' ')}</span>
+                      <span className="text-[10px] text-slate-500 font-mono shrink-0 ml-1">{(p.role || 'ALL_ROUNDER').replace('_', ' ')}</span>
                     </div>
                   );
                 })}
@@ -450,14 +459,16 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
           <div className="flex items-center justify-center gap-3">
             <button
               onClick={() => onStartMatchWithToss('BAT')}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-6 py-2.5 rounded shadow cursor-pointer transition active:scale-95 flex items-center space-x-2"
+              className="btn-gold text-xs px-7 py-2.5 rounded-xl shadow-lg cursor-pointer transition active:scale-95 flex items-center space-x-2 font-display font-bold"
             >
+              <Play className="w-4 h-4 fill-current" />
               <span>Bat First</span>
             </button>
             <button
               onClick={() => onStartMatchWithToss('BOWL')}
-              className="bg-[#243247] hover:bg-[#334155] text-white font-bold text-xs px-6 py-2.5 rounded border border-[#3b4d6a] shadow cursor-pointer transition active:scale-95 flex items-center space-x-2"
+              className="bg-[#10151c] hover:bg-[#1a2330] text-[#ffe9a8] hover:text-white border border-[#e2b64a]/50 font-display font-bold text-xs px-7 py-2.5 rounded-xl shadow-lg cursor-pointer transition active:scale-95 flex items-center space-x-2"
             >
+              <Shield className="w-4 h-4 text-[#e2b64a]" />
               <span>Bowl First</span>
             </button>
           </div>
@@ -770,7 +781,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                   <Layers className="w-3.5 h-3.5 text-emerald-400" /> Pitch:
                 </span>
                 <span className="text-slate-200 font-bold">
-                  {match.pitch.name} • Wear {Math.round(match.pitchWear || 10)}%
+                  {typeof match.pitch === 'string' ? match.pitch : match.pitch?.name || 'Standard'} • Wear {Math.round(match.pitchWear || 10)}%
                 </span>
               </div>
 
@@ -779,7 +790,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                   <Wind className="w-3.5 h-3.5 text-sky-400" /> Weather:
                 </span>
                 <span className="text-slate-200 font-bold">
-                  {(match.dynamicWeather?.condition || match.weather.type).replace('_', ' ')} •{' '}
+                  {(match.dynamicWeather?.condition || (typeof match.weather === 'string' ? match.weather : match.weather?.type || 'CLEAR')).replace('_', ' ')} •{' '}
                   {match.dynamicWeather ? `${match.dynamicWeather.temperatureC}°C • Cloud ${match.dynamicWeather.cloudCover}%` : 'Good Light'}
                 </span>
               </div>
@@ -840,7 +851,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                   <Layers className="w-3.5 h-3.5 text-emerald-400" /> Surface:
                 </span>
                 <span className="text-slate-200 font-bold truncate ml-1">
-                  {match.pitch.name}
+                  {typeof match.pitch === 'string' ? match.pitch : match.pitch?.name || 'Standard'}
                   {match.whiteBallConditions
                     ? ` • Pace ${match.whiteBallConditions.surfacePace} • Spin ${match.whiteBallConditions.spinAssistance}`
                     : ''}
@@ -852,7 +863,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                   <Wind className="w-3.5 h-3.5 text-sky-400" /> Overhead:
                 </span>
                 <span className="text-slate-200 font-bold truncate ml-1">
-                  {match.weather.type.replace('_', ' ')}
+                  {(typeof match.weather === 'string' ? match.weather : match.weather?.type || 'CLEAR').replace('_', ' ')}
                   {match.whiteBallConditions
                     ? ` • ${match.whiteBallConditions.temperatureC}°C • Hum ${match.whiteBallConditions.humidity}%`
                     : ''}
@@ -877,7 +888,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                     <span>Format: {match.format} Standard Conditions</span>
                   )}
                 </span>
-                {(match.weather.type === 'RAIN_RISK' ||
+                {((typeof match.weather === 'string' ? match.weather : match.weather?.type) === 'RAIN_RISK' ||
                   allocatedInningsOvers < (match.format === 'T20I' ? 20 : 50)) &&
                   !DLS_SUPPORT_STATUS.supported && (
                     <span
@@ -1139,7 +1150,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                 </h3>
                 {!isUserBowling && (
                   <span className="text-[10px] font-mono text-[#8b97a3] bg-[#10151c] px-2 py-0.5 rounded border border-[#1e2733]">
-                    AI Plan: {match.aiTactics.bowlingTactic.replace('_', ' ')}
+                    AI Plan: {(match.aiTactics?.bowlingTactic || 'BALANCED_CONTAIN').replace('_', ' ')}
                   </span>
                 )}
               </div>
@@ -1245,99 +1256,106 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                 )}
               </span>
 
-              {isUserBatting ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  {/* Batting Aggression */}
-                  <div>
-                    <label className="text-[10px] text-[#8b97a3] uppercase font-bold tracking-wider block mb-1 font-display">
-                      Team Batting Approach
-                    </label>
-                    <select
-                      value={match.userTactics.battingAggression}
-                      onChange={(e) =>
-                        onUpdateTactics(
-                          e.target.value as BattingAggression,
-                          match.userTactics.bowlingTactic,
-                          match.userTactics.fieldPreset
-                        )
-                      }
-                      className="w-full bg-[#10151c] border border-[#1e2733] text-xs text-white rounded-lg p-2 focus:border-[#e2b64a] cursor-pointer"
-                    >
-                      {match.format === 'TEST' && (
-                        <option value="BLOCK">Block / Stone-wall</option>
-                      )}
-                      <option value="DEFENSIVE">Defensive (Protect Wickets)</option>
-                      <option value="BALANCED">Balanced (Standard Flow)</option>
-                      <option value="ATTACKING">Aggressive (Scoring Intent)</option>
-                      <option value="SMASH">Smash (Maximum Attack)</option>
-                    </select>
-                  </div>
+              {(() => {
+                const effectiveUserTactics = match.userTactics || {
+                  battingAggression: 'BALANCED' as BattingAggression,
+                  bowlingTactic: 'BALANCED_CONTAIN' as BowlingTactic,
+                  fieldPreset: 'BALANCED_STANDARD' as FieldPreset,
+                };
 
-                  {/* Active Striker Approach */}
-                  <div>
-                    <label className="text-[10px] text-[#8b97a3] uppercase font-bold tracking-wider block mb-1 font-display">
-                      Active Batter ({striker?.playerName ? striker.playerName.split(' ').pop() : 'Striker'})
-                    </label>
-                    <select
-                      value={
-                        striker
-                          ? match.individualBatterInstructions?.[striker.playerId]?.approach ||
-                            match.userTactics.battingAggression
-                          : match.userTactics.battingAggression
-                      }
-                      onChange={(e) => {
-                        if (striker && onUpdateBatterInstruction) {
-                          const app = e.target.value as BattingApproach;
-                          onUpdateBatterInstruction({
-                            playerId: striker.playerId,
-                            approach: app,
-                            shotSelection:
-                              app === 'SMASH' || app === 'AGGRESSIVE'
-                                ? 'LOOK_FOR_BOUNDARIES'
-                                : app === 'DEFENSIVE' || (app as string) === 'BLOCK'
-                                ? 'AVOID_RISKY_SHOTS'
-                                : 'PLAY_STRAIGHT',
-                          });
+                return isUserBatting ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {/* Batting Aggression */}
+                    <div>
+                      <label className="text-[10px] text-[#8b97a3] uppercase font-bold tracking-wider block mb-1 font-display">
+                        Team Batting Approach
+                      </label>
+                      <select
+                        value={effectiveUserTactics.battingAggression}
+                        onChange={(e) =>
+                          onUpdateTactics(
+                            e.target.value as BattingAggression,
+                            effectiveUserTactics.bowlingTactic,
+                            effectiveUserTactics.fieldPreset
+                          )
                         }
-                      }}
-                      className="w-full bg-[#10151c] border border-[#1e2733] text-xs text-white rounded-lg p-2 focus:border-[#e2b64a] cursor-pointer"
-                    >
-                      {match.format === 'TEST' && (
-                        <option value="BLOCK">Block (Stone-wall)</option>
-                      )}
-                      <option value="DEFENSIVE">Defensive (Anchor)</option>
-                      <option value="BALANCED">Balanced (Normal)</option>
-                      <option value="ATTACKING">Aggressive (Attack)</option>
-                      <option value="SMASH">Smash (Boundary Intent)</option>
-                    </select>
+                        className="w-full bg-[#10151c] border border-[#1e2733] text-xs text-white rounded-lg p-2 focus:border-[#e2b64a] cursor-pointer"
+                      >
+                        {match.format === 'TEST' && (
+                          <option value="BLOCK">Block / Stone-wall</option>
+                        )}
+                        <option value="DEFENSIVE">Defensive (Protect Wickets)</option>
+                        <option value="BALANCED">Balanced (Standard Flow)</option>
+                        <option value="ATTACKING">Aggressive (Scoring Intent)</option>
+                        <option value="SMASH">Smash (Maximum Attack)</option>
+                      </select>
+                    </div>
+
+                    {/* Active Striker Approach */}
+                    <div>
+                      <label className="text-[10px] text-[#8b97a3] uppercase font-bold tracking-wider block mb-1 font-display">
+                        Active Batter ({striker?.playerName ? striker.playerName.split(' ').pop() : 'Striker'})
+                      </label>
+                      <select
+                        value={
+                          striker
+                            ? match.individualBatterInstructions?.[striker.playerId]?.approach ||
+                              effectiveUserTactics.battingAggression
+                            : effectiveUserTactics.battingAggression
+                        }
+                        onChange={(e) => {
+                          if (striker && onUpdateBatterInstruction) {
+                            const app = e.target.value as BattingApproach;
+                            onUpdateBatterInstruction({
+                              playerId: striker.playerId,
+                              approach: app,
+                              shotSelection:
+                                app === 'SMASH' || app === 'AGGRESSIVE'
+                                  ? 'LOOK_FOR_BOUNDARIES'
+                                  : app === 'DEFENSIVE' || (app as string) === 'BLOCK'
+                                  ? 'AVOID_RISKY_SHOTS'
+                                  : 'PLAY_STRAIGHT',
+                            });
+                          }
+                        }}
+                        className="w-full bg-[#10151c] border border-[#1e2733] text-xs text-white rounded-lg p-2 focus:border-[#e2b64a] cursor-pointer"
+                      >
+                        {match.format === 'TEST' && (
+                          <option value="BLOCK">Block (Stone-wall)</option>
+                        )}
+                        <option value="DEFENSIVE">Defensive (Anchor)</option>
+                        <option value="BALANCED">Balanced (Normal)</option>
+                        <option value="ATTACKING">Aggressive (Attack)</option>
+                        <option value="SMASH">Smash (Boundary Intent)</option>
+                      </select>
+                    </div>
                   </div>
-                </div>
-              ) : isUserBowling ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  {/* Bowling Strategy */}
-                  <div>
-                    <label className="text-[10px] text-[#8b97a3] uppercase font-bold tracking-wider block mb-1 font-display">
-                      Team Bowling Strategy
-                    </label>
-                    <select
-                      value={match.userTactics.bowlingTactic}
-                      onChange={(e) =>
-                        onUpdateTactics(
-                          match.userTactics.battingAggression,
-                          e.target.value as BowlingTactic,
-                          match.userTactics.fieldPreset
-                        )
-                      }
-                      className="w-full bg-[#10151c] border border-[#1e2733] text-xs text-white rounded-lg p-2 focus:border-[#e2b64a] cursor-pointer"
-                    >
-                      <option value="TIGHT_DEFENSIVE">Tight Good Length</option>
-                      <option value="BALANCED_CONTAIN">Balanced Stump-to-Stump</option>
-                      <option value="ATTACKING_FULL">Attacking Full &amp; Swinging</option>
-                      <option value="BOUNCER_SHORT">Short Pitch / Slower Cutter</option>
-                      <option value="YORKER_DEATH">Death Bowling Yorkers</option>
-                      <option value="FLIGHT_SPIN">Flight &amp; Spin Trap</option>
-                    </select>
-                  </div>
+                ) : isUserBowling ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {/* Bowling Strategy */}
+                    <div>
+                      <label className="text-[10px] text-[#8b97a3] uppercase font-bold tracking-wider block mb-1 font-display">
+                        Team Bowling Strategy
+                      </label>
+                      <select
+                        value={effectiveUserTactics.bowlingTactic}
+                        onChange={(e) =>
+                          onUpdateTactics(
+                            effectiveUserTactics.battingAggression,
+                            e.target.value as BowlingTactic,
+                            effectiveUserTactics.fieldPreset
+                          )
+                        }
+                        className="w-full bg-[#10151c] border border-[#1e2733] text-xs text-white rounded-lg p-2 focus:border-[#e2b64a] cursor-pointer"
+                      >
+                        <option value="TIGHT_DEFENSIVE">Tight Good Length</option>
+                        <option value="BALANCED_CONTAIN">Balanced Stump-to-Stump</option>
+                        <option value="ATTACKING_FULL">Attacking Full &amp; Swinging</option>
+                        <option value="BOUNCER_SHORT">Short Pitch / Slower Cutter</option>
+                        <option value="YORKER_DEATH">Death Bowling Yorkers</option>
+                        <option value="FLIGHT_SPIN">Flight &amp; Spin Trap</option>
+                      </select>
+                    </div>
 
                   {/* Active Bowler Plan */}
                   <div>
@@ -1400,7 +1418,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                     AI Auto
                   </span>
                 </div>
-              )}
+              );})()}
             </div>
 
             {/* Simulation Controls (5 cols in Dugout styling) */}

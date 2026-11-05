@@ -401,13 +401,26 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     <span>Prepare Match XI & Orders</span>
                   </button>
 
-                  {nextInfo.daysRemaining === 0 && (
+                  {nextInfo.daysRemaining === 0 ? (
                     <button
                       onClick={() => onNavigateToMatch(nextMatch.id)}
                       className="btn-gold text-xs px-5 py-2 rounded-xl transition cursor-pointer flex items-center gap-2 shadow-lg active:scale-95"
                     >
                       <Play className="w-4 h-4 fill-current" />
                       <span>Take the Field (Play)</span>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        if (onAdvanceCalendar) {
+                          onAdvanceCalendar('NEXT_MATCH');
+                        }
+                        onNavigateToMatch(nextMatch.id);
+                      }}
+                      className="btn-gold text-xs px-5 py-2 rounded-xl transition cursor-pointer flex items-center gap-2 shadow-lg active:scale-95"
+                    >
+                      <Play className="w-4 h-4 fill-current" />
+                      <span>Advance to Match & Play</span>
                     </button>
                   )}
                 </div>
