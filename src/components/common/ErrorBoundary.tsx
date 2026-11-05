@@ -34,7 +34,7 @@ export class ErrorBoundary extends Component<Props, State> {
       const reloadKey = 'icm_hook_reload_ts';
       const lastReload = Number(sessionStorage.getItem(reloadKey) || '0');
       const now = Date.now();
-      if (now - lastReload > 3000) {
+      if (now - lastReload > 1500) {
         sessionStorage.setItem(reloadKey, String(now));
         window.location.reload();
       }

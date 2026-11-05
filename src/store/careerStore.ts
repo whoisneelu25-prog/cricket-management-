@@ -300,6 +300,7 @@ export function createNewCareerSave(
     currentDate: '2026-11-15',
     currentDayIndex: 0,
     currentTourId: initialTour ? initialTour.id : 'tour_bgt_2026',
+    activeMatchId: userMatches[0]?.id || undefined,
     seasonsGeneratedThroughYear: 2027,
     formatSquads: {
       TEST: {

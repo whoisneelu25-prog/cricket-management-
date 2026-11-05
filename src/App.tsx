@@ -163,8 +163,9 @@ export default function App() {
   // Active match resolution (strictly user fixtures only, prioritizing active and pending matches)
   const activeMatch: Match | undefined = useMemo(() => {
     if (!career) return undefined;
-    if (activeMatchId) {
-      const matchById = career.fixtures.find((f) => f.id === activeMatchId);
+    const targetId = activeMatchId || career.activeMatchId;
+    if (targetId) {
+      const matchById = career.fixtures.find((f) => f.id === targetId);
       if (matchById) {
         return matchById;
       }
@@ -172,7 +173,7 @@ export default function App() {
     const inProgress = career.fixtures.find((f) => f.status === 'IN_PROGRESS');
     if (inProgress) return inProgress;
     const nextPending = career.fixtures.find((f) => !isTerminalMatchStatus(f.status));
-    return nextPending || career.fixtures[career.fixtures.length - 1];
+    return nextPending || career.fixtures[0];
   }, [career, activeMatchId]);
 
   // Helper to update active match in career store
@@ -181,7 +182,7 @@ export default function App() {
     if (isTerminalMatchStatus(updated.status)) {
       const applied = applyUserMatchResult(baseCareer, updated);
       const updatedFixtures = applied.fixtures.map((f) =>
-        f.id === updated.id ? updated : f
+        f.id === updated.id ? { ...updated, statsRecorded: true } : f
       );
       const nextCareer: CareerSave = {
         ...applied,
@@ -642,7 +643,7 @@ export default function App() {
           setCareer(newSave);
           saveCareerToStorage(newSave);
           setCalendarAlert(null);
-          setActiveMatchId(null);
+          setActiveMatchId(newSave.fixtures[0]?.id || null);
           setViewState('IN_GAME');
           setActiveTab('DASHBOARD');
         }}

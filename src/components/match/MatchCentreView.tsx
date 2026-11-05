@@ -125,6 +125,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
   // Interactive Coin Toss State
   const [tossCaller, setTossCaller] = useState<'USER' | 'CPU'>('USER');
   const [tossCall, setTossCall] = useState<'HEADS' | 'TAILS'>('HEADS');
+  const [cpuCall, setCpuCall] = useState<'HEADS' | 'TAILS'>('TAILS');
   const [isFlippingCoin, setIsFlippingCoin] = useState(false);
   const [coinLanding, setCoinLanding] = useState<'HEADS' | 'TAILS' | null>(null);
   const [tossWinnerTeamId, setTossWinnerTeamId] = useState<string | null>(null);
@@ -158,7 +159,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
 
     const targetOutcome: 'HEADS' | 'TAILS' = Math.random() < 0.5 ? 'HEADS' : 'TAILS';
     const effectiveCallerCall: 'HEADS' | 'TAILS' =
-      tossCaller === 'USER' ? tossCall : Math.random() < 0.5 ? 'HEADS' : 'TAILS';
+      tossCaller === 'USER' ? tossCall : cpuCall;
 
     setTimeout(() => {
       const callerWon = effectiveCallerCall === targetOutcome;
@@ -203,10 +204,13 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
     }, 850);
   };
 
-  const handleResetToss = () => {
+  const handleResetToss = (callerMode?: 'USER' | 'CPU') => {
     setCoinLanding(null);
     setTossWinnerTeamId(null);
     setCpuDecision(null);
+    if (callerMode === 'CPU' || tossCaller === 'CPU') {
+      setCpuCall(Math.random() < 0.5 ? 'HEADS' : 'TAILS');
+    }
   };
   const needsUserFollowOnChoice =
     match.format === 'TEST' &&
@@ -378,28 +382,31 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
   const declarationContext =
     match.format === 'TEST' && showDeclareModal ? getDeclarationStrategicContext(match) : null;
 
-  // Win / Momentum Probability calculation for Dugout WL Bar (hook called unconditionally)
-  const battingWinProb = useMemo(() => {
-    if (isMatchFinished) {
-      if (match.winnerTeamId === currentInnings?.battingTeamId) return 100;
-      if (match.winnerTeamId) return 0;
-      return 50;
-    }
+  // Win / Momentum Probability calculation for Dugout WL Bar (pure inline calculation, no hook dependency)
+  let battingWinProb = 50;
+  if (isMatchFinished) {
+    if (match.winnerTeamId === currentInnings?.battingTeamId) battingWinProb = 100;
+    else if (match.winnerTeamId) battingWinProb = 0;
+    else battingWinProb = 50;
+  } else {
     const wktsLeft = 10 - (currentInnings?.wickets || 0);
     if (currentInnings?.targetRuns) {
       const needed = currentInnings.targetRuns - currentInnings.totalRuns;
-      if (needed <= 0) return 100;
-      if (wktsLeft <= 0) return 0;
-      const rrr = requiredRunRate ? parseFloat(requiredRunRate) : 6.0;
-      const crr = currentRunRate ? parseFloat(currentRunRate) : 6.0;
-      const raw = Math.round(50 + (crr - rrr) * 8 + (wktsLeft - 5) * 6);
-      return Math.max(5, Math.min(95, raw));
+      if (needed <= 0) battingWinProb = 100;
+      else if (wktsLeft <= 0) battingWinProb = 0;
+      else {
+        const rrr = requiredRunRate ? parseFloat(requiredRunRate) : 6.0;
+        const crr = currentRunRate ? parseFloat(currentRunRate) : 6.0;
+        const raw = Math.round(50 + (crr - rrr) * 8 + (wktsLeft - 5) * 6);
+        battingWinProb = Math.max(5, Math.min(95, raw));
+      }
+    } else {
+      const crr = currentRunRate ? parseFloat(currentRunRate) : 5.0;
+      const base = match.format === 'T20I' ? 8.0 : match.format === 'ODI' ? 5.5 : 3.2;
+      const raw = Math.round(50 + (crr - base) * 6 + (wktsLeft - 5) * 4);
+      battingWinProb = Math.max(10, Math.min(90, raw));
     }
-    const crr = currentRunRate ? parseFloat(currentRunRate) : 5.0;
-    const base = match.format === 'T20I' ? 8.0 : match.format === 'ODI' ? 5.5 : 3.2;
-    const raw = Math.round(50 + (crr - base) * 6 + (wktsLeft - 5) * 4);
-    return Math.max(10, Math.min(90, raw));
-  }, [currentInnings, isMatchFinished, match.winnerTeamId, requiredRunRate, currentRunRate, match.format]);
+  }
 
   // Dedicated Post-Match Completion Screen when match ends (Phase 5)
   if (isMatchFinished) {
@@ -582,29 +589,29 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                     type="button"
                     onClick={() => {
                       setTossCaller('USER');
-                      handleResetToss();
+                      handleResetToss('USER');
                     }}
-                    className={`text-xs px-3 py-1.5 rounded-md font-display font-bold transition cursor-pointer ${
+                    className={`text-xs px-3.5 py-1.5 rounded-md font-display font-bold transition cursor-pointer flex items-center gap-1.5 ${
                       tossCaller === 'USER'
-                        ? 'bg-[#e2b64a] text-black shadow'
+                        ? 'bg-[#e2b64a] text-black shadow-lg shadow-[#e2b64a]/20'
                         : 'text-[#8b97a3] hover:text-white'
                     }`}
                   >
-                    I Will Call ({userCaptain?.shortName || 'You'})
+                    <span>👤 I Will Call ({userCaptain?.shortName || 'You'})</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => {
                       setTossCaller('CPU');
-                      handleResetToss();
+                      handleResetToss('CPU');
                     }}
-                    className={`text-xs px-3 py-1.5 rounded-md font-display font-bold transition cursor-pointer ${
+                    className={`text-xs px-3.5 py-1.5 rounded-md font-display font-bold transition cursor-pointer flex items-center gap-1.5 ${
                       tossCaller === 'CPU'
-                        ? 'bg-[#e2b64a] text-black shadow'
+                        ? 'bg-[#e2b64a] text-black shadow-lg shadow-[#e2b64a]/20'
                         : 'text-[#8b97a3] hover:text-white'
                     }`}
                   >
-                    Opponent Calls ({oppCaptain?.shortName || oppTeam?.name || 'CPU'})
+                    <span>🤖 Opponent Calls ({oppCaptain?.shortName || oppTeam?.name || 'CPU'})</span>
                   </button>
                 </div>
               </div>
@@ -613,15 +620,15 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
               {tossCaller === 'USER' ? (
                 <div className="bg-[#0e141f] p-3.5 rounded-xl border border-[#1e2733] space-y-2">
                   <span className="text-[11px] font-bold text-[#c3ccd6] block">
-                    Select your call before the coin is flipped:
+                    Choose your call in the air before the coin is tossed:
                   </span>
                   <div className="flex items-center justify-center gap-3">
                     <button
                       type="button"
                       onClick={() => setTossCall('HEADS')}
-                      className={`text-xs px-5 py-2 rounded-xl font-bold font-display border cursor-pointer transition ${
+                      className={`text-xs px-6 py-2.5 rounded-xl font-bold font-display border cursor-pointer transition ${
                         tossCall === 'HEADS'
-                          ? 'bg-[#2c2412] text-[#ffe9a8] border-[#e2b64a] shadow-lg shadow-[#e2b64a]/20 scale-105'
+                          ? 'bg-[#2c2412] text-[#ffe9a8] border-[#e2b64a] shadow-lg shadow-[#e2b64a]/25 scale-105'
                           : 'bg-[#10151c] text-[#8b97a3] border-[#1e2733] hover:text-white'
                       }`}
                     >
@@ -630,9 +637,9 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                     <button
                       type="button"
                       onClick={() => setTossCall('TAILS')}
-                      className={`text-xs px-5 py-2 rounded-xl font-bold font-display border cursor-pointer transition ${
+                      className={`text-xs px-6 py-2.5 rounded-xl font-bold font-display border cursor-pointer transition ${
                         tossCall === 'TAILS'
-                          ? 'bg-[#2c2412] text-[#ffe9a8] border-[#e2b64a] shadow-lg shadow-[#e2b64a]/20 scale-105'
+                          ? 'bg-[#2c2412] text-[#ffe9a8] border-[#e2b64a] shadow-lg shadow-[#e2b64a]/25 scale-105'
                           : 'bg-[#10151c] text-[#8b97a3] border-[#1e2733] hover:text-white'
                       }`}
                     >
@@ -641,10 +648,16 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                   </div>
                 </div>
               ) : (
-                <div className="bg-[#0e141f] p-3.5 rounded-xl border border-[#1e2733] text-center">
-                  <span className="text-xs text-[#c3ccd6]">
-                    Opposition Captain <strong>{oppCaptain?.shortName || oppTeam?.name}</strong> will call in the air when you toss the coin.
+                <div className="bg-[#0e141f] p-3.5 rounded-xl border border-[#e2b64a]/40 text-center space-y-1.5">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#e2b64a] block">
+                    Opposition Captain Call in the Air
                   </span>
+                  <p className="text-sm font-black text-white font-display">
+                    {oppCaptain?.shortName || oppTeam?.name} has called: <span className="text-[#ffe9a8] bg-[#2c2412] px-2.5 py-1 rounded-md border border-[#e2b64a]/60">🪙 {cpuCall}</span>
+                  </p>
+                  <p className="text-[11px] text-[#8b97a3]">
+                    As the host captain, spin the coin into the air!
+                  </p>
                 </div>
               )}
 
@@ -655,7 +668,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                     isFlippingCoin ? 'animate-spin' : ''
                   }`}
                 >
-                  {isFlippingCoin ? 'ICM' : tossCall}
+                  {isFlippingCoin ? 'ICM' : tossCaller === 'USER' ? tossCall : cpuCall}
                 </div>
 
                 <div className="flex items-center justify-center gap-3">
@@ -666,7 +679,13 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                     className="btn-gold text-xs px-8 py-2.5 rounded-xl shadow-xl cursor-pointer font-display font-bold flex items-center gap-2 active:scale-95 disabled:opacity-50"
                   >
                     <Coins className="w-4 h-4" />
-                    <span>{isFlippingCoin ? 'Coin in the Air...' : 'Flip the Coin'}</span>
+                    <span>
+                      {isFlippingCoin
+                        ? 'Coin in the Air...'
+                        : tossCaller === 'USER'
+                        ? 'Flip the Coin'
+                        : 'Toss the Coin for Opposition'}
+                    </span>
                   </button>
                 </div>
               </div>
@@ -677,8 +696,8 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
           {tossWinnerTeamId !== null && (
             <div className="space-y-4 animate-in zoom-in-95 duration-200">
               <div className="p-4 bg-gradient-to-r from-[#10151c] via-[#1a2330] to-[#10151c] border-2 border-[#e2b64a] rounded-xl text-center shadow-xl">
-                <div className="inline-flex items-center gap-2 bg-[#2c2412] px-3 py-1 rounded-full border border-[#e2b64a]/50 text-xs font-bold text-[#ffe9a8] mb-2 font-display">
-                  <span>Coin Result: <strong>{coinLanding}</strong></span>
+                <div className="inline-flex items-center gap-2 bg-[#2c2412] px-3.5 py-1 rounded-full border border-[#e2b64a]/50 text-xs font-bold text-[#ffe9a8] mb-2 font-display">
+                  <span>Coin Landed: <strong>{coinLanding}</strong> (Caller {tossCaller === 'USER' ? 'You' : oppCaptain?.shortName || 'CPU'} called <strong>{tossCaller === 'USER' ? tossCall : cpuCall}</strong>)</span>
                 </div>
 
                 {tossWinnerTeamId === userTeamId ? (
@@ -697,7 +716,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                         className="btn-gold text-xs px-7 py-2.5 rounded-xl shadow-lg cursor-pointer transition active:scale-95 flex items-center space-x-2 font-display font-bold"
                       >
                         <Play className="w-4 h-4 fill-current" />
-                        <span>Bat First</span>
+                        <span>Bat First 🏏</span>
                       </button>
                       <button
                         type="button"
@@ -705,7 +724,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                         className="bg-[#10151c] hover:bg-[#1a2330] text-[#ffe9a8] hover:text-white border border-[#e2b64a]/50 font-display font-bold text-xs px-7 py-2.5 rounded-xl shadow-lg cursor-pointer transition active:scale-95 flex items-center space-x-2"
                       >
                         <Shield className="w-4 h-4 text-[#e2b64a]" />
-                        <span>Bowl First</span>
+                        <span>Bowl First 🛡️</span>
                       </button>
                     </div>
                   </div>
@@ -732,7 +751,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                         className="btn-gold text-xs px-8 py-2.5 rounded-xl shadow-xl cursor-pointer transition active:scale-95 flex items-center space-x-2 font-display font-bold"
                       >
                         <Play className="w-4 h-4 fill-current" />
-                        <span>Take the Field &amp; Start Match</span>
+                        <span>Take the Field &amp; Start Match ▶</span>
                       </button>
                     </div>
                   </div>
@@ -742,7 +761,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
               <div className="flex justify-center">
                 <button
                   type="button"
-                  onClick={handleResetToss}
+                  onClick={() => handleResetToss()}
                   className="text-[11px] text-[#8b97a3] hover:text-[#e8edf2] underline cursor-pointer"
                 >
                   Flip Again
@@ -911,10 +930,10 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
             </div>
           </div>
 
-          {/* Match Status / Target Banner (5 cols) */}
-          <div className="md:col-span-5 match-panel-secondary p-3.5 rounded-xl flex flex-col justify-center shadow-inner">
+          {/* Match Status / Target Banner & Simulation Controls (5 cols) */}
+          <div className="md:col-span-5 match-panel-secondary p-3.5 rounded-xl flex flex-col justify-between shadow-inner">
             {isMatchFinished ? (
-              <div className="text-center">
+              <div className="text-center py-2">
                 <span className="text-[10px] uppercase font-extrabold text-[#3fca86] tracking-widest block font-display">
                   Match Completed
                 </span>
@@ -926,56 +945,114 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                 )}
                 <button
                   onClick={() => setShowScorecard(true)}
-                  className="mt-2 text-xs btn-gold px-3 py-1 rounded-lg cursor-pointer transition shadow"
+                  className="mt-2 text-xs btn-gold px-3 py-1 rounded-lg cursor-pointer transition shadow font-display font-bold"
                 >
-                  View Final Scorecard & Awards
+                  View Final Scorecard &amp; Awards
                 </button>
               </div>
-            ) : currentInnings?.targetRuns ? (
-              <div className="text-right">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-[#8b97a3] uppercase font-bold tracking-wider font-display">Target Score:</span>
-                  <span className="text-lg font-black font-mono text-[#ffe9a8]">{currentInnings.targetRuns}</span>
-                </div>
-                <p className="text-xs text-[#e2b64a] mt-1 font-semibold">
-                  Need {Math.max(0, currentInnings.targetRuns - currentInnings.totalRuns)} runs
-                  {match.format !== 'TEST' ? (
-                    <span>
-                      {' '}
-                      from {whiteBallBallsRemaining} balls • {10 - (currentInnings?.wickets ?? 0)} wkts in hand
-                    </span>
-                  ) : (
-                    <span> ({10 - (currentInnings?.wickets ?? 0)} wkts in hand • ~{testOversRemaining} ov left)</span>
-                  )}
-                </p>
-              </div>
-            ) : match.format === 'TEST' && match.currentInningsIndex === 1 && match.innings[0] ? (
-              <div className="text-right text-xs">
-                <span className="text-[#8b97a3] uppercase font-bold tracking-wider block font-display">1st Innings Status</span>
-                <span className="text-[#e8edf2] mt-0.5 font-black font-mono text-sm">
-                  {(currentInnings?.totalRuns ?? 0) < (match.innings[0]?.totalRuns ?? 0)
-                    ? `Trail by ${(match.innings[0]?.totalRuns ?? 0) - (currentInnings?.totalRuns ?? 0)} runs`
-                    : `Lead by ${(currentInnings?.totalRuns ?? 0) - (match.innings[0]?.totalRuns ?? 0)} runs`}
-                </span>
-              </div>
-            ) : match.format === 'TEST' && match.currentInningsIndex === 2 && match.innings[1] ? (
-              <div className="text-right text-xs">
-                <span className="text-[#8b97a3] uppercase font-bold tracking-wider block font-display">Lead / Deficit</span>
-                <span className="text-[#e8edf2] mt-0.5 font-black font-mono text-sm">
-                  {match.followOnEnforced
-                    ? (match.innings[1]?.totalRuns ?? 0) + (currentInnings?.totalRuns ?? 0) < (match.innings[0]?.totalRuns ?? 0)
-                      ? `Trail by ${(match.innings[0]?.totalRuns ?? 0) - ((match.innings[1]?.totalRuns ?? 0) + (currentInnings?.totalRuns ?? 0))} runs (f/o)`
-                      : `Lead by ${((match.innings[1]?.totalRuns ?? 0) + (currentInnings?.totalRuns ?? 0)) - (match.innings[0]?.totalRuns ?? 0)} runs (f/o)`
-                    : `Overall Lead: ${(match.innings[0]?.totalRuns ?? 0) + (currentInnings?.totalRuns ?? 0) - (match.innings[1]?.totalRuns ?? 0)} runs`}
-                </span>
-              </div>
             ) : (
-              <div className="text-right text-xs">
-                <span className="text-[#8b97a3] uppercase font-bold tracking-wider block font-display">1st Innings in Progress</span>
-                <span className="text-[#c3ccd6] mt-1 block">
-                  {currentInnings?.bowlingTeamName} bowling
-                </span>
-              </div>
+              <>
+                {/* Target / Innings Status Display */}
+                {currentInnings?.targetRuns ? (
+                  <div className="text-right">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-[#8b97a3] uppercase font-bold tracking-wider font-display">Target Score:</span>
+                      <span className="text-lg font-black font-mono text-[#ffe9a8]">{currentInnings.targetRuns}</span>
+                    </div>
+                    <p className="text-xs text-[#e2b64a] mt-0.5 font-semibold">
+                      Need {Math.max(0, currentInnings.targetRuns - currentInnings.totalRuns)} runs
+                      {match.format !== 'TEST' ? (
+                        <span>
+                          {' '}
+                          from {whiteBallBallsRemaining} balls • {10 - (currentInnings?.wickets ?? 0)} wkts in hand
+                        </span>
+                      ) : (
+                        <span> ({10 - (currentInnings?.wickets ?? 0)} wkts in hand • ~{testOversRemaining} ov left)</span>
+                      )}
+                    </p>
+                  </div>
+                ) : match.format === 'TEST' && match.currentInningsIndex === 1 && match.innings[0] ? (
+                  <div className="text-right text-xs">
+                    <span className="text-[#8b97a3] uppercase font-bold tracking-wider block font-display">1st Innings Status</span>
+                    <span className="text-[#e8edf2] mt-0.5 font-black font-mono text-sm">
+                      {(currentInnings?.totalRuns ?? 0) < (match.innings[0]?.totalRuns ?? 0)
+                        ? `Trail by ${(match.innings[0]?.totalRuns ?? 0) - (currentInnings?.totalRuns ?? 0)} runs`
+                        : `Lead by ${(currentInnings?.totalRuns ?? 0) - (match.innings[0]?.totalRuns ?? 0)} runs`}
+                    </span>
+                  </div>
+                ) : match.format === 'TEST' && match.currentInningsIndex === 2 && match.innings[1] ? (
+                  <div className="text-right text-xs">
+                    <span className="text-[#8b97a3] uppercase font-bold tracking-wider block font-display">Lead / Deficit</span>
+                    <span className="text-[#e8edf2] mt-0.5 font-black font-mono text-sm">
+                      {match.followOnEnforced
+                        ? (match.innings[1]?.totalRuns ?? 0) + (currentInnings?.totalRuns ?? 0) < (match.innings[0]?.totalRuns ?? 0)
+                          ? `Trail by ${(match.innings[0]?.totalRuns ?? 0) - ((match.innings[1]?.totalRuns ?? 0) + (currentInnings?.totalRuns ?? 0))} runs (f/o)`
+                          : `Lead by ${((match.innings[1]?.totalRuns ?? 0) + (currentInnings?.totalRuns ?? 0)) - (match.innings[0]?.totalRuns ?? 0)} runs (f/o)`
+                        : `Overall Lead: ${(match.innings[0]?.totalRuns ?? 0) + (currentInnings?.totalRuns ?? 0) - (match.innings[1]?.totalRuns ?? 0)} runs`}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="text-right text-xs">
+                    <span className="text-[#8b97a3] uppercase font-bold tracking-wider block font-display">1st Innings in Progress</span>
+                    <span className="text-[#c3ccd6] mt-0.5 block">
+                      {currentInnings?.bowlingTeamName} bowling
+                    </span>
+                  </div>
+                )}
+
+                {/* Primary Match Simulation Controls (Side-by-side with Scorecard) */}
+                <div className="mt-3 pt-2.5 border-t border-[#1e2733] space-y-2">
+                  <div className="grid grid-cols-4 gap-1.5">
+                    <button
+                      onClick={onSimulateBall}
+                      className="btn-gold text-xs py-2 rounded-lg shadow-md transition cursor-pointer flex items-center justify-center space-x-1 active:scale-95 font-bold font-display"
+                      title="Simulate 1 delivery"
+                    >
+                      <Play className="w-3.5 h-3.5 fill-current" />
+                      <span>{currentInnings?.isCompleted && !isMatchFinished ? 'Next Inn' : 'Ball'}</span>
+                    </button>
+
+                    <button
+                      onClick={onSimulateOver}
+                      className="bg-[#10151c] hover:bg-[#1a2330] text-white font-bold text-xs py-2 rounded-lg border border-[#1e2733] hover:border-[#33404f] transition cursor-pointer flex items-center justify-center space-x-1 active:scale-95 font-display"
+                      title="Simulate remainder of current over"
+                    >
+                      <FastForward className="w-3.5 h-3.5 text-[#8fb2d9]" />
+                      <span>Over</span>
+                    </button>
+
+                    <button
+                      onClick={onSimulateInnings}
+                      className="bg-[#10151c] hover:bg-[#1a2330] text-white font-bold text-xs py-2 rounded-lg border border-[#1e2733] hover:border-[#33404f] transition cursor-pointer flex items-center justify-center space-x-1 active:scale-95 font-display"
+                      title="Simulate entire innings"
+                    >
+                      <SkipForward className="w-3.5 h-3.5 text-[#8fb2d9]" />
+                      <span>Innings</span>
+                    </button>
+
+                    <button
+                      onClick={onSimulateMatch}
+                      className="bg-[#10151c] hover:bg-[#2c2412] text-[#ffe9a8] font-bold text-xs py-2 rounded-lg border border-[#e2b64a]/40 transition cursor-pointer flex items-center justify-center space-x-1 active:scale-95 font-display"
+                      title="Simulate rest of the match"
+                    >
+                      <Flame className="w-3.5 h-3.5 text-[#e2b64a]" />
+                      <span>Match</span>
+                    </button>
+                  </div>
+
+                  {/* Auto Broadcast Stream Button */}
+                  <button
+                    onClick={() => setIsAutoPlaying(!isAutoPlaying)}
+                    className={`w-full py-1.5 rounded-lg text-xs font-bold transition cursor-pointer flex items-center justify-center space-x-1.5 font-display ${
+                      isAutoPlaying
+                        ? 'bg-[#ff5470] text-white animate-pulse'
+                        : 'bg-[#10151c] text-[#ffe9a8] hover:text-white border border-[#e2b64a]/40 hover:border-[#e2b64a]'
+                    }`}
+                  >
+                    <span>{isAutoPlaying ? 'Pause Live Stream' : '▶ Auto Broadcast Stream (Continuous)'}</span>
+                  </button>
+                </div>
+              </>
             )}
           </div>
         </div>
@@ -1497,12 +1574,10 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
         </div>
       </div>
 
-      {/* 3. Captaincy Tactics & Match Simulation Controls (Side-by-Side) */}
+      {/* 3. Captain's Tactical Orders HUD */}
       {!isMatchFinished && (
         <div className="match-panel-main rounded-2xl p-4 sm:p-5 shadow-2xl relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
-            {/* Captain's Tactical Orders (7 cols) */}
-            <div className="md:col-span-7 space-y-3">
+          <div className="space-y-3">
               <span className="text-[10px] uppercase font-extrabold tracking-widest text-[#8b97a3] block flex items-center justify-between font-display">
                 <span className="flex items-center gap-1.5 text-white">
                   <Shield className="w-3.5 h-3.5 text-[#e2b64a]" /> Captain’s Tactical Orders
@@ -1689,61 +1764,8 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                     AI Auto
                   </span>
                 </div>
-              );})()}
-            </div>
-
-            {/* Simulation Controls (5 cols in Dugout styling) */}
-            <div className="md:col-span-5 match-panel-secondary p-3.5 rounded-xl flex flex-col justify-center space-y-2.5 shadow-inner">
-              <span className="text-[10px] uppercase font-extrabold tracking-widest text-[#e2b64a] block text-center font-display">
-                Match Simulation Controls
-              </span>
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                <button
-                  onClick={onSimulateBall}
-                  className="btn-gold text-xs py-2 rounded-lg shadow-md transition cursor-pointer flex items-center justify-center space-x-1 active:scale-95"
-                >
-                  <Play className="w-3.5 h-3.5 fill-current" />
-                  <span>{currentInnings.isCompleted && !isMatchFinished ? 'Next Inn' : 'Ball'}</span>
-                </button>
-
-                <button
-                  onClick={onSimulateOver}
-                  className="bg-[#070a0e] hover:bg-[#1a2330] text-white font-bold text-xs py-2 rounded-lg border border-[#1e2733] hover:border-[#33404f] transition cursor-pointer flex items-center justify-center space-x-1 active:scale-95 font-display"
-                >
-                  <FastForward className="w-3.5 h-3.5 text-[#8fb2d9]" />
-                  <span>Over</span>
-                </button>
-
-                <button
-                  onClick={onSimulateInnings}
-                  className="bg-[#070a0e] hover:bg-[#1a2330] text-white font-bold text-xs py-2 rounded-lg border border-[#1e2733] hover:border-[#33404f] transition cursor-pointer flex items-center justify-center space-x-1 active:scale-95 font-display"
-                >
-                  <SkipForward className="w-3.5 h-3.5 text-[#8fb2d9]" />
-                  <span>Innings</span>
-                </button>
-
-                <button
-                  onClick={onSimulateMatch}
-                  className="bg-[#070a0e] hover:bg-[#2c2412] text-[#ffe9a8] font-bold text-xs py-2 rounded-lg border border-[#e2b64a]/40 transition cursor-pointer flex items-center justify-center space-x-1 active:scale-95 font-display"
-                >
-                  <Flame className="w-3.5 h-3.5 text-[#e2b64a]" />
-                  <span>Match</span>
-                </button>
-              </div>
-
-              {/* Auto Broadcast Stream Button */}
-              <button
-                onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-                className={`w-full py-1.5 rounded-lg text-xs font-bold transition cursor-pointer flex items-center justify-center space-x-1.5 font-display ${
-                  isAutoPlaying
-                    ? 'bg-[#ff5470] text-white animate-pulse'
-                    : 'bg-[#070a0e] text-[#ffe9a8] hover:text-white border border-[#e2b64a]/40 hover:border-[#e2b64a]'
-                }`}
-              >
-                <span>{isAutoPlaying ? 'Pause Live Stream' : '▶ Auto Broadcast Stream (Continuous)'}</span>
-              </button>
-            </div>
+              );
+            })()}
           </div>
         </div>
       )}

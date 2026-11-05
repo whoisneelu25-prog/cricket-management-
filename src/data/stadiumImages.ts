@@ -38,7 +38,7 @@ export const STADIUM_IMAGES: StadiumImageAsset[] = [
     label: "Lord's Cricket Ground, London",
     countryId: 'ENG',
     venueIds: ['lord_london'],
-    venueKeywords: ["lord's", 'lords', 'lord’s'],
+    venueKeywords: ["lord's", 'lords', 'lord’s', 'london', 'the oval', 'oval', 'edgbaston', 'headingley', 'old trafford', 'trent bridge', 'england'],
     lighting: 'DAY',
     nativeWidth: 596,
   },
