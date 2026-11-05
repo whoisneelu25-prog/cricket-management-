@@ -25,6 +25,7 @@ import { getNextUserMatchInfo } from '../../store/careerStore';
 import { CalendarAdvanceMode, CalendarAdvancementResult } from '../../engine/worldSimulation';
 import { isTerminalMatchStatus } from '../../engine/matchEngine';
 import { CountryFlag } from '../common/CountryFlag';
+import { getStadiumImageSrc } from '../../data/stadiumImages';
 
 interface DashboardViewProps {
   career: CareerSave;
@@ -134,11 +135,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
   const teamMorale = career.teamMorale ?? 80;
 
-  // Stadium image for hero backdrop
-  const stadiumImage =
-    nextMatch?.format === 'TEST'
-      ? '/assets/stadiums/jaitley-day.jpg'
-      : '/assets/stadiums/chepauk-night.jpg';
+  // Stadium image for hero backdrop (dynamic venue resolution)
+  const stadiumImage = getStadiumImageSrc(nextMatch?.venue, nextMatch?.homeTeamId, nextMatch?.format);
 
   return (
     <div className="space-y-5 select-none pb-10 text-[#e8edf2] max-w-7xl mx-auto">

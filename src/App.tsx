@@ -13,7 +13,6 @@ import {
   PhaseScoringTargets,
   CustomFieldLayout,
   TeamBattingGamePlan,
-  DRSReviewType,
 } from './types/cricket';
 import {
   MainNavigationTab,
@@ -82,7 +81,6 @@ import {
   isTerminalMatchStatus,
   withCareerSimulationContext,
   ensureMatchTacticalSystemsInitialized,
-  executeDRSReview,
   updateIndividualBatterInstruction,
   updateIndividualBowlingPlan,
   updateCustomScoringTargets,
@@ -342,13 +340,6 @@ export default function App() {
     if (!activeMatch || isTerminalMatchStatus(activeMatch.status) || !career) return;
     const next = updateTeamBattingGamePlan(activeMatch, career.selectedTeamId, plan);
     updateActiveMatch(next);
-  };
-
-  const handleExecuteDRS = (reviewType: DRSReviewType) => {
-    if (!activeMatch || isTerminalMatchStatus(activeMatch.status) || !career) return;
-    const reviewingTeamId = career.selectedTeamId;
-    const { updatedMatch } = executeDRSReview(activeMatch, reviewType, reviewingTeamId);
-    updateActiveMatch(updatedMatch);
   };
 
   const handleStartMatchWithToss = (choice: 'BAT' | 'BOWL') => {
@@ -843,7 +834,6 @@ export default function App() {
               onUpdatePhaseTargets={handleUpdatePhaseTargets}
               onUpdateFieldLayout={handleUpdateFieldLayout}
               onUpdateGamePlan={handleUpdateGamePlan}
-              onExecuteDRS={handleExecuteDRS}
             />
           )}
 

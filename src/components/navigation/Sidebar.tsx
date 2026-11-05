@@ -47,17 +47,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onToggleCollapse,
   selectedTeam,
 }) => {
-  // Navigation structure requested in Phase 3
+  // Navigation structure
   const navItems: NavItem[] = [
     { id: 'DASHBOARD', label: 'Dashboard', icon: LayoutDashboard, sectionHeader: 'Overview' },
     { id: 'MY_TEAM', label: 'My Country', icon: Flag, sectionHeader: 'National Squad' },
     { id: 'SQUAD_MANAGEMENT', label: 'Squad Management', icon: Users },
-    { id: 'PLAYERS', label: 'Player Database', icon: Search },
     { id: 'FIXTURES', label: 'Fixtures', icon: Calendar, sectionHeader: 'Tours & Matches' },
     { id: 'TOURS', label: 'Tours', icon: Plane },
     { id: 'TOURNAMENTS', label: 'Tournaments', icon: Trophy },
     { id: 'RANKINGS', label: 'Rankings', icon: TrendingUp, sectionHeader: 'Intelligence' },
-    { id: 'STATISTICS', label: 'Statistics', icon: Activity },
     { id: 'NEWS', label: 'News', icon: Newspaper, sectionHeader: 'Career & System' },
     { id: 'CAREER_HISTORY', label: 'Career', icon: History },
     { id: 'SETTINGS', label: 'Settings', icon: Settings },

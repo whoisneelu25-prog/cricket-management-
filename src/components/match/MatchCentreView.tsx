@@ -18,7 +18,6 @@ import {
   Flag,
   AlertCircle,
   Users,
-  Eye,
   Target,
   Bot,
 } from 'lucide-react';
@@ -39,16 +38,15 @@ import {
   PhaseScoringTargets,
   CustomFieldLayout,
   TeamBattingGamePlan,
-  DRSReviewType,
 } from '../../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
 import { ALL_PLAYERS, getEffectivePlayer } from '../../data/squads';
 import { CountryFlag } from '../common/CountryFlag';
 import { PlayerAvatar } from '../common/PlayerAvatar';
+import { StadiumBackground } from '../common/StadiumBackground';
 import { ScorecardModal } from './ScorecardModal';
 import { PostMatchSummaryView } from './PostMatchSummaryView';
 import { WagonWheelPitchMap } from './WagonWheelPitchMap';
-import { DRSReviewModal } from './DRSReviewModal';
 import { BatterTacticsPanel } from './BatterTacticsPanel';
 import { BowlingTacticsPanel } from './BowlingTacticsPanel';
 import {
@@ -89,7 +87,6 @@ interface MatchCentreViewProps {
   onUpdatePhaseTargets?: (phaseTargets: PhaseScoringTargets) => void;
   onUpdateFieldLayout?: (layout: CustomFieldLayout) => void;
   onUpdateGamePlan?: (plan: TeamBattingGamePlan) => void;
-  onExecuteDRS?: (reviewType: DRSReviewType) => void;
 }
 
 export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
@@ -115,23 +112,15 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
   onUpdatePhaseTargets,
   onUpdateFieldLayout,
   onUpdateGamePlan,
-  onExecuteDRS,
 }) => {
   const [showScorecard, setShowScorecard] = useState(false);
   const [showDeclareModal, setShowDeclareModal] = useState(false);
-  const [showDRSModal, setShowDRSModal] = useState(false);
   const [tacticalTab, setTacticalTab] = useState<
     'SCOREBOARD' | 'BATTING' | 'BOWLING' | 'INTELLIGENCE'
   >('SCOREBOARD');
   const [isAutoPlaying, setIsAutoPlaying] = useState(false);
   const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
   const commentaryScrollRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (match.activeDRSReview) {
-      setShowDRSModal(true);
-    }
-  }, [match.activeDRSReview]);
 
   const homeTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.homeTeamId);
   const awayTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.awayTeamId);
@@ -309,26 +298,68 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
   const declarationContext =
     match.format === 'TEST' && showDeclareModal ? getDeclarationStrategicContext(match) : null;
 
+  // Win / Momentum Probability calculation for Dugout WL Bar (hook called unconditionally)
+  const battingWinProb = useMemo(() => {
+    if (isMatchFinished) {
+      if (match.winnerTeamId === currentInnings?.battingTeamId) return 100;
+      if (match.winnerTeamId) return 0;
+      return 50;
+    }
+    const wktsLeft = 10 - (currentInnings?.wickets || 0);
+    if (currentInnings?.targetRuns) {
+      const needed = currentInnings.targetRuns - currentInnings.totalRuns;
+      if (needed <= 0) return 100;
+      if (wktsLeft <= 0) return 0;
+      const rrr = requiredRunRate ? parseFloat(requiredRunRate) : 6.0;
+      const crr = currentRunRate ? parseFloat(currentRunRate) : 6.0;
+      const raw = Math.round(50 + (crr - rrr) * 8 + (wktsLeft - 5) * 6);
+      return Math.max(5, Math.min(95, raw));
+    }
+    const crr = currentRunRate ? parseFloat(currentRunRate) : 5.0;
+    const base = match.format === 'T20I' ? 8.0 : match.format === 'ODI' ? 5.5 : 3.2;
+    const raw = Math.round(50 + (crr - base) * 6 + (wktsLeft - 5) * 4);
+    return Math.max(10, Math.min(90, raw));
+  }, [currentInnings, isMatchFinished, match.winnerTeamId, requiredRunRate, currentRunRate, match.format]);
+
   // Dedicated Post-Match Completion Screen when match ends (Phase 5)
   if (isMatchFinished) {
     return (
-      <PostMatchSummaryView
-        match={match}
-        career={career}
-        onContinueToDashboard={() => onContinueToDashboard && onContinueToDashboard()}
-        onPrepareNextMatch={(nextId) => onPrepareNextMatch && onPrepareNextMatch(nextId)}
-        onSelectPlayer={onSelectPlayer}
-      />
+      <div className="relative min-h-[700px] select-none">
+        <StadiumBackground
+          venue={match.venue}
+          hostCountryId={match.homeTeamId}
+          format={match.format}
+          overlayOpacity={0.65}
+          showCaption={true}
+        />
+        <div className="relative z-10">
+          <PostMatchSummaryView
+            match={match}
+            career={career}
+            onContinueToDashboard={() => onContinueToDashboard && onContinueToDashboard()}
+            onPrepareNextMatch={(nextId) => onPrepareNextMatch && onPrepareNextMatch(nextId)}
+            onSelectPlayer={onSelectPlayer}
+          />
+        </div>
+      </div>
     );
   }
 
   // Coin Toss View if match not yet started
   if (isPreMatchStatus(match.status)) {
     return (
-      <div className="bg-[#121824] border border-[#1f293d] rounded-lg p-6 sm:p-10 max-w-2xl mx-auto my-8 text-center select-none shadow-2xl animate-in zoom-in-95 duration-200">
-        <div className="w-16 h-16 rounded-full bg-amber-500/10 border-2 border-amber-500/50 flex items-center justify-center mx-auto mb-4 text-amber-400">
-          <Coins className="w-8 h-8" />
-        </div>
+      <div className="relative min-h-[700px] flex items-center justify-center p-3 sm:p-6 select-none">
+        <StadiumBackground
+          venue={match.venue}
+          hostCountryId={match.homeTeamId}
+          format={match.format}
+          overlayOpacity={0.6}
+          showCaption={true}
+        />
+        <div className="relative z-10 match-panel-main rounded-2xl p-6 sm:p-10 max-w-2xl mx-auto my-8 text-center select-none shadow-2xl animate-in zoom-in-95 duration-200">
+          <div className="w-16 h-16 rounded-full bg-amber-500/10 border-2 border-amber-500/50 flex items-center justify-center mx-auto mb-4 text-amber-400">
+            <Coins className="w-8 h-8" />
+          </div>
 
         <div className="flex items-center justify-center gap-2">
           <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded border border-emerald-800/40">
@@ -475,6 +506,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
           </div>
         </div>
       </div>
+      </div>
     );
   }
 
@@ -486,51 +518,19 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
       ? 'Afternoon Session'
       : 'Evening Session';
 
-  // Win / Momentum Probability calculation for Dugout WL Bar
-  const battingWinProb = useMemo(() => {
-    if (isMatchFinished) {
-      if (match.winnerTeamId === currentInnings?.battingTeamId) return 100;
-      if (match.winnerTeamId) return 0;
-      return 50;
-    }
-    const wktsLeft = 10 - (currentInnings?.wickets || 0);
-    if (currentInnings?.targetRuns) {
-      const needed = currentInnings.targetRuns - currentInnings.totalRuns;
-      if (needed <= 0) return 100;
-      if (wktsLeft <= 0) return 0;
-      const rrr = requiredRunRate ? parseFloat(requiredRunRate) : 6.0;
-      const crr = currentRunRate ? parseFloat(currentRunRate) : 6.0;
-      const raw = Math.round(50 + (crr - rrr) * 8 + (wktsLeft - 5) * 6);
-      return Math.max(5, Math.min(95, raw));
-    }
-    const crr = currentRunRate ? parseFloat(currentRunRate) : 5.0;
-    const base = match.format === 'T20I' ? 8.0 : match.format === 'ODI' ? 5.5 : 3.2;
-    const raw = Math.round(50 + (crr - base) * 6 + (wktsLeft - 5) * 4);
-    return Math.max(10, Math.min(90, raw));
-  }, [currentInnings, isMatchFinished, match.winnerTeamId, requiredRunRate, currentRunRate, match.format]);
-
-  const stadiumPhoto =
-    match.format === 'TEST'
-      ? '/assets/stadiums/jaitley-day.jpg'
-      : '/assets/stadiums/chepauk-night.jpg';
-
   return (
-    <div className="relative space-y-4 select-none animate-in fade-in duration-150 max-w-7xl mx-auto">
-      {/* Stadium Backdrop with Dugout Scrim Wash */}
-      <div className="v2-mt-bg select-none" aria-hidden="true">
-        <img
-          src={stadiumPhoto}
-          alt="Stadium Atmosphere"
-          onError={(e) => {
-            (e.currentTarget as HTMLElement).style.display = 'none';
-          }}
-        />
-        <div className="v2-mt-wash-a" />
-        <div className="v2-mt-wash-b" />
-      </div>
+    <div className="relative space-y-4 select-none animate-in fade-in duration-150 max-w-7xl mx-auto pb-8">
+      {/* Stadium Backdrop with Dynamic Venue Mapping */}
+      <StadiumBackground
+        venue={match.venue}
+        hostCountryId={match.homeTeamId}
+        format={match.format}
+        overlayOpacity={0.55}
+        showCaption={true}
+      />
 
       {/* 1. Broadcast Match Header */}
-      <div className="bg-[#070a0e]/95 backdrop-blur-md border border-[#1e2733] rounded-2xl p-4 sm:p-5 shadow-2xl relative z-10">
+      <div className="match-panel-main rounded-2xl p-4 sm:p-5 shadow-2xl relative z-10">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#1e2733] gap-2">
           <div className="flex items-center space-x-2 flex-wrap gap-y-1">
             <span className="text-xs font-black uppercase tracking-wider bg-[#2c2412] text-[#ffe9a8] border border-[#e2b64a]/50 px-2.5 py-0.5 rounded font-display">
@@ -583,24 +583,8 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
 
           <div className="flex items-center space-x-2">
             <button
-              onClick={() => setShowDRSModal(true)}
-              className="flex items-center space-x-1.5 text-xs bg-[#10151c] hover:bg-[#1a2330] text-[#e2b64a] border border-[#e2b64a]/50 px-3 py-1.5 rounded-lg transition cursor-pointer font-bold shadow font-display"
-            >
-              <Eye className="w-3.5 h-3.5 text-[#e2b64a]" />
-              <span>
-                DRS (
-                {match.drsReviewsRemaining
-                  ? userTeamId === match.homeTeamId
-                    ? match.drsReviewsRemaining.home
-                    : match.drsReviewsRemaining.away
-                  : 2}
-                )
-              </span>
-            </button>
-
-            <button
               onClick={() => setShowScorecard(true)}
-              className="flex items-center space-x-1.5 text-xs bg-[#10151c] hover:bg-[#1a2330] text-[#e8edf2] border border-[#1e2733] hover:border-[#33404f] px-3 py-1.5 rounded-lg transition cursor-pointer font-semibold font-display"
+              className="flex items-center space-x-1.5 text-xs bg-[#10151c]/80 hover:bg-[#1a2330] text-[#e8edf2] border border-[#1e2733] hover:border-[#33404f] px-3.5 py-1.5 rounded-lg transition cursor-pointer font-semibold font-display shadow"
             >
               <FileText className="w-3.5 h-3.5 text-[#e2b64a]" />
               <span>Full Scorecard</span>
@@ -682,7 +666,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
           </div>
 
           {/* Match Status / Target Banner (5 cols) */}
-          <div className="md:col-span-5 bg-[#10151c] border border-[#1e2733] p-3.5 rounded-xl flex flex-col justify-center shadow-inner">
+          <div className="md:col-span-5 match-panel-secondary p-3.5 rounded-xl flex flex-col justify-center shadow-inner">
             {isMatchFinished ? (
               <div className="text-center">
                 <span className="text-[10px] uppercase font-extrabold text-[#3fca86] tracking-widest block font-display">
@@ -982,7 +966,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
       </div>
 
       {/* Tactical Center Tab Navigation */}
-      <div className="bg-[#070a0e] border border-[#1e2733] rounded-xl p-1.5 flex flex-wrap items-center gap-2 shadow-lg relative z-10">
+      <div className="match-panel-main rounded-xl p-1.5 flex flex-wrap items-center gap-2 shadow-lg relative z-10">
         <button
           onClick={() => setTacticalTab('SCOREBOARD')}
           className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer font-display ${
@@ -1065,7 +1049,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
       {/* 2. Interactive Batters & Bowler Status Bar */}
       <div className={`grid grid-cols-1 lg:grid-cols-12 gap-4 relative z-10 ${tacticalTab !== 'SCOREBOARD' ? 'hidden' : ''}`}>
         {/* Active Batters (7 cols) */}
-        <div className="lg:col-span-7 bg-[#070a0e]/95 backdrop-blur-md border border-[#1e2733] rounded-2xl p-4 sm:p-5 shadow-xl">
+        <div className="lg:col-span-7 match-panel-main rounded-2xl p-4 sm:p-5 shadow-xl">
           <h3 className="text-xs uppercase font-extrabold text-[#8b97a3] tracking-widest mb-3 flex flex-wrap items-center justify-between gap-2 font-display">
             <div className="flex items-center gap-2">
               <span className="text-white">Batters at the Crease</span>
@@ -1142,7 +1126,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
         </div>
 
         {/* Active Bowler (5 cols) */}
-        <div className="lg:col-span-5 bg-[#070a0e]/95 backdrop-blur-md border border-[#1e2733] rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-xl">
+        <div className="lg:col-span-5 match-panel-main rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-xl">
           <div>
             <div className="flex items-center justify-between mb-3 gap-2">
               <div className="flex items-center gap-2">
@@ -1229,7 +1213,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
 
       {/* 3. Captaincy Tactics & Match Simulation Controls (Side-by-Side) */}
       {!isMatchFinished && (
-        <div className="bg-[#070a0e]/95 backdrop-blur-md border border-[#1e2733] rounded-2xl p-4 sm:p-5 shadow-2xl relative z-10">
+        <div className="match-panel-main rounded-2xl p-4 sm:p-5 shadow-2xl relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
             {/* Captain's Tactical Orders (7 cols) */}
             <div className="md:col-span-7 space-y-3">
@@ -1423,7 +1407,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
             </div>
 
             {/* Simulation Controls (5 cols in Dugout styling) */}
-            <div className="md:col-span-5 bg-[#10151c] border border-[#1e2733] p-3.5 rounded-xl flex flex-col justify-center space-y-2.5 shadow-inner">
+            <div className="md:col-span-5 match-panel-secondary p-3.5 rounded-xl flex flex-col justify-center space-y-2.5 shadow-inner">
               <span className="text-[10px] uppercase font-extrabold tracking-widest text-[#e2b64a] block text-center font-display">
                 Match Simulation Controls
               </span>
@@ -1479,7 +1463,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
       )}
 
       {/* 4. Live Ball-by-Ball Commentary Feed */}
-      <div className="bg-[#070a0e]/95 backdrop-blur-md border border-[#1e2733] rounded-2xl p-4 sm:p-5 relative z-10 shadow-xl">
+      <div className="match-panel-main rounded-2xl p-4 sm:p-5 relative z-10 shadow-xl">
         <h3 className="text-xs uppercase font-extrabold text-white tracking-widest mb-3 flex items-center gap-2 font-display">
           <Activity className="w-3.5 h-3.5 text-[#e2b64a]" />
           Ball-by-Ball Commentary Feed
@@ -1613,18 +1597,6 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
       {/* Full Scorecard Modal */}
       {showScorecard && (
         <ScorecardModal match={match} onClose={() => setShowScorecard(false)} />
-      )}
-
-      {/* DRS Review Modal */}
-      {showDRSModal && (
-        <DRSReviewModal
-          match={match}
-          activeReview={match.activeDRSReview || undefined}
-          onExecuteDRS={(type) => {
-            if (onExecuteDRS) onExecuteDRS(type);
-          }}
-          onClose={() => setShowDRSModal(false)}
-        />
       )}
     </div>
   );

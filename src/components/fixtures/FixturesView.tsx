@@ -21,6 +21,7 @@ import { CareerSave, Match, MatchFormat, CalendarEvent } from '../../types/crick
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
 import { isPreMatchStatus, isTerminalMatchStatus } from '../../engine/matchEngine';
 import { CountryFlag } from '../common/CountryFlag';
+import { MonthlyCalendarView } from './MonthlyCalendarView';
 
 interface FixturesViewProps {
   career: CareerSave;
@@ -49,7 +50,7 @@ export const FixturesView: React.FC<FixturesViewProps> = ({
   onAdvanceToNextMatch,
   onOpenTourSelection,
 }) => {
-  const [viewType, setViewType] = useState<CalendarViewType>('UPCOMING');
+  const [viewType, setViewType] = useState<CalendarViewType>('MONTHLY');
   const [selectedCountryId, setSelectedCountryId] = useState<string>(career.selectedTeamId);
   const [selectedFormat, setSelectedFormat] = useState<MatchFormat | 'ALL'>('ALL');
   const [selectedMonth, setSelectedMonth] = useState<string>('2026-11'); // YYYY-MM
@@ -172,23 +173,6 @@ export const FixturesView: React.FC<FixturesViewProps> = ({
       </div>
 
       {/* View-Specific Secondary Filter Bars */}
-      {viewType === 'MONTHLY' && (
-        <div className="flex items-center space-x-3 bg-[#070a0e] p-4 rounded-xl border border-[#1e2733]">
-          <span className="dugout-kicker text-xs text-[#8b97a3]">Select Month:</span>
-          <select
-            value={selectedMonth}
-            onChange={(e) => setSelectedMonth(e.target.value)}
-            className="bg-[#10151c] border border-[#1e2733] text-white text-xs font-mono font-bold px-3 py-1.5 rounded-lg outline-none cursor-pointer tracking-wider"
-          >
-            {availableMonths.map((m) => (
-              <option key={m} value={m} className="bg-[#070a0e]">
-                {m}
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
-
       {viewType === 'ANNUAL' && (
         <div className="flex items-center space-x-2.5 bg-[#070a0e] p-4 rounded-xl border border-[#1e2733] overflow-x-auto">
           <span className="dugout-kicker text-xs text-[#8b97a3]">Select Season:</span>
@@ -253,8 +237,16 @@ export const FixturesView: React.FC<FixturesViewProps> = ({
         </div>
       )}
 
-      {/* EVENTS VIEW (Rest Days, Training Days, Travel, Squad Deadlines) */}
-      {viewType === 'EVENTS' ? (
+      {/* MONTHLY CALENDAR GRID VIEW */}
+      {viewType === 'MONTHLY' ? (
+        <MonthlyCalendarView
+          career={career}
+          allMatches={allMatches}
+          onSelectMatch={onSelectMatch}
+          onInspectScorecard={onInspectScorecard}
+          onOpenMatchPreparation={onOpenMatchPreparation}
+        />
+      ) : viewType === 'EVENTS' ? (
         <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-5 space-y-3 shadow-xl">
           <h4 className="dugout-kicker text-xs text-[#e2b64a] mb-3">
             Scheduled Squad Periods, Rest Days &amp; Announcement Deadlines

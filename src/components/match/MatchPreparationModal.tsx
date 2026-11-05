@@ -24,6 +24,7 @@ import { selectAIPlayingXIForMatch } from '../../engine/aiTeamEngine';
 import { getNextUserMatchInfo } from '../../store/careerStore';
 import { CountryFlag } from '../common/CountryFlag';
 import { PlayerAvatar } from '../common/PlayerAvatar';
+import { getStadiumImageSrc } from '../../data/stadiumImages';
 
 interface MatchPreparationModalProps {
   career: CareerSave;
@@ -298,10 +299,7 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
     return true;
   });
 
-  const stadiumPhoto =
-    match.format === 'TEST'
-      ? '/assets/stadiums/jaitley-day.jpg'
-      : '/assets/stadiums/chepauk-night.jpg';
+  const stadiumPhoto = getStadiumImageSrc(match.venue, match.homeTeamId, match.format);
 
   return (
     <div className="fixed inset-0 z-50 bg-[#000000]/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 select-none animate-in fade-in">

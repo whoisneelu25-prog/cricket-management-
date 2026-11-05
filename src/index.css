@@ -289,3 +289,67 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #33404f;
 }
+
+/* Stadium Background System */
+.stadium-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.stadium-bg-photo {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.stadium-bg-neutral {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 20%, rgba(20, 35, 25, 0.85) 0%, rgba(7, 10, 14, 0.95) 70%, #000000 100%);
+}
+
+.stadium-bg-fade-in {
+  animation: stadiumFadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes stadiumFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.stadium-bg-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 40%, transparent 40%, rgba(0, 0, 0, 0.75) 100%),
+              linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, transparent 20%, rgba(0, 0, 0, 0.65) 100%);
+}
+
+/* Translucent match centre panels allowing stadium photograph to show through */
+.match-panel-main {
+  background: rgba(5, 8, 12, 0.82) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(30, 39, 51, 0.75);
+}
+
+.match-panel-secondary {
+  background: rgba(10, 14, 19, 0.76) !important;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(30, 39, 51, 0.65);
+}
+
+.match-panel-sub {
+  background: rgba(16, 21, 28, 0.70) !important;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(30, 39, 51, 0.55);
+}
+
