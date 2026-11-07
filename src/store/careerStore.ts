@@ -14,6 +14,7 @@ import {
   NotificationItem,
 } from '../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../data/teams';
+import { VENUES } from '../data/venues';
 import {
   ALL_PLAYERS,
   getDefaultFormatSquadConfig,
@@ -164,7 +165,8 @@ export function inspectNationalTeamSquad(
   players: Player[];
 } {
   const isUser = canUserManageTeam(career, targetTeamId);
-  const players = getEffectivePlayersByCountry(targetTeamId, career, true);
+  const allCountryPlayers = getEffectivePlayersByCountry(targetTeamId, career, true);
+  const byId = new Map(allCountryPlayers.map((p) => [p.id, p]));
 
   let formatConfig: FormatSquadConfig;
   if (isUser) {
@@ -173,6 +175,25 @@ export function inspectNationalTeamSquad(
     formatConfig =
       career.aiTeams?.[targetTeamId]?.formatSquads?.[format] ||
       buildAISquadConfig(targetTeamId, format, career);
+  }
+
+  // Scope the selectable player pool strictly to the format's official selection pool
+  // (First-choice Playing XI + Format Selection Pool = Complete Format Selection Pool)
+  const formatData = getNationFormatSelectionData(targetTeamId, format);
+  let players: Player[];
+  if (formatData && formatData.poolPlayerIds.length > 0) {
+    const orderedIds = Array.from(
+      new Set([
+        ...formatData.poolPlayerIds,
+        ...(formatConfig.squadPlayerIds || []),
+        ...(formatConfig.reservePlayerIds || []),
+      ])
+    );
+    players = orderedIds
+      .map((id) => byId.get(id) || getEffectivePlayer(id, career))
+      .filter((p): p is Player => Boolean(p));
+  } else {
+    players = allCountryPlayers;
   }
 
   return {
@@ -265,13 +286,16 @@ export function createNewCareerSave(
       date: '2026-11-15',
       type: 'SELECTION_DEADLINE',
       title: 'Independent Format Squads Open',
-      message: 'Select and manage separate squads for Test (18), ODI (15), and T20I (16).',
+      message: 'Select and manage separate squads for Test (15), ODI (15), and T20I (15).',
       read: false,
       actionTab: 'SQUAD_MANAGEMENT',
     },
   ];
 
   const allCountryPlayers = getEffectivePlayersByCountry(team.id, undefined, true);
+  const testPoolIds = getNationFormatSelectionData(team.id, 'TEST')?.poolPlayerIds || allCountryPlayers.map((p) => p.id);
+  const odiPoolIds = getNationFormatSelectionData(team.id, 'ODI')?.poolPlayerIds || allCountryPlayers.map((p) => p.id);
+  const t20PoolIds = getNationFormatSelectionData(team.id, 'T20I')?.poolPlayerIds || allCountryPlayers.map((p) => p.id);
 
   const newCareer: CareerSave = {
     id: `career_${Date.now()}`,
@@ -305,27 +329,21 @@ export function createNewCareerSave(
     formatSquads: {
       TEST: {
         ...testConfig,
-        targetSquadSize: 18,
-        squadPlayerIds: testConfig.squadPlayerIds.slice(0, 18),
-        reservePlayerIds: testConfig.squadPlayerIds.length > 18
-          ? testConfig.squadPlayerIds.slice(18, 22)
-          : allCountryPlayers.filter((p) => !testConfig.squadPlayerIds.includes(p.id)).slice(0, 4).map((p) => p.id),
+        targetSquadSize: 15,
+        squadPlayerIds: testConfig.squadPlayerIds.slice(0, 15),
+        reservePlayerIds: testPoolIds.filter((id) => !testConfig.squadPlayerIds.includes(id)).slice(0, 4),
       },
       ODI: {
         ...odiConfig,
         targetSquadSize: 15,
         squadPlayerIds: odiConfig.squadPlayerIds.slice(0, 15),
-        reservePlayerIds: odiConfig.squadPlayerIds.length > 15
-          ? odiConfig.squadPlayerIds.slice(15, 19)
-          : allCountryPlayers.filter((p) => !odiConfig.squadPlayerIds.includes(p.id)).slice(0, 4).map((p) => p.id),
+        reservePlayerIds: odiPoolIds.filter((id) => !odiConfig.squadPlayerIds.includes(id)).slice(0, 4),
       },
       T20I: {
         ...t20Config,
-        targetSquadSize: 16,
-        squadPlayerIds: t20Config.squadPlayerIds.slice(0, 16),
-        reservePlayerIds: t20Config.squadPlayerIds.length > 16
-          ? t20Config.squadPlayerIds.slice(16, 20)
-          : allCountryPlayers.filter((p) => !t20Config.squadPlayerIds.includes(p.id)).slice(0, 4).map((p) => p.id),
+        targetSquadSize: 15,
+        squadPlayerIds: t20Config.squadPlayerIds.slice(0, 15),
+        reservePlayerIds: t20PoolIds.filter((id) => !t20Config.squadPlayerIds.includes(id)).slice(0, 4),
       },
     },
     aiTeams,
@@ -630,6 +648,7 @@ export function confirmMatchPreparationLineup(
   lineup: {
     playingXI: string[];
     captainId: string;
+    viceCaptainId?: string;
     wicketKeeperId: string;
     bowlingRotation?: string[];
   }
@@ -646,6 +665,9 @@ export function confirmMatchPreparationLineup(
   let nextCareer = setFormatPlayingXI(career, targetMatch.format, lineup.playingXI);
   if (lineup.playingXI.includes(lineup.captainId)) {
     nextCareer = setFormatCaptain(nextCareer, targetMatch.format, lineup.captainId);
+  }
+  if (lineup.viceCaptainId && lineup.playingXI.includes(lineup.viceCaptainId)) {
+    nextCareer = setFormatViceCaptain(nextCareer, targetMatch.format, lineup.viceCaptainId);
   }
   if (lineup.playingXI.includes(lineup.wicketKeeperId)) {
     nextCareer = setFormatWicketKeeper(nextCareer, targetMatch.format, lineup.wicketKeeperId);
@@ -703,15 +725,36 @@ export function confirmMatchPreparationLineup(
  * Format-Specific National Squad Management Actions (Phase 4):
  * Test, ODI, and T20I squads are strictly independent.
  * Modifying one format squad never mutates the other format squads!
+ * Default squad size is 15; configurable squad size ranges from 11 to 20.
  */
 export function setFormatTargetSquadSize(
   career: CareerSave,
   format: MatchFormat,
   size: number
 ): CareerSave {
-  const targetSize = Math.max(15, Math.min(20, size));
+  const targetSize = Math.max(11, Math.min(20, size));
   const cfg = career.formatSquads[format];
   if (!cfg) return career;
+
+  let updatedSquad = [...(cfg.squadPlayerIds || [])];
+  let updatedReserves = [...(cfg.reservePlayerIds || [])];
+
+  if (updatedSquad.length > targetSize) {
+    // Keep all Playing XI members first, then non-XI members up to targetSize
+    const xiSet = new Set(cfg.playingXI || []);
+    const xiMembers = updatedSquad.filter((id) => xiSet.has(id));
+    const nonXiMembers = updatedSquad.filter((id) => !xiSet.has(id));
+    const kept = [...xiMembers, ...nonXiMembers].slice(0, targetSize);
+    const keptSet = new Set(kept);
+    const trimmed = updatedSquad.filter((id) => !keptSet.has(id));
+    updatedSquad = kept;
+    for (const id of trimmed) {
+      if (!updatedReserves.includes(id)) {
+        updatedReserves.push(id);
+      }
+    }
+  }
+
   return {
     ...career,
     formatSquads: {
@@ -719,6 +762,8 @@ export function setFormatTargetSquadSize(
       [format]: {
         ...cfg,
         targetSquadSize: targetSize,
+        squadPlayerIds: updatedSquad,
+        reservePlayerIds: updatedReserves,
       },
     },
   };
@@ -742,11 +787,11 @@ export function addPlayerToFormatSquad(
   if (currentSquad.includes(playerId)) {
     return { updatedCareer: career, error: 'Player is already selected in this format squad.' };
   }
-  const maxSize = cfg.targetSquadSize || (format === 'TEST' ? 18 : format === 'ODI' ? 15 : 16);
+  const maxSize = cfg.targetSquadSize || 15;
   if (currentSquad.length >= maxSize) {
     return {
       updatedCareer: career,
-      error: `Format squad has reached its configured size of ${maxSize} players. Remove a player or promote from reserves.`,
+      error: `Format squad has reached its configured size of ${maxSize} players. Increase the Squad Size Cap (up to 20) or remove a player first.`,
     };
   }
 
@@ -983,7 +1028,7 @@ export function promoteReserveToFormatSquad(
   }
 
   let updatedSquad = [...(cfg.squadPlayerIds || [])];
-  const maxSize = cfg.targetSquadSize || (format === 'TEST' ? 18 : format === 'ODI' ? 15 : 16);
+  const maxSize = cfg.targetSquadSize || 15;
 
   if (replacePlayerId && updatedSquad.includes(replacePlayerId)) {
     updatedSquad = updatedSquad.map((id) => (id === replacePlayerId ? reservePlayerId : id));
@@ -1506,85 +1551,6 @@ export function announceTourSquad(
     return t;
   });
 
-  const updatedFormatSquads: Record<MatchFormat, FormatSquadConfig> = { ...career.formatSquads };
-  const rawTourFormats: MatchFormat[] =
-    tour.formats || (Object.keys(tour.series || {}) as MatchFormat[]);
-  const tourFormats: MatchFormat[] =
-    rawTourFormats.length > 0 ? rawTourFormats : (['TEST', 'ODI', 'T20I'] as MatchFormat[]);
-
-  tourFormats.forEach((fmt: MatchFormat) => {
-    const currentCfg = updatedFormatSquads[fmt];
-    if (currentCfg) {
-      const eligibleInTour = validPlayerIds.filter((id) => {
-        const p = activeMap.get(id);
-        return p?.formatEligibility?.[fmt];
-      });
-
-      const newXI = currentCfg.playingXI.filter((id: string) => validPlayerIds.includes(id));
-      for (const candidateId of eligibleInTour) {
-        if (newXI.length >= 11) break;
-        if (!newXI.includes(candidateId)) newXI.push(candidateId);
-      }
-      for (const candidateId of validPlayerIds) {
-        if (newXI.length >= 11) break;
-        if (!newXI.includes(candidateId)) newXI.push(candidateId);
-      }
-      if (newXI.length < 11) {
-        for (const candidate of activePool) {
-          if (newXI.length >= 11) break;
-          if (!newXI.includes(candidate.id)) newXI.push(candidate.id);
-        }
-      }
-
-      const capId = newXI.includes(currentCfg.captainId) ? currentCfg.captainId : newXI[0] || '';
-      const vcId = newXI.includes(currentCfg.viceCaptainId)
-        ? currentCfg.viceCaptainId
-        : newXI[1] || newXI[0] || '';
-      const wk = newXI.find((id: string) => {
-        const p = activeMap.get(id);
-        return p?.isWicketKeeper || p?.role === 'WICKETKEEPER_BATTER';
-      });
-      const wkId =
-        wk ||
-        (newXI.includes(currentCfg.wicketKeeperId)
-          ? currentCfg.wicketKeeperId
-          : newXI[2] || newXI[0] || '');
-
-      updatedFormatSquads[fmt] = {
-        ...currentCfg,
-        playingXI: newXI,
-        battingOrder: newXI,
-        captainId: capId,
-        viceCaptainId: vcId,
-        wicketKeeperId: wkId,
-        squadPlayerIds: validPlayerIds,
-      };
-    }
-  });
-
-  const updatedFixtures = (career.fixtures || []).map((m) => {
-    if (m.tourId !== tourId || !isPreMatchStatus(m.status)) return m;
-    const cfg = updatedFormatSquads[m.format];
-    if (!cfg) return m;
-
-    if (m.homeTeamId === userTeamId) {
-      return {
-        ...m,
-        homeXI: cfg.playingXI,
-        homeCaptainId: cfg.captainId,
-        homeWicketKeeperId: cfg.wicketKeeperId,
-      };
-    } else if (m.awayTeamId === userTeamId) {
-      return {
-        ...m,
-        awayXI: cfg.playingXI,
-        awayCaptainId: cfg.captainId,
-        awayWicketKeeperId: cfg.wicketKeeperId,
-      };
-    }
-    return m;
-  });
-
   const newsArticle: NewsArticle = {
     id: `news_tour_squad_${Date.now()}`,
     title: `Tour Squad Announced: ${tour.name}`,
@@ -1597,8 +1563,6 @@ export function announceTourSquad(
   return {
     ...career,
     tours: updatedTours,
-    formatSquads: updatedFormatSquads,
-    fixtures: updatedFixtures,
     news: [newsArticle, ...career.news],
   };
 }
@@ -1656,7 +1620,7 @@ export function sanitizeCareerSave(career: CareerSave): CareerSave {
       wkId = validXI[2] || validXI[0] || '';
     }
 
-    const defaultTargetSize = fmt === 'TEST' ? 18 : fmt === 'ODI' ? 15 : 16;
+    const defaultTargetSize = 15;
     const targetSquadSize = cfg.targetSquadSize || defaultTargetSize;
     let filteredSquad = (cfg.squadPlayerIds || []).filter((id) => activeIds.has(id));
     let initialReserves = (cfg.reservePlayerIds || []).filter((id) => activeIds.has(id));
@@ -1717,8 +1681,29 @@ export function sanitizeCareerSave(career: CareerSave): CareerSave {
       ? career.teamMorale
       : Math.max(40, Math.min(100, Math.round((career.manager?.boardConfidence || 85) * 0.95)));
 
+  const repairFixtureVenue = (m: Match, idx: number): Match => {
+    if (
+      !m.tournamentId &&
+      m.homeTeamId !== 'ENG' &&
+      (m.venue || '').toLowerCase().includes("lord's")
+    ) {
+      const hostVenues = VENUES.filter((v) => v.countryId === m.homeTeamId);
+      if (hostVenues.length > 0) {
+        const chosen = hostVenues[idx % hostVenues.length];
+        return {
+          ...m,
+          venue: `${chosen.name}, ${chosen.city}`,
+          pitch: chosen.pitch,
+          weather: chosen.weather,
+        };
+      }
+    }
+    return m;
+  };
+
   // Sanitize scheduled user fixtures
-  const sanitizedFixtures = (career.fixtures || []).map((m) => {
+  const sanitizedFixtures = (career.fixtures || []).map((rawM, idx) => {
+    const m = repairFixtureVenue(rawM, idx);
     if (!isPreMatchStatus(m.status)) {
       return ensureMatchTacticalSystemsInitialized(m);
     }

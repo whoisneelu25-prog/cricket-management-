@@ -16,6 +16,9 @@ import {
   Plus,
   X,
   Filter,
+  ArrowUp,
+  ArrowDown,
+  ArrowLeftRight,
 } from 'lucide-react';
 import {
   CareerSave,
@@ -24,7 +27,7 @@ import {
   FormatSquadConfig,
   GranularPlayerRole,
 } from '../../types/cricket';
-import { INTERNATIONAL_TEAMS } from '../../data/teams';
+import { INTERNATIONAL_TEAMS, CORE_12_TEAMS } from '../../data/teams';
 import {
   inspectNationalTeamSquad,
   getGranularPlayerRole,
@@ -35,6 +38,7 @@ import {
   replaceInjuredPlayerInFormatSquad,
   resetFormatSquadSelection,
   confirmFormatSquad,
+  setFormatPlayingXI,
   setFormatCaptain,
   setFormatViceCaptain,
   setFormatWicketKeeper,
@@ -85,6 +89,12 @@ export const SquadView: React.FC<SquadViewProps> = ({
     onConfirm: () => void;
   }>({ isOpen: false, title: '', message: '', onConfirm: () => {} });
 
+  const [actionBanner, setActionBanner] = useState<{
+    type: 'error' | 'info';
+    text: string;
+  } | null>(null);
+  const [swapOutXiPlayerId, setSwapOutXiPlayerId] = useState<string | null>(null);
+
   const inspection = inspectNationalTeamSquad(career, viewedCountryId, selectedFormat);
   const isReadOnly = inspection.isReadOnly;
   const fullNationalPool = inspection.players;
@@ -96,11 +106,18 @@ export const SquadView: React.FC<SquadViewProps> = ({
   // Squad and Reserve lists
   const squadPlayerIds = formatConfig.squadPlayerIds || [];
   const reservePlayerIds = formatConfig.reservePlayerIds || [];
-  const targetSize = formatConfig.targetSquadSize || (selectedFormat === 'TEST' ? 18 : 16);
+  const playingXIIds = formatConfig.playingXI || [];
+  const targetSize = formatConfig.targetSquadSize || 15;
 
   const squadPlayers = squadPlayerIds
     .map((id) => fullNationalPool.find((p) => p.id === id))
     .filter((p): p is Player => p !== undefined);
+
+  const playingXIPlayers = playingXIIds
+    .map((id) => fullNationalPool.find((p) => p.id === id))
+    .filter((p): p is Player => p !== undefined);
+
+  const benchSquadPlayers = squadPlayers.filter((p) => !playingXIIds.includes(p.id));
 
   const reservePlayers = reservePlayerIds
     .map((id) => fullNationalPool.find((p) => p.id === id))
@@ -155,7 +172,12 @@ export const SquadView: React.FC<SquadViewProps> = ({
   // Action Handlers
   const handleAddPlayer = (playerId: string) => {
     if (isReadOnly) return;
-    const { updatedCareer } = addPlayerToFormatSquad(career, selectedFormat, playerId);
+    const { updatedCareer, error } = addPlayerToFormatSquad(career, selectedFormat, playerId);
+    if (error) {
+      setActionBanner({ type: 'error', text: error });
+      return;
+    }
+    setActionBanner({ type: 'info', text: `Player added to ${selectedFormat} squad.` });
     handleUpdate(updatedCareer);
   };
 
@@ -173,15 +195,25 @@ export const SquadView: React.FC<SquadViewProps> = ({
           ? `${player.name} is the current ${selectedFormat} Captain. Dropping them will require assigning a new captain.`
           : `${player.name} is a key senior player with a rating of ${overallRating}. Are you sure you want to drop them from the ${selectedFormat} squad?`,
         onConfirm: () => {
-          const { updatedCareer } = removePlayerFromFormatSquad(career, selectedFormat, player.id);
-          handleUpdate(updatedCareer);
+          const { updatedCareer, error } = removePlayerFromFormatSquad(career, selectedFormat, player.id);
+          if (error) {
+            setActionBanner({ type: 'error', text: error });
+          } else {
+            setActionBanner({ type: 'info', text: `${player.name} dropped from ${selectedFormat} squad.` });
+            handleUpdate(updatedCareer);
+          }
           setConfirmModal({ isOpen: false, title: '', message: '', onConfirm: () => {} });
         },
       });
       return;
     }
 
-    const { updatedCareer } = removePlayerFromFormatSquad(career, selectedFormat, player.id);
+    const { updatedCareer, error } = removePlayerFromFormatSquad(career, selectedFormat, player.id);
+    if (error) {
+      setActionBanner({ type: 'error', text: error });
+      return;
+    }
+    setActionBanner({ type: 'info', text: `${player.name} dropped from ${selectedFormat} squad.` });
     handleUpdate(updatedCareer);
   };
 
@@ -193,8 +225,45 @@ export const SquadView: React.FC<SquadViewProps> = ({
 
   const handlePromoteReserve = (playerId: string) => {
     if (isReadOnly) return;
-    const { updatedCareer } = promoteReserveToFormatSquad(career, selectedFormat, playerId);
+    const { updatedCareer, error } = promoteReserveToFormatSquad(career, selectedFormat, playerId);
+    if (error) {
+      setActionBanner({ type: 'error', text: error });
+      return;
+    }
+    setActionBanner({ type: 'info', text: `Reserve player promoted to ${selectedFormat} squad.` });
     handleUpdate(updatedCareer);
+  };
+
+  const handleMoveXIOrder = (index: number, direction: 'UP' | 'DOWN') => {
+    if (isReadOnly) return;
+    const nextXI = [...playingXIIds];
+    const swapIdx = direction === 'UP' ? index - 1 : index + 1;
+    if (swapIdx < 0 || swapIdx >= nextXI.length) return;
+    const temp = nextXI[index];
+    nextXI[index] = nextXI[swapIdx];
+    nextXI[swapIdx] = temp;
+    if (onUpdateSquadXI) onUpdateSquadXI(selectedFormat, nextXI);
+    const updated = setFormatPlayingXI(career, selectedFormat, nextXI);
+    handleUpdate(updated);
+  };
+
+  const handleSwapIntoXI = (benchPlayerId: string, outPlayerId?: string) => {
+    if (isReadOnly) return;
+    if (!squadPlayerIds.includes(benchPlayerId)) {
+      setActionBanner({
+        type: 'error',
+        text: 'Only players selected in the format squad can enter the Playing XI.',
+      });
+      return;
+    }
+    const targetOutId = outPlayerId || swapOutXiPlayerId || playingXIIds[playingXIIds.length - 1];
+    if (!targetOutId || !playingXIIds.includes(targetOutId)) return;
+    const nextXI = playingXIIds.map((id) => (id === targetOutId ? benchPlayerId : id));
+    if (onUpdateSquadXI) onUpdateSquadXI(selectedFormat, nextXI);
+    const updated = setFormatPlayingXI(career, selectedFormat, nextXI);
+    setSwapOutXiPlayerId(null);
+    setActionBanner({ type: 'info', text: `Updated ${selectedFormat} Playing XI.` });
+    handleUpdate(updated);
   };
 
   const handleAssignCaptain = (player: Player) => {
@@ -378,7 +447,7 @@ export const SquadView: React.FC<SquadViewProps> = ({
               <option value={career.selectedTeamId} className="bg-[#070a0e] text-[#ffe9a8]">
                 ★ {userTeam?.name} (Managed)
               </option>
-              {INTERNATIONAL_TEAMS.filter((t) => t.id !== career.selectedTeamId).map((t) => (
+              {CORE_12_TEAMS.filter((t) => t.id !== career.selectedTeamId).map((t) => (
                 <option key={t.id} value={t.id} className="bg-[#070a0e] text-[#c3ccd6]">
                   {t.name} (AI)
                 </option>
@@ -388,17 +457,36 @@ export const SquadView: React.FC<SquadViewProps> = ({
         </div>
       </div>
 
+      {/* Action Status / Validation Banner */}
+      {actionBanner && (
+        <div
+          className={`rounded-xl px-4 py-2.5 text-xs flex items-center justify-between border ${
+            actionBanner.type === 'error'
+              ? 'bg-[#ff3d7f]/15 border-[#ff3d7f]/40 text-[#ff8aa8]'
+              : 'bg-[#3fca86]/15 border-[#3fca86]/40 text-[#72e6ac]'
+          }`}
+        >
+          <span className="font-semibold">{actionBanner.text}</span>
+          <button
+            onClick={() => setActionBanner(null)}
+            className="text-current hover:opacity-80 cursor-pointer font-bold px-1.5"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
       {/* Squad Size & Composition Bar in Dugout Style */}
       <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-5 space-y-4 shadow-xl">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           {/* Size Selector */}
-          <div className="flex items-center space-x-2 text-xs">
+          <div className="flex flex-wrap items-center gap-2 text-xs">
             <span className="dugout-kicker text-[11px] text-[#e2b64a]">
               {selectedFormat} Squad Cap:
             </span>
             {!isReadOnly ? (
-              <div className="flex items-center space-x-1">
-                {[15, 16, 17, 18, 19, 20].map((sz) => (
+              <div className="flex flex-wrap items-center gap-1">
+                {[11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map((sz) => (
                   <button
                     key={sz}
                     onClick={() => handleSetTargetSize(sz)}
@@ -650,6 +738,175 @@ export const SquadView: React.FC<SquadViewProps> = ({
               )}
             </tbody>
           </table>
+        </div>
+      </div>
+
+      {/* Match Playing XI & Batting Order (1–11) Management Panel */}
+      <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-5 space-y-4 shadow-xl">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#1e2733] pb-3">
+          <div>
+            <span className="dugout-kicker text-xs text-[#e2b64a] flex items-center gap-2">
+              <Award className="w-4 h-4 text-[#e2b64a]" />
+              {selectedFormat} Match Playing XI &amp; Batting Order ({playingXIPlayers.length} / 11)
+            </span>
+            <p className="text-[11px] text-[#8b97a3] mt-0.5">
+              Only players selected in the {selectedFormat} squad can enter the Playing XI. Reorder batting positions 1–11 or swap with squad bench players.
+            </p>
+          </div>
+          <div className="flex items-center gap-2 text-[11px] font-mono text-[#8b97a3]">
+            <span>
+              XI Bench Available: <strong className="text-white">{benchSquadPlayers.length}</strong>
+            </span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {/* Ordered 1–11 Lineup */}
+          <div className="lg:col-span-2 space-y-1.5">
+            {playingXIPlayers.map((player, idx) => {
+              const role = getGranularPlayerRole(player);
+              const isCap = player.id === formatConfig.captainId;
+              const isVC = player.id === formatConfig.viceCaptainId;
+              const isWK = player.id === formatConfig.wicketKeeperId;
+              const isSelectedForSwap = swapOutXiPlayerId === player.id;
+
+              return (
+                <div
+                  key={player.id}
+                  className={`flex items-center justify-between px-3 py-2 rounded-xl border text-xs transition ${
+                    isSelectedForSwap
+                      ? 'bg-[#e2b64a]/15 border-[#e2b64a] text-white'
+                      : 'bg-[#10151c] border-[#1e2733] hover:border-[#2c394b]'
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <span className="w-6 h-6 rounded-lg bg-[#070a0e] border border-[#1e2733] flex items-center justify-center font-mono font-black text-[11px] text-[#e2b64a] shrink-0">
+                      #{idx + 1}
+                    </span>
+                    <div className="min-w-0">
+                      <div
+                        onClick={() => onSelectPlayer(player)}
+                        className="font-bold text-white hover:text-[#e2b64a] cursor-pointer truncate flex items-center gap-1.5"
+                      >
+                        <span className="truncate">{player.name}</span>
+                        {isCap && (
+                          <span className="text-[9px] font-black px-1.5 py-0.5 rounded bg-[#e2b64a] text-black uppercase">
+                            C
+                          </span>
+                        )}
+                        {isVC && (
+                          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#8fb2d9]/20 text-[#8fb2d9] border border-[#8fb2d9]/40 uppercase font-mono">
+                            VC
+                          </span>
+                        )}
+                        {isWK && (
+                          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#3fca86]/20 text-[#3fca86] border border-[#3fca86]/40 uppercase font-mono">
+                            WK
+                          </span>
+                        )}
+                      </div>
+                      <span className="text-[10px] text-[#8b97a3] font-mono">
+                        {role.replace(/_/g, ' ')} • {player.battingHand === 'LEFT_HAND' ? 'LHB' : 'RHB'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {!isReadOnly && (
+                    <div className="flex items-center gap-1 shrink-0">
+                      <button
+                        onClick={() => handleMoveXIOrder(idx, 'UP')}
+                        disabled={idx === 0}
+                        title="Move Up Batting Order"
+                        className="p-1 rounded bg-[#070a0e] border border-[#1e2733] text-[#c3ccd6] hover:text-white disabled:opacity-30 cursor-pointer"
+                      >
+                        <ArrowUp className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => handleMoveXIOrder(idx, 'DOWN')}
+                        disabled={idx === playingXIPlayers.length - 1}
+                        title="Move Down Batting Order"
+                        className="p-1 rounded bg-[#070a0e] border border-[#1e2733] text-[#c3ccd6] hover:text-white disabled:opacity-30 cursor-pointer"
+                      >
+                        <ArrowDown className="w-3.5 h-3.5" />
+                      </button>
+                      {benchSquadPlayers.length > 0 && (
+                        <button
+                          onClick={() =>
+                            setSwapOutXiPlayerId(isSelectedForSwap ? null : player.id)
+                          }
+                          title="Select to Swap with Squad Bench"
+                          className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider border cursor-pointer flex items-center gap-1 ${
+                            isSelectedForSwap
+                              ? 'bg-[#e2b64a] text-black border-[#e2b64a]'
+                              : 'bg-[#070a0e] text-[#8fb2d9] border-[#1e2733] hover:border-[#8fb2d9]'
+                          }`}
+                        >
+                          <ArrowLeftRight className="w-3 h-3" />
+                          <span>{isSelectedForSwap ? 'Swapping' : 'Swap'}</span>
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Squad Bench (Eligible to Enter Playing XI) */}
+          <div className="bg-[#10151c] border border-[#1e2733] rounded-xl p-3.5 space-y-2.5 h-fit">
+            <div className="flex items-center justify-between border-b border-[#1e2733] pb-2">
+              <span className="dugout-kicker text-[10px] text-[#8fb2d9]">
+                Squad Bench ({benchSquadPlayers.length})
+              </span>
+              <span className="text-[10px] text-[#8b97a3] font-mono">
+                {swapOutXiPlayerId
+                  ? `Replacing #${playingXIIds.indexOf(swapOutXiPlayerId) + 1}`
+                  : 'Click to bring into XI'}
+              </span>
+            </div>
+
+            {benchSquadPlayers.length === 0 ? (
+              <p className="text-[11px] text-[#8b97a3] py-4 text-center">
+                Squad is currently 11/11. Add more players to the {selectedFormat} squad (up to {targetSize}) to carry bench options.
+              </p>
+            ) : (
+              <div className="space-y-2">
+                {benchSquadPlayers.map((benchPlayer) => (
+                  <div
+                    key={benchPlayer.id}
+                    className="bg-[#070a0e] border border-[#1e2733] rounded-xl p-2.5 flex items-center justify-between gap-2 text-xs"
+                  >
+                    <div className="min-w-0">
+                      <div
+                        onClick={() => onSelectPlayer(benchPlayer)}
+                        className="font-bold text-white hover:text-[#e2b64a] cursor-pointer truncate"
+                      >
+                        {benchPlayer.name}
+                      </div>
+                      <span className="text-[10px] text-[#8b97a3] font-mono">
+                        {getGranularPlayerRole(benchPlayer).replace(/_/g, ' ')} •{' '}
+                        <strong className="text-[#ffe9a8]">
+                          {Math.round(
+                            (benchPlayer.testRating + benchPlayer.odiRating + benchPlayer.t20Rating) / 3
+                          )}
+                        </strong>
+                      </span>
+                    </div>
+                    {!isReadOnly && (
+                      <button
+                        onClick={() => handleSwapIntoXI(benchPlayer.id)}
+                        className="text-[10px] bg-gradient-to-r from-[#ffe9a8] to-[#e0ab3a] text-black font-extrabold px-2.5 py-1 rounded-md uppercase tracking-wider cursor-pointer shrink-0 hover:brightness-110"
+                      >
+                        {swapOutXiPlayerId
+                          ? `Swap #${playingXIIds.indexOf(swapOutXiPlayerId) + 1}`
+                          : 'Into XI'}
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

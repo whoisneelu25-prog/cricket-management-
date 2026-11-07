@@ -21,7 +21,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { CareerSave, Match, MatchFormat, Player, Tour, TourType } from '../../types/cricket';
-import { INTERNATIONAL_TEAMS } from '../../data/teams';
+import { INTERNATIONAL_TEAMS, CORE_12_TEAMS } from '../../data/teams';
 import { getEffectivePlayersByCountry } from '../../data/squads';
 import {
   computeTourDetailedStatistics,
@@ -572,7 +572,7 @@ export const ToursView: React.FC<ToursViewProps> = ({
                   onChange={(e) => setCustomHost(e.target.value)}
                   className="w-full bg-[#10151c] border border-[#1e2733] rounded-xl p-2 text-white focus:outline-none focus:border-[#e2b64a]"
                 >
-                  {INTERNATIONAL_TEAMS.map((t) => (
+                  {CORE_12_TEAMS.map((t) => (
                     <option key={t.id} value={t.id} className="bg-[#070a0e]">
                       {t.name} ({t.code})
                     </option>
@@ -587,7 +587,7 @@ export const ToursView: React.FC<ToursViewProps> = ({
                   onChange={(e) => setCustomVisitor(e.target.value)}
                   className="w-full bg-[#10151c] border border-[#1e2733] rounded-xl p-2 text-white focus:outline-none focus:border-[#e2b64a]"
                 >
-                  {INTERNATIONAL_TEAMS.map((t) => (
+                  {CORE_12_TEAMS.map((t) => (
                     <option key={t.id} value={t.id} className="bg-[#070a0e]">
                       {t.name} ({t.code})
                     </option>

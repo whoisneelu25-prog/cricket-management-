@@ -22,6 +22,8 @@ export const INTERNATIONAL_TEAMS: Team[] = [
     "homeVenues": [
       "Wankhede Stadium, Mumbai",
       "Eden Gardens, Kolkata",
+      "Arun Jaitley Stadium, Delhi",
+      "M. A. Chidambaram Stadium, Chennai",
       "Narendra Modi Stadium, Ahmedabad",
       "M. Chinnaswamy, Bengaluru"
     ],
@@ -617,6 +619,25 @@ export const INTERNATIONAL_TEAMS: Team[] = [
     ]
   }
 ];
+
+export const CORE_12_TEAM_IDS = [
+  'IND',
+  'AUS',
+  'ENG',
+  'PAK',
+  'RSA',
+  'NZL',
+  'SL',
+  'BAN',
+  'WI',
+  'AFG',
+  'IRE',
+  'ZIM',
+] as const;
+
+export const CORE_12_TEAMS: Team[] = INTERNATIONAL_TEAMS.filter((t) =>
+  (CORE_12_TEAM_IDS as readonly string[]).includes(t.id)
+);
 
 export function getTeamById(teamId: string): Team | undefined {
   if (teamId === 'SRI') return INTERNATIONAL_TEAMS.find((t) => t.id === 'SL');

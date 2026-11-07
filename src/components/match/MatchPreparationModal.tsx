@@ -35,6 +35,7 @@ interface MatchPreparationModalProps {
     lineup: {
       playingXI: string[];
       captainId: string;
+      viceCaptainId?: string;
       wicketKeeperId: string;
       bowlingRotation?: string[];
     }
@@ -78,31 +79,26 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
     ? career.tours.find((t) => t.id === match.tourId)
     : undefined;
 
-  // Format-specific tour squad IDs
+  // Format-specific squad IDs (only selected format squad members can enter the Playing XI)
   const formatSquadIds = useMemo(() => {
+    const savedFmtIds = career.formatSquads[match.format]?.squadPlayerIds;
+    if (savedFmtIds && savedFmtIds.length >= 11) {
+      return savedFmtIds;
+    }
     const tourFmtIds = activeTour?.squadAnnounced
       ? activeTour.formatSquads?.[match.format] || activeTour.tourSquadIds
       : undefined;
     if (tourFmtIds && tourFmtIds.length >= 11) {
       return tourFmtIds;
     }
-    const savedFmtIds = career.formatSquads[match.format]?.squadPlayerIds;
-    if (savedFmtIds && savedFmtIds.length >= 11) {
-      return savedFmtIds;
-    }
     return undefined;
   }, [activeTour, career.formatSquads, match.format]);
 
-  const [poolMode, setPoolMode] = useState<'TOUR_SQUAD' | 'NATIONAL_POOL'>(
-    formatSquadIds ? 'TOUR_SQUAD' : 'NATIONAL_POOL'
-  );
-
   const eligiblePool = useMemo(() => {
     const all = getEffectivePlayersByCountry(userTeamId, career, true);
-    const scoped =
-      poolMode === 'TOUR_SQUAD' && formatSquadIds
-        ? all.filter((p) => formatSquadIds.includes(p.id))
-        : all;
+    const scoped = formatSquadIds
+      ? all.filter((p) => formatSquadIds.includes(p.id))
+      : all;
     const healthyScoped = scoped.filter((p) => !p.isInjured);
     const effectiveList = healthyScoped.length >= 11 ? scoped : all;
 
@@ -116,7 +112,7 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
         match.format === 'TEST' ? b.testRating : match.format === 'ODI' ? b.odiRating : b.t20Rating;
       return rB - rA;
     });
-  }, [userTeamId, career, match.format, poolMode, formatSquadIds]);
+  }, [userTeamId, career, match.format, formatSquadIds]);
 
   const initialUserXI = useMemo(() => {
     const matchXI = userIsHome ? match.homeXI : match.awayXI;
@@ -156,6 +152,11 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
     const fmtCap = career.formatSquads[match.format]?.captainId;
     if (fmtCap && initialUserXI.includes(fmtCap)) return fmtCap;
     return initialUserXI[0] || '';
+  });
+  const [viceCaptainId, setViceCaptainId] = useState<string>(() => {
+    const fmtVc = career.formatSquads[match.format]?.viceCaptainId;
+    if (fmtVc && initialUserXI.includes(fmtVc) && fmtVc !== captainId) return fmtVc;
+    return initialUserXI.find((id) => id !== captainId) || initialUserXI[1] || initialUserXI[0] || '';
   });
   const [wicketKeeperId, setWicketKeeperId] = useState<string>(() => {
     const matchWk = userIsHome ? match.homeWicketKeeperId : match.awayWicketKeeperId;
@@ -277,6 +278,7 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
     const updatedCareer = onConfirmLineup(match.id, {
       playingXI,
       captainId,
+      viceCaptainId,
       wicketKeeperId,
       bowlingRotation: finalBowlers,
     });
@@ -456,6 +458,7 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
               <div className="space-y-1.5 max-h-[380px] overflow-y-auto pr-1">
                 {xiPlayers.map((p, idx) => {
                   const isC = p.id === captainId;
+                  const isVC = p.id === viceCaptainId;
                   const isWK = p.id === wicketKeeperId;
                   const rtg =
                     match.format === 'TEST'
@@ -480,6 +483,11 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
                             {isC && (
                               <span className="text-[8.5px] bg-[#2c2412] text-[#ffe9a8] border border-[#e2b64a]/50 px-1 rounded font-black font-mono">
                                 C
+                              </span>
+                            )}
+                            {isVC && (
+                              <span className="text-[8.5px] bg-[#10151c] text-[#8fb2d9] border border-[#8fb2d9]/50 px-1 rounded font-black font-mono">
+                                VC
                               </span>
                             )}
                             {isWK && (
@@ -526,6 +534,18 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
                         <button
                           onClick={() => {
                             setSavedNotice(false);
+                            setViceCaptainId(p.id);
+                          }}
+                          className={`text-[9.5px] px-1.5 py-0.5 rounded font-bold cursor-pointer ${
+                            isVC ? 'bg-[#10151c] text-[#8fb2d9] border border-[#8fb2d9]' : 'bg-[#10151c] text-[#8b97a3] hover:text-white'
+                          }`}
+                          title="Set as Vice-Captain"
+                        >
+                          VC
+                        </button>
+                        <button
+                          onClick={() => {
+                            setSavedNotice(false);
                             setWicketKeeperId(p.id);
                             setSelectedBowlerIds((prev) => prev.filter((id) => id !== p.id));
                           }}
@@ -565,20 +585,11 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
             <div className="lg:col-span-4 bg-[#10151c] border border-[#1e2733] rounded-xl p-4 space-y-3">
               <div className="flex items-center justify-between border-b border-[#1e2733] pb-2.5">
                 <span className="text-xs font-extrabold uppercase tracking-widest text-[#8fb2d9] flex items-center gap-2 font-display">
-                  <Users className="w-4 h-4" /> Available Pool ({filteredPool.length})
+                  <Users className="w-4 h-4" /> {match.format} Squad Pool ({filteredPool.length})
                 </span>
-                {formatSquadIds && (
-                  <button
-                    onClick={() =>
-                      setPoolMode((prev) =>
-                        prev === 'TOUR_SQUAD' ? 'NATIONAL_POOL' : 'TOUR_SQUAD'
-                      )
-                    }
-                    className="text-[10px] text-[#e2b64a] hover:underline font-mono"
-                  >
-                    {poolMode === 'TOUR_SQUAD' ? 'Tour Squad' : 'National Pool'}
-                  </button>
-                )}
+                <span className="text-[10px] text-[#e2b64a] font-mono">
+                  Selected Squad Only
+                </span>
               </div>
 
               {/* Role Filter Tabs */}

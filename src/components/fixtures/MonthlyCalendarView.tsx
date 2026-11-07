@@ -578,11 +578,14 @@ export const MonthlyCalendarView: React.FC<MonthlyCalendarViewProps> = ({
                       <CountryFlag countryCode={homeTeam?.code || fixture.homeTeamId} size="sm" />
                       <div>
                         <span className="font-bold text-sm text-white block">{homeTeam?.name || fixture.homeTeamId}</span>
-                        {inn1 && inn1.battingTeamId === fixture.homeTeamId && (
-                          <span className="text-[11px] font-mono text-[#e2b64a] font-bold">
-                            {inn1.totalRuns}/{inn1.wickets} ({inn1.completedOvers}.{inn1.ballsInCurrentOver} ov)
-                          </span>
-                        )}
+                        {fixture.innings &&
+                          fixture.innings
+                            .filter((inn) => inn.battingTeamId === fixture.homeTeamId)
+                            .map((inn) => (
+                              <span key={inn.inningsNumber} className="text-[11px] font-mono text-[#e2b64a] font-bold block">
+                                {inn.totalRuns}/{inn.wickets} ({inn.completedOvers}.{inn.ballsInCurrentOver} ov)
+                              </span>
+                            ))}
                       </div>
                     </div>
 
@@ -591,11 +594,14 @@ export const MonthlyCalendarView: React.FC<MonthlyCalendarViewProps> = ({
                     <div className="flex items-center space-x-2 text-right">
                       <div>
                         <span className="font-bold text-sm text-white block">{awayTeam?.name || fixture.awayTeamId}</span>
-                        {inn2 && inn2.battingTeamId === fixture.awayTeamId && (
-                          <span className="text-[11px] font-mono text-[#e2b64a] font-bold">
-                            {inn2.totalRuns}/{inn2.wickets} ({inn2.completedOvers}.{inn2.ballsInCurrentOver} ov)
-                          </span>
-                        )}
+                        {fixture.innings &&
+                          fixture.innings
+                            .filter((inn) => inn.battingTeamId === fixture.awayTeamId)
+                            .map((inn) => (
+                              <span key={inn.inningsNumber} className="text-[11px] font-mono text-[#e2b64a] font-bold block">
+                                {inn.totalRuns}/{inn.wickets} ({inn.completedOvers}.{inn.ballsInCurrentOver} ov)
+                              </span>
+                            ))}
                       </div>
                       <CountryFlag countryCode={awayTeam?.code || fixture.awayTeamId} size="sm" />
                     </div>

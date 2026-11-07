@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Shield, Trophy, Check, ArrowRight, ArrowLeft, Users, Sparkles, Zap, Award, Target, UserCheck } from 'lucide-react';
 import { MatchFormat, CareerSave } from '../../types/cricket';
-import { INTERNATIONAL_TEAMS } from '../../data/teams';
+import { INTERNATIONAL_TEAMS, CORE_12_TEAMS } from '../../data/teams';
 import { CoachPreset, FAMOUS_COACH_PRESETS } from '../../data/coaches';
 import { createNewCareerSave } from '../../store/careerStore';
 
@@ -298,7 +298,7 @@ export const NewCareerWizard: React.FC<NewCareerWizardProps> = ({ onStartCareer,
               </span>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 max-h-80 overflow-y-auto pr-1">
-                {INTERNATIONAL_TEAMS.map((team) => {
+                {CORE_12_TEAMS.map((team) => {
                   const isSelected = selectedCountryId === team.id;
 
                   return (

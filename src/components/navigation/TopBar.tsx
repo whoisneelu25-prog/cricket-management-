@@ -133,7 +133,17 @@ export const TopBar: React.FC<TopBarProps> = ({
                   <div className="p-4 text-center text-xs text-[#8b97a3]">No new notifications</div>
                 ) : (
                   notifications.slice(0, 8).map((n) => (
-                    <div key={n.id} className="p-3 hover:bg-[#10151c] transition text-xs">
+                    <div
+                      key={n.id}
+                      onClick={() => {
+                        n.read = true;
+                        setShowNotifications(false);
+                        if (n.actionTab && onSelectTab) {
+                          onSelectTab(n.actionTab);
+                        }
+                      }}
+                      className="p-3 hover:bg-[#10151c] transition text-xs cursor-pointer"
+                    >
                       <div className="flex items-center justify-between mb-1">
                         <span className="font-bold text-[#e8edf2]">{n.title}</span>
                         <span className="text-[10px] text-[#8fb2d9] font-mono">{n.date}</span>
@@ -212,8 +222,10 @@ export const TopBar: React.FC<TopBarProps> = ({
                 </div>
               </div>
               <div className="border-t border-[#1e2733] pt-2 text-[11px] text-[#8b97a3] flex items-center justify-between">
-                <span>Total Matches:</span>
-                <span className="font-mono text-white font-bold">{career.archivedMatches?.length || 0}</span>
+                <span>Matches Managed:</span>
+                <span className="font-mono text-white font-bold">
+                  {career.manager.matchesManaged} ({career.manager.matchesWon}W-{career.manager.matchesLost}L-{career.manager.matchesDrawn}D)
+                </span>
               </div>
             </div>
           )}
