@@ -675,9 +675,13 @@ export function selectWhiteBallOpeningBowler(
       ? nominatedPool
       : genuineBowlers.length > 0
       ? genuineBowlers
-      : nonKeepers.length > 0
-      ? nonKeepers
-      : bowlingXI;
+      : nonKeepers.filter((id) => isEligibleWhiteBallBowler(getPlayerById(id)));
+
+  if (candidates.length === 0) {
+    const anyEligible = bowlingXI.filter((id) => isEligibleWhiteBallBowler(getPlayerById(id)));
+    if (anyEligible.length > 0) return anyEligible[0];
+    return bowlingXI[bowlingXI.length - 1];
+  }
 
   const rand = mulberry32(seed + 1907);
 
@@ -778,24 +782,21 @@ export function selectNextWhiteBallBowler(
     available = filterUnderQuota(genuineBowlers);
   }
   if (available.length === 0) {
-    available = filterUnderQuota(nonKeepers);
-  }
-  if (available.length === 0) {
-    const anyOther = genuineBowlers.length > 0 ? genuineBowlers : bowlingXI.filter((id) => id !== prevBowlerId);
-    return anyOther[0] || bowlingXI[0];
-  }
-
-  // When the user is bowling, keep the current end's bowler locked in (if under quota) so the user controls all bowling changes
-  const lastOverMap = currentInnings.bowlerLastOverBowled || {};
-  let currentEndIncumbentId: string | undefined;
-  for (const [bId, lastOv] of Object.entries(lastOverMap)) {
-    if (lastOv === nextOver - 2 && bId !== prevBowlerId) {
-      currentEndIncumbentId = bId;
-      break;
+    const anyEligibleUnderQuota = filterUnderQuota(
+      bowlingXI.filter((id) => id !== bowlingWkId && isEligibleWhiteBallBowler(getPlayerById(id)))
+    );
+    if (anyEligibleUnderQuota.length > 0) {
+      available = anyEligibleUnderQuota;
+    } else {
+      // If all genuine bowlers have exhausted their max quota, allow remaining non-keepers under quota to bowl so ICC quota is not violated
+      const nonKeepersUnderQuota = filterUnderQuota(nonKeepers);
+      if (nonKeepersUnderQuota.length > 0) {
+        available = nonKeepersUnderQuota;
+      } else {
+        const anyOther = genuineBowlers.length > 0 ? genuineBowlers : bowlingXI.filter((id) => id !== prevBowlerId);
+        return anyOther.find((id) => id !== prevBowlerId) || anyOther[0];
+      }
     }
-  }
-  if (isUserTeamBowling && currentEndIncumbentId && available.includes(currentEndIncumbentId)) {
-    return currentEndIncumbentId;
   }
 
   // Rank top 6 bowling unit in the XI & identify top 2 death specialists
@@ -840,6 +841,7 @@ export function selectNextWhiteBallBowler(
   const rotRand = mulberry32(Math.abs(matchSeedBase));
 
   const spellMap = currentInnings.bowlerSpellOvers || {};
+  const lastOverMap = currentInnings.bowlerLastOverBowled || {};
 
   const scored = available.map((id) => {
     const p = getPlayerById(id);

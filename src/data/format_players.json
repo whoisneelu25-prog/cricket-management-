@@ -15401,7 +15401,7 @@
     "dob": "2003-10-23",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "ALL_ROUNDER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
@@ -16470,7 +16470,7 @@
     "dob": "1998-11-21",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "ALL_ROUNDER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {

@@ -1071,41 +1071,26 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
   if (effectiveFieldPreset === 'DEFENSIVE_BOUNDARY') finalWicketProb *= 0.82;
   if (effectiveFieldPreset === 'DEATH_PROTECT' && format !== 'TEST') finalWicketProb *= 0.94;
 
-  // User Team Managerial & Home Composure Balance + Early Over Protection in Test Matches
+  // Natural managerial composure & balance without artificial over-number gatekeeping ("go with the flow")
   if (ctx.isUserBatting) {
     if (format === 'TEST') {
       finalWicketProb *= 0.94;
       aggressionRunFactor *= 1.07;
-      // Protect user openers in the opening overs so they don't lose an early wicket by Over 3
-      if (overNumber < 5 && wicketsLost === 0) {
-        finalWicketProb = Math.min(finalWicketProb * 0.05, 0.0001);
-      } else if (overNumber < 10 && wicketsLost <= 1) {
-        finalWicketProb *= 0.62;
-      }
     } else {
-      finalWicketProb *= 0.88;
+      finalWicketProb *= 0.92;
       aggressionRunFactor *= 1.06;
-      if (overNumber < 4 && wicketsLost === 0) {
-        finalWicketProb = Math.min(finalWicketProb * 0.12, 0.0003);
-      }
     }
   } else if (ctx.isUserBowling) {
     if (format === 'TEST') {
-      finalWicketProb *= 1.18;
-      aggressionRunFactor *= 0.90;
+      finalWicketProb *= 1.14;
+      aggressionRunFactor *= 0.92;
     } else {
-      finalWicketProb *= 1.12;
-      aggressionRunFactor *= 0.93;
+      finalWicketProb *= 1.10;
+      aggressionRunFactor *= 0.94;
     }
   }
 
-  const minWicketFloor = ctx.isUserBatting
-    ? overNumber < 5 && wicketsLost === 0
-      ? 0.00002
-      : 0.0018
-    : format === 'TEST'
-    ? 0.0025
-    : 0.003;
+  const minWicketFloor = format === 'TEST' ? 0.0022 : 0.0028;
   const rollWicket = activeRandom();
   if (rollWicket < Math.min(0.20, Math.max(minWicketFloor, finalWicketProb))) {
     // Free Hit protection in ODI & T20I: only RUN_OUT is legally out; caught/bowled/LBW/stumped do not count!

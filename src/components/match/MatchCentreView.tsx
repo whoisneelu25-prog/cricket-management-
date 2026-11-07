@@ -1531,11 +1531,15 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
               </div>
               {/* Bowler change controls for user if bowling (between overs) */}
               {isUserBowling && !isMatchFinished && !isMidOver && (
-                <div className="flex items-center gap-1.5">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-800/40">
+                    Auto-Rotation Active
+                  </span>
                   <button
                     type="button"
                     onClick={() => setShowBowlerModal(true)}
                     className="btn-gold text-[11px] px-2.5 py-1 rounded-lg font-bold cursor-pointer shadow"
+                    title="Manually override the bowler for next over"
                   >
                     Select Bowler
                   </button>
@@ -1543,6 +1547,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                     value={currentInnings?.currentBowlerId}
                     onChange={(e) => onChangeBowler(e.target.value)}
                     className="bg-[#10151c] border border-[#1e2733] text-[11px] text-[#e8edf2] rounded-lg px-2 py-1 focus:border-[#e2b64a] cursor-pointer"
+                    title="Auto-chosen next bowler (or select to change)"
                   >
                     {availableBowlersForChange.map(
                       ({

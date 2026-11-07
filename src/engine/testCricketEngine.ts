@@ -1021,9 +1021,15 @@ export function selectTestOpeningBowler(
       ? nominatedPool
       : genuineBowlers.length > 0
       ? genuineBowlers
-      : allMapped;
+      : allMapped.filter((c) => isEligibleBowlerRole(c.player));
 
-  if (candidates.length === 0) return bowlingXI[bowlingXI.length - 1] || 'b1';
+  if (candidates.length === 0) {
+    const anyEligible = bowlingXI
+      .map((id) => ({ id, player: getP(id) }))
+      .filter((c) => isEligibleBowlerRole(c.player));
+    if (anyEligible.length > 0) return anyEligible[0].id;
+    return bowlingXI[bowlingXI.length - 1];
+  }
 
   const pType =
     typeof pitch === 'string'
@@ -1105,19 +1111,20 @@ export function selectNextTestBowler(
       ? genuineBowlers.filter((id) => nominated.includes(id))
       : [];
 
-  // Strictly use the user's nominated bowlers; only join other BOWLER/ALL_ROUNDER from the XI if nominated has no eligible bowler for this over
+  // Strictly use BOWLER and ALL_ROUNDER roles only (never specialist batters or wicketkeepers)
   const eligible =
     nominatedBowlers.length > 0
       ? nominatedBowlers
       : genuineBowlers.length > 0
       ? genuineBowlers
-      : nonKeepers;
+      : bowlingXI.filter((id) => id !== prevBowlerId && isEligibleBowlerRole(getPlayer(id)));
 
-  if (eligible.length === 0) return bowlingXI.find((id) => id !== prevBowlerId) || bowlingXI[0];
-
-  // When the user is bowling, keep the current end's bowler locked in so the user controls all bowling changes
-  if (isUserTeamBowling && currentEndIncumbentId && eligible.includes(currentEndIncumbentId)) {
-    return currentEndIncumbentId;
+  if (eligible.length === 0) {
+    const anyBowlerInXI = bowlingXI.filter((id) => isEligibleBowlerRole(getPlayer(id)));
+    if (anyBowlerInXI.length > 0) {
+      return anyBowlerInXI.find((id) => id !== prevBowlerId) || anyBowlerInXI[0];
+    }
+    return bowlingXI[bowlingXI.length - 1];
   }
 
   const scored = eligible.map((id) => {
