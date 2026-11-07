@@ -784,7 +784,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
       : 'Evening Session';
 
   return (
-    <div className="relative space-y-4 select-none animate-in fade-in duration-150 max-w-7xl mx-auto pb-8">
+    <div className="relative select-none animate-in fade-in duration-150 max-w-7xl mx-auto pb-8">
       {/* Stadium Backdrop with Dynamic Venue Mapping */}
       <StadiumBackground
         venue={match.venue}
@@ -794,8 +794,9 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
         showCaption={true}
       />
 
-      {/* 1. Broadcast Match Header & Live Scoreboard with Top Simulation Controls */}
-      <div className="match-panel-main rounded-2xl p-4 sm:p-5 shadow-2xl relative z-30 sticky top-0">
+      <div className="relative z-10 space-y-4">
+        {/* 1. Broadcast Match Header & Live Scoreboard with Top Simulation Controls */}
+        <div className="match-panel-main rounded-2xl p-4 sm:p-5 shadow-2xl relative z-10">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#1e2733] gap-2">
           <div className="flex items-center space-x-2 flex-wrap gap-y-1">
             <span className="text-xs font-black uppercase tracking-wider bg-[#2c2412] text-[#ffe9a8] border border-[#e2b64a]/50 px-2.5 py-0.5 rounded font-display">
@@ -1352,33 +1353,29 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
           <span>Match Flow & Scoreboard</span>
         </button>
 
-        {isUserBatting && (
-          <button
-            onClick={() => setTacticalTab('BATTING')}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer font-display ${
-              tacticalTab === 'BATTING'
-                ? 'btn-gold shadow-md'
-                : 'text-[#8b97a3] hover:text-white hover:bg-[#10151c]'
-            }`}
-          >
-            <Flame className="w-3.5 h-3.5" />
-            <span>Batting Plans</span>
-          </button>
-        )}
+        <button
+          onClick={() => setTacticalTab('BATTING')}
+          className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer font-display ${
+            tacticalTab === 'BATTING'
+              ? 'btn-gold shadow-md'
+              : 'text-[#8b97a3] hover:text-white hover:bg-[#10151c]'
+          }`}
+        >
+          <Flame className="w-3.5 h-3.5" />
+          <span>Batting Plans{isUserBatting ? ' (Active)' : ''}</span>
+        </button>
 
-        {isUserBowling && (
-          <button
-            onClick={() => setTacticalTab('BOWLING')}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer font-display ${
-              tacticalTab === 'BOWLING'
-                ? 'btn-gold shadow-md'
-                : 'text-[#8b97a3] hover:text-white hover:bg-[#10151c]'
-            }`}
-          >
-            <Shield className="w-3.5 h-3.5" />
-            <span>Bowling & Spells</span>
-          </button>
-        )}
+        <button
+          onClick={() => setTacticalTab('BOWLING')}
+          className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer font-display ${
+            tacticalTab === 'BOWLING'
+              ? 'btn-gold shadow-md'
+              : 'text-[#8b97a3] hover:text-white hover:bg-[#10151c]'
+          }`}
+        >
+          <Shield className="w-3.5 h-3.5" />
+          <span>Bowling & Spells{isUserBowling ? ' (Active)' : ''}</span>
+        </button>
 
         <button
           onClick={() => setTacticalTab('INTELLIGENCE')}
@@ -1395,29 +1392,37 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
 
       {/* Tab Panels */}
       {tacticalTab === 'BATTING' && (
-        <BatterTacticsPanel
-          match={match}
-          onUpdateTactics={onUpdateTactics}
-          onUpdateInstruction={(instruction) =>
-            onUpdateBatterInstruction && onUpdateBatterInstruction(instruction)
-          }
-          onUpdateCustomTargets={onUpdateCustomTargets}
-          onUpdatePhaseTargets={onUpdatePhaseTargets}
-        />
+        <div className="relative z-10">
+          <BatterTacticsPanel
+            match={match}
+            onUpdateTactics={onUpdateTactics}
+            onUpdateInstruction={(instruction) =>
+              onUpdateBatterInstruction && onUpdateBatterInstruction(instruction)
+            }
+            onUpdateCustomTargets={onUpdateCustomTargets}
+            onUpdatePhaseTargets={onUpdatePhaseTargets}
+          />
+        </div>
       )}
 
       {tacticalTab === 'BOWLING' && (
-        <BowlingTacticsPanel
-          match={match}
-          onUpdateTactics={onUpdateTactics}
-          onUpdateBowlingPlan={(plan) =>
-            onUpdateBowlingPlan && onUpdateBowlingPlan(plan)
-          }
-          onChangeBowler={onChangeBowler}
-        />
+        <div className="relative z-10">
+          <BowlingTacticsPanel
+            match={match}
+            onUpdateTactics={onUpdateTactics}
+            onUpdateBowlingPlan={(plan) =>
+              onUpdateBowlingPlan && onUpdateBowlingPlan(plan)
+            }
+            onChangeBowler={onChangeBowler}
+          />
+        </div>
       )}
 
-      {tacticalTab === 'INTELLIGENCE' && <WagonWheelPitchMap match={match} />}
+      {tacticalTab === 'INTELLIGENCE' && (
+        <div className="relative z-10">
+          <WagonWheelPitchMap match={match} />
+        </div>
+      )}
 
       {/* 2. Interactive Batters & Bowler Status Bar */}
       <div className={`grid grid-cols-1 lg:grid-cols-12 gap-4 relative z-10 ${tacticalTab !== 'SCOREBOARD' ? 'hidden' : ''}`}>
@@ -1916,6 +1921,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
       {showScorecard && (
         <ScorecardModal match={match} onClose={() => setShowScorecard(false)} />
       )}
+      </div>
     </div>
   );
 };

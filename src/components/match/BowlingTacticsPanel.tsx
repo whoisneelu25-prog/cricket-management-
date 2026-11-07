@@ -187,7 +187,7 @@ export const BowlingTacticsPanel: React.FC<BowlingTacticsPanelProps> = ({
   };
 
   return (
-    <div className="bg-[#0b101b] border border-[#1b263b] rounded-xl p-5 shadow-2xl space-y-6">
+    <div className="match-panel-main rounded-xl p-5 shadow-2xl space-y-6 relative z-10">
       {/* Section Header */}
       <div className="flex items-center justify-between border-b border-[#1b263b] pb-3">
         <div className="flex items-center gap-2">

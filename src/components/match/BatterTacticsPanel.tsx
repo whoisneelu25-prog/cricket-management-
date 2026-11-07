@@ -195,7 +195,7 @@ export const BatterTacticsPanel: React.FC<BatterTacticsPanelProps> = ({
   };
 
   return (
-    <div className="bg-[#0b101b] border border-[#1b263b] rounded-xl p-5 shadow-2xl space-y-6">
+    <div className="match-panel-main rounded-xl p-5 shadow-2xl space-y-6 relative z-10">
       {/* Section Header */}
       <div className="flex items-center justify-between border-b border-[#1b263b] pb-3">
         <div className="flex items-center gap-2">
@@ -289,7 +289,7 @@ export const BatterTacticsPanel: React.FC<BatterTacticsPanelProps> = ({
         </div>
 
         {/* Individual Approach 4 Options */}
-        {activeBatter && (
+        {activeBatter ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 pt-1">
             {INDIVIDUAL_BATTER_APPROACH_OPTIONS.map((opt) => {
               const isActive = (currentInstruction.approach || 'BALANCED') === opt.id;
@@ -313,6 +313,10 @@ export const BatterTacticsPanel: React.FC<BatterTacticsPanelProps> = ({
                 </button>
               );
             })}
+          </div>
+        ) : (
+          <div className="bg-[#121a2c] border border-[#1f2c45] rounded-lg p-3 text-xs text-slate-400">
+            No active batters at the crease right now. Team batting approach and scoring targets above/below remain configurable.
           </div>
         )}
       </div>

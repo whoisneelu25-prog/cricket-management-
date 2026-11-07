@@ -37,7 +37,7 @@ export const WagonWheelPitchMap: React.FC<WagonWheelPitchMapProps> = ({
   });
 
   return (
-    <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-4 shadow-xl">
+    <div className="match-panel-main rounded-xl p-4 shadow-xl relative z-10">
       <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
         <div className="flex gap-2">
           <button
