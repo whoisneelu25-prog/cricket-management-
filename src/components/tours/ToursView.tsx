@@ -35,7 +35,7 @@ interface ToursViewProps {
   career: CareerSave;
   onNavigateToMatch?: (matchId: string) => void;
   onInspectScorecard?: (match: Match) => void;
-  onOpenTourSelection?: (tourId: string) => void;
+  onOpenTourSelection?: (tourId: string, format?: MatchFormat) => void;
   onUpdateSquadXI?: (format: MatchFormat, xiPlayerIds: string[]) => void;
   onSelectPlayer?: (player: Player) => void;
   onCareerUpdated?: (updated: CareerSave) => void;
@@ -145,9 +145,25 @@ export const ToursView: React.FC<ToursViewProps> = ({
     }
     if (createdTour) {
       setSelectedTourId(createdTour.id);
+      if (
+        onOpenTourSelection &&
+        (createdTour.hostTeamId === career.selectedTeamId ||
+          createdTour.visitingTeamId === career.selectedTeamId)
+      ) {
+        onOpenTourSelection(createdTour.id);
+      }
     }
     setShowScheduleModal(false);
   };
+
+  const userCountryPool = useMemo(
+    () => getEffectivePlayersByCountry(career.selectedTeamId, career, true),
+    [career]
+  );
+  const userPlayerMap = useMemo(
+    () => new Map(userCountryPool.map((p) => [p.id, p])),
+    [userCountryPool]
+  );
 
   return (
     <div className="space-y-5 select-none pb-8 text-[#e8edf2]">
@@ -347,10 +363,141 @@ export const ToursView: React.FC<ToursViewProps> = ({
                         : `Series Winner: ${winner}`
                       : `${matchesPlayed}/${matchCount} Completed`}
                   </div>
+
+                  {isUserInvolved && onOpenTourSelection && (
+                    <div className="pt-2 border-t border-[#1e2733] flex items-center justify-between gap-2">
+                      <span className="text-[10px] font-mono text-[#8b97a3]">
+                        Pool:{' '}
+                        <strong className="text-[#3fca86]">
+                          {(
+                            activeTour.formatSquads?.[fmt] ||
+                            career.formatSquads?.[fmt]?.squadPlayerIds ||
+                            []
+                          ).length}{' '}
+                          Players
+                        </strong>
+                      </span>
+                      <button
+                        onClick={() => onOpenTourSelection(activeTour.id, fmt)}
+                        className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-[#10151c] hover:bg-[#161d27] text-[#ffe9a8] border border-[#e2b64a]/40 cursor-pointer transition"
+                      >
+                        Select {fmt} Pool
+                      </button>
+                    </div>
+                  )}
                 </div>
               );
             })}
           </div>
+
+          {/* Format-Specific Tour Squads & Team Pools Panel */}
+          {isUserInvolved && (
+            <div className="bg-[#070a0e] border border-[#1e2733] rounded-2xl p-5 space-y-4 shadow-xl">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#1e2733] pb-3">
+                <div>
+                  <span className="dugout-kicker text-xs text-[#e2b64a] flex items-center gap-2">
+                    <Users className="w-4 h-4 text-[#e2b64a]" />
+                    Format-Specific Tour Squads ({activeTour.name})
+                  </span>
+                  <p className="text-[11px] text-[#8b97a3] mt-0.5">
+                    Each format played on this tour has its own selected touring pool from your national format selection pool.
+                  </p>
+                </div>
+                {onOpenTourSelection && (
+                  <button
+                    onClick={() => onOpenTourSelection(activeTour.id)}
+                    className="btn-gold text-xs px-3.5 py-1.5 rounded-xl cursor-pointer flex items-center gap-1.5"
+                  >
+                    <UserCheck className="w-3.5 h-3.5" />
+                    <span>Select / Edit All Tour Format Pools</span>
+                  </button>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                {(['TEST', 'ODI', 'T20I'] as MatchFormat[]).map((fmt) => {
+                  const series = activeTour.series?.[fmt];
+                  if (!series || (series.matchCount || 0) === 0) return null;
+
+                  const fmtSquadIds =
+                    activeTour.formatSquads?.[fmt] && activeTour.formatSquads[fmt]!.length >= 11
+                      ? activeTour.formatSquads[fmt]!
+                      : career.formatSquads?.[fmt]?.squadPlayerIds || [];
+
+                  const fmtCapId =
+                    activeTour.captains?.[fmt] || career.formatSquads?.[fmt]?.captainId || '';
+                  const fmtVcId =
+                    activeTour.viceCaptains?.[fmt] ||
+                    career.formatSquads?.[fmt]?.viceCaptainId ||
+                    '';
+                  const fmtPlayers = fmtSquadIds
+                    .map((id) => userPlayerMap.get(id))
+                    .filter((p): p is Player => Boolean(p));
+
+                  return (
+                    <div
+                      key={fmt}
+                      className="bg-[#10151c] border border-[#1e2733] rounded-xl p-3.5 space-y-2.5 flex flex-col justify-between"
+                    >
+                      <div className="space-y-2.5">
+                        <div className="flex items-center justify-between border-b border-[#1e2733] pb-2">
+                          <div>
+                            <span className="dugout-kicker text-xs text-[#ffe9a8]">
+                              {fmt} Touring Pool ({fmtPlayers.length})
+                            </span>
+                            <span className="text-[10px] text-[#8b97a3] font-mono block">
+                              Capt:{' '}
+                              <strong className="text-white">
+                                {userPlayerMap.get(fmtCapId)?.shortName || 'TBA'}
+                              </strong>{' '}
+                              • VC:{' '}
+                              <strong className="text-white">
+                                {userPlayerMap.get(fmtVcId)?.shortName || 'TBA'}
+                              </strong>
+                            </span>
+                          </div>
+                          {onOpenTourSelection && (
+                            <button
+                              onClick={() => onOpenTourSelection(activeTour.id, fmt)}
+                              className="text-[10px] font-bold uppercase px-2.5 py-1 rounded-lg bg-[#070a0e] hover:bg-[#161d27] text-[#e2b64a] border border-[#e2b64a]/40 cursor-pointer"
+                            >
+                              Edit {fmt}
+                            </button>
+                          )}
+                        </div>
+
+                        <div className="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto pr-1">
+                          {fmtPlayers.map((p) => {
+                            const isCap = p.id === fmtCapId;
+                            const isVC = p.id === fmtVcId;
+                            return (
+                              <span
+                                key={p.id}
+                                onClick={() => onSelectPlayer && onSelectPlayer(p)}
+                                className="text-[10px] bg-[#070a0e] hover:border-[#e2b64a]/60 border border-[#1e2733] px-2 py-1 rounded-lg text-[#e8edf2] cursor-pointer flex items-center gap-1"
+                              >
+                                <span className="font-semibold">{p.shortName}</span>
+                                {isCap && (
+                                  <span className="text-[8px] bg-[#e2b64a] text-black px-1 rounded font-black">
+                                    C
+                                  </span>
+                                )}
+                                {isVC && !isCap && (
+                                  <span className="text-[8px] bg-[#8fb2d9]/25 text-[#8fb2d9] px-1 rounded font-mono font-bold">
+                                    VC
+                                  </span>
+                                )}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           {/* Real Tour Statistics */}
           {tourStats && tourStats.matchesPlayed > 0 && (

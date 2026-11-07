@@ -383,3 +383,58 @@ test('PHASE 15 — Complete 17-Step End-to-End Career Workflow & Multi-Format Si
   assert.deepEqual(reloaded.formatSquads.ODI.squadPlayerIds, career.formatSquads.ODI.squadPlayerIds);
   assert.deepEqual(reloaded.formatSquads.T20I.squadPlayerIds, career.formatSquads.T20I.squadPlayerIds);
 });
+
+test('PHASE 18 — Format-Specific Tour Squad Selection (TEST / ODI / T20I Independent Tour Pools)', () => {
+  let career = createNewCareerSave('Gautam Gambhir', 'IND', 'TEST');
+  const userTour = career.tours.find(
+    (t) => t.hostTeamId === 'IND' || t.visitingTeamId === 'IND'
+  );
+  assert.ok(userTour, 'User nation must have at least one scheduled tour');
+
+  const testPool = getFormatSelectionPoolPlayers('IND', 'TEST').map((p) => p.id);
+  const odiPool = getFormatSelectionPoolPlayers('IND', 'ODI').map((p) => p.id);
+  const t20Pool = getFormatSelectionPoolPlayers('IND', 'T20I').map((p) => p.id);
+
+  // Select 16 players for TEST tour pool, 15 for ODI tour pool, 14 for T20I tour pool
+  const customTestTourPool = testPool.slice(0, 16);
+  const customOdiTourPool = odiPool.slice(1, 16); // shifted slice to verify independence
+  const customT20TourPool = t20Pool.slice(0, 14);
+
+  career = announceTourSquad(career, userTour!.id, {
+    formatSquads: {
+      TEST: customTestTourPool,
+      ODI: customOdiTourPool,
+      T20I: customT20TourPool,
+    },
+    captains: {
+      TEST: customTestTourPool[0],
+      ODI: customOdiTourPool[0],
+      T20I: customT20TourPool[0],
+    },
+    viceCaptains: {
+      TEST: customTestTourPool[1],
+      ODI: customOdiTourPool[1],
+      T20I: customT20TourPool[1],
+    },
+  });
+
+  const updatedTour = career.tours.find((t) => t.id === userTour!.id)!;
+  assert.equal(updatedTour.squadAnnounced, true);
+  assert.deepEqual(updatedTour.formatSquads?.TEST, customTestTourPool);
+  assert.deepEqual(updatedTour.formatSquads?.ODI, customOdiTourPool);
+  assert.deepEqual(updatedTour.formatSquads?.T20I, customT20TourPool);
+
+  assert.equal(updatedTour.captains?.TEST, customTestTourPool[0]);
+  assert.equal(updatedTour.captains?.ODI, customOdiTourPool[0]);
+  assert.equal(updatedTour.captains?.T20I, customT20TourPool[0]);
+
+  assert.equal(updatedTour.viceCaptains?.TEST, customTestTourPool[1]);
+  assert.equal(updatedTour.viceCaptains?.ODI, customOdiTourPool[1]);
+  assert.equal(updatedTour.viceCaptains?.T20I, customT20TourPool[1]);
+
+  // Verify career.formatSquads are synced per format independently
+  assert.deepEqual(career.formatSquads.TEST.squadPlayerIds, customTestTourPool);
+  assert.deepEqual(career.formatSquads.ODI.squadPlayerIds, customOdiTourPool);
+  assert.deepEqual(career.formatSquads.T20I.squadPlayerIds, customT20TourPool);
+});
+

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   X,
   Shield,
@@ -17,7 +17,7 @@ import {
   Activity,
   Award,
 } from 'lucide-react';
-import { CareerSave, Match, Player } from '../../types/cricket';
+import { CareerSave, Match, MatchFormat, Player } from '../../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
 import { getEffectivePlayersByCountry, getEffectivePlayer } from '../../data/squads';
 import { selectAIPlayingXIForMatch } from '../../engine/aiTeamEngine';
@@ -41,6 +41,7 @@ interface MatchPreparationModalProps {
     }
   ) => CareerSave;
   onStartPreparedMatch: (updatedCareer: CareerSave, matchId: string, needsAdvance: boolean) => void;
+  onOpenTourSelection?: (tourId: string, format?: MatchFormat) => void;
 }
 
 export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
@@ -49,6 +50,7 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
   onClose,
   onConfirmLineup,
   onStartPreparedMatch,
+  onOpenTourSelection,
 }) => {
   const userTeamId = career.selectedTeamId;
   const userIsHome = match.homeTeamId === userTeamId;
@@ -81,15 +83,15 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
 
   // Format-specific squad IDs (only selected format squad members can enter the Playing XI)
   const formatSquadIds = useMemo(() => {
-    const savedFmtIds = career.formatSquads[match.format]?.squadPlayerIds;
-    if (savedFmtIds && savedFmtIds.length >= 11) {
-      return savedFmtIds;
-    }
     const tourFmtIds = activeTour?.squadAnnounced
       ? activeTour.formatSquads?.[match.format] || activeTour.tourSquadIds
       : undefined;
     if (tourFmtIds && tourFmtIds.length >= 11) {
       return tourFmtIds;
+    }
+    const savedFmtIds = career.formatSquads[match.format]?.squadPlayerIds;
+    if (savedFmtIds && savedFmtIds.length >= 11) {
+      return savedFmtIds;
     }
     return undefined;
   }, [activeTour, career.formatSquads, match.format]);
@@ -119,7 +121,7 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
     if (matchXI && matchXI.length === 11) {
       const healthyIds = matchXI.filter((id) => {
         const p = getEffectivePlayer(id, career);
-        return p && !p.isInjured;
+        return p && !p.isInjured && (!formatSquadIds || formatSquadIds.includes(id));
       });
       if (healthyIds.length === 11) return healthyIds;
       const replacements = eligiblePool
@@ -144,6 +146,20 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
   }, [match, userIsHome, career, eligiblePool, formatSquadIds]);
 
   const [playingXI, setPlayingXI] = useState<string[]>(initialUserXI);
+
+  // Sync playingXI if tour format pool is updated from TourSelectionModal
+  useEffect(() => {
+    if (!formatSquadIds || formatSquadIds.length < 11) return;
+    setPlayingXI((prev) => {
+      const validInPool = prev.filter((id) => formatSquadIds.includes(id));
+      if (validInPool.length === prev.length) return prev;
+      const replacements = eligiblePool
+        .filter((p) => !p.isInjured && !validInPool.includes(p.id))
+        .slice(0, 11 - validInPool.length)
+        .map((p) => p.id);
+      return [...validInPool, ...replacements];
+    });
+  }, [formatSquadIds, eligiblePool]);
   const [captainId, setCaptainId] = useState<string>(() => {
     const matchCap = userIsHome ? match.homeCaptainId : match.awayCaptainId;
     if (matchCap && initialUserXI.includes(matchCap)) return matchCap;
@@ -583,13 +599,23 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
 
             {/* Eligible Squad Pool (4 Columns) */}
             <div className="lg:col-span-4 bg-[#10151c] border border-[#1e2733] rounded-xl p-4 space-y-3">
-              <div className="flex items-center justify-between border-b border-[#1e2733] pb-2.5">
+              <div className="flex items-center justify-between border-b border-[#1e2733] pb-2.5 gap-2">
                 <span className="text-xs font-extrabold uppercase tracking-widest text-[#8fb2d9] flex items-center gap-2 font-display">
-                  <Users className="w-4 h-4" /> {match.format} Squad Pool ({filteredPool.length})
+                  <Users className="w-4 h-4" /> {match.format} {activeTour ? 'Tour Pool' : 'Squad Pool'} ({filteredPool.length})
                 </span>
-                <span className="text-[10px] text-[#e2b64a] font-mono">
-                  Selected Squad Only
-                </span>
+                {activeTour && onOpenTourSelection ? (
+                  <button
+                    type="button"
+                    onClick={() => onOpenTourSelection(activeTour.id, match.format)}
+                    className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#2c2412] hover:bg-[#3d3117] text-[#ffe9a8] border border-[#e2b64a]/60 transition cursor-pointer font-mono"
+                  >
+                    Edit {match.format} Tour Pool
+                  </button>
+                ) : (
+                  <span className="text-[10px] text-[#e2b64a] font-mono">
+                    Selected Squad Only
+                  </span>
+                )}
               </div>
 
               {/* Role Filter Tabs */}

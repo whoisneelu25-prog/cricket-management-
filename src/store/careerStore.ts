@@ -1518,14 +1518,21 @@ export function applyUserMatchResult(
   return updatedCareer;
 }
 
+export interface TourFormatSquadAnnouncement {
+  formatSquads: Partial<Record<MatchFormat, string[]>>;
+  captains?: Partial<Record<MatchFormat, string>>;
+  viceCaptains?: Partial<Record<MatchFormat, string>>;
+}
+
 /**
- * Announces the official touring squad (15-20 players) for a user tour.
- * Rejects attempts to announce squads for AI-only tours!
+ * Announces the official touring squad for a user tour.
+ * Supports both per-format squad selection (`TourFormatSquadAnnouncement`) for each format played on the tour,
+ * and flat `string[]` touring party lists. Rejects attempts to announce squads for AI-only tours!
  */
 export function announceTourSquad(
   career: CareerSave,
   tourId: string,
-  playerIds: string[]
+  squadInput: string[] | TourFormatSquadAnnouncement
 ): CareerSave {
   const tour = career.tours.find((t) => t.id === tourId);
   if (!tour) return career;
@@ -1537,24 +1544,174 @@ export function announceTourSquad(
 
   const activePool = getEffectivePlayersByCountry(userTeamId, career, true);
   const activeMap = new Map(activePool.map((p) => [p.id, p]));
-  const validPlayerIds = playerIds.filter((id) => activeMap.has(id));
-  if (validPlayerIds.length < 11) return career;
+
+  // Case 1: Flat array of playerIds (legacy / unit test call)
+  if (Array.isArray(squadInput)) {
+    const validPlayerIds = squadInput.filter((id) => activeMap.has(id));
+    if (validPlayerIds.length < 11) return career;
+
+    const updatedTours = career.tours.map((t) => {
+      if (t.id === tourId) {
+        return {
+          ...t,
+          tourSquadIds: validPlayerIds,
+          squadAnnounced: true,
+        };
+      }
+      return t;
+    });
+
+    const newsArticle: NewsArticle = {
+      id: `news_tour_squad_${Date.now()}`,
+      title: `Tour Squad Announced: ${tour.name}`,
+      summary: `Head Coach ${career.manager.name} and national selectors have named a ${validPlayerIds.length}-player touring squad for ${tour.name}.`,
+      category: 'SQUAD_SELECTION',
+      timestamp: career.currentDate,
+      relatedTeamId: career.selectedTeamId,
+    };
+
+    return {
+      ...career,
+      tours: updatedTours,
+      news: [newsArticle, ...career.news],
+    };
+  }
+
+  // Case 2: Format-specific tour squad announcement (each format played on the tour has its own selected pool)
+  const nextTourFormatSquads: Partial<Record<MatchFormat, string[]>> = {
+    ...(tour.formatSquads || {}),
+  };
+  const nextTourCaptains: Partial<Record<MatchFormat, string>> = {
+    ...(tour.captains || {}),
+  };
+  const nextTourViceCaptains: Partial<Record<MatchFormat, string>> = {
+    ...(tour.viceCaptains || {}),
+  };
+  const updatedCareerFormatSquads: Record<MatchFormat, FormatSquadConfig> = {
+    ...career.formatSquads,
+  };
+
+  const announcedFormats: MatchFormat[] = [];
+
+  for (const fmt of ['TEST', 'ODI', 'T20I'] as MatchFormat[]) {
+    const rawIds = squadInput.formatSquads[fmt];
+    if (!rawIds) continue;
+    const validFmtIds = Array.from(new Set(rawIds.filter((id) => activeMap.has(id))));
+    if (validFmtIds.length < 11) continue;
+
+    announcedFormats.push(fmt);
+    nextTourFormatSquads[fmt] = validFmtIds;
+
+    const currentCfg =
+      updatedCareerFormatSquads[fmt] || getDefaultFormatSquadConfig(userTeamId, fmt);
+
+    // Build valid 11-player Playing XI strictly from validFmtIds
+    const newXI = (currentCfg.playingXI || []).filter((id) => validFmtIds.includes(id));
+    for (const candidateId of validFmtIds) {
+      if (newXI.length >= 11) break;
+      if (!newXI.includes(candidateId)) newXI.push(candidateId);
+    }
+
+    const requestedCap = squadInput.captains?.[fmt] || currentCfg.captainId;
+    const capId = validFmtIds.includes(requestedCap)
+      ? requestedCap
+      : newXI[0] || validFmtIds[0] || '';
+
+    const requestedVc = squadInput.viceCaptains?.[fmt] || currentCfg.viceCaptainId;
+    const vcId =
+      validFmtIds.includes(requestedVc) && requestedVc !== capId
+        ? requestedVc
+        : newXI.find((id) => id !== capId) || validFmtIds[1] || capId;
+
+    const wkInXI = newXI.find((id) => {
+      const p = activeMap.get(id);
+      return p?.isWicketKeeper || p?.role === 'WICKETKEEPER_BATTER';
+    });
+    const wkInSquad = validFmtIds.find((id) => {
+      const p = activeMap.get(id);
+      return p?.isWicketKeeper || p?.role === 'WICKETKEEPER_BATTER';
+    });
+    const wkId =
+      (newXI.includes(currentCfg.wicketKeeperId) ? currentCfg.wicketKeeperId : undefined) ||
+      wkInXI ||
+      wkInSquad ||
+      newXI[0] ||
+      '';
+
+    nextTourCaptains[fmt] = capId;
+    nextTourViceCaptains[fmt] = vcId;
+
+    updatedCareerFormatSquads[fmt] = {
+      ...currentCfg,
+      squadPlayerIds: validFmtIds,
+      targetSquadSize: Math.max(11, Math.min(20, validFmtIds.length)),
+      playingXI: newXI.slice(0, 11),
+      battingOrder: newXI.slice(0, 11),
+      captainId: capId,
+      viceCaptainId: vcId,
+      wicketKeeperId: wkId,
+      isConfirmed: true,
+      lastConfirmedDate: career.currentDate,
+    };
+  }
+
+  if (announcedFormats.length === 0) return career;
+
+  const combinedTourIds = Array.from(
+    new Set(
+      Object.values(nextTourFormatSquads)
+        .filter((arr): arr is string[] => Array.isArray(arr))
+        .flat()
+    )
+  );
 
   const updatedTours = career.tours.map((t) => {
     if (t.id === tourId) {
       return {
         ...t,
-        tourSquadIds: validPlayerIds,
+        tourSquadIds: combinedTourIds.length >= 11 ? combinedTourIds : t.tourSquadIds,
+        formatSquads: nextTourFormatSquads,
+        captains: nextTourCaptains,
+        viceCaptains: nextTourViceCaptains,
         squadAnnounced: true,
       };
     }
     return t;
   });
 
+  // Sync pre-match fixtures on this tour for each announced format
+  const updatedFixtures = (career.fixtures || []).map((m) => {
+    if (m.tourId !== tourId || !isPreMatchStatus(m.status)) return m;
+    if (!announcedFormats.includes(m.format)) return m;
+    const cfg = updatedCareerFormatSquads[m.format];
+    if (!cfg) return m;
+
+    if (m.homeTeamId === userTeamId) {
+      return {
+        ...m,
+        homeXI: cfg.playingXI,
+        homeCaptainId: cfg.captainId,
+        homeWicketKeeperId: cfg.wicketKeeperId,
+      };
+    } else if (m.awayTeamId === userTeamId) {
+      return {
+        ...m,
+        awayXI: cfg.playingXI,
+        awayCaptainId: cfg.captainId,
+        awayWicketKeeperId: cfg.wicketKeeperId,
+      };
+    }
+    return m;
+  });
+
+  const formatSummary = announcedFormats
+    .map((fmt) => `${fmt} (${nextTourFormatSquads[fmt]?.length || 0})`)
+    .join(', ');
+
   const newsArticle: NewsArticle = {
     id: `news_tour_squad_${Date.now()}`,
-    title: `Tour Squad Announced: ${tour.name}`,
-    summary: `Head Coach ${career.manager.name} and national selectors have named a ${validPlayerIds.length}-player touring squad for ${tour.name}.`,
+    title: `Format Tour Squads Announced: ${tour.name}`,
+    summary: `Head Coach ${career.manager.name} and national selectors have confirmed format-specific touring squads for ${tour.name}: ${formatSummary}.`,
     category: 'SQUAD_SELECTION',
     timestamp: career.currentDate,
     relatedTeamId: career.selectedTeamId,
@@ -1563,6 +1720,8 @@ export function announceTourSquad(
   return {
     ...career,
     tours: updatedTours,
+    formatSquads: updatedCareerFormatSquads,
+    fixtures: updatedFixtures,
     news: [newsArticle, ...career.news],
   };
 }

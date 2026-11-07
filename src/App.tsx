@@ -24,6 +24,7 @@ import {
   advanceToNextMatchDate,
   takeSquadRestDay,
   announceTourSquad,
+  TourFormatSquadAnnouncement,
   assignPlayerTrainingFocus,
   applyUserMatchResult,
   updateSquadXI,
@@ -102,6 +103,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<MainNavigationTab>('DASHBOARD');
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [selectedTourIdForModal, setSelectedTourIdForModal] = useState<string | null>(null);
+  const [selectedTourInitialFormat, setSelectedTourInitialFormat] = useState<MatchFormat | undefined>(undefined);
   const [prepMatchId, setPrepMatchId] = useState<string | null>(null);
   const [inspectedScorecardMatch, setInspectedScorecardMatch] = useState<Match | null>(null);
   const [calendarAlert, setCalendarAlert] = useState<CalendarAdvancementResult | null>(null);
@@ -578,9 +580,12 @@ export default function App() {
   };
 
   // Tour Squad Selection Handler
-  const handleConfirmTourSquad = (tourId: string, playerIds: string[]) => {
+  const handleConfirmTourSquad = (
+    tourId: string,
+    squadData: string[] | TourFormatSquadAnnouncement
+  ) => {
     if (!career) return;
-    const nextCareer = announceTourSquad(career, tourId, playerIds);
+    const nextCareer = announceTourSquad(career, tourId, squadData);
     setCareer(nextCareer);
     saveCareerToStorage(nextCareer);
   };
@@ -785,7 +790,10 @@ export default function App() {
                 setActiveTab('MATCH_CENTRE');
               }}
               onInspectScorecard={(m) => setInspectedScorecardMatch(m)}
-              onOpenTourSelection={(tourId) => setSelectedTourIdForModal(tourId)}
+              onOpenTourSelection={(tourId, fmt) => {
+                setSelectedTourIdForModal(tourId);
+                setSelectedTourInitialFormat(fmt);
+              }}
               onUpdateSquadXI={handleUpdateSquadXI}
               onSelectPlayer={(p) => setSelectedPlayer(p)}
               onCareerUpdated={(updated) => {
@@ -932,6 +940,10 @@ export default function App() {
           onClose={() => setPrepMatchId(null)}
           onConfirmLineup={handleConfirmMatchLineup}
           onStartPreparedMatch={handleStartPreparedMatch}
+          onOpenTourSelection={(tourId, fmt) => {
+            setSelectedTourIdForModal(tourId);
+            setSelectedTourInitialFormat(fmt);
+          }}
         />
       )}
 
@@ -957,8 +969,13 @@ export default function App() {
         <TourSelectionModal
           tour={activeTourForModal}
           countryId={career.selectedTeamId}
+          career={career}
+          initialFormat={selectedTourInitialFormat}
           isOpen={true}
-          onClose={() => setSelectedTourIdForModal(null)}
+          onClose={() => {
+            setSelectedTourIdForModal(null);
+            setSelectedTourInitialFormat(undefined);
+          }}
           onConfirm={handleConfirmTourSquad}
         />
       )}
