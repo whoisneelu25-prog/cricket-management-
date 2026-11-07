@@ -21,25 +21,60 @@ import {
 
 const CORE_12 = new Set(['IND', 'AUS', 'ENG', 'PAK', 'RSA', 'NZL', 'SL', 'BAN', 'WI', 'AFG', 'IRE', 'ZIM']);
 
+export function applyFormAndFitnessToPlayerRatings(player: Player): Player {
+  const formScore = player.attributes?.currentForm ?? 88;
+  const baseFitness = player.attributes?.fitness ?? player.fitness ?? 90;
+  const fatigue = player.workloadFatigue ?? 10;
+  const effectiveFitness = Math.max(
+    45,
+    Math.min(100, Math.round(baseFitness - Math.max(0, fatigue - 18) * 0.45))
+  );
+
+  // Dynamic rating modifier from Form & Fitness (-5 to +5)
+  const formBonus = (formScore - 80) * 0.22;
+  const fitnessBonus = (effectiveFitness - 82) * 0.14;
+  const ratingDelta = Math.max(-5, Math.min(5, Math.round(formBonus + fitnessBonus)));
+
+  const clampRating = (val: number) => Math.max(78, Math.min(99, (val || 82) + ratingDelta));
+
+  return {
+    ...player,
+    fitness: effectiveFitness,
+    testRating: clampRating(player.testRating),
+    odiRating: clampRating(player.odiRating),
+    t20Rating: clampRating(player.t20Rating),
+  };
+}
+
 const formatPlayerMap = new Map(FORMAT_PLAYERS.map((p) => [p.id, p]));
 const masterList = (masterPlayersJson as Player[]).map((p) => {
   const formatOverride = formatPlayerMap.get(p.id);
   if (formatOverride) {
-    return {
+    return applyFormAndFitnessToPlayerRatings({
       ...p,
       status: 'ACTIVE' as const,
+      testRating: formatOverride.testRating ?? p.testRating,
+      odiRating: formatOverride.odiRating ?? p.odiRating,
+      t20Rating: formatOverride.t20Rating ?? p.t20Rating,
+      attributes: {
+        ...p.attributes,
+        ...(formatOverride.attributes || {}),
+      },
+      stats: formatOverride.stats || p.stats,
       formatEligibility: {
         ...p.formatEligibility,
         ...formatOverride.formatEligibility,
       },
       isWicketKeeper: Boolean(formatOverride.isWicketKeeper || formatOverride.role === 'WICKETKEEPER_BATTER'),
       role: formatOverride.role,
-    };
+    });
   }
-  return p;
+  return applyFormAndFitnessToPlayerRatings(p);
 });
 const masterIds = new Set(masterList.map((p) => p.id));
-const extraFormatPlayers = FORMAT_PLAYERS.filter((p) => !masterIds.has(p.id));
+const extraFormatPlayers = FORMAT_PLAYERS.filter((p) => !masterIds.has(p.id)).map(
+  applyFormAndFitnessToPlayerRatings
+);
 
 export const ADDITIONAL_SQUAD_MEMBERS: Player[] = masterList.filter(
   (p) => !CORE_12.has(p.countryId)
@@ -233,12 +268,12 @@ export function getEffectivePlayer(playerOrId: Player | string, career?: CareerS
     base = playerOrId;
   }
   if (!base) return undefined;
-  if (!career) return base;
+  if (!career) return applyFormAndFitnessToPlayerRatings(base);
 
   const ov = career.playerOverrides?.[base.id];
-  if (!ov) return base;
+  if (!ov) return applyFormAndFitnessToPlayerRatings(base);
 
-  return {
+  return applyFormAndFitnessToPlayerRatings({
     ...base,
     ...ov,
     attributes: {
@@ -247,7 +282,7 @@ export function getEffectivePlayer(playerOrId: Player | string, career?: CareerS
     },
     stats: base.stats, // Always preserve verified historical stats untouched!
     simulatedStats: ov.simulatedStats || base.simulatedStats,
-  };
+  });
 }
 
 export function getEffectivePlayersByCountry(

@@ -605,39 +605,22 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
           </div>
         </div>
 
-        {/* Interactive Dugout Coin Toss Chamber (Official Fixture Toss Protocol) */}
+        {/* Interactive Dugout Coin Toss Chamber */}
         <div className="space-y-4 pt-3 border-t border-[#1e2733]">
-          {/* Toss Step 1: Official Home Spins / Away Calls */}
+          {/* Toss Step 1: Home Spins / Away Calls */}
           {tossWinnerTeamId === null && (
             <div className="space-y-4">
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-[#10151c] p-3.5 rounded-xl border border-[#1e2733]">
-                <div className="text-left">
-                  <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#e2b64a] font-display block">
-                    Official International Toss Protocol
-                  </span>
-                  <span className="text-xs text-[#e8edf2] font-semibold">
-                    {userIsHome
-                      ? `${userTeam?.name} (Home) spins the coin • ${oppTeam?.name} (Away) calls in the air`
-                      : `${oppTeam?.name} (Home) spins the coin • ${userTeam?.name} (Away) calls in the air`}
-                  </span>
-                </div>
-                <span className="text-xs font-mono font-bold px-3 py-1.5 rounded-lg bg-[#2c2412] text-[#ffe9a8] border border-[#e2b64a]/50 shrink-0">
-                  {userIsHome ? '🏠 Home Captain: You Flip' : '✈️ Visiting Captain: You Call'}
-                </span>
-              </div>
-
-              {/* Call choice selection based on Home vs Visiting status */}
               {tossCaller === 'USER' ? (
                 <div className="bg-[#0e141f] p-4 rounded-xl border border-[#1e2733] space-y-2.5">
                   <span className="text-xs font-bold text-[#c3ccd6] block">
-                    As the Visiting Captain ({userCaptain?.shortName || userTeam?.name}), choose your call before {oppCaptain?.shortName || oppTeam?.name} flips the coin:
+                    Choose your call in the air ({userCaptain?.shortName || userTeam?.name}):
                   </span>
                   <div className="flex items-center justify-center gap-3">
                     <button
                       type="button"
                       disabled={isFlippingCoin}
                       onClick={() => setTossCall('HEADS')}
-                      className={`text-sm px-6 py-2.5 rounded-xl font-bold font-display border cursor-pointer transition ${
+                      className={`text-xs px-6 py-2 rounded-xl font-bold font-display border cursor-pointer transition ${
                         tossCall === 'HEADS'
                           ? 'bg-[#2c2412] text-[#ffe9a8] border-[#e2b64a] shadow-lg shadow-[#e2b64a]/25 scale-105'
                           : 'bg-[#10151c] text-[#8b97a3] border-[#1e2733] hover:text-white'
@@ -649,7 +632,7 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                       type="button"
                       disabled={isFlippingCoin}
                       onClick={() => setTossCall('TAILS')}
-                      className={`text-sm px-6 py-2.5 rounded-xl font-bold font-display border cursor-pointer transition ${
+                      className={`text-xs px-6 py-2 rounded-xl font-bold font-display border cursor-pointer transition ${
                         tossCall === 'TAILS'
                           ? 'bg-[#2c2412] text-[#ffe9a8] border-[#e2b64a] shadow-lg shadow-[#e2b64a]/25 scale-105'
                           : 'bg-[#10151c] text-[#8b97a3] border-[#1e2733] hover:text-white'
@@ -660,15 +643,9 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                   </div>
                 </div>
               ) : (
-                <div className="bg-[#0e141f] p-4 rounded-xl border border-[#e2b64a]/40 text-center space-y-1.5">
-                  <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#e2b64a] block">
-                    Visiting Captain Call in the Air
-                  </span>
-                  <p className="text-sm font-black text-white font-display">
-                    Visiting Captain {oppCaptain?.shortName || oppTeam?.name} will call once you spin the coin!
-                  </p>
-                  <p className="text-xs text-[#8b97a3]">
-                    As the Home Captain ({userCaptain?.shortName || userTeam?.name}), toss the coin into the air.
+                <div className="bg-[#0e141f] p-3.5 rounded-xl border border-[#e2b64a]/40 text-center space-y-1">
+                  <p className="text-xs font-bold text-white font-display">
+                    {userCaptain?.shortName || userTeam?.name} to spin the coin • {oppCaptain?.shortName || oppTeam?.name} calls in the air
                   </p>
                 </div>
               )}
@@ -676,11 +653,11 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
               {/* Coin flip button & visual */}
               <div className="py-2 flex flex-col items-center justify-center space-y-3">
                 <div
-                  className={`w-16 h-16 rounded-full border-2 border-[#e2b64a] bg-gradient-to-tr from-[#e0ab3a] via-[#ffe9a8] to-[#e0ab3a] text-black font-black font-display flex items-center justify-center shadow-xl shadow-[#e2b64a]/25 text-sm select-none ${
+                  className={`w-14 h-14 rounded-full border-2 border-[#e2b64a] bg-gradient-to-tr from-[#e0ab3a] via-[#ffe9a8] to-[#e0ab3a] text-black font-black font-display flex items-center justify-center shadow-xl shadow-[#e2b64a]/25 text-xs select-none ${
                     isFlippingCoin ? 'animate-spin' : ''
                   }`}
                 >
-                  {isFlippingCoin ? 'ICM' : tossCaller === 'USER' ? tossCall : 'COIN'}
+                  {isFlippingCoin ? 'ICM' : tossCaller === 'USER' ? tossCall : 'TOSS'}
                 </div>
 
                 <div className="flex items-center justify-center gap-3">
@@ -688,15 +665,15 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                     type="button"
                     onClick={handleFlipCoin}
                     disabled={isFlippingCoin}
-                    className="btn-gold text-sm px-8 py-2.5 rounded-xl shadow-xl cursor-pointer font-display font-bold flex items-center gap-2 active:scale-95 disabled:opacity-50"
+                    className="btn-gold text-xs px-7 py-2.5 rounded-xl shadow-xl cursor-pointer font-display font-bold flex items-center gap-2 active:scale-95 disabled:opacity-50"
                   >
                     <Coins className="w-4 h-4" />
                     <span>
                       {isFlippingCoin
                         ? 'Coin in the Air...'
                         : userIsHome
-                        ? `Spin the Coin (${userCaptain?.shortName || 'Home Captain'})`
-                        : `Call ${tossCall} & Flip Coin`}
+                        ? 'Spin the Coin'
+                        : 'Flip the Coin'}
                     </span>
                   </button>
                 </div>
@@ -704,13 +681,13 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
             </div>
           )}
 
-          {/* Toss Step 2: Coin Landed & Final Official Decision (Single Toss Only) */}
+          {/* Toss Step 2: Coin Landed & Decision */}
           {tossWinnerTeamId !== null && (
             <div className="space-y-4 animate-in zoom-in-95 duration-200">
               <div className="p-4 bg-gradient-to-r from-[#10151c] via-[#1a2330] to-[#10151c] border-2 border-[#e2b64a] rounded-xl text-center shadow-xl">
                 <div className="inline-flex items-center gap-2 bg-[#2c2412] px-3.5 py-1 rounded-full border border-[#e2b64a]/50 text-xs font-bold text-[#ffe9a8] mb-2 font-display">
                   <span>
-                    Official Toss Result: Coin Landed <strong>{coinLanding}</strong> • Visiting Captain ({tossCaller === 'USER' ? userCaptain?.shortName || 'You' : oppCaptain?.shortName || oppTeam?.name}) called <strong>{tossCaller === 'USER' ? tossCall : cpuCall}</strong>
+                    Coin Landed: <strong>{coinLanding}</strong> ({tossCaller === 'USER' ? userCaptain?.shortName || 'You' : oppCaptain?.shortName || oppTeam?.name} called <strong>{tossCaller === 'USER' ? tossCall : cpuCall}</strong>)
                   </span>
                 </div>
 
@@ -1525,58 +1502,52 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
                   </span>
                 )}
               </div>
-              {/* Bowler change controls for user if bowling (ONLY between overs, locked mid-over) */}
-              {isUserBowling && !isMatchFinished && (
-                isMidOver ? (
-                  <span className="text-[11px] font-mono text-amber-300 bg-amber-950/50 border border-amber-700/50 px-2.5 py-1 rounded-lg">
-                    Over in Progress ({currentInnings?.ballsInCurrentOver}/6) • Change After Over
-                  </span>
-                ) : (
-                  <div className="flex items-center gap-1.5">
-                    <button
-                      type="button"
-                      onClick={() => setShowBowlerModal(true)}
-                      className="btn-gold text-[11px] px-2.5 py-1 rounded-lg font-bold cursor-pointer shadow"
-                    >
-                      Select Bowler
-                    </button>
-                    <select
-                      value={currentInnings?.currentBowlerId}
-                      onChange={(e) => onChangeBowler(e.target.value)}
-                      className="bg-[#10151c] border border-[#1e2733] text-[11px] text-[#e8edf2] rounded-lg px-2 py-1 focus:border-[#e2b64a] cursor-pointer"
-                    >
-                      {availableBowlersForChange.map(
-                        ({
-                          player,
-                          oversBowled,
-                          effectiveQuota,
-                          isExhausted,
-                          isCurrent,
-                          bowledJustCompletedOver,
-                          isWk,
-                        }) => (
-                          <option
-                            key={player.id}
-                            value={player.id}
-                            disabled={isExhausted || isCurrent || bowledJustCompletedOver || isWk}
-                          >
-                            {player.shortName} ({oversBowled}/
-                            {effectiveQuota === Infinity ? '∞' : effectiveQuota} ov)
-                            {isCurrent
-                              ? ' [Current]'
-                              : isWk
-                              ? ' [WK]'
-                              : bowledJustCompletedOver
-                              ? ' [Bowled Last Over]'
-                              : isExhausted
-                              ? ' [Quota Done]'
-                              : ''}
-                          </option>
-                        )
-                      )}
-                    </select>
-                  </div>
-                )
+              {/* Bowler change controls for user if bowling (between overs) */}
+              {isUserBowling && !isMatchFinished && !isMidOver && (
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => setShowBowlerModal(true)}
+                    className="btn-gold text-[11px] px-2.5 py-1 rounded-lg font-bold cursor-pointer shadow"
+                  >
+                    Select Bowler
+                  </button>
+                  <select
+                    value={currentInnings?.currentBowlerId}
+                    onChange={(e) => onChangeBowler(e.target.value)}
+                    className="bg-[#10151c] border border-[#1e2733] text-[11px] text-[#e8edf2] rounded-lg px-2 py-1 focus:border-[#e2b64a] cursor-pointer"
+                  >
+                    {availableBowlersForChange.map(
+                      ({
+                        player,
+                        oversBowled,
+                        effectiveQuota,
+                        isExhausted,
+                        isCurrent,
+                        bowledJustCompletedOver,
+                        isWk,
+                      }) => (
+                        <option
+                          key={player.id}
+                          value={player.id}
+                          disabled={isExhausted || isCurrent || bowledJustCompletedOver || isWk}
+                        >
+                          {player.shortName} ({oversBowled}/
+                          {effectiveQuota === Infinity ? '∞' : effectiveQuota} ov)
+                          {isCurrent
+                            ? ' [Current]'
+                            : isWk
+                            ? ' [WK]'
+                            : bowledJustCompletedOver
+                            ? ' [Bowled Last Over]'
+                            : isExhausted
+                            ? ' [Quota Done]'
+                            : ''}
+                        </option>
+                      )
+                    )}
+                  </select>
+                </div>
               )}
             </div>
 

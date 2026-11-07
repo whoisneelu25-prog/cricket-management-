@@ -91,6 +91,8 @@ export interface DeliveryContext {
   bowlerSpellData?: BowlerSpellData;
   customFieldLayout?: CustomFieldLayout;
   tacticalCalibration?: TacticalCalibrationSettings;
+  isUserBatting?: boolean;
+  isUserBowling?: boolean;
 }
 
 // Deterministic Mulberry32 PRNG for reproducible test runs
@@ -544,9 +546,15 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
     ? (bowler.attributes.spin * 0.40 + bowler.attributes.variation * 0.30 + bowler.attributes.accuracy * 0.30)
     : (bowler.attributes.pace * 0.35 + bowler.attributes.swing * 0.35 + bowler.attributes.accuracy * 0.30);
 
-  // Form & Fatigue factors
-  const batterFormMod = ((striker.attributes.currentForm || 80) - 50) / 100; // -0.5 to +0.5
-  const bowlerFormMod = ((bowler.attributes.currentForm || 80) - 50) / 100;
+  // Form, Fitness & Fatigue factors
+  const strikerEffectiveFitness = striker.fitness ?? striker.attributes.fitness ?? 90;
+  const bowlerEffectiveFitness = bowler.fitness ?? bowler.attributes.fitness ?? 90;
+  const batterFormMod =
+    ((striker.attributes.currentForm || 85) - 50) / 100 +
+    ((strikerEffectiveFitness - 80) / 250);
+  const bowlerFormMod =
+    ((bowler.attributes.currentForm || 85) - 50) / 100 +
+    ((bowlerEffectiveFitness - 80) / 250);
   const bowlerFatiguePenalty = Math.max(0, ((bowler.workloadFatigue || 15) - 60) * 0.005); // Fatigue impairs accuracy
 
   // Pitch & Weather assistance
@@ -1038,6 +1046,25 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
   if (effectiveFieldPreset === 'ATTACKING_SLIPS') finalWicketProb *= format === 'TEST' ? 1.16 : 1.18;
   if (effectiveFieldPreset === 'DEFENSIVE_BOUNDARY') finalWicketProb *= 0.82;
   if (effectiveFieldPreset === 'DEATH_PROTECT' && format !== 'TEST') finalWicketProb *= 0.94;
+
+  // User Team Managerial & Home Composure Balance (especially in Test matches)
+  if (ctx.isUserBatting) {
+    if (format === 'TEST') {
+      finalWicketProb *= 0.78;
+      aggressionRunFactor *= 1.09;
+    } else {
+      finalWicketProb *= 0.88;
+      aggressionRunFactor *= 1.05;
+    }
+  } else if (ctx.isUserBowling) {
+    if (format === 'TEST') {
+      finalWicketProb *= 1.16;
+      aggressionRunFactor *= 0.91;
+    } else {
+      finalWicketProb *= 1.10;
+      aggressionRunFactor *= 0.94;
+    }
+  }
 
   const rollWicket = activeRandom();
   if (rollWicket < Math.min(0.20, Math.max(format === 'TEST' ? 0.0025 : 0.003, finalWicketProb))) {

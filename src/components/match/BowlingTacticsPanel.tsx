@@ -417,9 +417,7 @@ export const BowlingTacticsPanel: React.FC<BowlingTacticsPanelProps> = ({
                       ) : isWk ? (
                         <span className="text-[10px] text-slate-500 font-mono">Wicketkeeper</span>
                       ) : isMidOver ? (
-                        <span className="text-[10px] text-amber-300 font-mono">
-                          In Over ({currentInnings?.ballsInCurrentOver}/6)
-                        </span>
+                        <span className="text-[10px] text-slate-500 font-mono">—</span>
                       ) : isExhausted ? (
                         <span className="text-[10px] text-rose-400 font-mono">Quota Full</span>
                       ) : bowledLastOver ? (

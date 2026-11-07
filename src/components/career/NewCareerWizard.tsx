@@ -193,20 +193,9 @@ export const NewCareerWizard: React.FC<NewCareerWizardProps> = ({ onStartCareer,
 
               {/* Coach Customization Details Panel */}
               <div className="bg-[#101b30] border border-[#1b2c4c] p-4 sm:p-5 rounded-xl space-y-4">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <span className="text-xs font-bold text-white uppercase tracking-wider block">
-                    Coach Details & Tactical Philosophy
-                  </span>
-                  {selectedCoachId !== 'custom' ? (
-                    <span className="text-[11px] font-mono px-2.5 py-0.5 rounded bg-amber-950/70 text-amber-300 border border-amber-700/50">
-                      🔒 Preset Coach Philosophy Locked (Select &quot;Custom Head Coach&quot; to edit)
-                    </span>
-                  ) : (
-                    <span className="text-[11px] font-mono px-2.5 py-0.5 rounded bg-emerald-950/70 text-emerald-300 border border-emerald-700/50">
-                      ✏️ Custom Coach Mode — All Fields Editable
-                    </span>
-                  )}
-                </div>
+                <span className="text-xs font-bold text-white uppercase tracking-wider block">
+                  Coach Details & Tactical Philosophy
+                </span>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>

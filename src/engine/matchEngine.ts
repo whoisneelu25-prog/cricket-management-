@@ -1266,18 +1266,23 @@ export function stepMatchBall(matchInput: Match): Match {
   const nonStriker = getPlayerById(currentInnings.currentNonStrikerId);
   const bowler = getPlayerById(currentInnings.currentBowlerId);
 
-  const isUserBatting =
+  const isUserTeamBatting = Boolean(
     match.isUserMatch &&
-    interactiveUserPlayMode &&
-    currentInnings.battingTeamId === match.userTeamId;
+      match.userTeamId &&
+      currentInnings.battingTeamId === match.userTeamId
+  );
 
-  const isUserBowling =
+  const isUserTeamBowling = Boolean(
     match.isUserMatch &&
-    interactiveUserPlayMode &&
-    currentInnings.bowlingTeamId === match.userTeamId;
+      match.userTeamId &&
+      currentInnings.bowlingTeamId === match.userTeamId
+  );
 
-  // Local Rule-Based Opposition Management (No external AI)
-  if (!isUserBatting && !match.individualBatterInstructions?.[striker.id]) {
+  const isUserBatting = isUserTeamBatting && interactiveUserPlayMode;
+  const isUserBowling = isUserTeamBowling && interactiveUserPlayMode;
+
+  // Smart situational batting & bowling plans (applied as baseline unless manually overridden)
+  if (!match.individualBatterInstructions?.[striker.id]) {
     const oppBat = determineOppositionTactics({
       match,
       currentInnings,
@@ -1293,7 +1298,7 @@ export function stepMatchBall(matchInput: Match): Match {
     }
   }
 
-  if (!isUserBowling && !match.individualBowlingPlans?.[bowler.id]) {
+  if (!match.individualBowlingPlans?.[bowler.id]) {
     const oppBowl = determineOppositionTactics({
       match,
       currentInnings,
@@ -1410,6 +1415,8 @@ export function stepMatchBall(matchInput: Match): Match {
     bowlerSpellData: match.bowlerSpellData?.[bowler.id],
     customFieldLayout: match.activeFieldLayout,
     tacticalCalibration: match.tacticalCalibration,
+    isUserBatting: isUserTeamBatting,
+    isUserBowling: isUserTeamBowling,
   });
 
   const nameMap: Record<string, string> = {};
@@ -2011,6 +2018,17 @@ export function stepMatchInnings(match: Match): Match {
   ) {
     current = stepMatchBall(current);
     iterations++;
+    if (
+      current.format === 'TEST' &&
+      current.currentInningsIndex === targetInnIdx &&
+      current.innings[targetInnIdx] &&
+      !current.innings[targetInnIdx].isCompleted &&
+      current.innings[targetInnIdx].ballsInCurrentOver === 0 &&
+      shouldAICaptainDeclare(current)
+    ) {
+      current = declareInnings(current);
+      break;
+    }
   }
 
   return current;

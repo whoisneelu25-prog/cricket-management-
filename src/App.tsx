@@ -845,50 +845,42 @@ export default function App() {
 
         {/* Scrollable Workspace */}
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 bg-[#000000]/60 backdrop-blur-[1px]">
-          {/* Section Navigation & Related Page Shortcuts Bar (Shown when inside any section) */}
           {activeTab !== 'DASHBOARD' && (
-            <div className="mb-5 bg-[#070a0e]/95 border border-[#1e2733] rounded-xl px-4 py-3 flex flex-wrap items-center justify-between gap-3 shadow-lg">
-              <div className="flex items-center gap-2.5 flex-wrap">
+            <div className="mb-4 bg-[#070a0e]/95 border border-[#1e2733] rounded-xl px-3.5 py-2 flex flex-wrap items-center justify-between gap-2.5 shadow-md">
+              <div className="flex items-center gap-2 flex-wrap">
                 <button
                   onClick={handleGoBackTab}
-                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#10151c] hover:bg-[#1a222d] border border-[#1e2733] hover:border-[#e2b64a]/50 text-xs font-extrabold uppercase tracking-wider text-white transition-all cursor-pointer"
-                  title={`Go back to ${TAB_LABELS[previousTab]}`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#10151c] hover:bg-[#1a222d] border border-[#1e2733] hover:border-[#e2b64a]/50 text-xs font-bold text-white transition-all cursor-pointer"
+                  title={`Back to ${TAB_LABELS[previousTab]}`}
                 >
-                  <ArrowLeft className="w-4 h-4 text-[#e2b64a]" />
-                  <span>Back to {TAB_LABELS[previousTab]}</span>
+                  <ArrowLeft className="w-3.5 h-3.5 text-[#e2b64a]" />
+                  <span>Back</span>
                 </button>
 
-                {previousTab !== 'DASHBOARD' && (
-                  <button
-                    onClick={() => navigateToTab('DASHBOARD')}
-                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#10151c]/70 hover:bg-[#1a222d] border border-[#1e2733] text-xs font-bold text-[#c3ccd6] hover:text-white transition-all cursor-pointer"
-                    title="Return to Main Dashboard"
-                  >
-                    <Home className="w-3.5 h-3.5 text-[#3fca86]" />
-                    <span>Dashboard</span>
-                  </button>
-                )}
+                <button
+                  onClick={() => navigateToTab('DASHBOARD')}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#10151c]/70 hover:bg-[#1a222d] border border-[#1e2733] text-xs font-semibold text-[#c3ccd6] hover:text-white transition-all cursor-pointer"
+                  title="Dashboard"
+                >
+                  <Home className="w-3.5 h-3.5 text-[#3fca86]" />
+                  <span>Dashboard</span>
+                </button>
 
-                <div className="hidden sm:flex items-center gap-1.5 text-xs text-[#8b97a3] pl-1">
+                <div className="hidden sm:flex items-center gap-1.5 text-xs text-[#8b97a3]">
                   <ChevronRight className="w-3.5 h-3.5 text-[#33404f]" />
-                  <span className="px-2.5 py-1 rounded-md bg-[#e2b64a]/15 border border-[#e2b64a]/35 text-[#ffe9a8] font-extrabold uppercase tracking-wider">
+                  <span className="px-2.5 py-1 rounded-md bg-[#e2b64a]/15 border border-[#e2b64a]/35 text-[#ffe9a8] font-bold">
                     {TAB_LABELS[activeTab]}
                   </span>
                 </div>
               </div>
 
-              {/* Related Page Shortcuts */}
               {relatedTabs.length > 0 && (
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-[#8b97a3] mr-1">
-                    <Compass className="w-3.5 h-3.5 text-[#e2b64a]" />
-                    Related Shortcuts:
-                  </span>
+                <div className="flex items-center gap-1.5 flex-wrap">
                   {relatedTabs.map((relTab) => (
                     <button
                       key={relTab}
                       onClick={() => navigateToTab(relTab)}
-                      className="px-3 py-1.5 rounded-lg bg-[#10151c] hover:bg-[#e2b64a]/15 border border-[#1e2733] hover:border-[#e2b64a]/45 text-xs font-bold text-[#c3ccd6] hover:text-[#ffe9a8] transition-all cursor-pointer"
+                      className="px-2.5 py-1 rounded-lg bg-[#10151c] hover:bg-[#e2b64a]/15 border border-[#1e2733] hover:border-[#e2b64a]/45 text-xs font-semibold text-[#c3ccd6] hover:text-[#ffe9a8] transition-all cursor-pointer"
                     >
                       {TAB_LABELS[relTab]}
                     </button>

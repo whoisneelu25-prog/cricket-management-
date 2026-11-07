@@ -46,6 +46,28 @@ export function getNationFormatSelectionData(
   return nationData?.[format];
 }
 
+function applyFormFitnessRating(player: Player): Player {
+  const formScore = player.attributes?.currentForm ?? 88;
+  const baseFitness = player.attributes?.fitness ?? player.fitness ?? 90;
+  const fatigue = player.workloadFatigue ?? 10;
+  const effectiveFitness = Math.max(
+    45,
+    Math.min(100, Math.round(baseFitness - Math.max(0, fatigue - 18) * 0.45))
+  );
+  const formBonus = (formScore - 80) * 0.22;
+  const fitnessBonus = (effectiveFitness - 82) * 0.14;
+  const ratingDelta = Math.max(-5, Math.min(5, Math.round(formBonus + fitnessBonus)));
+  const clampRating = (val: number) => Math.max(78, Math.min(99, (val || 82) + ratingDelta));
+
+  return {
+    ...player,
+    fitness: effectiveFitness,
+    testRating: clampRating(player.testRating),
+    odiRating: clampRating(player.odiRating),
+    t20Rating: clampRating(player.t20Rating),
+  };
+}
+
 /**
  * Returns all selectable players in that country & format's complete selection pool
  * (First-choice Playing XI + Selection Pool = Complete Format Selection Pool).
@@ -58,7 +80,6 @@ export function getFormatSelectionPoolPlayers(
   const fData = getNationFormatSelectionData(countryId, format);
   if (!fData) return [];
 
-  const poolSet = new Set(fData.poolPlayerIds);
   const result: Player[] = [];
 
   for (const id of fData.poolPlayerIds) {
@@ -67,9 +88,18 @@ export function getFormatSelectionPoolPlayers(
       p = career.emergingPlayers.find((x) => x.id === id);
     }
     if (p) {
-      // Check career override if available
       const ov = career?.playerOverrides?.[id];
-      result.push(ov ? { ...p, ...ov } : p);
+      const merged: Player = ov
+        ? {
+            ...p,
+            ...ov,
+            attributes: {
+              ...p.attributes,
+              ...(ov.attributes || {}),
+            },
+          }
+        : p;
+      result.push(applyFormFitnessRating(merged));
     }
   }
 

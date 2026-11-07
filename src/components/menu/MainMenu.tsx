@@ -97,13 +97,13 @@ export const MainMenu: React.FC<MainMenuProps> = ({
         </div>
       </div>
 
-      {/* Footer System Specs */}
+      {/* Footer */}
       <div className="border-t border-[#162744] pt-5 flex flex-col sm:flex-row sm:items-center justify-between text-xs text-slate-400 z-10 gap-2">
         <p className="flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-          12 Full Member ICC Nations • Test, ODI & T20 Rules • Settled Batter Pacing Engine
+          12 Full Member ICC Nations • Test, ODI & T20I International Cricket
         </p>
-        <p className="font-mono text-[11px] text-slate-500">Offline-First • 100% Deterministic PRNG</p>
+        <p className="font-mono text-[11px] text-slate-500">World Test Championship • ODI & T20 World Cups</p>
       </div>
     </div>
   );
