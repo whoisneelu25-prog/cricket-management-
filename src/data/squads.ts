@@ -32,8 +32,8 @@ const masterList = (masterPlayersJson as Player[]).map((p) => {
         ...p.formatEligibility,
         ...formatOverride.formatEligibility,
       },
-      isWicketKeeper: p.isWicketKeeper || formatOverride.isWicketKeeper,
-      role: formatOverride.isWicketKeeper && p.role === 'BATTER' ? ('WICKETKEEPER_BATTER' as const) : p.role,
+      isWicketKeeper: Boolean(formatOverride.isWicketKeeper || formatOverride.role === 'WICKETKEEPER_BATTER'),
+      role: formatOverride.role,
     };
   }
   return p;

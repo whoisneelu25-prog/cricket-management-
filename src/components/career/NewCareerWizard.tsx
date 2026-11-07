@@ -193,22 +193,31 @@ export const NewCareerWizard: React.FC<NewCareerWizardProps> = ({ onStartCareer,
 
               {/* Coach Customization Details Panel */}
               <div className="bg-[#101b30] border border-[#1b2c4c] p-4 sm:p-5 rounded-xl space-y-4">
-                <span className="text-[11px] font-bold text-white uppercase tracking-wider block">
-                  Coach Details & Tactical Philosophy
-                </span>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="text-xs font-bold text-white uppercase tracking-wider block">
+                    Coach Details & Tactical Philosophy
+                  </span>
+                  {selectedCoachId !== 'custom' ? (
+                    <span className="text-[11px] font-mono px-2.5 py-0.5 rounded bg-amber-950/70 text-amber-300 border border-amber-700/50">
+                      🔒 Preset Coach Philosophy Locked (Select &quot;Custom Head Coach&quot; to edit)
+                    </span>
+                  ) : (
+                    <span className="text-[11px] font-mono px-2.5 py-0.5 rounded bg-emerald-950/70 text-emerald-300 border border-emerald-700/50">
+                      ✏️ Custom Coach Mode — All Fields Editable
+                    </span>
+                  )}
+                </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="text-slate-300 font-semibold block mb-1">Head Coach Name</label>
                     <input
                       type="text"
+                      disabled={selectedCoachId !== 'custom'}
                       value={managerName}
-                      onChange={(e) => {
-                        setManagerName(e.target.value);
-                        if (selectedCoachId !== 'custom') setSelectedCoachId('custom');
-                      }}
+                      onChange={(e) => setManagerName(e.target.value)}
                       placeholder="Enter manager name..."
-                      className="w-full bg-[#0b1322] border border-[#1e3256] rounded-lg p-2.5 text-sm text-white focus:border-emerald-500 focus:outline-hidden"
+                      className="w-full bg-[#0b1322] border border-[#1e3256] rounded-lg p-2.5 text-sm text-white focus:border-emerald-500 focus:outline-hidden disabled:opacity-60 disabled:cursor-not-allowed"
                     />
                   </div>
 
@@ -216,12 +225,10 @@ export const NewCareerWizard: React.FC<NewCareerWizardProps> = ({ onStartCareer,
                     <label className="text-slate-300 font-semibold block mb-1">Nationality</label>
                     <input
                       type="text"
+                      disabled={selectedCoachId !== 'custom'}
                       value={nationality}
-                      onChange={(e) => {
-                        setNationality(e.target.value);
-                        if (selectedCoachId !== 'custom') setSelectedCoachId('custom');
-                      }}
-                      className="w-full bg-[#0b1322] border border-[#1e3256] rounded-lg p-2.5 text-sm text-white focus:border-emerald-500"
+                      onChange={(e) => setNationality(e.target.value)}
+                      className="w-full bg-[#0b1322] border border-[#1e3256] rounded-lg p-2.5 text-sm text-white focus:border-emerald-500 disabled:opacity-60 disabled:cursor-not-allowed"
                     />
                   </div>
                 </div>
@@ -230,9 +237,10 @@ export const NewCareerWizard: React.FC<NewCareerWizardProps> = ({ onStartCareer,
                   <div>
                     <label className="text-slate-300 font-semibold block mb-1">Preferred Cricket Format</label>
                     <select
+                      disabled={selectedCoachId !== 'custom'}
                       value={preferredFormat}
                       onChange={(e) => setPreferredFormat(e.target.value as MatchFormat)}
-                      className="w-full bg-[#0b1322] border border-[#1e3256] rounded-lg p-2 text-white focus:border-emerald-500 text-xs"
+                      className="w-full bg-[#0b1322] border border-[#1e3256] rounded-lg p-2 text-white focus:border-emerald-500 text-xs disabled:opacity-60 disabled:cursor-not-allowed"
                     >
                       <option value="T20I">Twenty20 International (T20I)</option>
                       <option value="ODI">One Day International (ODI)</option>
@@ -243,9 +251,10 @@ export const NewCareerWizard: React.FC<NewCareerWizardProps> = ({ onStartCareer,
                   <div>
                     <label className="text-slate-300 font-semibold block mb-1">Coaching Background</label>
                     <select
+                      disabled={selectedCoachId !== 'custom'}
                       value={coachingExp}
                       onChange={(e) => setCoachingExp(e.target.value as any)}
-                      className="w-full bg-[#0b1322] border border-[#1e3256] rounded-lg p-2 text-white focus:border-emerald-500 text-xs"
+                      className="w-full bg-[#0b1322] border border-[#1e3256] rounded-lg p-2 text-white focus:border-emerald-500 text-xs disabled:opacity-60 disabled:cursor-not-allowed"
                     >
                       <option value="INTERNATIONAL">Former International Player / Legend</option>
                       <option value="FRANCHISE">Global Franchise Tournament Champion</option>
@@ -258,9 +267,10 @@ export const NewCareerWizard: React.FC<NewCareerWizardProps> = ({ onStartCareer,
                   <div>
                     <label className="text-slate-300 font-semibold block mb-1">Management Philosophy</label>
                     <select
+                      disabled={selectedCoachId !== 'custom'}
                       value={managementStyle}
                       onChange={(e) => setManagementStyle(e.target.value as any)}
-                      className="w-full bg-[#0b1322] border border-[#1e3256] rounded-lg p-2 text-white focus:border-emerald-500 text-xs"
+                      className="w-full bg-[#0b1322] border border-[#1e3256] rounded-lg p-2 text-white focus:border-emerald-500 text-xs disabled:opacity-60 disabled:cursor-not-allowed"
                     >
                       <option value="AGGRESSIVE">Aggressive & Fearless (Bazball Style)</option>
                       <option value="TACTICAL">Tactical & Strategic Planning</option>

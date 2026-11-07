@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { ArrowLeft, Home, Compass, ChevronRight } from 'lucide-react';
 import {
   CareerSave,
   Match,
@@ -97,10 +98,73 @@ import {
 } from './engine/testCricketEngine';
 import { createWhiteBallConditions } from './engine/whiteBallEngine';
 
+const UI_VIEW_STATE_STORAGE_KEY = 'icm_ui_view_state';
+const UI_ACTIVE_TAB_STORAGE_KEY = 'icm_ui_active_tab';
+
+const TAB_LABELS: Record<MainNavigationTab, string> = {
+  DASHBOARD: 'Dashboard',
+  MY_TEAM: 'National Team',
+  SQUAD_MANAGEMENT: 'Squad & Pool',
+  TEAM_SELECTION: 'Lineup Builder',
+  PLAYER_DEVELOPMENT: 'Training & Fitness',
+  TACTICS: 'Team Tactics',
+  PLAYERS: 'Player Database',
+  MATCH_CENTRE: 'Match Centre',
+  FIXTURES: 'Fixtures & Calendar',
+  TOURS: 'Tour Hub',
+  RIVALRIES: 'Historic Rivalries',
+  TOURNAMENTS: 'ICC Tournaments',
+  RANKINGS: 'ICC Rankings',
+  STATISTICS: 'Career Statistics',
+  NEWS: 'Media & Press',
+  CAREER_HISTORY: 'Coach Profile',
+  SETTINGS: 'Settings',
+};
+
+const RELATED_TABS_MAP: Record<MainNavigationTab, MainNavigationTab[]> = {
+  DASHBOARD: ['MATCH_CENTRE', 'SQUAD_MANAGEMENT', 'TOURS', 'FIXTURES'],
+  MY_TEAM: ['SQUAD_MANAGEMENT', 'TEAM_SELECTION', 'PLAYER_DEVELOPMENT', 'TACTICS'],
+  SQUAD_MANAGEMENT: ['TEAM_SELECTION', 'TOURS', 'PLAYER_DEVELOPMENT', 'PLAYERS'],
+  TEAM_SELECTION: ['SQUAD_MANAGEMENT', 'TACTICS', 'MATCH_CENTRE', 'FIXTURES'],
+  PLAYER_DEVELOPMENT: ['SQUAD_MANAGEMENT', 'MY_TEAM', 'PLAYERS', 'FIXTURES'],
+  TACTICS: ['TEAM_SELECTION', 'SQUAD_MANAGEMENT', 'MATCH_CENTRE', 'MY_TEAM'],
+  PLAYERS: ['SQUAD_MANAGEMENT', 'RANKINGS', 'STATISTICS', 'PLAYER_DEVELOPMENT'],
+  MATCH_CENTRE: ['TEAM_SELECTION', 'TACTICS', 'FIXTURES', 'TOURS'],
+  FIXTURES: ['MATCH_CENTRE', 'TOURS', 'TOURNAMENTS', 'SQUAD_MANAGEMENT'],
+  TOURS: ['SQUAD_MANAGEMENT', 'FIXTURES', 'MATCH_CENTRE', 'RIVALRIES'],
+  RIVALRIES: ['TOURS', 'FIXTURES', 'RANKINGS', 'STATISTICS'],
+  TOURNAMENTS: ['FIXTURES', 'RANKINGS', 'STATISTICS', 'TOURS'],
+  RANKINGS: ['STATISTICS', 'TOURNAMENTS', 'PLAYERS', 'RIVALRIES'],
+  STATISTICS: ['RANKINGS', 'PLAYERS', 'CAREER_HISTORY', 'TOURNAMENTS'],
+  NEWS: ['DASHBOARD', 'FIXTURES', 'TOURS', 'RANKINGS'],
+  CAREER_HISTORY: ['MY_TEAM', 'STATISTICS', 'RANKINGS', 'SETTINGS'],
+  SETTINGS: ['DASHBOARD', 'CAREER_HISTORY', 'MY_TEAM'],
+};
+
+const VALID_TABS = new Set<MainNavigationTab>(Object.keys(TAB_LABELS) as MainNavigationTab[]);
+
 export default function App() {
-  const [career, setCareer] = useState<CareerSave | null>(null);
-  const [viewState, setViewState] = useState<'MAIN_MENU' | 'NEW_CAREER' | 'IN_GAME'>('MAIN_MENU');
-  const [activeTab, setActiveTab] = useState<MainNavigationTab>('DASHBOARD');
+  const [career, setCareer] = useState<CareerSave | null>(() => loadSavedCareerFromStorage());
+  const [viewState, setViewState] = useState<'MAIN_MENU' | 'NEW_CAREER' | 'IN_GAME'>(() => {
+    const savedCareer = loadSavedCareerFromStorage();
+    const storedView = localStorage.getItem(UI_VIEW_STATE_STORAGE_KEY);
+    if (savedCareer && storedView !== 'MAIN_MENU' && storedView !== 'NEW_CAREER') {
+      return 'IN_GAME';
+    }
+    if (storedView === 'NEW_CAREER') {
+      return 'NEW_CAREER';
+    }
+    return 'MAIN_MENU';
+  });
+  const [activeTab, setActiveTab] = useState<MainNavigationTab>(() => {
+    const storedTab = localStorage.getItem(UI_ACTIVE_TAB_STORAGE_KEY) as MainNavigationTab | null;
+    if (storedTab && VALID_TABS.has(storedTab)) {
+      return storedTab;
+    }
+    return 'DASHBOARD';
+  });
+  const [tabHistory, setTabHistory] = useState<MainNavigationTab[]>([]);
+  const [isSidebarDrawerOpen, setIsSidebarDrawerOpen] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [selectedTourIdForModal, setSelectedTourIdForModal] = useState<string | null>(null);
   const [selectedTourInitialFormat, setSelectedTourInitialFormat] = useState<MatchFormat | undefined>(undefined);
@@ -108,7 +172,54 @@ export default function App() {
   const [inspectedScorecardMatch, setInspectedScorecardMatch] = useState<Match | null>(null);
   const [calendarAlert, setCalendarAlert] = useState<CalendarAdvancementResult | null>(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [activeMatchId, setActiveMatchId] = useState<string | null>(null);
+  const [activeMatchId, setActiveMatchId] = useState<string | null>(() => {
+    const savedCareer = loadSavedCareerFromStorage();
+    return savedCareer?.activeMatchId || null;
+  });
+
+  const navigateToTab = useCallback(
+    (nextTab: MainNavigationTab) => {
+      setIsSidebarDrawerOpen(false);
+      setActiveTab((prevTab) => {
+        if (prevTab !== nextTab) {
+          setTabHistory((hist) => [...hist.slice(-14), prevTab]);
+        }
+        return nextTab;
+      });
+    },
+    []
+  );
+
+  const handleGoBackTab = useCallback(() => {
+    setIsSidebarDrawerOpen(false);
+    setTabHistory((hist) => {
+      if (hist.length === 0) {
+        setActiveTab('DASHBOARD');
+        return hist;
+      }
+      const nextHist = [...hist];
+      const previous = nextHist.pop() || 'DASHBOARD';
+      setActiveTab(previous);
+      return nextHist;
+    });
+  }, []);
+
+  // Persist current viewState and activeTab across browser refreshes
+  useEffect(() => {
+    try {
+      localStorage.setItem(UI_VIEW_STATE_STORAGE_KEY, viewState);
+    } catch {
+      // Ignore storage quota issues
+    }
+  }, [viewState]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(UI_ACTIVE_TAB_STORAGE_KEY, activeTab);
+    } catch {
+      // Ignore storage quota issues
+    }
+  }, [activeTab]);
 
   // Initialize or check auto-start
   useEffect(() => {
@@ -133,6 +244,8 @@ export default function App() {
       setCareer(autoCareer);
       saveCareerToStorage(autoCareer);
       setViewState('IN_GAME');
+    } else if (!saved && viewState === 'IN_GAME') {
+      setViewState('MAIN_MENU');
     }
   }, []);
 
@@ -291,6 +404,8 @@ export default function App() {
   const handleChangeBowler = (bowlerId: string) => {
     if (!activeMatch || !activeMatch.innings[activeMatch.currentInningsIndex]) return;
     const currentInn = activeMatch.innings[activeMatch.currentInningsIndex];
+    // Prevent mid-over bowler changes — only allow changing bowler at the start of a new over
+    if ((currentInn.ballsInCurrentOver || 0) > 0) return;
     const nextInn = {
       ...currentInn,
       currentBowlerId: bowlerId,
@@ -550,7 +665,7 @@ export default function App() {
     }
     setPrepMatchId(null);
     setActiveMatchId(matchId);
-    setActiveTab('MATCH_CENTRE');
+    navigateToTab('MATCH_CENTRE');
   };
 
   // Controlled 4-Mode Calendar Advancement Handler
@@ -657,35 +772,133 @@ export default function App() {
     );
   }
 
+  const isSidebarHidden = activeTab !== 'DASHBOARD';
+  const previousTab = tabHistory.length > 0 ? tabHistory[tabHistory.length - 1] : 'DASHBOARD';
+  const relatedTabs = RELATED_TABS_MAP[activeTab] || [];
+
+  const handleMarkNotificationRead = (notificationId: string) => {
+    if (!career) return;
+    const updatedNews = career.news.map((n) =>
+      n.id === notificationId ? { ...n, isRead: true } : n
+    );
+    const nextCareer: CareerSave = {
+      ...career,
+      news: updatedNews,
+      savedAt: new Date().toISOString(),
+    };
+    setCareer(nextCareer);
+    saveCareerToStorage(nextCareer);
+  };
+
   return (
     <div className="flex h-screen bg-[#000000] text-[#e8edf2] overflow-hidden select-none font-sans relative">
       {/* Dugout SVG Pitch Background underlay */}
       <PitchBackground />
 
-      {/* Sidebar Navigation */}
-      <Sidebar
-        activeTab={activeTab}
-        onSelectTab={(tab) => setActiveTab(tab)}
-        isMatchActive={activeMatch?.status === 'IN_PROGRESS'}
-        isMatchReady={career?.fixtures.some((f) => f.date === career.currentDate && f.status !== 'COMPLETED')}
-        isCollapsed={isSidebarCollapsed}
-        onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-        selectedTeam={career ? INTERNATIONAL_TEAMS.find((t) => t.id === career.selectedTeamId) : undefined}
-      />
+      {/* Sidebar Navigation — Auto-disappears when entering any section outside Dashboard */}
+      {!isSidebarHidden && (
+        <Sidebar
+          activeTab={activeTab}
+          onSelectTab={navigateToTab}
+          isMatchActive={activeMatch?.status === 'IN_PROGRESS'}
+          isMatchReady={career?.fixtures.some((f) => f.date === career.currentDate && f.status !== 'COMPLETED')}
+          isCollapsed={isSidebarCollapsed}
+          onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+          selectedTeam={career ? INTERNATIONAL_TEAMS.find((t) => t.id === career.selectedTeamId) : undefined}
+        />
+      )}
+
+      {/* Slide-Over Sidebar Drawer when inside a section and user clicks Menu */}
+      {isSidebarHidden && isSidebarDrawerOpen && (
+        <div className="fixed inset-0 z-50 flex">
+          <div
+            className="fixed inset-0 bg-black/75 backdrop-blur-sm"
+            onClick={() => setIsSidebarDrawerOpen(false)}
+          />
+          <div className="relative z-10 h-full shadow-2xl">
+            <Sidebar
+              activeTab={activeTab}
+              onSelectTab={navigateToTab}
+              isMatchActive={activeMatch?.status === 'IN_PROGRESS'}
+              isMatchReady={career?.fixtures.some((f) => f.date === career.currentDate && f.status !== 'COMPLETED')}
+              isCollapsed={false}
+              onToggleCollapse={() => setIsSidebarDrawerOpen(false)}
+              selectedTeam={career ? INTERNATIONAL_TEAMS.find((t) => t.id === career.selectedTeamId) : undefined}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Main Content Viewport */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative z-10">
         {/* Top Header */}
         <TopBar
           career={career}
-          onOpenSaveModal={() => setActiveTab('SETTINGS')}
+          onOpenSaveModal={() => navigateToTab('SETTINGS')}
           onQuickSave={handleQuickSave}
-          onSelectTab={(tab) => setActiveTab(tab)}
+          onSelectTab={navigateToTab}
+          onMarkNotificationRead={handleMarkNotificationRead}
+          isSidebarHidden={isSidebarHidden}
+          isSidebarDrawerOpen={isSidebarDrawerOpen}
+          onToggleSidebarDrawer={() => setIsSidebarDrawerOpen((prev) => !prev)}
         />
 
         {/* Scrollable Workspace */}
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 bg-[#000000]/60 backdrop-blur-[1px]">
-          <ErrorBoundary onReset={() => setActiveTab('DASHBOARD')}>
+          {/* Section Navigation & Related Page Shortcuts Bar (Shown when inside any section) */}
+          {activeTab !== 'DASHBOARD' && (
+            <div className="mb-5 bg-[#070a0e]/95 border border-[#1e2733] rounded-xl px-4 py-3 flex flex-wrap items-center justify-between gap-3 shadow-lg">
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <button
+                  onClick={handleGoBackTab}
+                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#10151c] hover:bg-[#1a222d] border border-[#1e2733] hover:border-[#e2b64a]/50 text-xs font-extrabold uppercase tracking-wider text-white transition-all cursor-pointer"
+                  title={`Go back to ${TAB_LABELS[previousTab]}`}
+                >
+                  <ArrowLeft className="w-4 h-4 text-[#e2b64a]" />
+                  <span>Back to {TAB_LABELS[previousTab]}</span>
+                </button>
+
+                {previousTab !== 'DASHBOARD' && (
+                  <button
+                    onClick={() => navigateToTab('DASHBOARD')}
+                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#10151c]/70 hover:bg-[#1a222d] border border-[#1e2733] text-xs font-bold text-[#c3ccd6] hover:text-white transition-all cursor-pointer"
+                    title="Return to Main Dashboard"
+                  >
+                    <Home className="w-3.5 h-3.5 text-[#3fca86]" />
+                    <span>Dashboard</span>
+                  </button>
+                )}
+
+                <div className="hidden sm:flex items-center gap-1.5 text-xs text-[#8b97a3] pl-1">
+                  <ChevronRight className="w-3.5 h-3.5 text-[#33404f]" />
+                  <span className="px-2.5 py-1 rounded-md bg-[#e2b64a]/15 border border-[#e2b64a]/35 text-[#ffe9a8] font-extrabold uppercase tracking-wider">
+                    {TAB_LABELS[activeTab]}
+                  </span>
+                </div>
+              </div>
+
+              {/* Related Page Shortcuts */}
+              {relatedTabs.length > 0 && (
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-[#8b97a3] mr-1">
+                    <Compass className="w-3.5 h-3.5 text-[#e2b64a]" />
+                    Related Shortcuts:
+                  </span>
+                  {relatedTabs.map((relTab) => (
+                    <button
+                      key={relTab}
+                      onClick={() => navigateToTab(relTab)}
+                      className="px-3 py-1.5 rounded-lg bg-[#10151c] hover:bg-[#e2b64a]/15 border border-[#1e2733] hover:border-[#e2b64a]/45 text-xs font-bold text-[#c3ccd6] hover:text-[#ffe9a8] transition-all cursor-pointer"
+                    >
+                      {TAB_LABELS[relTab]}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          <ErrorBoundary onReset={() => navigateToTab('DASHBOARD')}>
             {activeTab === 'DASHBOARD' && career && (
             <DashboardView
               career={career}
@@ -693,28 +906,34 @@ export default function App() {
               onDismissCalendarAlert={() => setCalendarAlert(null)}
               onNavigateToMatch={(matchId) => {
                 setActiveMatchId(matchId);
-                setActiveTab('MATCH_CENTRE');
+                navigateToTab('MATCH_CENTRE');
               }}
               onOpenMatchPreparation={(matchId) => setPrepMatchId(matchId)}
               onInspectScorecard={(m) => setInspectedScorecardMatch(m)}
-              onNavigateToSquad={() => setActiveTab('SQUAD_MANAGEMENT')}
-              onNavigateToNews={() => setActiveTab('NEWS')}
-              onNavigateToTournaments={() => setActiveTab('TOURNAMENTS')}
-              onNavigateToRankings={() => setActiveTab('RANKINGS')}
-              onNavigateToFixtures={() => setActiveTab('FIXTURES')}
+              onNavigateToSquad={() => navigateToTab('SQUAD_MANAGEMENT')}
+              onNavigateToNews={() => navigateToTab('NEWS')}
+              onNavigateToTournaments={() => navigateToTab('TOURNAMENTS')}
+              onNavigateToRankings={() => navigateToTab('RANKINGS')}
+              onNavigateToFixtures={() => navigateToTab('FIXTURES')}
               onSelectPlayer={(p) => setSelectedPlayer(p)}
               onAdvanceCalendar={handleAdvanceCalendar}
               onRestSquadDay={handleRestSquadDay}
-              onOpenTourSelection={(tourId) => setSelectedTourIdForModal(tourId)}
+              onOpenTourSelection={(tourId) => {
+                setSelectedTourInitialFormat(undefined);
+                setSelectedTourIdForModal(tourId);
+              }}
             />
           )}
 
           {activeTab === 'MY_TEAM' && career && (
             <MyTeamView
               career={career}
-              onNavigateToSquad={() => setActiveTab('SQUAD_MANAGEMENT')}
+              onNavigateToSquad={() => navigateToTab('SQUAD_MANAGEMENT')}
               onSelectPlayer={(p) => setSelectedPlayer(p)}
-              onOpenTourSelection={(tourId) => setSelectedTourIdForModal(tourId)}
+              onOpenTourSelection={(tourId) => {
+                setSelectedTourInitialFormat(undefined);
+                setSelectedTourIdForModal(tourId);
+              }}
             />
           )}
 
@@ -726,7 +945,10 @@ export default function App() {
               onSetViceCaptain={handleSetViceCaptain}
               onSetWicketKeeper={handleSetWicketKeeper}
               onSelectPlayer={(p) => setSelectedPlayer(p)}
-              onOpenTourSelection={(tourId) => setSelectedTourIdForModal(tourId)}
+              onOpenTourSelection={(tourId) => {
+                setSelectedTourInitialFormat(undefined);
+                setSelectedTourIdForModal(tourId);
+              }}
               onCareerUpdated={(updated) => {
                 setCareer(updated);
                 saveCareerToStorage(updated);
@@ -742,7 +964,10 @@ export default function App() {
               onSetViceCaptain={handleSetViceCaptain}
               onSetWicketKeeper={handleSetWicketKeeper}
               onSelectPlayer={(p) => setSelectedPlayer(p)}
-              onOpenTourSelection={(tourId) => setSelectedTourIdForModal(tourId)}
+              onOpenTourSelection={(tourId) => {
+                setSelectedTourInitialFormat(undefined);
+                setSelectedTourIdForModal(tourId);
+              }}
               onNavigateToMatchPreparation={() => {
                 const nextM = career.fixtures.find((f) => f.status !== 'COMPLETED');
                 if (nextM) setPrepMatchId(nextM.id);
@@ -787,7 +1012,7 @@ export default function App() {
                 const isUserM = career.fixtures.some((f) => f.id === matchId);
                 if (!isUserM) return;
                 setActiveMatchId(matchId);
-                setActiveTab('MATCH_CENTRE');
+                navigateToTab('MATCH_CENTRE');
               }}
               onInspectScorecard={(m) => setInspectedScorecardMatch(m)}
               onOpenTourSelection={(tourId, fmt) => {
@@ -810,7 +1035,7 @@ export default function App() {
                 const isUserM = career.fixtures.some((f) => f.id === matchId);
                 if (!isUserM) return;
                 setActiveMatchId(matchId);
-                setActiveTab('MATCH_CENTRE');
+                navigateToTab('MATCH_CENTRE');
               }}
               onInspectScorecard={(m) => setInspectedScorecardMatch(m)}
             />
@@ -835,12 +1060,12 @@ export default function App() {
               onContinueToDashboard={() => {
                 const nextPending = career?.fixtures.find((f) => !isTerminalMatchStatus(f.status));
                 if (nextPending) setActiveMatchId(nextPending.id);
-                setActiveTab('DASHBOARD');
+                navigateToTab('DASHBOARD');
               }}
               onPrepareNextMatch={(nextMatchId) => {
                 setActiveMatchId(nextMatchId);
                 setPrepMatchId(nextMatchId);
-                setActiveTab('DASHBOARD');
+                navigateToTab('DASHBOARD');
               }}
               onOpenMatchPreparation={(matchId) => setPrepMatchId(matchId)}
               onUpdateBatterInstruction={handleUpdateBatterInstruction}
@@ -859,7 +1084,7 @@ export default function App() {
                 You do not currently have a match loaded. Select an upcoming fixture or start a new tour series.
               </p>
               <button
-                onClick={() => setActiveTab('DASHBOARD')}
+                onClick={() => navigateToTab('DASHBOARD')}
                 className="btn-gold mt-6 text-xs px-6 py-2.5 rounded-xl cursor-pointer"
               >
                 Return to Dashboard
@@ -874,12 +1099,15 @@ export default function App() {
                 const isUserM = career.fixtures.some((f) => f.id === matchId);
                 if (!isUserM) return;
                 setActiveMatchId(matchId);
-                setActiveTab('MATCH_CENTRE');
+                navigateToTab('MATCH_CENTRE');
               }}
               onInspectScorecard={(m) => setInspectedScorecardMatch(m)}
               onOpenMatchPreparation={(matchId) => setPrepMatchId(matchId)}
               onAdvanceToNextMatch={handleAdvanceToNextMatch}
-              onOpenTourSelection={(tourId) => setSelectedTourIdForModal(tourId)}
+              onOpenTourSelection={(tourId) => {
+                setSelectedTourInitialFormat(undefined);
+                setSelectedTourIdForModal(tourId);
+              }}
             />
           )}
 
@@ -889,7 +1117,7 @@ export default function App() {
               onSelectMatch={(matchId) => {
                 if (!career?.fixtures.some((f) => f.id === matchId)) return;
                 setActiveMatchId(matchId);
-                setActiveTab('MATCH_CENTRE');
+                navigateToTab('MATCH_CENTRE');
               }}
               onInspectScorecard={(m) => setInspectedScorecardMatch(m)}
             />

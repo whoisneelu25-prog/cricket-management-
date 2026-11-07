@@ -13,7 +13,7 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -468,8 +468,8 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -1076,7 +1076,7 @@
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
       "TEST": true,
-      "ODI": false,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -2291,7 +2291,7 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -2591,7 +2591,7 @@
     "dob": "2002-02-02",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -2897,8 +2897,8 @@
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "LEFT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -3353,8 +3353,8 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": true,
@@ -3805,7 +3805,7 @@
     "dob": "2004-04-25",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BOWLER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
@@ -3957,11 +3957,11 @@
     "dob": "2004-04-25",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -4113,7 +4113,7 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -4568,8 +4568,8 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": true,
@@ -5172,7 +5172,7 @@
     "dob": "1998-09-20",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "LEG_BREAK",
     "formatEligibility": {
@@ -5476,7 +5476,7 @@
     "dob": "1999-02-06",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
@@ -5628,7 +5628,7 @@
     "dob": "1995-01-10",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
@@ -6236,11 +6236,11 @@
     "dob": "1999-01-07",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BOWLER",
+    "role": "ALL_ROUNDER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -6848,7 +6848,7 @@
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "LEFT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -6995,7 +6995,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -7299,7 +7299,7 @@
     "dob": "2003-08-22",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
@@ -7754,7 +7754,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "ALL_ROUNDER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -8512,15 +8512,15 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "WICKETKEEPER_BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
-    "isWicketKeeper": false,
+    "isWicketKeeper": true,
     "workloadFatigue": 15,
     "testRating": 69,
     "odiRating": 71,
@@ -8663,7 +8663,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -8815,11 +8815,11 @@
     "dob": "1989-08-16",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BOWLER",
+    "role": "ALL_ROUNDER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -9271,7 +9271,7 @@
     "dob": "1996-09-20",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
@@ -9574,7 +9574,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -9877,7 +9877,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "WICKETKEEPER_BATTER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -9885,7 +9885,7 @@
       "ODI": false,
       "T20I": true
     },
-    "isWicketKeeper": true,
+    "isWicketKeeper": false,
     "workloadFatigue": 15,
     "testRating": 69,
     "odiRating": 71,
@@ -10488,7 +10488,7 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -10636,7 +10636,7 @@
     "dob": "1993-05-08",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST",
     "formatEligibility": {
@@ -10944,7 +10944,7 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -11396,7 +11396,7 @@
     "dob": "2001-11-26",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "LEG_BREAK",
     "formatEligibility": {
@@ -12155,7 +12155,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -12610,7 +12610,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -12914,7 +12914,7 @@
     "dob": "1994-12-12",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {
@@ -14281,7 +14281,7 @@
     "dob": "1994-12-05",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
@@ -14433,7 +14433,7 @@
     "dob": "2000-02-12",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {
@@ -14737,7 +14737,7 @@
     "dob": "2002-07-15",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "LEG_BREAK",
     "formatEligibility": {
@@ -14889,7 +14889,7 @@
     "dob": "1998-10-30",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {
@@ -15648,7 +15648,7 @@
     "dob": "1993-02-25",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -16256,7 +16256,7 @@
     "dob": "2002-10-20",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -17774,7 +17774,7 @@
     "dob": "2003-01-26",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {
@@ -19292,7 +19292,7 @@
     "dob": "1986-11-10",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
@@ -20356,7 +20356,7 @@
     "dob": "1989-03-02",
     "gender": "MALE",
     "status": "RETIRED",
-    "role": "ALL_ROUNDER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -20963,7 +20963,7 @@
     "dob": "2003-10-23",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
@@ -22179,7 +22179,7 @@
     "dob": "1990-03-01",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
@@ -22331,11 +22331,11 @@
     "dob": "1993-08-04",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "ALL_ROUNDER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "LEG_BREAK",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -22786,7 +22786,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -22938,7 +22938,7 @@
     "dob": "1987-06-18",
     "gender": "MALE",
     "status": "RETIRED",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {
@@ -23090,7 +23090,7 @@
     "dob": "1998-01-02",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "WICKETKEEPER_BATTER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -23098,7 +23098,7 @@
       "ODI": false,
       "T20I": true
     },
-    "isWicketKeeper": true,
+    "isWicketKeeper": false,
     "workloadFatigue": 15,
     "testRating": 85,
     "odiRating": 77,
@@ -23702,7 +23702,7 @@
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
       "TEST": true,
-      "ODI": false,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -24000,7 +24000,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -24304,7 +24304,7 @@
     "dob": "1998-11-11",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "WICKETKEEPER_BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {
@@ -24312,7 +24312,7 @@
       "ODI": true,
       "T20I": true
     },
-    "isWicketKeeper": false,
+    "isWicketKeeper": true,
     "workloadFatigue": 15,
     "testRating": 69,
     "odiRating": 79,
@@ -26421,7 +26421,7 @@
     "dob": "2000-09-04",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
@@ -28248,7 +28248,7 @@
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
       "TEST": true,
-      "ODI": false,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -28856,7 +28856,7 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -29310,8 +29310,8 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -29613,8 +29613,8 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": true,
@@ -30068,8 +30068,8 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -30216,7 +30216,7 @@
     "dob": "1986-09-17",
     "gender": "MALE",
     "status": "RETIRED",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {
@@ -30524,8 +30524,8 @@
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -31429,12 +31429,12 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -31586,8 +31586,8 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -32345,8 +32345,8 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "LEG_BREAK",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -32495,7 +32495,7 @@
     "dob": "2002-11-08",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {
@@ -32802,8 +32802,8 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "LEG_BREAK",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -33560,7 +33560,7 @@
     "dob": "1993-04-30",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BOWLER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {
@@ -33868,7 +33868,7 @@
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "RIGHT_ARM_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -34624,7 +34624,7 @@
     "dob": "1998-07-01",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_MEDIUM",
     "formatEligibility": {
@@ -34776,7 +34776,7 @@
     "dob": "1997-04-28",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "LEG_BREAK",
     "formatEligibility": {
@@ -34928,7 +34928,7 @@
     "dob": "2001-11-05",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "LEG_BREAK",
     "formatEligibility": {
@@ -35232,7 +35232,7 @@
     "dob": "1992-07-22",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
@@ -35691,8 +35691,8 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -35839,7 +35839,7 @@
     "dob": "2006-01-03",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -36447,7 +36447,7 @@
     "dob": "1996-03-27",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -36602,8 +36602,8 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -37209,8 +37209,8 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -38573,7 +38573,7 @@
     "dob": "1995-04-11",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {
@@ -38725,7 +38725,7 @@
     "dob": "1995-11-10",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "LEFT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -39181,7 +39181,7 @@
     "dob": "1994-04-06",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "LEFT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -40698,7 +40698,7 @@
     "dob": "1999-11-15",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -41457,7 +41457,7 @@
     "dob": "1990-09-07",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -43583,7 +43583,7 @@
     "dob": "2000-01-24",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {
@@ -44646,7 +44646,7 @@
     "dob": "2006-02-17",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "RIGHT_ARM_MEDIUM",
     "formatEligibility": {
@@ -44798,7 +44798,7 @@
     "dob": "1991-10-10",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -45558,7 +45558,7 @@
     "dob": "1996-02-02",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -45866,8 +45866,8 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -46169,8 +46169,8 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -46316,7 +46316,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -46472,8 +46472,8 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -46620,7 +46620,7 @@
     "dob": "1991-05-20",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_MEDIUM",
     "formatEligibility": {
@@ -46924,7 +46924,7 @@
     "dob": "1999-04-22",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "WICKETKEEPER_BATTER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {
@@ -46932,7 +46932,7 @@
       "ODI": false,
       "T20I": true
     },
-    "isWicketKeeper": true,
+    "isWicketKeeper": false,
     "workloadFatigue": 15,
     "testRating": 69,
     "odiRating": 71,
@@ -47683,7 +47683,7 @@
     "dob": "1990-09-17",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BOWLER",
+    "role": "ALL_ROUNDER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -48594,12 +48594,12 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -48746,7 +48746,7 @@
     "dob": "1991-02-14",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "ALL_ROUNDER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {
@@ -48898,7 +48898,7 @@
     "dob": "1992-02-05",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BOWLER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
@@ -49202,7 +49202,7 @@
     "dob": "1999-11-18",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
@@ -50417,7 +50417,7 @@
     "dob": "1981-11-21",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
@@ -53756,7 +53756,7 @@
     "dob": "1987-10-24",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
@@ -54059,7 +54059,7 @@
     "dob": "1998-09-11",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "LEG_BREAK",
     "formatEligibility": {
@@ -54665,7 +54665,7 @@
     "dob": "1994-01-16",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "ALL_ROUNDER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "RIGHT_ARM_MEDIUM",
     "formatEligibility": {
@@ -55120,12 +55120,12 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
       "TEST": true,
-      "ODI": false,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -55423,7 +55423,7 @@
     "dob": "1995-12-22",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BOWLER",
+    "role": "BATTER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "LEG_BREAK",
     "formatEligibility": {
@@ -55579,7 +55579,7 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -55883,7 +55883,7 @@
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -56181,7 +56181,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -56337,7 +56337,7 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -56485,12 +56485,12 @@
     "dob": "1994-03-21",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "ALL_ROUNDER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -56940,7 +56940,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -57547,7 +57547,7 @@
     "dob": "1993-11-23",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {
@@ -57699,7 +57699,7 @@
     "dob": "1994-01-01",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "LEFT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -58003,7 +58003,7 @@
     "dob": "1998-10-04",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "ALL_ROUNDER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "LEG_BREAK",
     "formatEligibility": {
@@ -58159,7 +58159,7 @@
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "LEFT_ARM_FAST",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -58611,11 +58611,11 @@
     "dob": "1993-07-26",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BOWLER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "LEG_BREAK",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -59218,7 +59218,7 @@
     "dob": "1987-08-05",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {
@@ -59521,7 +59521,7 @@
     "dob": "1992-04-14",
     "gender": "MALE",
     "status": "RETIRED",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "LEG_BREAK",
     "formatEligibility": {
@@ -60429,7 +60429,7 @@
     "dob": "1993-12-02",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -60581,7 +60581,7 @@
     "dob": "1992-06-23",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "RIGHT_ARM_MEDIUM",
     "formatEligibility": {
@@ -61339,7 +61339,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -61491,7 +61491,7 @@
     "dob": "1994-09-10",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BOWLER",
+    "role": "ALL_ROUNDER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -61946,7 +61946,7 @@
     "dob": "2003-04-29",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BOWLER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "LEG_BREAK",
     "formatEligibility": {
@@ -62401,7 +62401,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -62709,8 +62709,8 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -63467,8 +63467,8 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -63614,11 +63614,11 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -64224,7 +64224,7 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -64524,11 +64524,11 @@
     "dob": "1989-02-07",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BOWLER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "LEG_BREAK",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -64979,11 +64979,11 @@
     "dob": "1990-02-18",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -65435,7 +65435,7 @@
     "dob": "2000-08-14",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "WICKETKEEPER_BATTER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {
@@ -65443,7 +65443,7 @@
       "ODI": true,
       "T20I": true
     },
-    "isWicketKeeper": true,
+    "isWicketKeeper": false,
     "workloadFatigue": 15,
     "testRating": 79,
     "odiRating": 79,
@@ -65587,7 +65587,7 @@
     "dob": "1998-02-19",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "ALL_ROUNDER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_MEDIUM",
     "formatEligibility": {
@@ -66195,7 +66195,7 @@
     "dob": "1999-10-18",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -68167,7 +68167,7 @@
     "dob": "1990-10-29",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {
@@ -69533,7 +69533,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -69685,7 +69685,7 @@
     "dob": "1997-06-29",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {
@@ -71205,7 +71205,7 @@
     "dob": "1995-07-12",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -71661,7 +71661,7 @@
     "dob": "1998-09-30",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
@@ -71817,7 +71817,7 @@
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
       "TEST": true,
-      "ODI": false,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -72267,7 +72267,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -72875,7 +72875,7 @@
     "dob": "1996-08-01",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BOWLER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -73031,7 +73031,7 @@
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
       "TEST": true,
-      "ODI": false,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": true,
@@ -74245,7 +74245,7 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -78944,7 +78944,7 @@
     "dob": "1992-09-07",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
@@ -82134,7 +82134,7 @@
     "dob": "1995-03-29",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BOWLER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
@@ -82594,7 +82594,7 @@
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
       "TEST": true,
-      "ODI": false,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -82896,8 +82896,8 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": true,
@@ -83195,7 +83195,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -83499,7 +83499,7 @@
     "dob": "1994-02-26",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -84106,12 +84106,12 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
       "TEST": true,
-      "ODI": false,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -84410,7 +84410,7 @@
     "dob": "2002-04-29",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_MEDIUM",
     "formatEligibility": {
@@ -84714,7 +84714,7 @@
     "dob": "2000-08-04",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BOWLER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -86538,7 +86538,7 @@
     "dob": "1997-03-24",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST",
     "formatEligibility": {
@@ -87601,7 +87601,7 @@
     "dob": "1986-09-19",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "LEG_BREAK",
     "formatEligibility": {
@@ -87904,7 +87904,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -88212,7 +88212,7 @@
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
       "TEST": true,
-      "ODI": false,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -88663,7 +88663,7 @@
     "dob": "1986-09-26",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "LEFT_HAND",
     "bowlingStyle": "SLOW_LEFT_ARM",
     "formatEligibility": {
@@ -89270,7 +89270,7 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -89426,8 +89426,8 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
-      "ODI": false,
+      "TEST": true,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -89578,7 +89578,7 @@
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_MEDIUM",
     "formatEligibility": {
-      "TEST": false,
+      "TEST": true,
       "ODI": true,
       "T20I": true
     },
@@ -90029,12 +90029,12 @@
     "age": 27,
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "BATTER",
+    "role": "BOWLER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
       "TEST": true,
-      "ODI": false,
+      "ODI": true,
       "T20I": true
     },
     "isWicketKeeper": false,
@@ -90485,7 +90485,7 @@
     "dob": "2000-09-04",
     "gender": "MALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "OFF_BREAK",
     "formatEligibility": {
@@ -90776,7 +90776,8 @@
       "sourceId": "ind_sachin",
       "lastUpdated": "2026-11-03",
       "verified": true
-    }
+    },
+    "isWicketKeeper": false
   },
   {
     "id": "ind_dhoni",
@@ -91079,7 +91080,8 @@
       "sourceId": "aus_bradman",
       "lastUpdated": "2026-11-03",
       "verified": true
-    }
+    },
+    "isWicketKeeper": false
   },
   {
     "id": "pak_akram",
@@ -91230,7 +91232,8 @@
       "sourceId": "pak_akram",
       "lastUpdated": "2026-11-03",
       "verified": true
-    }
+    },
+    "isWicketKeeper": false
   },
   {
     "id": "ind_smriti",
@@ -91381,7 +91384,8 @@
       "sourceId": "ind_smriti",
       "lastUpdated": "2026-11-03",
       "verified": true
-    }
+    },
+    "isWicketKeeper": false
   },
   {
     "id": "aus_perry",
@@ -91393,7 +91397,7 @@
     "dob": "1990-11-03",
     "gender": "FEMALE",
     "status": "ACTIVE",
-    "role": "ALL_ROUNDER",
+    "role": "BATTER",
     "battingHand": "RIGHT_HAND",
     "bowlingStyle": "RIGHT_ARM_FAST_MEDIUM",
     "formatEligibility": {
@@ -91532,6 +91536,7 @@
       "sourceId": "aus_perry",
       "lastUpdated": "2026-11-03",
       "verified": true
-    }
+    },
+    "isWicketKeeper": false
   }
 ]

@@ -7,6 +7,8 @@ import {
   CheckCircle2,
   AlertCircle,
   ChevronDown,
+  Menu,
+  X,
 } from 'lucide-react';
 import { CareerSave } from '../../types/cricket';
 import { INTERNATIONAL_TEAMS } from '../../data/teams';
@@ -18,6 +20,10 @@ interface TopBarProps {
   onQuickSave: () => void;
   hasUnsavedChanges?: boolean;
   onSelectTab?: (tab: any) => void;
+  isSidebarHidden?: boolean;
+  isSidebarDrawerOpen?: boolean;
+  onToggleSidebarDrawer?: () => void;
+  onMarkNotificationRead?: (notifId: string) => void;
 }
 
 export const TopBar: React.FC<TopBarProps> = ({
@@ -26,6 +32,10 @@ export const TopBar: React.FC<TopBarProps> = ({
   onQuickSave,
   hasUnsavedChanges = false,
   onSelectTab,
+  isSidebarHidden = false,
+  isSidebarDrawerOpen = false,
+  onToggleSidebarDrawer,
+  onMarkNotificationRead,
 }) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -52,12 +62,24 @@ export const TopBar: React.FC<TopBarProps> = ({
   const unreadCount = notifications.filter((n) => !n.read).length;
   const nextFixture = career.fixtures?.find((f) => f.status !== 'COMPLETED');
 
-  const seasonLabel = '2026/27 International Season';
+  const currentYear = parseInt((career.currentDate || '2026-11-15').slice(0, 4), 10) || 2026;
+  const seasonLabel = `${currentYear}/${String(currentYear + 1).slice(-2)} International Season`;
 
   return (
     <header className="h-14 bg-[#070a0e]/90 backdrop-blur-md border-b border-[#1e2733] flex items-center justify-between px-3 md:px-5 select-none z-20">
-      {/* Left: Nation & Coach Profile */}
+      {/* Left: Menu Toggle (when Sidebar hidden) & Nation Profile */}
       <div className="flex items-center space-x-3 md:space-x-4">
+        {isSidebarHidden && onToggleSidebarDrawer && (
+          <button
+            type="button"
+            onClick={onToggleSidebarDrawer}
+            className="flex items-center gap-1.5 bg-[#10151c] hover:bg-[#1a2330] text-[#ffe9a8] border border-[#e2b64a]/50 px-2.5 py-1.5 rounded-lg text-xs font-bold font-display cursor-pointer transition shadow"
+            title="Toggle Navigation Menu"
+          >
+            {isSidebarDrawerOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            <span>Menu</span>
+          </button>
+        )}
         {/* Country Badge */}
         <div className="flex items-center space-x-2 bg-[#10151c] border border-[#1e2733] px-2.5 py-1 rounded-lg shadow-sm">
           <CountryFlag countryCode={team?.code || career.selectedTeamId} size="sm" />
@@ -137,6 +159,9 @@ export const TopBar: React.FC<TopBarProps> = ({
                       key={n.id}
                       onClick={() => {
                         n.read = true;
+                        if (onMarkNotificationRead) {
+                          onMarkNotificationRead(n.id);
+                        }
                         setShowNotifications(false);
                         if (n.actionTab && onSelectTab) {
                           onSelectTab(n.actionTab);

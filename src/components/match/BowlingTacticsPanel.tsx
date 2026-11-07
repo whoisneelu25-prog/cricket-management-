@@ -378,14 +378,13 @@ export const BowlingTacticsPanel: React.FC<BowlingTacticsPanelProps> = ({
                 const isCurrent = id === currentInnings?.currentBowlerId;
                 const isWk = id === bowlingWkId;
                 const isExhausted = overs >= maxQuota;
+                const isMidOver = (currentInnings?.ballsInCurrentOver || 0) > 0;
                 const bowledLastOver =
                   currentInnings?.ballsInCurrentOver === 0 &&
                   id === currentInnings?.lastCompletedOverBowlerId;
 
                 const spell = spellDataMap[id];
                 const fatigue = spell?.fatigue;
-
-                const canSelect = !isCurrent && !isWk && !isExhausted && !bowledLastOver;
 
                 return (
                   <tr
@@ -417,6 +416,10 @@ export const BowlingTacticsPanel: React.FC<BowlingTacticsPanelProps> = ({
                         <span className="text-[10px] text-emerald-400 font-mono">Active</span>
                       ) : isWk ? (
                         <span className="text-[10px] text-slate-500 font-mono">Wicketkeeper</span>
+                      ) : isMidOver ? (
+                        <span className="text-[10px] text-amber-300 font-mono">
+                          In Over ({currentInnings?.ballsInCurrentOver}/6)
+                        </span>
                       ) : isExhausted ? (
                         <span className="text-[10px] text-rose-400 font-mono">Quota Full</span>
                       ) : bowledLastOver ? (
