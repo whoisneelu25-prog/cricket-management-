@@ -969,11 +969,15 @@ export function determineAITestBowlingTactics(
   };
 }
 
+function isEligibleBowlerRole(p: Player): boolean {
+  return p.role === 'BOWLER' || p.role === 'ALL_ROUNDER';
+}
+
 /**
  * Scores a player's genuine Test bowling capability (separating front-line bowlers & all-rounders from pure batters/keepers)
  */
 function scoreTestBowlerBaseAbility(p: Player, isWk: boolean): number {
-  if (isWk || p.role === 'WICKETKEEPER_BATTER') return -500;
+  if (isWk || !isEligibleBowlerRole(p)) return -500;
   const isSpin = isSpinBowler(p.bowlingStyle);
   const primarySkill = isSpin
     ? p.attributes.spin * 0.45 + p.attributes.variation * 0.25 + p.attributes.accuracy * 0.30
@@ -981,26 +985,43 @@ function scoreTestBowlerBaseAbility(p: Player, isWk: boolean): number {
       Math.max(p.attributes.swing, p.attributes.seam) * 0.35 +
       p.attributes.accuracy * 0.30;
 
-  const roleBonus =
-    p.role === 'BOWLER' ? 35 : p.role === 'ALL_ROUNDER' ? 18 : -40; // Pure batters only bowl rare part-time overs!
+  const roleBonus = p.role === 'BOWLER' ? 35 : 18;
 
   return primarySkill * 0.65 + p.attributes.wicketTaking * 0.35 + roleBonus;
 }
 
 /**
- * Selects the opening new-ball bowler at the start of a Test innings
+ * Selects the opening new-ball bowler at the start of a Test innings.
+ * Strictly restricts selection to nominated bowlers (if provided) and never allows specialist batters or wicketkeepers to bowl.
  */
 export function selectTestOpeningBowler(
   bowlingXI: string[],
   wicketKeeperId: string | undefined,
   pitch?: PitchCondition | string,
   weather?: WeatherCondition | string,
-  getPlayer?: (id: string) => Player
+  getPlayer?: (id: string) => Player,
+  nominatedBowlerIds?: string[]
 ): string {
-  const getP = getPlayer || ((id: string) => ({ id, shortName: 'Bowler', bowlingStyle: 'RIGHT_ARM_FAST_MEDIUM' } as Player));
-  const candidates = bowlingXI
+  const getP =
+    getPlayer ||
+    ((id: string) => ({ id, shortName: 'Bowler', role: 'BOWLER', bowlingStyle: 'RIGHT_ARM_FAST_MEDIUM' } as Player));
+
+  const allMapped = bowlingXI
     .filter((id) => id !== wicketKeeperId)
     .map((id) => ({ id, player: getP(id) }));
+
+  const genuineBowlers = allMapped.filter((c) => isEligibleBowlerRole(c.player));
+  const nominatedPool =
+    nominatedBowlerIds && nominatedBowlerIds.length > 0
+      ? genuineBowlers.filter((c) => nominatedBowlerIds.includes(c.id))
+      : [];
+
+  const candidates =
+    nominatedPool.length > 0
+      ? nominatedPool
+      : genuineBowlers.length > 0
+      ? genuineBowlers
+      : allMapped;
 
   if (candidates.length === 0) return bowlingXI[bowlingXI.length - 1] || 'b1';
 
@@ -1033,12 +1054,11 @@ export function selectTestOpeningBowler(
 
 /**
  * Intelligent Test Bowling Rotation Engine (Section 8):
- * - Rotates across all 4-6 front-line bowlers & all-rounders in realistic spells:
- *   - Fast bowlers: 5-7 over spells, then >= 4 overs rest
- *   - Medium/Seam bowlers: 6-8 over spells, then >= 4 overs rest
- *   - Spin bowlers: 8-14 over spells, then >= 3 overs rest
- * - Responds to New Ball (0-12 ov), Old Ball (48-79 ov), Pitch Wear (Days 4-5 spin boost),
- *   Striker weaknesses (againstSpin vs againstPace), Innings Workload, and Match Seed jitter!
+ * - Strictly excludes specialist batters (BATTER) and wicketkeepers (WICKETKEEPER_BATTER).
+ * - Prioritizes the user's nominated bowlers (homeBowlingOptions / awayBowlingOptions); only falls back
+ *   to other BOWLER / ALL_ROUNDER players in the XI if fewer than 2 bowlers were nominated.
+ * - When the user is bowling, preserves the user's active two-bowler tandem (currentEndIncumbentId)
+ *   so the user controls when bowling changes happen.
  */
 export function selectNextTestBowler(
   match: Match,
@@ -1051,6 +1071,13 @@ export function selectNextTestBowler(
     innings.bowlingTeamId === match.homeTeamId
       ? match.homeWicketKeeperId
       : match.awayWicketKeeperId;
+  const nominated =
+    innings.bowlingTeamId === match.homeTeamId
+      ? match.homeBowlingOptions
+      : match.awayBowlingOptions;
+  const isUserTeamBowling = Boolean(
+    match.isUserMatch && match.userTeamId && innings.bowlingTeamId === match.userTeamId
+  );
 
   const completedOvers = innings.completedOvers;
   const ballAge = innings.ballAgeOvers ?? completedOvers;
@@ -1071,8 +1098,27 @@ export function selectNextTestBowler(
 
   const rand = mulberry32((match.seed || 101) + match.currentInningsIndex * 409 + completedOvers * 53);
 
-  const eligible = bowlingXI.filter((id) => id !== prevBowlerId && id !== wkId);
+  const nonKeepers = bowlingXI.filter((id) => id !== prevBowlerId && id !== wkId);
+  const genuineBowlers = nonKeepers.filter((id) => isEligibleBowlerRole(getPlayer(id)));
+  const nominatedBowlers =
+    nominated && nominated.length > 0
+      ? genuineBowlers.filter((id) => nominated.includes(id))
+      : [];
+
+  // Strictly use the user's nominated bowlers; only join other BOWLER/ALL_ROUNDER from the XI if nominated has no eligible bowler for this over
+  const eligible =
+    nominatedBowlers.length > 0
+      ? nominatedBowlers
+      : genuineBowlers.length > 0
+      ? genuineBowlers
+      : nonKeepers;
+
   if (eligible.length === 0) return bowlingXI.find((id) => id !== prevBowlerId) || bowlingXI[0];
+
+  // When the user is bowling, keep the current end's bowler locked in so the user controls all bowling changes
+  if (isUserTeamBowling && currentEndIncumbentId && eligible.includes(currentEndIncumbentId)) {
+    return currentEndIncumbentId;
+  }
 
   const scored = eligible.map((id) => {
     const p = getPlayer(id);

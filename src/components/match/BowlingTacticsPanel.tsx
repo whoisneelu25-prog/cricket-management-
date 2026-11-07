@@ -143,6 +143,43 @@ export const BowlingTacticsPanel: React.FC<BowlingTacticsPanelProps> = ({
     currentInnings.bowlingTeamId === match.homeTeamId
       ? match.homeWicketKeeperId
       : match.awayWicketKeeperId;
+  const nominatedBowlerIds =
+    currentInnings.bowlingTeamId === match.homeTeamId
+      ? match.homeBowlingOptions
+      : match.awayBowlingOptions;
+
+  const genuineBowlerIds = bowlingTeamXI.filter((id) => {
+    if (id === bowlingWkId) return false;
+    const p = getPlayerById(id);
+    return p.role === 'BOWLER' || p.role === 'ALL_ROUNDER';
+  });
+
+  const nominatedGenuineIds =
+    nominatedBowlerIds && nominatedBowlerIds.length > 0
+      ? genuineBowlerIds.filter((id) => nominatedBowlerIds.includes(id))
+      : [];
+
+  const hasAvailableNominated = nominatedGenuineIds.some((id) => {
+    const fig = currentInnings?.bowlers.find((b) => b.playerId === id);
+    const overs = fig ? fig.overs : 0;
+    const maxQuota =
+      match.format !== 'TEST'
+        ? getEffectiveMaxOversForBowler(
+            match.format,
+            id,
+            currentInnings?.bowlers || [],
+            currentInnings?.allocatedOvers ?? match.allocatedOversPerInnings
+          )
+        : Infinity;
+    const bowledLast =
+      currentInnings?.ballsInCurrentOver === 0 && id === currentInnings?.lastCompletedOverBowlerId;
+    return overs < maxQuota && !bowledLast;
+  });
+
+  const displayBowlerIds =
+    nominatedGenuineIds.length >= 2 && hasAvailableNominated
+      ? nominatedGenuineIds
+      : genuineBowlerIds;
 
   const spellDataMap = match.bowlerSpellData || {};
   const activeSpell = activeBowler ? spellDataMap[activeBowler.id] : null;
@@ -357,7 +394,7 @@ export const BowlingTacticsPanel: React.FC<BowlingTacticsPanelProps> = ({
               </tr>
             </thead>
             <tbody className="divide-y divide-[#1b263b]">
-              {bowlingTeamXI.map((id) => {
+              {displayBowlerIds.map((id) => {
                 const player = getPlayerById(id);
                 const fig = currentInnings?.bowlers.find((b) => b.playerId === id);
                 const overs = fig ? fig.overs : 0;

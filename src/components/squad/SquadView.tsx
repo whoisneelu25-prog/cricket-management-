@@ -42,6 +42,7 @@ import {
   setFormatCaptain,
   setFormatViceCaptain,
   setFormatWicketKeeper,
+  setFormatBowlingRotation,
   setFormatTargetSquadSize,
 } from '../../store/careerStore';
 
@@ -769,6 +770,14 @@ export const SquadView: React.FC<SquadViewProps> = ({
               const isVC = player.id === formatConfig.viceCaptainId;
               const isWK = player.id === formatConfig.wicketKeeperId;
               const isSelectedForSwap = swapOutXiPlayerId === player.id;
+              const canBowl = (player.role === 'BOWLER' || player.role === 'ALL_ROUNDER') && !isWK;
+              const activeRotation =
+                formatConfig.bowlingRotation && formatConfig.bowlingRotation.length > 0
+                  ? formatConfig.bowlingRotation
+                  : playingXIPlayers
+                      .filter((p) => (p.role === 'BOWLER' || p.role === 'ALL_ROUNDER') && p.id !== formatConfig.wicketKeeperId)
+                      .map((p) => p.id);
+              const isNominatedBowler = canBowl && activeRotation.includes(player.id);
 
               return (
                 <div
@@ -804,6 +813,11 @@ export const SquadView: React.FC<SquadViewProps> = ({
                             WK
                           </span>
                         )}
+                        {isNominatedBowler && (
+                          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#0e2c1d] text-[#3fca86] border border-[#3fca86]/50 uppercase font-mono">
+                            BOWL
+                          </span>
+                        )}
                       </div>
                       <span className="text-[10px] text-[#8b97a3] font-mono">
                         {role.replace(/_/g, ' ')} • {player.battingHand === 'LEFT_HAND' ? 'LHB' : 'RHB'}
@@ -813,6 +827,26 @@ export const SquadView: React.FC<SquadViewProps> = ({
 
                   {!isReadOnly && (
                     <div className="flex items-center gap-1 shrink-0">
+                      {canBowl && (
+                        <button
+                          onClick={() => {
+                            const nextRot = isNominatedBowler
+                              ? activeRotation.filter((id) => id !== player.id)
+                              : [...activeRotation, player.id];
+                            if (nextRot.length >= 1) {
+                              handleUpdate(setFormatBowlingRotation(career, selectedFormat, nextRot));
+                            }
+                          }}
+                          title="Toggle Nominated Bowler in XI"
+                          className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider border cursor-pointer ${
+                            isNominatedBowler
+                              ? 'bg-[#0e2c1d] text-[#3fca86] border-[#3fca86]'
+                              : 'bg-[#070a0e] text-[#8b97a3] border-[#1e2733] hover:text-white'
+                          }`}
+                        >
+                          BOWL
+                        </button>
+                      )}
                       <button
                         onClick={() => handleMoveXIOrder(idx, 'UP')}
                         disabled={idx === 0}

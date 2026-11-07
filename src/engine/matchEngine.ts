@@ -251,7 +251,8 @@ export function createInitialInningsState(
           options.bowlingWicketKeeperId,
           options.pitch || defaultPitch,
           options.weather || defaultWeather,
-          getPlayerById
+          getPlayerById,
+          options.nominatedBowlerIds
         )
       : options?.format === 'ODI' || options?.format === 'T20I'
       ? selectWhiteBallOpeningBowler(
@@ -833,6 +834,8 @@ export function resolveFollowOnDecision(match: Match, enforceFollowOn: boolean):
   const nextBowlingXI = nextBowlingId === match.homeTeamId ? match.homeXI : match.awayXI;
   const bowlingWkId =
     nextBowlingId === match.homeTeamId ? match.homeWicketKeeperId : match.awayWicketKeeperId;
+  const bowlingNominated =
+    nextBowlingId === match.homeTeamId ? match.homeBowlingOptions : match.awayBowlingOptions;
   const homeTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.homeTeamId);
   const awayTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.awayTeamId);
 
@@ -850,6 +853,7 @@ export function resolveFollowOnDecision(match: Match, enforceFollowOn: boolean):
       pitch: match.pitch,
       weather: match.weather,
       bowlingWicketKeeperId: bowlingWkId,
+      nominatedBowlerIds: bowlingNominated,
     }
   );
 
@@ -923,6 +927,7 @@ export function stepMatchBall(matchInput: Match): Match {
             pitch: match.pitch,
             weather: match.weather,
             bowlingWicketKeeperId: bowlingWkId,
+            nominatedBowlerIds: bowlingNominated,
           }
         : {
             format: match.format,
@@ -997,6 +1002,8 @@ export function stepMatchBall(matchInput: Match): Match {
         const nextBowlingXI = nextBowlingId === match.homeTeamId ? match.homeXI : match.awayXI;
         const bowlingWkId =
           nextBowlingId === match.homeTeamId ? match.homeWicketKeeperId : match.awayWicketKeeperId;
+        const bowlingNominated =
+          nextBowlingId === match.homeTeamId ? match.homeBowlingOptions : match.awayBowlingOptions;
         const homeTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.homeTeamId);
         const awayTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.awayTeamId);
 
@@ -1014,6 +1021,7 @@ export function stepMatchBall(matchInput: Match): Match {
             pitch: match.pitch,
             weather: match.weather,
             bowlingWicketKeeperId: bowlingWkId,
+            nominatedBowlerIds: bowlingNominated,
           }
         );
 
@@ -1055,6 +1063,8 @@ export function stepMatchBall(matchInput: Match): Match {
         const nextBowlingXI = nextBowlingId === match.homeTeamId ? match.homeXI : match.awayXI;
         const bowlingWkId =
           nextBowlingId === match.homeTeamId ? match.homeWicketKeeperId : match.awayWicketKeeperId;
+        const bowlingNominated =
+          nextBowlingId === match.homeTeamId ? match.homeBowlingOptions : match.awayBowlingOptions;
         const homeTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.homeTeamId);
         const awayTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.awayTeamId);
 
@@ -1072,6 +1082,7 @@ export function stepMatchBall(matchInput: Match): Match {
             pitch: match.pitch,
             weather: match.weather,
             bowlingWicketKeeperId: bowlingWkId,
+            nominatedBowlerIds: bowlingNominated,
           }
         );
 
@@ -1110,6 +1121,8 @@ export function stepMatchBall(matchInput: Match): Match {
           const nextBowlingXI = nextBowlingId === match.homeTeamId ? match.homeXI : match.awayXI;
           const bowlingWkId =
             nextBowlingId === match.homeTeamId ? match.homeWicketKeeperId : match.awayWicketKeeperId;
+          const bowlingNominated =
+            nextBowlingId === match.homeTeamId ? match.homeBowlingOptions : match.awayBowlingOptions;
           const homeTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.homeTeamId);
           const awayTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.awayTeamId);
 
@@ -1127,6 +1140,7 @@ export function stepMatchBall(matchInput: Match): Match {
               pitch: match.pitch,
               weather: match.weather,
               bowlingWicketKeeperId: bowlingWkId,
+              nominatedBowlerIds: bowlingNominated,
             }
           );
 
@@ -1156,6 +1170,8 @@ export function stepMatchBall(matchInput: Match): Match {
           const nextBowlingXI = nextBowlingId === match.homeTeamId ? match.homeXI : match.awayXI;
           const bowlingWkId =
             nextBowlingId === match.homeTeamId ? match.homeWicketKeeperId : match.awayWicketKeeperId;
+          const bowlingNominated =
+            nextBowlingId === match.homeTeamId ? match.homeBowlingOptions : match.awayBowlingOptions;
           const homeTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.homeTeamId);
           const awayTeam = INTERNATIONAL_TEAMS.find((t) => t.id === match.awayTeamId);
 
@@ -1173,6 +1189,7 @@ export function stepMatchBall(matchInput: Match): Match {
               pitch: match.pitch,
               weather: match.weather,
               bowlingWicketKeeperId: bowlingWkId,
+              nominatedBowlerIds: bowlingNominated,
             }
           );
 
@@ -1281,8 +1298,8 @@ export function stepMatchBall(matchInput: Match): Match {
   const isUserBatting = isUserTeamBatting && interactiveUserPlayMode;
   const isUserBowling = isUserTeamBowling && interactiveUserPlayMode;
 
-  // Smart situational batting & bowling plans (applied as baseline unless manually overridden)
-  if (!match.individualBatterInstructions?.[striker.id]) {
+  // Smart situational batting & bowling plans (applied as baseline for AI or non-interactive simulation; never overwrite user interactive tactics)
+  if (!isUserBatting && !match.individualBatterInstructions?.[striker.id]) {
     const oppBat = determineOppositionTactics({
       match,
       currentInnings,
@@ -1298,7 +1315,7 @@ export function stepMatchBall(matchInput: Match): Match {
     }
   }
 
-  if (!match.individualBowlingPlans?.[bowler.id]) {
+  if (!isUserBowling && !match.individualBowlingPlans?.[bowler.id]) {
     const oppBowl = determineOppositionTactics({
       match,
       currentInnings,
@@ -2096,6 +2113,7 @@ export function simulateFullMatch(match: Match, career?: CareerSave): Match {
                 pitch: current.pitch,
                 weather: current.weather,
                 bowlingWicketKeeperId: bowlingWkId,
+                nominatedBowlerIds: bowlingNominated,
               }
             : {
                 format: current.format,

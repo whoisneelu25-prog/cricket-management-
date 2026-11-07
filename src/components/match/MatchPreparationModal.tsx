@@ -191,10 +191,12 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
       matchBowl && matchBowl.length > 0
         ? matchBowl
         : career.formatSquads[match.format]?.bowlingRotation || [];
-    const validSaved = baseBowl.filter(
-      (id) => initialUserXI.includes(id) && id !== wicketKeeperId
-    );
-    if (validSaved.length >= 4) return validSaved;
+    const validSaved = baseBowl.filter((id) => {
+      if (!initialUserXI.includes(id) || id === wicketKeeperId) return false;
+      const p = getEffectivePlayer(id, career);
+      return p?.role === 'BOWLER' || p?.role === 'ALL_ROUNDER';
+    });
+    if (validSaved.length >= 1) return validSaved;
     return initialUserXI.filter((id) => {
       if (id === wicketKeeperId) return false;
       const p = getEffectivePlayer(id, career);
@@ -221,9 +223,11 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
     .map((id) => eligiblePool.find((p) => p.id === id) || getEffectivePlayer(id, career))
     .filter((p): p is Player => Boolean(p));
 
-  const effectiveSelectedBowlerIds = selectedBowlerIds.filter(
-    (id) => playingXI.includes(id) && id !== wicketKeeperId
-  );
+  const effectiveSelectedBowlerIds = selectedBowlerIds.filter((id) => {
+    if (!playingXI.includes(id) || id === wicketKeeperId) return false;
+    const p = xiPlayers.find((pl) => pl.id === id) || getEffectivePlayer(id, career);
+    return p?.role === 'BOWLER' || p?.role === 'ALL_ROUNDER';
+  });
   const bowlingOptions = xiPlayers.filter((p) => effectiveSelectedBowlerIds.includes(p.id));
   const injuredInXI = xiPlayers.filter((p) => p.isInjured);
   const hasWK = xiPlayers.some(
@@ -237,6 +241,8 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
 
   const handleToggleBowlerOption = (playerId: string) => {
     if (playerId === wicketKeeperId) return;
+    const player = xiPlayers.find((p) => p.id === playerId) || getEffectivePlayer(playerId, career);
+    if (!player || (player.role !== 'BOWLER' && player.role !== 'ALL_ROUNDER')) return;
     setSavedNotice(false);
     setSelectedBowlerIds((prev) =>
       prev.includes(playerId) ? prev.filter((id) => id !== playerId) : [...prev, playerId]
@@ -285,7 +291,7 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
   const handleSaveAndConfirm = (): CareerSave | null => {
     if (!canConfirm) return null;
     const finalBowlers =
-      effectiveSelectedBowlerIds.length >= 4
+      effectiveSelectedBowlerIds.length >= 1
         ? effectiveSelectedBowlerIds
         : xiPlayers
             .filter((p) => p.id !== wicketKeeperId && (p.role === 'BOWLER' || p.role === 'ALL_ROUNDER'))
@@ -572,18 +578,19 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
                         >
                           WK
                         </button>
-                        <button
-                          disabled={isWK}
-                          onClick={() => handleToggleBowlerOption(p.id)}
-                          className={`text-[9.5px] px-1.5 py-0.5 rounded font-bold cursor-pointer disabled:opacity-30 ${
-                            effectiveSelectedBowlerIds.includes(p.id)
-                              ? 'bg-[#0e2c1d] text-[#3fca86] border border-[#3fca86]'
-                              : 'bg-[#10151c] text-[#8b97a3] hover:text-white'
-                          }`}
-                          title="Nominate Bowler"
-                        >
-                          BOWL
-                        </button>
+                        {(p.role === 'BOWLER' || p.role === 'ALL_ROUNDER') && !isWK && (
+                          <button
+                            onClick={() => handleToggleBowlerOption(p.id)}
+                            className={`text-[9.5px] px-1.5 py-0.5 rounded font-bold cursor-pointer ${
+                              effectiveSelectedBowlerIds.includes(p.id)
+                                ? 'bg-[#0e2c1d] text-[#3fca86] border border-[#3fca86]'
+                                : 'bg-[#10151c] text-[#8b97a3] hover:text-white'
+                            }`}
+                            title="Nominate Bowler"
+                          >
+                            BOWL
+                          </button>
+                        )}
                         <button
                           onClick={() => handleToggleXI(p)}
                           className="text-[10px] px-1.5 py-0.5 rounded bg-[#331420] text-[#ff5470] border border-[#ff5470]/40 hover:bg-[#ff5470]/20 font-bold cursor-pointer ml-1"

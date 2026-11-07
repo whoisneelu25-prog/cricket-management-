@@ -476,6 +476,18 @@ export function setFormatPlayingXI(
     wkId = wk || uniqueIds[2] || uniqueIds[0] || '';
   }
 
+  const existingRotation = (currentFormatConfig.bowlingRotation || []).filter((id) => {
+    if (!uniqueIds.includes(id) || id === wkId) return false;
+    const p = getEffectivePlayer(id, career);
+    return p?.role === 'BOWLER' || p?.role === 'ALL_ROUNDER';
+  });
+  const defaultRotation = uniqueIds.filter((id) => {
+    if (id === wkId) return false;
+    const p = getEffectivePlayer(id, career);
+    return p?.role === 'BOWLER' || p?.role === 'ALL_ROUNDER';
+  });
+  const updatedRotation = existingRotation.length > 0 ? existingRotation : defaultRotation;
+
   const updatedConfig: FormatSquadConfig = {
     ...currentFormatConfig,
     playingXI: uniqueIds,
@@ -483,6 +495,7 @@ export function setFormatPlayingXI(
     captainId: capId,
     viceCaptainId: vcId,
     wicketKeeperId: wkId,
+    bowlingRotation: updatedRotation,
   };
 
   const updatedFixtures = (career.fixtures || []).map((m) => {
@@ -493,6 +506,7 @@ export function setFormatPlayingXI(
         homeXI: uniqueIds,
         homeCaptainId: capId,
         homeWicketKeeperId: wkId,
+        homeBowlingOptions: updatedRotation,
       };
     } else if (m.awayTeamId === userTeamId) {
       return {
@@ -500,6 +514,7 @@ export function setFormatPlayingXI(
         awayXI: uniqueIds,
         awayCaptainId: capId,
         awayWicketKeeperId: wkId,
+        awayBowlingOptions: updatedRotation,
       };
     }
     return m;
@@ -672,18 +687,29 @@ export function confirmMatchPreparationLineup(
   if (lineup.playingXI.includes(lineup.wicketKeeperId)) {
     nextCareer = setFormatWicketKeeper(nextCareer, targetMatch.format, lineup.wicketKeeperId);
   }
-  if (lineup.bowlingRotation && lineup.bowlingRotation.length > 0) {
-    nextCareer = {
-      ...nextCareer,
-      formatSquads: {
-        ...nextCareer.formatSquads,
-        [targetMatch.format]: {
-          ...nextCareer.formatSquads[targetMatch.format],
-          bowlingRotation: lineup.bowlingRotation,
-        },
+  const validUserBowlers = (lineup.bowlingRotation || []).filter((id) => {
+    if (!lineup.playingXI.includes(id) || id === lineup.wicketKeeperId) return false;
+    const p = getEffectivePlayer(id, nextCareer);
+    return p?.role === 'BOWLER' || p?.role === 'ALL_ROUNDER';
+  });
+  const fallbackUserBowlers = lineup.playingXI.filter((id) => {
+    if (id === lineup.wicketKeeperId) return false;
+    const p = getEffectivePlayer(id, nextCareer);
+    return p?.role === 'BOWLER' || p?.role === 'ALL_ROUNDER';
+  });
+  const effectiveUserBowlers =
+    validUserBowlers.length > 0 ? validUserBowlers : fallbackUserBowlers;
+
+  nextCareer = {
+    ...nextCareer,
+    formatSquads: {
+      ...nextCareer.formatSquads,
+      [targetMatch.format]: {
+        ...nextCareer.formatSquads[targetMatch.format],
+        bowlingRotation: effectiveUserBowlers,
       },
-    };
-  }
+    },
+  };
 
   const oppTeamId =
     targetMatch.homeTeamId === nextCareer.selectedTeamId
@@ -711,14 +737,55 @@ export function confirmMatchPreparationLineup(
         homeXI: userIsHome ? userCfg.playingXI : oppAICfg.playingXI,
         homeCaptainId: userIsHome ? userCfg.captainId : oppAICfg.captainId,
         homeWicketKeeperId: userIsHome ? userCfg.wicketKeeperId : oppAICfg.wicketKeeperId,
+        homeBowlingOptions: userIsHome ? effectiveUserBowlers : oppAICfg.bowlingRotation,
         awayXI: userIsHome ? oppAICfg.playingXI : userCfg.playingXI,
         awayCaptainId: userIsHome ? oppAICfg.captainId : userCfg.captainId,
         awayWicketKeeperId: userIsHome ? oppAICfg.wicketKeeperId : userCfg.wicketKeeperId,
+        awayBowlingOptions: userIsHome ? oppAICfg.bowlingRotation : effectiveUserBowlers,
       };
     }),
   };
 
   return nextCareer;
+}
+
+export function setFormatBowlingRotation(
+  career: CareerSave,
+  format: MatchFormat,
+  bowlingRotation: string[],
+  targetTeamId: string = career.selectedTeamId
+): CareerSave {
+  if (!canUserManageTeam(career, targetTeamId)) return career;
+  const cfg = career.formatSquads[format];
+  if (!cfg) return career;
+  const userTeamId = career.selectedTeamId;
+
+  const validRotation = bowlingRotation.filter((id) => {
+    if (!cfg.playingXI.includes(id) || id === cfg.wicketKeeperId) return false;
+    const p = getEffectivePlayer(id, career);
+    return p?.role === 'BOWLER' || p?.role === 'ALL_ROUNDER';
+  });
+
+  const updatedConfig: FormatSquadConfig = {
+    ...cfg,
+    bowlingRotation: validRotation,
+  };
+
+  const updatedFixtures = (career.fixtures || []).map((m) => {
+    if (!isPreMatchStatus(m.status) || m.format !== format) return m;
+    if (m.homeTeamId === userTeamId) return { ...m, homeBowlingOptions: validRotation };
+    if (m.awayTeamId === userTeamId) return { ...m, awayBowlingOptions: validRotation };
+    return m;
+  });
+
+  return {
+    ...career,
+    formatSquads: {
+      ...career.formatSquads,
+      [format]: updatedConfig,
+    },
+    fixtures: updatedFixtures,
+  };
 }
 
 /**

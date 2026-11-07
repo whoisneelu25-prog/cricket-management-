@@ -41,7 +41,7 @@ import {
 } from './engine/worldSimulation';
 import { TrainingFocus } from './engine/playerDevelopmentEngine';
 import { INTERNATIONAL_TEAMS } from './data/teams';
-import { ALL_PLAYERS, getDefaultPlayingXI, getDefaultWicketKeeperId, getDefaultCaptainId } from './data/squads';
+import { ALL_PLAYERS, getDefaultPlayingXI, getDefaultWicketKeeperId, getDefaultCaptainId, getEffectivePlayer } from './data/squads';
 import { PitchBackground } from './components/common/PitchBackground';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { TopBar } from './components/navigation/TopBar';
@@ -84,6 +84,7 @@ import {
   withCareerSimulationContext,
   ensureMatchTacticalSystemsInitialized,
   updateIndividualBatterInstruction,
+  getPlayerById,
   updateIndividualBowlingPlan,
   updateCustomScoringTargets,
   updatePhaseScoringTargets,
@@ -406,6 +407,14 @@ export default function App() {
     const currentInn = activeMatch.innings[activeMatch.currentInningsIndex];
     // Prevent mid-over bowler changes — only allow changing bowler at the start of a new over
     if ((currentInn.ballsInCurrentOver || 0) > 0) return;
+    const candidate = getEffectivePlayer(bowlerId, career || undefined) || getPlayerById(bowlerId);
+    // Never allow specialist batters or wicketkeepers to bowl
+    if (
+      !candidate ||
+      (candidate.role !== 'BOWLER' && candidate.role !== 'ALL_ROUNDER')
+    ) {
+      return;
+    }
     const nextInn = {
       ...currentInn,
       currentBowlerId: bowlerId,
@@ -518,13 +527,55 @@ export default function App() {
       bowlingWkId = getDefaultWicketKeeperId(bowlingTeamId, freshMatch.format);
     }
 
-    let bowlingOptions =
-      bowlingTeamId === freshMatch.homeTeamId
+    const filterEligibleBowlers = (xiIds: string[], wkId: string | undefined, preferred?: string[]) => {
+      const genuine = xiIds.filter((id) => {
+        if (id === wkId) return false;
+        const p = getEffectivePlayer(id, workingCareer) || getPlayerById(id);
+        return p?.role === 'BOWLER' || p?.role === 'ALL_ROUNDER';
+      });
+      if (preferred && preferred.length > 0) {
+        const nom = genuine.filter((id) => preferred.includes(id));
+        if (nom.length > 0) return nom;
+      }
+      return genuine;
+    };
+
+    const finalHomeXI = freshMatch.homeTeamId === battingTeamId ? battingXI : bowlingXI;
+    const finalAwayXI = freshMatch.awayTeamId === battingTeamId ? battingXI : bowlingXI;
+
+    const finalHomeWkId =
+      freshMatch.homeTeamId === bowlingTeamId
+        ? bowlingWkId
+        : freshMatch.homeWicketKeeperId ||
+          getDefaultWicketKeeperId(freshMatch.homeTeamId, freshMatch.format);
+    const finalAwayWkId =
+      freshMatch.awayTeamId === bowlingTeamId
+        ? bowlingWkId
+        : freshMatch.awayWicketKeeperId ||
+          getDefaultWicketKeeperId(freshMatch.awayTeamId, freshMatch.format);
+
+    const userSavedRotation = workingCareer.formatSquads[freshMatch.format]?.bowlingRotation;
+    const finalHomeBowlingOptions = filterEligibleBowlers(
+      finalHomeXI,
+      finalHomeWkId,
+      freshMatch.homeBowlingOptions && freshMatch.homeBowlingOptions.length > 0
         ? freshMatch.homeBowlingOptions
-        : freshMatch.awayBowlingOptions;
-    if (!bowlingOptions || bowlingOptions.length === 0) {
-      bowlingOptions = bowlingXI.filter((id) => id !== bowlingWkId).slice(-5);
-    }
+        : freshMatch.homeTeamId === userTeamId
+        ? userSavedRotation
+        : undefined
+    );
+    const finalAwayBowlingOptions = filterEligibleBowlers(
+      finalAwayXI,
+      finalAwayWkId,
+      freshMatch.awayBowlingOptions && freshMatch.awayBowlingOptions.length > 0
+        ? freshMatch.awayBowlingOptions
+        : freshMatch.awayTeamId === userTeamId
+        ? userSavedRotation
+        : undefined
+    );
+
+    const bowlingOptions =
+      bowlingTeamId === freshMatch.homeTeamId ? finalHomeBowlingOptions : finalAwayBowlingOptions;
 
     const innings1 = withCareerSimulationContext(workingCareer, () =>
       createInitialInningsState(
@@ -548,9 +599,6 @@ export default function App() {
       )
     );
 
-    const finalHomeXI = freshMatch.homeTeamId === battingTeamId ? battingXI : bowlingXI;
-    const finalAwayXI = freshMatch.awayTeamId === battingTeamId ? battingXI : bowlingXI;
-
     const startedMatch: Match = ensureMatchTacticalSystemsInitialized({
       ...freshMatch,
       status: 'IN_PROGRESS',
@@ -568,16 +616,10 @@ export default function App() {
         freshMatch.awayCaptainId ||
         finalAwayXI[0] ||
         getDefaultCaptainId(freshMatch.awayTeamId, freshMatch.format),
-      homeWicketKeeperId:
-        freshMatch.homeTeamId === bowlingTeamId
-          ? bowlingWkId
-          : freshMatch.homeWicketKeeperId ||
-            getDefaultWicketKeeperId(freshMatch.homeTeamId, freshMatch.format),
-      awayWicketKeeperId:
-        freshMatch.awayTeamId === bowlingTeamId
-          ? bowlingWkId
-          : freshMatch.awayWicketKeeperId ||
-            getDefaultWicketKeeperId(freshMatch.awayTeamId, freshMatch.format),
+      homeWicketKeeperId: finalHomeWkId,
+      awayWicketKeeperId: finalAwayWkId,
+      homeBowlingOptions: finalHomeBowlingOptions,
+      awayBowlingOptions: finalAwayBowlingOptions,
       currentInningsIndex: 0,
       innings: [innings1],
       ...(freshMatch.format === 'TEST'

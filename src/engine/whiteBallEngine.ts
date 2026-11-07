@@ -618,11 +618,15 @@ export function determineAIWhiteBallBowlingTactics(
   };
 }
 
+function isEligibleWhiteBallBowler(player: Player): boolean {
+  return player.role === 'BOWLER' || player.role === 'ALL_ROUNDER';
+}
+
 /**
  * Evaluates a candidate bowler's intrinsic white-ball bowling rating.
  */
 function getBaseWhiteBallBowlerQuality(player: Player, format: MatchFormat): number {
-  if (player.role === 'WICKETKEEPER_BATTER') return 5;
+  if (!isEligibleWhiteBallBowler(player)) return -500;
   const spin = isSpinBowler(player.bowlingStyle);
   const primary = spin
     ? player.attributes.spin * 0.35 +
@@ -635,15 +639,14 @@ function getBaseWhiteBallBowlerQuality(player: Player, format: MatchFormat): num
       player.attributes.deathBowling * 0.15 +
       player.attributes.wicketTaking * 0.15;
 
-  const roleBonus =
-    player.role === 'BOWLER' ? 14 : player.role === 'ALL_ROUNDER' ? 8 : -16;
+  const roleBonus = player.role === 'BOWLER' ? 14 : 8;
   const formatBonus = format === 'T20I' ? player.attributes.variation * 0.05 : player.attributes.stamina * 0.05;
   return primary + roleBonus + formatBonus;
 }
 
 /**
  * Selects an authentic opening bowler for ODI or T20I (new-ball pacer or powerplay specialist,
- * never wicketkeeper, with deterministic match-to-match variety).
+ * never wicketkeeper or specialist batter, with deterministic match-to-match variety).
  */
 export function selectWhiteBallOpeningBowler(
   bowlingXI: string[],
@@ -660,12 +663,21 @@ export function selectWhiteBallOpeningBowler(
     const p = getPlayerById(id);
     return p.role !== 'WICKETKEEPER_BATTER';
   });
+  const genuineBowlers = nonKeepers.filter((id) => isEligibleWhiteBallBowler(getPlayerById(id)));
 
-  const pool =
-    nominatedBowlerIds && nominatedBowlerIds.length >= 2
-      ? nonKeepers.filter((id) => nominatedBowlerIds.includes(id))
-      : nonKeepers;
-  const candidates = pool.length > 0 ? pool : nonKeepers.length > 0 ? nonKeepers : bowlingXI;
+  const nominatedPool =
+    nominatedBowlerIds && nominatedBowlerIds.length > 0
+      ? genuineBowlers.filter((id) => nominatedBowlerIds.includes(id))
+      : [];
+
+  const candidates =
+    nominatedPool.length > 0
+      ? nominatedPool
+      : genuineBowlers.length > 0
+      ? genuineBowlers
+      : nonKeepers.length > 0
+      ? nonKeepers
+      : bowlingXI;
 
   const rand = mulberry32(seed + 1907);
 
@@ -703,9 +715,9 @@ export function selectWhiteBallOpeningBowler(
  * Selects the next bowler in ODI or T20I adhering strictly to:
  * - No consecutive overs by the same bowler
  * - Maximum overs per bowler (10 ODI / 4 T20I / exact ICC shortened-innings quota)
- * - Wicketkeeper exclusion
- * - Realistic 5-6 bowler rotation with Powerplay spells, Middle-over spin/control,
- *   Death-over specialist reservation, batter matchups, fatigue, and non-repetitive match variety.
+ * - Strictly excludes specialist batters (BATTER) and wicketkeepers (WICKETKEEPER_BATTER)
+ * - Uses only the user's nominated bowlers until their quota is exhausted, then allows other BOWLER/ALL_ROUNDER in XI
+ * - Preserves the user's active two-bowler tandem when the user is bowling so the user controls bowling changes
  */
 export function selectNextWhiteBallBowler(
   match: Match,
@@ -723,6 +735,9 @@ export function selectNextWhiteBallBowler(
     currentInnings.bowlingTeamId === match.homeTeamId
       ? match.homeBowlingOptions
       : match.awayBowlingOptions;
+  const isUserTeamBowling = Boolean(
+    match.isUserMatch && match.userTeamId && currentInnings.bowlingTeamId === match.userTeamId
+  );
 
   const allocatedOvers =
     currentInnings.allocatedOvers ??
@@ -731,13 +746,14 @@ export function selectNextWhiteBallBowler(
   const nextOver = currentInnings.completedOvers; // 0-based index of upcoming over
   const oversRemainingInInnings = Math.max(1, allocatedOvers - nextOver);
 
-  // Filter eligible bowlers (not previous over bowler, not WK, under quota)
+  // Filter eligible bowlers (not previous over bowler, not WK, and strictly BOWLER or ALL_ROUNDER)
   const nonKeepers = bowlingXI.filter((id) => {
     if (id === prevBowlerId) return false;
     if (id === bowlingWkId) return false;
     const p = getPlayerById(id);
     return p.role !== 'WICKETKEEPER_BATTER';
   });
+  const genuineBowlers = nonKeepers.filter((id) => isEligibleWhiteBallBowler(getPlayerById(id)));
 
   const filterUnderQuota = (ids: string[]) =>
     ids.filter((id) => {
@@ -753,17 +769,33 @@ export function selectNextWhiteBallBowler(
 
   let available = filterUnderQuota(
     nominated && nominated.length > 0
-      ? nonKeepers.filter((id) => nominated.includes(id))
-      : nonKeepers
+      ? genuineBowlers.filter((id) => nominated.includes(id))
+      : genuineBowlers
   );
 
-  // Fallback to wider non-keeper XI if user nominated <5 bowlers and their quotas ran out
+  // Fallback to other BOWLER / ALL_ROUNDER in XI only if nominated bowlers' quotas ran out
+  if (available.length === 0) {
+    available = filterUnderQuota(genuineBowlers);
+  }
   if (available.length === 0) {
     available = filterUnderQuota(nonKeepers);
   }
   if (available.length === 0) {
-    const anyOther = bowlingXI.filter((id) => id !== prevBowlerId);
+    const anyOther = genuineBowlers.length > 0 ? genuineBowlers : bowlingXI.filter((id) => id !== prevBowlerId);
     return anyOther[0] || bowlingXI[0];
+  }
+
+  // When the user is bowling, keep the current end's bowler locked in (if under quota) so the user controls all bowling changes
+  const lastOverMap = currentInnings.bowlerLastOverBowled || {};
+  let currentEndIncumbentId: string | undefined;
+  for (const [bId, lastOv] of Object.entries(lastOverMap)) {
+    if (lastOv === nextOver - 2 && bId !== prevBowlerId) {
+      currentEndIncumbentId = bId;
+      break;
+    }
+  }
+  if (isUserTeamBowling && currentEndIncumbentId && available.includes(currentEndIncumbentId)) {
+    return currentEndIncumbentId;
   }
 
   // Rank top 6 bowling unit in the XI & identify top 2 death specialists
@@ -808,7 +840,6 @@ export function selectNextWhiteBallBowler(
   const rotRand = mulberry32(Math.abs(matchSeedBase));
 
   const spellMap = currentInnings.bowlerSpellOvers || {};
-  const lastOverMap = currentInnings.bowlerLastOverBowled || {};
 
   const scored = available.map((id) => {
     const p = getPlayerById(id);

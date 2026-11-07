@@ -166,9 +166,9 @@ export function calculateHighRiskActionProbabilities(params: {
   const isSuccessful = rand < success;
 
   // Scoring and risk factors depending on mode:
-  // Smash is more boundary-oriented and accepts much higher dismissal risk
-  const scoringIntentBonus = isSmash ? 1.45 : 1.25;
-  const riskMultiplier = isSmash ? (format === 'TEST' ? 2.2 : 1.7) : (format === 'TEST' ? 1.5 : 1.3);
+  // Smash is more boundary-oriented while keeping dismissal risk balanced so teams don't collapse
+  const scoringIntentBonus = isSmash ? 1.55 : 1.32;
+  const riskMultiplier = isSmash ? (format === 'TEST' ? 1.12 : 1.10) : (format === 'TEST' ? 1.06 : 1.05);
 
   return {
     isAttempted: true,
@@ -834,13 +834,14 @@ export function determineOppositionTactics(params: {
     let situational: SituationalInstruction = 'BUILD_PARTNERSHIP';
 
     if (match.format === 'TEST') {
-      if (currentInnings.wickets >= 7) {
-        approach = 'DEFENSIVE';
-        situational = 'PROTECT_WICKET';
-      } else if (match.dayNumber === 5 && currentInnings.targetRuns && currentInnings.targetRuns - currentInnings.totalRuns > 150) {
+      if (match.dayNumber === 5 && currentInnings.targetRuns && currentInnings.targetRuns - currentInnings.totalRuns > 180 && currentInnings.wickets >= 7) {
         approach = 'DEFENSIVE';
         shotSelection = 'AVOID_RISKY_SHOTS';
         situational = 'SURVIVE_SESSION';
+      } else if (currentInnings.wickets >= 6) {
+        approach = 'POSITIVE';
+        shotSelection = 'LOOK_FOR_BOUNDARIES';
+        situational = 'BUILD_PARTNERSHIP';
       } else if (isSpin && activeStriker.attributes.againstSpin > 82) {
         approach = 'POSITIVE';
         shotSelection = 'ATTACK_SPIN';

@@ -361,35 +361,62 @@ export const MatchCentreView: React.FC<MatchCentreViewProps> = ({
     currentInnings?.allocatedOvers ?? match.allocatedOversPerInnings
   );
 
-  // Filter eligible bowlers for user bowling change (prevent consecutive overs & wicketkeeper bowling)
-  const availableBowlersForChange = bowlingXI.map((id) => {
-    const p = getPlayerById(id);
-    const figures = currentInnings?.bowlers.find((b) => b.playerId === id);
-    const oversBowled = figures ? figures.overs : 0;
-    const effectiveQuota =
-      match.format !== 'TEST'
-        ? getEffectiveMaxOversForBowler(
-            match.format,
-            id,
-            currentInnings?.bowlers || [],
-            currentInnings?.allocatedOvers ?? match.allocatedOversPerInnings
-          )
-        : Infinity;
-    const isExhausted = oversBowled >= effectiveQuota;
-    const isCurrent = id === currentInnings?.currentBowlerId;
-    const bowledJustCompletedOver =
-      currentInnings?.ballsInCurrentOver === 0 && id === currentInnings?.lastCompletedOverBowlerId;
-    const isWk = id === bowlingWkId;
-    return {
-      player: p,
-      oversBowled,
-      effectiveQuota,
-      isExhausted,
-      isCurrent,
-      bowledJustCompletedOver,
-      isWk,
-    };
-  });
+  // Filter eligible bowlers for user bowling change:
+  // 1) Never allow specialist batters (BATTER) or wicketkeepers (WICKETKEEPER_BATTER) to bowl
+  // 2) Only use the bowlers nominated by the user in the XI; if fewer bowlers were selected than needed to complete the overs, other BOWLER / ALL_ROUNDER players in the XI join
+  const nominatedBowlerIds =
+    currentInnings?.bowlingTeamId === match.homeTeamId
+      ? match.homeBowlingOptions
+      : match.awayBowlingOptions;
+
+  const allGenuineBowlerEntries = bowlingXI
+    .map((id) => {
+      const p = getEffectivePlayer(id, career) || getPlayerById(id);
+      const figures = currentInnings?.bowlers.find((b) => b.playerId === id);
+      const oversBowled = figures ? figures.overs : 0;
+      const effectiveQuota =
+        match.format !== 'TEST'
+          ? getEffectiveMaxOversForBowler(
+              match.format,
+              id,
+              currentInnings?.bowlers || [],
+              currentInnings?.allocatedOvers ?? match.allocatedOversPerInnings
+            )
+          : Infinity;
+      const isExhausted = oversBowled >= effectiveQuota;
+      const isCurrent = id === currentInnings?.currentBowlerId;
+      const bowledJustCompletedOver =
+        currentInnings?.ballsInCurrentOver === 0 && id === currentInnings?.lastCompletedOverBowlerId;
+      const isWk = id === bowlingWkId;
+      return {
+        player: p,
+        oversBowled,
+        effectiveQuota,
+        isExhausted,
+        isCurrent,
+        bowledJustCompletedOver,
+        isWk,
+      };
+    })
+    .filter(
+      (entry) =>
+        !entry.isWk &&
+        (entry.player.role === 'BOWLER' || entry.player.role === 'ALL_ROUNDER')
+    );
+
+  const nominatedBowlerEntries =
+    nominatedBowlerIds && nominatedBowlerIds.length > 0
+      ? allGenuineBowlerEntries.filter((e) => nominatedBowlerIds.includes(e.player.id))
+      : [];
+
+  const hasAvailableNominatedBowlerForNextOver = nominatedBowlerEntries.some(
+    (e) => !e.isExhausted && !e.bowledJustCompletedOver
+  );
+
+  const availableBowlersForChange =
+    nominatedBowlerEntries.length >= 2 && hasAvailableNominatedBowlerForNextOver
+      ? nominatedBowlerEntries
+      : allGenuineBowlerEntries;
   const activeBowlerEffectiveQuota =
     activeBowler && match.format !== 'TEST'
       ? getEffectiveMaxOversForBowler(
