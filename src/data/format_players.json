@@ -19,9 +19,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 93,
-    "odiRating": 91,
-    "t20Rating": 92,
+    "testRating": 95,
+    "odiRating": 95,
+    "t20Rating": 89,
     "attributes": {
       "technique": 95,
       "timing": 94,
@@ -174,7 +174,7 @@
     "isWicketKeeper": true,
     "workloadFatigue": 12,
     "testRating": 91,
-    "odiRating": 93,
+    "odiRating": 91,
     "t20Rating": 90,
     "attributes": {
       "technique": 93,
@@ -326,9 +326,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 81,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 89,
+    "odiRating": 87,
+    "t20Rating": 94,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -457,7 +457,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -480,9 +480,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 94,
-    "t20Rating": 91,
+    "testRating": 89,
+    "odiRating": 95,
+    "t20Rating": 90,
     "attributes": {
       "technique": 95,
       "timing": 95,
@@ -634,9 +634,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 93,
+    "testRating": 91,
     "odiRating": 91,
-    "t20Rating": 91,
+    "t20Rating": 92,
     "attributes": {
       "technique": 95,
       "timing": 94,
@@ -788,9 +788,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 85,
-    "odiRating": 84,
-    "t20Rating": 83,
+    "testRating": 87,
+    "odiRating": 87,
+    "t20Rating": 94,
     "attributes": {
       "technique": 94,
       "timing": 94,
@@ -919,7 +919,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -942,9 +942,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 79,
-    "odiRating": 78,
-    "t20Rating": 79,
+    "testRating": 95,
+    "odiRating": 89,
+    "t20Rating": 90,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -1073,7 +1073,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -1096,9 +1096,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 90,
-    "odiRating": 90,
-    "t20Rating": 90,
+    "testRating": 87,
+    "odiRating": 93,
+    "t20Rating": 88,
     "attributes": {
       "technique": 90,
       "timing": 89,
@@ -1250,9 +1250,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 95,
-    "odiRating": 94,
-    "t20Rating": 94,
+    "testRating": 91,
+    "odiRating": 91,
+    "t20Rating": 93,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -1404,9 +1404,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 90,
+    "testRating": 87,
+    "odiRating": 93,
+    "t20Rating": 94,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -1558,9 +1558,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 90,
-    "odiRating": 93,
-    "t20Rating": 92,
+    "testRating": 93,
+    "odiRating": 91,
+    "t20Rating": 89,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -1712,9 +1712,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 78,
-    "odiRating": 76,
-    "t20Rating": 78,
+    "testRating": 82,
+    "odiRating": 80,
+    "t20Rating": 81,
     "attributes": {
       "technique": 86,
       "timing": 86,
@@ -1843,7 +1843,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "D"
   },
   {
@@ -1865,9 +1865,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 81,
+    "testRating": 83,
     "odiRating": 81,
-    "t20Rating": 81,
+    "t20Rating": 82,
     "attributes": {
       "technique": 85,
       "timing": 86,
@@ -2018,9 +2018,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 78,
-    "odiRating": 76,
-    "t20Rating": 77,
+    "testRating": 81,
+    "odiRating": 85,
+    "t20Rating": 82,
     "attributes": {
       "technique": 86,
       "timing": 86,
@@ -2152,7 +2152,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -2174,9 +2174,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 77,
-    "odiRating": 77,
-    "t20Rating": 77,
+    "testRating": 85,
+    "odiRating": 81,
+    "t20Rating": 80,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -2308,7 +2308,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -2330,9 +2330,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 81,
+    "testRating": 80,
+    "odiRating": 84,
+    "t20Rating": 85,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -2485,9 +2485,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 77,
-    "odiRating": 77,
-    "t20Rating": 77,
+    "testRating": 79,
+    "odiRating": 75,
+    "t20Rating": 79,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -2641,8 +2641,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 81,
-    "odiRating": 82,
+    "testRating": 83,
+    "odiRating": 81,
     "t20Rating": 82,
     "attributes": {
       "technique": 84,
@@ -2796,8 +2796,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 81,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "odiRating": 85,
+    "t20Rating": 80,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -2950,9 +2950,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 77,
-    "odiRating": 77,
-    "t20Rating": 77,
+    "testRating": 75,
+    "odiRating": 75,
+    "t20Rating": 75,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -3107,9 +3107,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 90,
-    "odiRating": 91,
-    "t20Rating": 92,
+    "testRating": 94,
+    "odiRating": 88,
+    "t20Rating": 89,
     "attributes": {
       "technique": 92,
       "timing": 92,
@@ -3261,8 +3261,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "odiRating": 80,
+    "t20Rating": 81,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -3416,9 +3416,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 84,
-    "odiRating": 85,
-    "t20Rating": 84,
+    "testRating": 91,
+    "odiRating": 95,
+    "t20Rating": 92,
     "attributes": {
       "technique": 95,
       "timing": 95,
@@ -3547,7 +3547,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -3570,9 +3570,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 84,
-    "odiRating": 85,
-    "t20Rating": 84,
+    "testRating": 95,
+    "odiRating": 95,
+    "t20Rating": 87,
     "attributes": {
       "technique": 97,
       "timing": 97,
@@ -3701,7 +3701,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -3724,9 +3724,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 89,
-    "odiRating": 92,
-    "t20Rating": 90,
+    "testRating": 94,
+    "odiRating": 91,
+    "t20Rating": 89,
     "attributes": {
       "technique": 92,
       "timing": 92,
@@ -3878,8 +3878,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 88,
-    "odiRating": 90,
+    "testRating": 95,
+    "odiRating": 89,
     "t20Rating": 93,
     "attributes": {
       "technique": 50,
@@ -4031,7 +4031,7 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 81,
+    "testRating": 82,
     "odiRating": 82,
     "t20Rating": 83,
     "attributes": {
@@ -4185,9 +4185,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 88,
-    "odiRating": 90,
-    "t20Rating": 91,
+    "testRating": 87,
+    "odiRating": 87,
+    "t20Rating": 92,
     "attributes": {
       "technique": 95,
       "timing": 92,
@@ -4340,8 +4340,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 87,
-    "odiRating": 89,
-    "t20Rating": 92,
+    "odiRating": 87,
+    "t20Rating": 94,
     "attributes": {
       "technique": 92,
       "timing": 92,
@@ -4492,9 +4492,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 81,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 84,
+    "odiRating": 82,
+    "t20Rating": 83,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -4646,9 +4646,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 77,
-    "odiRating": 77,
-    "t20Rating": 77,
+    "testRating": 78,
+    "odiRating": 79,
+    "t20Rating": 78,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -4803,9 +4803,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 77,
-    "odiRating": 77,
-    "t20Rating": 77,
+    "testRating": 78,
+    "odiRating": 76,
+    "t20Rating": 78,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -4960,8 +4960,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 86,
-    "odiRating": 88,
+    "testRating": 87,
+    "odiRating": 91,
     "t20Rating": 92,
     "attributes": {
       "technique": 92,
@@ -5113,9 +5113,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 77,
-    "odiRating": 77,
-    "t20Rating": 77,
+    "testRating": 94,
+    "odiRating": 94,
+    "t20Rating": 89,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -5247,7 +5247,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -5271,8 +5271,8 @@
     "isWicketKeeper": true,
     "workloadFatigue": 12,
     "testRating": 87,
-    "odiRating": 90,
-    "t20Rating": 92,
+    "odiRating": 95,
+    "t20Rating": 95,
     "attributes": {
       "technique": 92,
       "timing": 92,
@@ -5424,9 +5424,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 83,
+    "testRating": 93,
+    "odiRating": 93,
+    "t20Rating": 88,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -5555,7 +5555,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -5578,9 +5578,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 78,
-    "t20Rating": 79,
+    "testRating": 87,
+    "odiRating": 91,
+    "t20Rating": 92,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -5712,7 +5712,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -5734,9 +5734,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 81,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 91,
+    "odiRating": 95,
+    "t20Rating": 86,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -5866,7 +5866,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -5889,9 +5889,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 86,
-    "odiRating": 90,
-    "t20Rating": 92,
+    "testRating": 90,
+    "odiRating": 86,
+    "t20Rating": 89,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -6042,9 +6042,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 81,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 82,
+    "odiRating": 80,
+    "t20Rating": 81,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -6197,9 +6197,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 77,
-    "odiRating": 78,
-    "t20Rating": 79,
+    "testRating": 78,
+    "odiRating": 77,
+    "t20Rating": 78,
     "attributes": {
       "technique": 39,
       "timing": 41,
@@ -6350,9 +6350,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 91,
+    "odiRating": 93,
+    "t20Rating": 90,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -6484,7 +6484,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -6507,8 +6507,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 93,
-    "odiRating": 94,
+    "testRating": 91,
+    "odiRating": 87,
     "t20Rating": 93,
     "attributes": {
       "technique": 95,
@@ -6661,9 +6661,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 90,
-    "t20Rating": 87,
+    "testRating": 89,
+    "odiRating": 86,
+    "t20Rating": 93,
     "attributes": {
       "technique": 95,
       "timing": 92,
@@ -6815,9 +6815,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 85,
-    "odiRating": 84,
-    "t20Rating": 82,
+    "testRating": 95,
+    "odiRating": 91,
+    "t20Rating": 86,
     "attributes": {
       "technique": 95,
       "timing": 95,
@@ -6946,7 +6946,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -6970,8 +6970,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "odiRating": 87,
+    "t20Rating": 86,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -7123,9 +7123,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 87,
+    "odiRating": 87,
+    "t20Rating": 90,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -7277,9 +7277,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 88,
-    "t20Rating": 91,
+    "testRating": 94,
+    "odiRating": 90,
+    "t20Rating": 89,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -7431,9 +7431,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 94,
-    "odiRating": 93,
-    "t20Rating": 91,
+    "testRating": 93,
+    "odiRating": 89,
+    "t20Rating": 90,
     "attributes": {
       "technique": 85,
       "timing": 87,
@@ -7585,9 +7585,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 92,
+    "testRating": 95,
     "odiRating": 93,
-    "t20Rating": 91,
+    "t20Rating": 89,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -7739,9 +7739,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 88,
-    "t20Rating": 87,
+    "testRating": 95,
+    "odiRating": 86,
+    "t20Rating": 93,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -7894,8 +7894,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 93,
-    "odiRating": 93,
-    "t20Rating": 91,
+    "odiRating": 89,
+    "t20Rating": 89,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -8046,9 +8046,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 84,
+    "odiRating": 82,
+    "t20Rating": 83,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -8200,9 +8200,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 76,
-    "odiRating": 75,
-    "t20Rating": 75,
+    "testRating": 83,
+    "odiRating": 83,
+    "t20Rating": 82,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -8331,7 +8331,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "F"
   },
   {
@@ -8353,9 +8353,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 81,
+    "odiRating": 83,
+    "t20Rating": 80,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -8487,7 +8487,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -8510,9 +8510,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 92,
+    "odiRating": 92,
+    "t20Rating": 87,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -8664,9 +8664,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 78,
-    "odiRating": 78,
-    "t20Rating": 78,
+    "testRating": 90,
+    "odiRating": 87,
+    "t20Rating": 95,
     "attributes": {
       "technique": 86,
       "timing": 86,
@@ -8795,7 +8795,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -8817,8 +8817,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
+    "testRating": 83,
+    "odiRating": 83,
     "t20Rating": 82,
     "attributes": {
       "technique": 84,
@@ -8971,9 +8971,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 94,
+    "odiRating": 90,
+    "t20Rating": 89,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -9125,8 +9125,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "odiRating": 84,
+    "t20Rating": 81,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -9278,9 +9278,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 75,
+    "odiRating": 79,
+    "t20Rating": 75,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -9435,9 +9435,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 77,
+    "odiRating": 79,
+    "t20Rating": 77,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -9592,9 +9592,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
+    "testRating": 85,
     "odiRating": 81,
-    "t20Rating": 82,
+    "t20Rating": 84,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -9746,9 +9746,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 92,
+    "odiRating": 87,
+    "t20Rating": 87,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -9900,9 +9900,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 86,
+    "odiRating": 88,
+    "t20Rating": 91,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -10031,7 +10031,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -10054,9 +10054,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 87,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 86,
+    "odiRating": 93,
+    "t20Rating": 93,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -10207,9 +10207,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 80,
+    "odiRating": 82,
+    "t20Rating": 85,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -10341,7 +10341,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -10363,9 +10363,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 86,
+    "odiRating": 88,
+    "t20Rating": 91,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -10494,7 +10494,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -10516,9 +10516,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 83,
+    "odiRating": 83,
+    "t20Rating": 84,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -10650,7 +10650,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -10673,9 +10673,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 92,
+    "odiRating": 92,
+    "t20Rating": 87,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -10804,7 +10804,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -10827,8 +10827,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "odiRating": 80,
+    "t20Rating": 85,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -10980,9 +10980,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 87,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 89,
+    "odiRating": 95,
+    "t20Rating": 94,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -11134,9 +11134,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 87,
+    "odiRating": 95,
+    "t20Rating": 94,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -11265,7 +11265,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -11288,9 +11288,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 91,
+    "odiRating": 89,
+    "t20Rating": 90,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -11419,7 +11419,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -11442,9 +11442,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 75,
-    "odiRating": 75,
-    "t20Rating": 75,
+    "testRating": 87,
+    "odiRating": 87,
+    "t20Rating": 92,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -11573,7 +11573,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "F"
   },
   {
@@ -11595,9 +11595,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 95,
+    "odiRating": 93,
+    "t20Rating": 86,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -11726,7 +11726,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -11748,9 +11748,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 82,
+    "odiRating": 84,
+    "t20Rating": 81,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -11882,7 +11882,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -11904,9 +11904,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 85,
+    "odiRating": 81,
+    "t20Rating": 84,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -12038,7 +12038,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -12060,9 +12060,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 85,
+    "odiRating": 85,
+    "t20Rating": 80,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -12194,7 +12194,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -12217,9 +12217,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 81,
+    "odiRating": 85,
+    "t20Rating": 82,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -12351,7 +12351,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -12374,9 +12374,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
+    "testRating": 84,
     "odiRating": 82,
-    "t20Rating": 82,
+    "t20Rating": 83,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -12529,8 +12529,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "odiRating": 80,
+    "t20Rating": 85,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -12682,9 +12682,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 87,
+    "odiRating": 95,
+    "t20Rating": 92,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -12836,9 +12836,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 93,
-    "t20Rating": 91,
+    "testRating": 87,
+    "odiRating": 91,
+    "t20Rating": 88,
     "attributes": {
       "technique": 94,
       "timing": 94,
@@ -12990,8 +12990,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 88,
+    "testRating": 89,
+    "odiRating": 94,
     "t20Rating": 91,
     "attributes": {
       "technique": 90,
@@ -13144,9 +13144,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 94,
-    "odiRating": 92,
-    "t20Rating": 89,
+    "testRating": 95,
+    "odiRating": 93,
+    "t20Rating": 90,
     "attributes": {
       "technique": 96,
       "timing": 96,
@@ -13298,9 +13298,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 93,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 95,
+    "odiRating": 87,
+    "t20Rating": 94,
     "attributes": {
       "technique": 95,
       "timing": 93,
@@ -13452,9 +13452,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 87,
+    "odiRating": 92,
+    "t20Rating": 89,
     "attributes": {
       "technique": 92,
       "timing": 92,
@@ -13606,9 +13606,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 79,
-    "odiRating": 79,
-    "t20Rating": 79,
+    "testRating": 91,
+    "odiRating": 87,
+    "t20Rating": 89,
     "attributes": {
       "technique": 93,
       "timing": 93,
@@ -13737,7 +13737,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "F"
   },
   {
@@ -13760,9 +13760,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 78,
-    "odiRating": 75,
-    "t20Rating": 75,
+    "testRating": 89,
+    "odiRating": 91,
+    "t20Rating": 91,
     "attributes": {
       "technique": 66,
       "timing": 68,
@@ -13891,7 +13891,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "F"
   },
   {
@@ -13914,8 +13914,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 91,
+    "testRating": 86,
+    "odiRating": 94,
     "t20Rating": 91,
     "attributes": {
       "technique": 50,
@@ -14068,9 +14068,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 88,
+    "odiRating": 86,
+    "t20Rating": 93,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -14221,9 +14221,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 92,
+    "odiRating": 90,
+    "t20Rating": 87,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -14352,7 +14352,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -14375,9 +14375,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 85,
+    "odiRating": 81,
+    "t20Rating": 80,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -14509,7 +14509,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -14532,9 +14532,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 88,
+    "odiRating": 86,
+    "t20Rating": 93,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -14686,9 +14686,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 85,
+    "odiRating": 85,
+    "t20Rating": 84,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -14820,7 +14820,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -14843,9 +14843,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 76,
-    "odiRating": 75,
-    "t20Rating": 75,
+    "testRating": 81,
+    "odiRating": 83,
+    "t20Rating": 82,
     "attributes": {
       "technique": 35,
       "timing": 35,
@@ -14974,7 +14974,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "F"
   },
   {
@@ -14997,8 +14997,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "odiRating": 84,
+    "t20Rating": 83,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -15150,9 +15150,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 95,
+    "odiRating": 93,
+    "t20Rating": 90,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -15303,9 +15303,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 75,
+    "odiRating": 79,
+    "t20Rating": 75,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -15459,9 +15459,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
+    "testRating": 85,
     "odiRating": 81,
-    "t20Rating": 82,
+    "t20Rating": 80,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -15613,9 +15613,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 90,
+    "odiRating": 88,
+    "t20Rating": 95,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -15769,7 +15769,7 @@
     "workloadFatigue": 12,
     "testRating": 80,
     "odiRating": 82,
-    "t20Rating": 82,
+    "t20Rating": 81,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -15921,9 +15921,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 79,
+    "odiRating": 75,
+    "t20Rating": 79,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -16077,9 +16077,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 87,
+    "odiRating": 88,
+    "t20Rating": 95,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -16211,7 +16211,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -16235,8 +16235,8 @@
     "isWicketKeeper": true,
     "workloadFatigue": 12,
     "testRating": 87,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "odiRating": 95,
+    "t20Rating": 92,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -16389,8 +16389,8 @@
     "isWicketKeeper": true,
     "workloadFatigue": 12,
     "testRating": 87,
-    "odiRating": 93,
-    "t20Rating": 94,
+    "odiRating": 91,
+    "t20Rating": 92,
     "attributes": {
       "technique": 95,
       "timing": 95,
@@ -16542,9 +16542,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 89,
+    "odiRating": 87,
+    "t20Rating": 89,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -16696,9 +16696,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 86,
+    "odiRating": 94,
+    "t20Rating": 91,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -16827,7 +16827,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -16850,9 +16850,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 92,
+    "odiRating": 93,
+    "t20Rating": 93,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -17004,9 +17004,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 87,
+    "odiRating": 93,
+    "t20Rating": 90,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -17135,7 +17135,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -17157,9 +17157,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 82,
+    "odiRating": 82,
+    "t20Rating": 81,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -17291,7 +17291,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -17314,9 +17314,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 89,
+    "odiRating": 87,
+    "t20Rating": 94,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -17445,7 +17445,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -17468,9 +17468,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 93,
+    "odiRating": 91,
+    "t20Rating": 88,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -17599,7 +17599,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -17622,9 +17622,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 75,
+    "odiRating": 75,
+    "t20Rating": 75,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -17779,9 +17779,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
+    "testRating": 75,
     "odiRating": 76,
-    "t20Rating": 76,
+    "t20Rating": 75,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -17936,9 +17936,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 91,
+    "odiRating": 89,
+    "t20Rating": 86,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -18067,7 +18067,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -18089,9 +18089,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 80,
+    "odiRating": 80,
+    "t20Rating": 85,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -18223,7 +18223,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -18245,9 +18245,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 82,
+    "odiRating": 82,
+    "t20Rating": 81,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -18379,7 +18379,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -18402,9 +18402,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 83,
+    "odiRating": 85,
+    "t20Rating": 84,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -18555,9 +18555,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 79,
+    "odiRating": 79,
+    "t20Rating": 79,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -18711,9 +18711,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 87,
+    "odiRating": 90,
+    "t20Rating": 91,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -18842,7 +18842,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -18864,9 +18864,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 87,
+    "odiRating": 87,
+    "t20Rating": 88,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -18995,7 +18995,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -19018,9 +19018,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 93,
-    "t20Rating": 91,
+    "testRating": 89,
+    "odiRating": 95,
+    "t20Rating": 87,
     "attributes": {
       "technique": 95,
       "timing": 94,
@@ -19172,9 +19172,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 87,
+    "odiRating": 92,
+    "t20Rating": 93,
     "attributes": {
       "technique": 95,
       "timing": 92,
@@ -19326,9 +19326,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 90,
+    "odiRating": 87,
+    "t20Rating": 95,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -19479,9 +19479,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 88,
+    "odiRating": 88,
+    "t20Rating": 93,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -19613,7 +19613,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -19635,9 +19635,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 91,
+    "odiRating": 89,
+    "t20Rating": 90,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -19769,7 +19769,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -19791,9 +19791,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 87,
+    "odiRating": 88,
+    "t20Rating": 89,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -19922,7 +19922,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -19944,9 +19944,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 90,
+    "odiRating": 94,
+    "t20Rating": 95,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -20075,7 +20075,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -20098,9 +20098,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 93,
+    "odiRating": 91,
+    "t20Rating": 88,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -20232,7 +20232,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -20255,9 +20255,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 90,
+    "odiRating": 94,
+    "t20Rating": 95,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -20389,7 +20389,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -20411,9 +20411,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 91,
+    "odiRating": 87,
+    "t20Rating": 88,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -20542,7 +20542,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -20564,9 +20564,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 81,
+    "odiRating": 81,
+    "t20Rating": 80,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -20698,7 +20698,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -20720,9 +20720,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 83,
+    "odiRating": 85,
+    "t20Rating": 82,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -20854,7 +20854,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -20877,9 +20877,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 81,
+    "odiRating": 85,
+    "t20Rating": 80,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -21031,8 +21031,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
+    "testRating": 83,
+    "odiRating": 81,
     "t20Rating": 82,
     "attributes": {
       "technique": 87,
@@ -21185,9 +21185,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 90,
-    "odiRating": 92,
-    "t20Rating": 91,
+    "testRating": 87,
+    "odiRating": 87,
+    "t20Rating": 92,
     "attributes": {
       "technique": 95,
       "timing": 92,
@@ -21339,9 +21339,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 91,
+    "odiRating": 95,
+    "t20Rating": 86,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -21470,7 +21470,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -21493,9 +21493,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 77,
+    "odiRating": 78,
+    "t20Rating": 77,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -21650,8 +21650,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "odiRating": 80,
+    "t20Rating": 81,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -21803,9 +21803,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 95,
+    "odiRating": 89,
+    "t20Rating": 90,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -21934,7 +21934,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -21957,9 +21957,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 75,
+    "odiRating": 75,
+    "t20Rating": 75,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -22114,9 +22114,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 75,
+    "odiRating": 78,
+    "t20Rating": 75,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -22271,9 +22271,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 75,
+    "odiRating": 75,
+    "t20Rating": 75,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -22428,9 +22428,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 75,
+    "odiRating": 77,
+    "t20Rating": 75,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -22586,8 +22586,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 91,
-    "odiRating": 93,
-    "t20Rating": 91,
+    "odiRating": 91,
+    "t20Rating": 86,
     "attributes": {
       "technique": 94,
       "timing": 94,
@@ -22739,9 +22739,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 93,
-    "t20Rating": 91,
+    "testRating": 90,
+    "odiRating": 91,
+    "t20Rating": 95,
     "attributes": {
       "technique": 94,
       "timing": 94,
@@ -22892,9 +22892,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 86,
+    "odiRating": 90,
+    "t20Rating": 91,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -23023,7 +23023,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -23046,9 +23046,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 95,
+    "odiRating": 91,
+    "t20Rating": 92,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -23177,7 +23177,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -23200,9 +23200,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 93,
-    "t20Rating": 92,
+    "testRating": 87,
+    "odiRating": 91,
+    "t20Rating": 93,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -23354,9 +23354,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
+    "testRating": 89,
     "odiRating": 91,
-    "t20Rating": 91,
+    "t20Rating": 93,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -23508,9 +23508,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 91,
+    "odiRating": 86,
+    "t20Rating": 87,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -23639,7 +23639,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -23661,9 +23661,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 87,
+    "odiRating": 86,
+    "t20Rating": 91,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -23795,7 +23795,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -23818,9 +23818,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 95,
+    "odiRating": 89,
+    "t20Rating": 90,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -23972,9 +23972,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 92,
+    "odiRating": 90,
+    "t20Rating": 87,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -24106,7 +24106,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -24129,9 +24129,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 89,
+    "odiRating": 93,
+    "t20Rating": 94,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -24260,7 +24260,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -24283,9 +24283,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 81,
+    "odiRating": 85,
+    "t20Rating": 80,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -24436,9 +24436,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 85,
+    "odiRating": 83,
+    "t20Rating": 80,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -24570,7 +24570,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -24593,9 +24593,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 85,
+    "odiRating": 83,
+    "t20Rating": 84,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -24746,9 +24746,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 85,
+    "odiRating": 83,
+    "t20Rating": 84,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -24900,9 +24900,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
+    "testRating": 78,
     "odiRating": 76,
-    "t20Rating": 76,
+    "t20Rating": 78,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -25057,9 +25057,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
+    "testRating": 84,
     "odiRating": 82,
-    "t20Rating": 82,
+    "t20Rating": 83,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -25211,8 +25211,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
+    "testRating": 89,
+    "odiRating": 87,
     "t20Rating": 91,
     "attributes": {
       "technique": 90,
@@ -25365,9 +25365,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 95,
+    "odiRating": 92,
+    "t20Rating": 91,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -25496,7 +25496,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -25518,9 +25518,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 87,
+    "odiRating": 90,
+    "t20Rating": 93,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -25649,7 +25649,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -25672,9 +25672,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 87,
+    "odiRating": 87,
+    "t20Rating": 90,
     "attributes": {
       "technique": 92,
       "timing": 92,
@@ -25826,9 +25826,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 89,
+    "odiRating": 89,
+    "t20Rating": 94,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -25957,7 +25957,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -25980,9 +25980,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 93,
+    "odiRating": 95,
+    "t20Rating": 88,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -26134,9 +26134,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 90,
-    "t20Rating": 90,
+    "testRating": 87,
+    "odiRating": 91,
+    "t20Rating": 92,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -26288,9 +26288,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 89,
+    "odiRating": 89,
+    "t20Rating": 94,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -26419,7 +26419,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -26442,9 +26442,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 94,
-    "odiRating": 93,
-    "t20Rating": 91,
+    "testRating": 95,
+    "odiRating": 91,
+    "t20Rating": 89,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -26596,9 +26596,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 94,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 91,
+    "odiRating": 88,
+    "t20Rating": 95,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -26750,9 +26750,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 93,
+    "odiRating": 89,
+    "t20Rating": 88,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -26884,7 +26884,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -26906,9 +26906,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 80,
+    "odiRating": 82,
+    "t20Rating": 81,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -27040,7 +27040,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -27062,9 +27062,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 84,
+    "odiRating": 82,
+    "t20Rating": 83,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -27196,7 +27196,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -27219,8 +27219,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "odiRating": 80,
+    "t20Rating": 83,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -27371,9 +27371,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 84,
+    "odiRating": 84,
+    "t20Rating": 85,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -27525,9 +27525,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 87,
+    "odiRating": 90,
+    "t20Rating": 93,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -27656,7 +27656,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -27679,9 +27679,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 87,
+    "odiRating": 91,
+    "t20Rating": 92,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -27810,7 +27810,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -27833,9 +27833,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 79,
+    "odiRating": 77,
+    "t20Rating": 79,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -27990,9 +27990,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 95,
+    "odiRating": 93,
+    "t20Rating": 90,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -28121,7 +28121,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -28143,9 +28143,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 86,
+    "odiRating": 92,
+    "t20Rating": 91,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -28274,7 +28274,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -28297,9 +28297,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 77,
+    "odiRating": 77,
+    "t20Rating": 77,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -28454,9 +28454,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 78,
+    "odiRating": 78,
+    "t20Rating": 78,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -28611,9 +28611,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 92,
+    "testRating": 87,
     "odiRating": 93,
-    "t20Rating": 91,
+    "t20Rating": 95,
     "attributes": {
       "technique": 94,
       "timing": 94,
@@ -28765,9 +28765,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 87,
+    "odiRating": 87,
+    "t20Rating": 86,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -28896,7 +28896,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -28919,9 +28919,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 87,
+    "odiRating": 86,
+    "t20Rating": 87,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -29050,7 +29050,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -29072,9 +29072,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 84,
+    "odiRating": 84,
+    "t20Rating": 85,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -29225,9 +29225,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 84,
+    "odiRating": 80,
+    "t20Rating": 83,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -29359,7 +29359,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -29382,9 +29382,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 75,
+    "odiRating": 79,
+    "t20Rating": 75,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -29696,9 +29696,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 83,
+    "odiRating": 85,
+    "t20Rating": 84,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -29851,7 +29851,7 @@
     "workloadFatigue": 12,
     "testRating": 80,
     "odiRating": 82,
-    "t20Rating": 82,
+    "t20Rating": 81,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -30003,9 +30003,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 87,
+    "odiRating": 95,
+    "t20Rating": 88,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -30134,7 +30134,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -30158,8 +30158,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "odiRating": 82,
+    "t20Rating": 81,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -30311,9 +30311,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 89,
+    "odiRating": 87,
+    "t20Rating": 89,
     "attributes": {
       "technique": 95,
       "timing": 92,
@@ -30465,9 +30465,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 91,
+    "odiRating": 87,
+    "t20Rating": 87,
     "attributes": {
       "technique": 92,
       "timing": 92,
@@ -30619,9 +30619,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 78,
-    "odiRating": 77,
-    "t20Rating": 75,
+    "testRating": 95,
+    "odiRating": 91,
+    "t20Rating": 91,
     "attributes": {
       "technique": 85,
       "timing": 85,
@@ -30750,7 +30750,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "F"
   },
   {
@@ -30774,8 +30774,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 91,
-    "odiRating": 92,
-    "t20Rating": 90,
+    "odiRating": 87,
+    "t20Rating": 91,
     "attributes": {
       "technique": 92,
       "timing": 92,
@@ -30927,9 +30927,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 93,
-    "t20Rating": 91,
+    "testRating": 91,
+    "odiRating": 95,
+    "t20Rating": 90,
     "attributes": {
       "technique": 94,
       "timing": 94,
@@ -31080,9 +31080,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 91,
+    "odiRating": 93,
+    "t20Rating": 88,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -31211,7 +31211,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -31234,9 +31234,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 92,
+    "odiRating": 87,
+    "t20Rating": 87,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -31388,9 +31388,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 88,
+    "odiRating": 89,
+    "t20Rating": 93,
     "attributes": {
       "technique": 85,
       "timing": 87,
@@ -31542,9 +31542,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 94,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 89,
+    "odiRating": 95,
+    "t20Rating": 87,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -31696,9 +31696,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 95,
+    "odiRating": 95,
+    "t20Rating": 90,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -31827,7 +31827,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -31850,9 +31850,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 94,
+    "odiRating": 88,
+    "t20Rating": 89,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -31984,7 +31984,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -32007,9 +32007,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 95,
+    "odiRating": 91,
+    "t20Rating": 86,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -32138,7 +32138,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -32160,9 +32160,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 80,
+    "odiRating": 82,
+    "t20Rating": 85,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -32314,9 +32314,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 91,
+    "odiRating": 93,
+    "t20Rating": 88,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -32445,7 +32445,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -32468,9 +32468,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 89,
+    "odiRating": 89,
+    "t20Rating": 94,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -32599,7 +32599,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -32622,8 +32622,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
+    "testRating": 83,
+    "odiRating": 85,
     "t20Rating": 82,
     "attributes": {
       "technique": 44,
@@ -32776,9 +32776,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 88,
+    "odiRating": 88,
+    "t20Rating": 93,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -32907,7 +32907,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -32931,8 +32931,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "odiRating": 84,
+    "t20Rating": 81,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -33084,9 +33084,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 85,
+    "odiRating": 81,
+    "t20Rating": 84,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -33237,8 +33237,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
+    "testRating": 83,
+    "odiRating": 85,
     "t20Rating": 82,
     "attributes": {
       "technique": 84,
@@ -33391,9 +33391,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 89,
+    "odiRating": 89,
+    "t20Rating": 94,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -33522,7 +33522,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -33544,9 +33544,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
+    "testRating": 77,
     "odiRating": 76,
-    "t20Rating": 76,
+    "t20Rating": 77,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -33701,9 +33701,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 75,
+    "odiRating": 77,
+    "t20Rating": 75,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -33858,9 +33858,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 91,
+    "odiRating": 93,
+    "t20Rating": 88,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -33989,7 +33989,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -34012,9 +34012,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 91,
+    "odiRating": 95,
+    "t20Rating": 90,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -34143,7 +34143,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -34321,9 +34321,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 78,
+    "odiRating": 77,
+    "t20Rating": 78,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -34477,9 +34477,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 75,
+    "odiRating": 78,
+    "t20Rating": 75,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -34634,9 +34634,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 77,
+    "odiRating": 78,
+    "t20Rating": 77,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -34791,9 +34791,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 94,
+    "odiRating": 94,
+    "t20Rating": 89,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -34922,7 +34922,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -35102,9 +35102,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 87,
+    "odiRating": 87,
+    "t20Rating": 92,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -35233,7 +35233,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -35256,7 +35256,7 @@
     },
     "workloadFatigue": 10,
     "testRating": 76,
-    "odiRating": 76,
+    "odiRating": 75,
     "t20Rating": 76,
     "attributes": {
       "technique": 84,
@@ -35412,9 +35412,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 76,
-    "odiRating": 75,
-    "t20Rating": 75,
+    "testRating": 91,
+    "odiRating": 86,
+    "t20Rating": 93,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -35543,7 +35543,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "F"
   },
   {
@@ -35566,9 +35566,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 83,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 91,
+    "odiRating": 87,
+    "t20Rating": 86,
     "attributes": {
       "technique": 89,
       "timing": 88,
@@ -35697,7 +35697,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -35720,9 +35720,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 91,
+    "odiRating": 87,
+    "t20Rating": 94,
     "attributes": {
       "technique": 95,
       "timing": 92,
@@ -35874,8 +35874,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 91,
+    "testRating": 91,
+    "odiRating": 94,
     "t20Rating": 91,
     "attributes": {
       "technique": 92,
@@ -36028,9 +36028,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 94,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 95,
+    "odiRating": 86,
+    "t20Rating": 93,
     "attributes": {
       "technique": 95,
       "timing": 95,
@@ -36182,9 +36182,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 83,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 95,
+    "odiRating": 91,
+    "t20Rating": 86,
     "attributes": {
       "technique": 88,
       "timing": 88,
@@ -36313,7 +36313,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -36336,9 +36336,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 89,
+    "odiRating": 87,
+    "t20Rating": 95,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -36490,9 +36490,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 87,
+    "odiRating": 92,
+    "t20Rating": 89,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -36644,9 +36644,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 87,
+    "odiRating": 89,
+    "t20Rating": 92,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -36778,7 +36778,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -36802,8 +36802,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 92,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "odiRating": 90,
+    "t20Rating": 87,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -36954,9 +36954,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 93,
+    "odiRating": 91,
+    "t20Rating": 88,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -37085,7 +37085,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -37108,9 +37108,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 83,
-    "t20Rating": 82,
+    "testRating": 85,
+    "odiRating": 81,
+    "t20Rating": 80,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -37261,9 +37261,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 84,
+    "odiRating": 80,
+    "t20Rating": 83,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -37395,7 +37395,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -37418,9 +37418,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 86,
+    "odiRating": 94,
+    "t20Rating": 91,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -37549,7 +37549,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "D"
   },
   {
@@ -37571,9 +37571,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 80,
+    "odiRating": 84,
+    "t20Rating": 81,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -37705,7 +37705,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -37728,9 +37728,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 87,
+    "odiRating": 95,
+    "t20Rating": 92,
     "attributes": {
       "technique": 85,
       "timing": 87,
@@ -37881,9 +37881,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 84,
+    "odiRating": 80,
+    "t20Rating": 85,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -38036,7 +38036,7 @@
     },
     "workloadFatigue": 10,
     "testRating": 76,
-    "odiRating": 76,
+    "odiRating": 75,
     "t20Rating": 76,
     "attributes": {
       "technique": 75,
@@ -38192,9 +38192,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
+    "testRating": 79,
     "odiRating": 76,
-    "t20Rating": 76,
+    "t20Rating": 79,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -38349,8 +38349,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
+    "testRating": 81,
+    "odiRating": 83,
     "t20Rating": 82,
     "attributes": {
       "technique": 44,
@@ -38504,8 +38504,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "odiRating": 84,
+    "t20Rating": 83,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -38657,9 +38657,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 77,
+    "odiRating": 75,
+    "t20Rating": 77,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -38814,9 +38814,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 91,
+    "odiRating": 89,
+    "t20Rating": 86,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -38945,7 +38945,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "D"
   },
   {
@@ -38967,9 +38967,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 95,
+    "odiRating": 87,
+    "t20Rating": 86,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -39101,7 +39101,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -39124,9 +39124,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 94,
+    "odiRating": 87,
+    "t20Rating": 89,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -39278,9 +39278,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 87,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 91,
+    "odiRating": 87,
+    "t20Rating": 90,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -39432,9 +39432,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 89,
+    "odiRating": 87,
+    "t20Rating": 94,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -39586,9 +39586,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 95,
+    "odiRating": 87,
+    "t20Rating": 89,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -39740,9 +39740,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 87,
+    "odiRating": 95,
+    "t20Rating": 92,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -39894,9 +39894,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 92,
+    "odiRating": 87,
+    "t20Rating": 87,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -40047,9 +40047,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 83,
+    "odiRating": 85,
+    "t20Rating": 82,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -40181,7 +40181,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -40204,9 +40204,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 95,
+    "odiRating": 93,
+    "t20Rating": 90,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -40514,8 +40514,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 87,
-    "odiRating": 91,
+    "testRating": 86,
+    "odiRating": 94,
     "t20Rating": 91,
     "attributes": {
       "technique": 50,
@@ -40668,9 +40668,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 87,
+    "testRating": 90,
     "odiRating": 88,
-    "t20Rating": 91,
+    "t20Rating": 95,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -40821,9 +40821,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
+    "testRating": 85,
     "odiRating": 81,
-    "t20Rating": 82,
+    "t20Rating": 80,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -40975,9 +40975,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
+    "testRating": 80,
     "odiRating": 82,
-    "t20Rating": 82,
+    "t20Rating": 81,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -41129,9 +41129,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 88,
-    "t20Rating": 91,
+    "testRating": 90,
+    "odiRating": 86,
+    "t20Rating": 95,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -41282,9 +41282,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 91,
+    "odiRating": 91,
+    "t20Rating": 90,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -41413,7 +41413,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -41436,9 +41436,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 91,
+    "odiRating": 87,
+    "t20Rating": 94,
     "attributes": {
       "technique": 92,
       "timing": 92,
@@ -41590,9 +41590,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 89,
+    "odiRating": 93,
+    "t20Rating": 88,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -41744,9 +41744,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 92,
+    "testRating": 91,
     "odiRating": 91,
-    "t20Rating": 91,
+    "t20Rating": 95,
     "attributes": {
       "technique": 92,
       "timing": 92,
@@ -41898,9 +41898,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 87,
+    "odiRating": 87,
+    "t20Rating": 88,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -42052,9 +42052,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 90,
-    "odiRating": 90,
-    "t20Rating": 88,
+    "testRating": 87,
+    "odiRating": 89,
+    "t20Rating": 92,
     "attributes": {
       "technique": 89,
       "timing": 89,
@@ -42206,9 +42206,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 94,
+    "testRating": 91,
     "odiRating": 91,
-    "t20Rating": 91,
+    "t20Rating": 90,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -42360,9 +42360,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 90,
+    "odiRating": 86,
+    "t20Rating": 95,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -42514,9 +42514,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 89,
+    "odiRating": 89,
+    "t20Rating": 89,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -42668,9 +42668,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 88,
-    "t20Rating": 91,
+    "testRating": 95,
+    "odiRating": 91,
+    "t20Rating": 90,
     "attributes": {
       "technique": 85,
       "timing": 87,
@@ -42821,9 +42821,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 83,
+    "odiRating": 83,
+    "t20Rating": 82,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -42955,7 +42955,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -42977,9 +42977,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 81,
+    "odiRating": 81,
+    "t20Rating": 80,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -43111,7 +43111,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -43134,9 +43134,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 95,
+    "odiRating": 94,
+    "t20Rating": 87,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -43265,7 +43265,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -43289,8 +43289,8 @@
     "isWicketKeeper": true,
     "workloadFatigue": 12,
     "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "odiRating": 87,
+    "t20Rating": 86,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -43441,9 +43441,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 78,
+    "odiRating": 79,
+    "t20Rating": 78,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -43597,9 +43597,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 82,
+    "odiRating": 80,
+    "t20Rating": 83,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -43731,7 +43731,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -43754,9 +43754,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 84,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 85,
+    "odiRating": 81,
+    "t20Rating": 80,
     "attributes": {
       "technique": 91,
       "timing": 91,
@@ -43909,8 +43909,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 87,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "odiRating": 89,
+    "t20Rating": 92,
     "attributes": {
       "technique": 85,
       "timing": 87,
@@ -44062,9 +44062,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 93,
+    "odiRating": 93,
+    "t20Rating": 88,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -44215,9 +44215,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 83,
+    "odiRating": 83,
+    "t20Rating": 84,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -44369,9 +44369,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 92,
+    "odiRating": 94,
+    "t20Rating": 87,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -44522,9 +44522,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 80,
+    "odiRating": 80,
+    "t20Rating": 81,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -44676,9 +44676,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 87,
+    "odiRating": 89,
+    "t20Rating": 92,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -44830,9 +44830,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 94,
+    "odiRating": 92,
+    "t20Rating": 89,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -44984,9 +44984,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 75,
-    "odiRating": 75,
-    "t20Rating": 75,
+    "testRating": 87,
+    "odiRating": 91,
+    "t20Rating": 91,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -45115,7 +45115,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "F"
   },
   {
@@ -45140,7 +45140,7 @@
     "workloadFatigue": 12,
     "testRating": 91,
     "odiRating": 91,
-    "t20Rating": 91,
+    "t20Rating": 93,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -45292,9 +45292,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 87,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 94,
+    "odiRating": 92,
+    "t20Rating": 89,
     "attributes": {
       "technique": 85,
       "timing": 87,
@@ -45446,8 +45446,8 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 87,
-    "odiRating": 91,
+    "testRating": 95,
+    "odiRating": 90,
     "t20Rating": 91,
     "attributes": {
       "technique": 90,
@@ -45599,9 +45599,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 95,
+    "odiRating": 94,
+    "t20Rating": 87,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -45730,7 +45730,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -45753,9 +45753,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 78,
-    "odiRating": 78,
-    "t20Rating": 78,
+    "testRating": 88,
+    "odiRating": 88,
+    "t20Rating": 93,
     "attributes": {
       "technique": 74,
       "timing": 76,
@@ -45884,7 +45884,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -45907,9 +45907,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 82,
+    "odiRating": 84,
+    "t20Rating": 83,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -46060,9 +46060,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 91,
+    "odiRating": 91,
+    "t20Rating": 90,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -46191,7 +46191,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -46214,9 +46214,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 88,
-    "t20Rating": 91,
+    "testRating": 88,
+    "odiRating": 94,
+    "t20Rating": 93,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -46369,7 +46369,7 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 91,
-    "odiRating": 91,
+    "odiRating": 92,
     "t20Rating": 91,
     "attributes": {
       "technique": 90,
@@ -46522,9 +46522,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
+    "testRating": 95,
     "odiRating": 91,
-    "t20Rating": 91,
+    "t20Rating": 90,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -46676,9 +46676,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 91,
+    "testRating": 87,
     "odiRating": 93,
-    "t20Rating": 91,
+    "t20Rating": 88,
     "attributes": {
       "technique": 94,
       "timing": 94,
@@ -46830,9 +46830,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 90,
+    "odiRating": 86,
+    "t20Rating": 95,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -46984,9 +46984,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 89,
+    "odiRating": 95,
+    "t20Rating": 94,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -47138,9 +47138,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 87,
+    "odiRating": 87,
+    "t20Rating": 86,
     "attributes": {
       "technique": 92,
       "timing": 92,
@@ -47292,8 +47292,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 91,
+    "testRating": 87,
+    "odiRating": 89,
     "t20Rating": 91,
     "attributes": {
       "technique": 50,
@@ -47446,9 +47446,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 94,
+    "odiRating": 90,
+    "t20Rating": 89,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -47601,8 +47601,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 92,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "odiRating": 88,
+    "t20Rating": 87,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -47753,9 +47753,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 83,
+    "odiRating": 83,
+    "t20Rating": 84,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -47887,7 +47887,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -47911,8 +47911,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "odiRating": 87,
+    "t20Rating": 86,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -48063,9 +48063,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 80,
+    "odiRating": 84,
+    "t20Rating": 81,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -48197,7 +48197,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -48219,9 +48219,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 80,
+    "odiRating": 80,
+    "t20Rating": 85,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -48353,7 +48353,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -48376,9 +48376,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 94,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 87,
+    "odiRating": 87,
+    "t20Rating": 86,
     "attributes": {
       "technique": 95,
       "timing": 95,
@@ -48530,9 +48530,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 90,
+    "odiRating": 86,
+    "t20Rating": 95,
     "attributes": {
       "technique": 85,
       "timing": 87,
@@ -48684,9 +48684,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 88,
-    "t20Rating": 91,
+    "testRating": 87,
+    "odiRating": 93,
+    "t20Rating": 92,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -48838,9 +48838,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 84,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 83,
+    "odiRating": 85,
+    "t20Rating": 84,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -48992,9 +48992,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 78,
+    "odiRating": 78,
+    "t20Rating": 78,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -49148,9 +49148,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 84,
+    "odiRating": 80,
+    "t20Rating": 85,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -49302,9 +49302,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 78,
-    "odiRating": 78,
-    "t20Rating": 78,
+    "testRating": 89,
+    "odiRating": 95,
+    "t20Rating": 94,
     "attributes": {
       "technique": 86,
       "timing": 86,
@@ -49433,7 +49433,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -49456,9 +49456,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 92,
+    "odiRating": 87,
+    "t20Rating": 87,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -49610,9 +49610,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 87,
+    "odiRating": 87,
+    "t20Rating": 92,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -49764,8 +49764,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 87,
-    "odiRating": 91,
+    "testRating": 95,
+    "odiRating": 92,
     "t20Rating": 91,
     "attributes": {
       "technique": 90,
@@ -49918,9 +49918,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 87,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 90,
+    "odiRating": 86,
+    "t20Rating": 95,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -50071,9 +50071,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 95,
+    "odiRating": 92,
+    "t20Rating": 89,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -50205,7 +50205,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -50227,9 +50227,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 80,
+    "odiRating": 84,
+    "t20Rating": 85,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -50361,7 +50361,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -50384,9 +50384,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 78,
-    "odiRating": 79,
-    "t20Rating": 78,
+    "testRating": 83,
+    "odiRating": 85,
+    "t20Rating": 84,
     "attributes": {
       "technique": 88,
       "timing": 88,
@@ -50515,7 +50515,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -50538,9 +50538,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 76,
-    "odiRating": 79,
-    "t20Rating": 79,
+    "testRating": 95,
+    "odiRating": 87,
+    "t20Rating": 93,
     "attributes": {
       "technique": 94,
       "timing": 94,
@@ -50669,7 +50669,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "F"
   },
   {
@@ -50693,8 +50693,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 87,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "odiRating": 88,
+    "t20Rating": 87,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -50846,9 +50846,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 83,
+    "odiRating": 85,
+    "t20Rating": 84,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -50999,9 +50999,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 77,
+    "odiRating": 79,
+    "t20Rating": 77,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -51156,9 +51156,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 87,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 94,
+    "odiRating": 90,
+    "t20Rating": 89,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -51310,9 +51310,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 77,
+    "odiRating": 78,
+    "t20Rating": 77,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -51467,9 +51467,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 75,
-    "odiRating": 75,
-    "t20Rating": 75,
+    "testRating": 88,
+    "odiRating": 94,
+    "t20Rating": 93,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -51598,7 +51598,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "F"
   },
   {
@@ -51620,9 +51620,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 81,
+    "odiRating": 81,
+    "t20Rating": 82,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -51754,7 +51754,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -51777,9 +51777,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 85,
+    "odiRating": 81,
+    "t20Rating": 80,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -51930,9 +51930,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 77,
+    "odiRating": 78,
+    "t20Rating": 77,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -52087,9 +52087,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 79,
+    "odiRating": 79,
+    "t20Rating": 79,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -52244,9 +52244,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 88,
+    "testRating": 91,
     "odiRating": 91,
-    "t20Rating": 90,
+    "t20Rating": 86,
     "attributes": {
       "technique": 91,
       "timing": 92,
@@ -52400,7 +52400,7 @@
     "workloadFatigue": 12,
     "testRating": 91,
     "odiRating": 91,
-    "t20Rating": 91,
+    "t20Rating": 92,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -52552,9 +52552,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 91,
+    "odiRating": 87,
+    "t20Rating": 87,
     "attributes": {
       "technique": 95,
       "timing": 92,
@@ -52706,9 +52706,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 94,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 91,
+    "odiRating": 87,
+    "t20Rating": 95,
     "attributes": {
       "technique": 95,
       "timing": 95,
@@ -52860,9 +52860,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 95,
+    "odiRating": 93,
+    "t20Rating": 90,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -52991,7 +52991,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -53014,9 +53014,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 78,
-    "odiRating": 75,
-    "t20Rating": 78,
+    "testRating": 94,
+    "odiRating": 94,
+    "t20Rating": 89,
     "attributes": {
       "technique": 86,
       "timing": 86,
@@ -53145,7 +53145,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -53168,9 +53168,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 93,
+    "odiRating": 95,
+    "t20Rating": 88,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -53299,7 +53299,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -53322,9 +53322,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 90,
+    "odiRating": 88,
+    "t20Rating": 95,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -53453,7 +53453,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -53476,9 +53476,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 95,
+    "odiRating": 91,
+    "t20Rating": 90,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -53610,7 +53610,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -53633,9 +53633,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 91,
+    "odiRating": 87,
+    "t20Rating": 86,
     "attributes": {
       "technique": 35,
       "timing": 37,
@@ -53764,7 +53764,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "D"
   },
   {
@@ -53787,9 +53787,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 87,
+    "odiRating": 91,
+    "t20Rating": 92,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -53918,7 +53918,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -53941,9 +53941,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 87,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 91,
+    "odiRating": 87,
+    "t20Rating": 89,
     "attributes": {
       "technique": 91,
       "timing": 92,
@@ -54095,9 +54095,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 82,
+    "testRating": 84,
     "odiRating": 82,
-    "t20Rating": 82,
+    "t20Rating": 85,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -54249,9 +54249,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 94,
+    "odiRating": 87,
+    "t20Rating": 89,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -54402,9 +54402,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 83,
+    "odiRating": 83,
+    "t20Rating": 82,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -54536,7 +54536,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -54559,7 +54559,7 @@
     },
     "workloadFatigue": 10,
     "testRating": 76,
-    "odiRating": 76,
+    "odiRating": 75,
     "t20Rating": 76,
     "attributes": {
       "technique": 84,
@@ -54715,9 +54715,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 89,
+    "odiRating": 87,
+    "t20Rating": 89,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -54869,9 +54869,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 93,
+    "odiRating": 95,
+    "t20Rating": 93,
     "attributes": {
       "technique": 85,
       "timing": 87,
@@ -55023,9 +55023,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
+    "testRating": 84,
     "odiRating": 82,
-    "t20Rating": 82,
+    "t20Rating": 85,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -55176,9 +55176,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 83,
+    "odiRating": 83,
+    "t20Rating": 84,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -55330,9 +55330,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 75,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 78,
+    "odiRating": 78,
+    "t20Rating": 78,
     "attributes": {
       "technique": 35,
       "timing": 37,
@@ -55484,9 +55484,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 79,
+    "odiRating": 77,
+    "t20Rating": 79,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -55641,9 +55641,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 75,
+    "odiRating": 75,
+    "t20Rating": 75,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -55798,9 +55798,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 88,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 92,
+    "odiRating": 87,
+    "t20Rating": 87,
     "attributes": {
       "technique": 91,
       "timing": 91,
@@ -55952,9 +55952,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 94,
+    "odiRating": 86,
+    "t20Rating": 89,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -56086,7 +56086,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -56109,9 +56109,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 88,
+    "odiRating": 90,
+    "t20Rating": 89,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -56263,9 +56263,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 86,
+    "odiRating": 92,
+    "t20Rating": 91,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -56394,7 +56394,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -56416,9 +56416,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
+    "testRating": 75,
     "odiRating": 76,
-    "t20Rating": 76,
+    "t20Rating": 75,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -56573,9 +56573,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 89,
+    "odiRating": 89,
+    "t20Rating": 94,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -56727,9 +56727,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 88,
+    "odiRating": 90,
+    "t20Rating": 93,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -56881,9 +56881,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 92,
+    "odiRating": 87,
+    "t20Rating": 89,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -57035,9 +57035,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 75,
-    "odiRating": 75,
-    "t20Rating": 75,
+    "testRating": 86,
+    "odiRating": 92,
+    "t20Rating": 91,
     "attributes": {
       "technique": 35,
       "timing": 35,
@@ -57166,7 +57166,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "F"
   },
   {
@@ -57188,9 +57188,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 81,
+    "odiRating": 81,
+    "t20Rating": 80,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -57322,7 +57322,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -57344,9 +57344,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 81,
+    "odiRating": 81,
+    "t20Rating": 80,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -57478,7 +57478,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -57501,9 +57501,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 76,
+    "testRating": 75,
     "odiRating": 76,
-    "t20Rating": 76,
+    "t20Rating": 75,
     "attributes": {
       "technique": 70,
       "timing": 72,
@@ -57655,8 +57655,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
+    "testRating": 81,
+    "odiRating": 85,
     "t20Rating": 82,
     "attributes": {
       "technique": 44,
@@ -57809,9 +57809,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 88,
+    "odiRating": 89,
+    "t20Rating": 93,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -57962,9 +57962,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 87,
+    "odiRating": 89,
+    "t20Rating": 86,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -58096,7 +58096,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -58119,9 +58119,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 95,
+    "odiRating": 93,
+    "t20Rating": 90,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -58273,9 +58273,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 93,
+    "odiRating": 87,
+    "t20Rating": 88,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -58427,9 +58427,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 93,
+    "odiRating": 91,
+    "t20Rating": 89,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -58558,7 +58558,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -58581,9 +58581,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 92,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 87,
+    "odiRating": 87,
+    "t20Rating": 94,
     "attributes": {
       "technique": 95,
       "timing": 92,
@@ -58735,9 +58735,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 92,
+    "odiRating": 92,
+    "t20Rating": 87,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -58869,7 +58869,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -58892,9 +58892,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 90,
+    "odiRating": 88,
+    "t20Rating": 93,
     "attributes": {
       "technique": 85,
       "timing": 87,
@@ -59046,9 +59046,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 90,
+    "odiRating": 87,
+    "t20Rating": 89,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -59200,9 +59200,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 92,
+    "odiRating": 90,
+    "t20Rating": 87,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -59334,7 +59334,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -59357,9 +59357,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 92,
+    "odiRating": 90,
+    "t20Rating": 87,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -59510,9 +59510,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 82,
+    "odiRating": 84,
+    "t20Rating": 83,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -59644,7 +59644,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -59666,9 +59666,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 84,
+    "odiRating": 82,
+    "t20Rating": 83,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -59800,7 +59800,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -59823,8 +59823,8 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
+    "testRating": 81,
+    "odiRating": 81,
     "t20Rating": 82,
     "attributes": {
       "technique": 87,
@@ -59976,9 +59976,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 83,
+    "odiRating": 85,
+    "t20Rating": 82,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -60110,7 +60110,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -60134,8 +60134,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "odiRating": 86,
+    "t20Rating": 93,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -60287,9 +60287,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 75,
+    "odiRating": 78,
+    "t20Rating": 75,
     "attributes": {
       "technique": 70,
       "timing": 72,
@@ -60442,8 +60442,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "odiRating": 89,
+    "t20Rating": 86,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -60595,9 +60595,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 92,
+    "odiRating": 90,
+    "t20Rating": 87,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -60749,9 +60749,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
+    "testRating": 94,
     "odiRating": 91,
-    "t20Rating": 91,
+    "t20Rating": 89,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -60903,9 +60903,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 90,
+    "odiRating": 94,
+    "t20Rating": 95,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -61037,7 +61037,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -61060,9 +61060,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
+    "testRating": 78,
     "odiRating": 76,
-    "t20Rating": 76,
+    "t20Rating": 78,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -61217,9 +61217,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 75,
-    "odiRating": 78,
-    "t20Rating": 78,
+    "testRating": 80,
+    "odiRating": 80,
+    "t20Rating": 81,
     "attributes": {
       "technique": 86,
       "timing": 86,
@@ -61348,7 +61348,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -61371,9 +61371,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 95,
+    "odiRating": 88,
+    "t20Rating": 95,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -61524,9 +61524,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 83,
+    "odiRating": 85,
+    "t20Rating": 84,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -61658,7 +61658,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -61681,9 +61681,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 78,
-    "odiRating": 78,
-    "t20Rating": 78,
+    "testRating": 77,
+    "odiRating": 75,
+    "t20Rating": 77,
     "attributes": {
       "technique": 39,
       "timing": 41,
@@ -61834,9 +61834,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 95,
+    "odiRating": 90,
+    "t20Rating": 89,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -61968,7 +61968,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -61993,7 +61993,7 @@
     "workloadFatigue": 12,
     "testRating": 91,
     "odiRating": 91,
-    "t20Rating": 91,
+    "t20Rating": 89,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -62145,9 +62145,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 93,
+    "odiRating": 87,
+    "t20Rating": 88,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -62299,9 +62299,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 91,
+    "testRating": 87,
     "odiRating": 91,
-    "t20Rating": 91,
+    "t20Rating": 95,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -62453,9 +62453,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 88,
+    "odiRating": 94,
+    "t20Rating": 93,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -62606,9 +62606,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 87,
+    "odiRating": 90,
+    "t20Rating": 89,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -62740,7 +62740,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -62763,9 +62763,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 95,
+    "odiRating": 95,
+    "t20Rating": 92,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -62917,8 +62917,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
+    "testRating": 86,
+    "odiRating": 86,
     "t20Rating": 91,
     "attributes": {
       "technique": 50,
@@ -63071,9 +63071,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 88,
+    "odiRating": 94,
+    "t20Rating": 89,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -63225,9 +63225,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
-    "odiRating": 76,
-    "t20Rating": 76,
+    "testRating": 94,
+    "odiRating": 92,
+    "t20Rating": 89,
     "attributes": {
       "technique": 75,
       "timing": 74,
@@ -63359,7 +63359,7 @@
       "lastUpdated": "2026-11-05",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -63382,9 +63382,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 86,
+    "odiRating": 86,
+    "t20Rating": 91,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -63513,7 +63513,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "B",
+    "tier": "A",
     "selectionCategoryGroup": "B"
   },
   {
@@ -63536,9 +63536,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 94,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 88,
+    "odiRating": 94,
+    "t20Rating": 93,
     "attributes": {
       "technique": 95,
       "timing": 95,
@@ -63690,9 +63690,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 88,
+    "odiRating": 94,
+    "t20Rating": 93,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -63844,9 +63844,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 78,
-    "odiRating": 75,
-    "t20Rating": 78,
+    "testRating": 95,
+    "odiRating": 87,
+    "t20Rating": 90,
     "attributes": {
       "technique": 39,
       "timing": 41,
@@ -63975,7 +63975,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -63997,9 +63997,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 75,
-    "odiRating": 78,
-    "t20Rating": 78,
+    "testRating": 80,
+    "odiRating": 82,
+    "t20Rating": 81,
     "attributes": {
       "technique": 39,
       "timing": 41,
@@ -64128,7 +64128,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "B",
     "selectionCategoryGroup": "C"
   },
   {
@@ -64151,9 +64151,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 78,
-    "odiRating": 78,
-    "t20Rating": 78,
+    "testRating": 90,
+    "odiRating": 92,
+    "t20Rating": 95,
     "attributes": {
       "technique": 39,
       "timing": 41,
@@ -64282,7 +64282,7 @@
       "lastUpdated": "2026-11-03",
       "verified": true
     },
-    "tier": "C",
+    "tier": "A",
     "selectionCategoryGroup": "C"
   },
   {
@@ -64304,9 +64304,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 83,
+    "odiRating": 85,
+    "t20Rating": 84,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -64458,9 +64458,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 95,
+    "odiRating": 87,
+    "t20Rating": 89,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -64612,9 +64612,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 93,
+    "odiRating": 89,
+    "t20Rating": 88,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -64766,9 +64766,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 84,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 82,
+    "odiRating": 80,
+    "t20Rating": 83,
     "attributes": {
       "technique": 91,
       "timing": 91,
@@ -64920,9 +64920,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 92,
+    "odiRating": 90,
+    "t20Rating": 93,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -65073,9 +65073,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 83,
+    "odiRating": 85,
+    "t20Rating": 84,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -65226,9 +65226,9 @@
       "T20I": true
     },
     "workloadFatigue": 10,
-    "testRating": 76,
+    "testRating": 77,
     "odiRating": 76,
-    "t20Rating": 76,
+    "t20Rating": 77,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -65385,7 +65385,7 @@
     "workloadFatigue": 12,
     "testRating": 80,
     "odiRating": 82,
-    "t20Rating": 82,
+    "t20Rating": 81,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -65537,9 +65537,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 88,
-    "odiRating": 93,
-    "t20Rating": 94,
+    "testRating": 90,
+    "odiRating": 94,
+    "t20Rating": 95,
     "attributes": {
       "technique": 95,
       "timing": 95,
@@ -65690,9 +65690,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 81,
+    "testRating": 84,
+    "odiRating": 82,
+    "t20Rating": 83,
     "attributes": {
       "technique": 86,
       "timing": 86,
@@ -65844,9 +65844,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 84,
-    "odiRating": 85,
-    "t20Rating": 83,
+    "testRating": 80,
+    "odiRating": 84,
+    "t20Rating": 85,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -65997,9 +65997,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 81,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 80,
+    "odiRating": 84,
+    "t20Rating": 85,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -66150,9 +66150,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 81,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 84,
+    "odiRating": 82,
+    "t20Rating": 83,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -66304,8 +66304,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 81,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "odiRating": 85,
+    "t20Rating": 80,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -66457,9 +66457,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
+    "testRating": 84,
     "odiRating": 82,
-    "t20Rating": 84,
+    "t20Rating": 83,
     "attributes": {
       "technique": 91,
       "timing": 91,
@@ -66610,9 +66610,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 81,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 85,
+    "odiRating": 85,
+    "t20Rating": 80,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -66765,9 +66765,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 81,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 80,
+    "odiRating": 84,
+    "t20Rating": 81,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -66919,9 +66919,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 87,
+    "testRating": 86,
     "odiRating": 90,
-    "t20Rating": 94,
+    "t20Rating": 91,
     "attributes": {
       "technique": 96,
       "timing": 96,
@@ -67072,9 +67072,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 81,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 82,
+    "odiRating": 82,
+    "t20Rating": 83,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -67227,9 +67227,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 81,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 85,
+    "odiRating": 85,
+    "t20Rating": 80,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -67383,9 +67383,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 81,
+    "odiRating": 85,
+    "t20Rating": 80,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -67537,8 +67537,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
+    "testRating": 83,
+    "odiRating": 83,
     "t20Rating": 82,
     "attributes": {
       "technique": 44,
@@ -67690,9 +67690,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 81,
+    "odiRating": 85,
+    "t20Rating": 80,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -67844,9 +67844,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 85,
+    "odiRating": 81,
+    "t20Rating": 84,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -67998,9 +67998,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 80,
+    "odiRating": 80,
+    "t20Rating": 85,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -68151,8 +68151,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
+    "testRating": 83,
+    "odiRating": 83,
     "t20Rating": 82,
     "attributes": {
       "technique": 87,
@@ -68305,8 +68305,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
+    "testRating": 83,
+    "odiRating": 83,
     "t20Rating": 82,
     "attributes": {
       "technique": 44,
@@ -68459,9 +68459,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 82,
+    "odiRating": 84,
+    "t20Rating": 83,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -68613,8 +68613,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "odiRating": 84,
+    "t20Rating": 83,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -68766,8 +68766,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "odiRating": 80,
+    "t20Rating": 81,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -68919,9 +68919,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 82,
+    "odiRating": 80,
+    "t20Rating": 81,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -69074,8 +69074,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "odiRating": 84,
+    "t20Rating": 85,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -69227,8 +69227,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
+    "testRating": 83,
+    "odiRating": 81,
     "t20Rating": 82,
     "attributes": {
       "technique": 44,
@@ -69381,9 +69381,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 82,
+    "odiRating": 80,
+    "t20Rating": 81,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -69536,8 +69536,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "odiRating": 84,
+    "t20Rating": 85,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -69690,8 +69690,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "odiRating": 84,
+    "t20Rating": 85,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -69844,8 +69844,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "odiRating": 82,
+    "t20Rating": 81,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -69996,9 +69996,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 85,
+    "odiRating": 83,
+    "t20Rating": 80,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -70151,7 +70151,7 @@
     "workloadFatigue": 12,
     "testRating": 80,
     "odiRating": 82,
-    "t20Rating": 82,
+    "t20Rating": 81,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -70302,8 +70302,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
+    "testRating": 81,
+    "odiRating": 81,
     "t20Rating": 82,
     "attributes": {
       "technique": 87,
@@ -70456,9 +70456,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 83,
+    "odiRating": 85,
+    "t20Rating": 84,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -70612,7 +70612,7 @@
     "workloadFatigue": 12,
     "testRating": 80,
     "odiRating": 82,
-    "t20Rating": 82,
+    "t20Rating": 81,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -70765,8 +70765,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "odiRating": 82,
+    "t20Rating": 85,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -70917,9 +70917,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 84,
+    "odiRating": 80,
+    "t20Rating": 83,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -71071,9 +71071,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 82,
+    "odiRating": 84,
+    "t20Rating": 81,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -71224,8 +71224,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
+    "testRating": 83,
+    "odiRating": 85,
     "t20Rating": 82,
     "attributes": {
       "technique": 84,
@@ -71378,9 +71378,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 84,
+    "odiRating": 80,
+    "t20Rating": 85,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -71532,9 +71532,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
+    "testRating": 93,
     "odiRating": 91,
-    "t20Rating": 91,
+    "t20Rating": 89,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -71686,9 +71686,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 78,
-    "odiRating": 78,
-    "t20Rating": 78,
+    "testRating": 76,
+    "odiRating": 79,
+    "t20Rating": 76,
     "attributes": {
       "technique": 86,
       "timing": 86,
@@ -71839,9 +71839,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
+    "testRating": 85,
     "odiRating": 81,
-    "t20Rating": 82,
+    "t20Rating": 80,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -71994,7 +71994,7 @@
     "isWicketKeeper": true,
     "workloadFatigue": 12,
     "testRating": 78,
-    "odiRating": 78,
+    "odiRating": 76,
     "t20Rating": 78,
     "attributes": {
       "technique": 86,
@@ -72146,9 +72146,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 84,
+    "odiRating": 80,
+    "t20Rating": 85,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -72300,9 +72300,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 78,
-    "odiRating": 79,
-    "t20Rating": 78,
+    "testRating": 77,
+    "odiRating": 75,
+    "t20Rating": 77,
     "attributes": {
       "technique": 88,
       "timing": 88,
@@ -72453,9 +72453,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 83,
+    "odiRating": 85,
+    "t20Rating": 84,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -72607,9 +72607,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 88,
+    "odiRating": 88,
+    "t20Rating": 93,
     "attributes": {
       "technique": 90,
       "timing": 90,
@@ -72762,8 +72762,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "odiRating": 87,
+    "t20Rating": 86,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -72914,9 +72914,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 80,
+    "odiRating": 82,
+    "t20Rating": 81,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -73068,9 +73068,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 82,
+    "odiRating": 84,
+    "t20Rating": 83,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -73221,8 +73221,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
+    "testRating": 81,
+    "odiRating": 83,
     "t20Rating": 82,
     "attributes": {
       "technique": 84,
@@ -73377,7 +73377,7 @@
     "workloadFatigue": 12,
     "testRating": 75,
     "odiRating": 76,
-    "t20Rating": 76,
+    "t20Rating": 75,
     "attributes": {
       "technique": 35,
       "timing": 37,
@@ -73530,8 +73530,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "odiRating": 84,
+    "t20Rating": 83,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -73682,9 +73682,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 83,
+    "odiRating": 83,
+    "t20Rating": 84,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -73837,8 +73837,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "odiRating": 87,
+    "t20Rating": 86,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -73989,8 +73989,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
+    "testRating": 81,
+    "odiRating": 85,
     "t20Rating": 82,
     "attributes": {
       "technique": 87,
@@ -74143,8 +74143,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 75,
-    "odiRating": 76,
+    "testRating": 76,
+    "odiRating": 75,
     "t20Rating": 76,
     "attributes": {
       "technique": 84,
@@ -74296,9 +74296,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 75,
+    "testRating": 76,
     "odiRating": 75,
-    "t20Rating": 78,
+    "t20Rating": 76,
     "attributes": {
       "technique": 86,
       "timing": 86,
@@ -74451,8 +74451,8 @@
     "isWicketKeeper": true,
     "workloadFatigue": 12,
     "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "odiRating": 84,
+    "t20Rating": 83,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -74604,9 +74604,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 75,
-    "odiRating": 75,
-    "t20Rating": 76,
+    "testRating": 79,
+    "odiRating": 77,
+    "t20Rating": 79,
     "attributes": {
       "technique": 84,
       "timing": 84,
@@ -74758,8 +74758,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
+    "testRating": 81,
+    "odiRating": 85,
     "t20Rating": 82,
     "attributes": {
       "technique": 79,
@@ -74912,9 +74912,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 82,
+    "odiRating": 84,
+    "t20Rating": 83,
     "attributes": {
       "technique": 84,
       "timing": 86,
@@ -75066,9 +75066,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 83,
+    "odiRating": 83,
+    "t20Rating": 84,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -75219,8 +75219,8 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 75,
-    "odiRating": 75,
+    "testRating": 78,
+    "odiRating": 78,
     "t20Rating": 78,
     "attributes": {
       "technique": 86,
@@ -75373,9 +75373,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 83,
+    "odiRating": 83,
+    "t20Rating": 84,
     "attributes": {
       "technique": 44,
       "timing": 46,
@@ -75527,9 +75527,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 89,
+    "odiRating": 87,
+    "t20Rating": 94,
     "attributes": {
       "technique": 85,
       "timing": 87,
@@ -75681,8 +75681,8 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 82,
+    "testRating": 81,
+    "odiRating": 81,
     "t20Rating": 82,
     "attributes": {
       "technique": 87,
@@ -75835,9 +75835,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
+    "testRating": 93,
     "odiRating": 91,
-    "t20Rating": 91,
+    "t20Rating": 88,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -75990,7 +75990,7 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 78,
-    "odiRating": 78,
+    "odiRating": 76,
     "t20Rating": 78,
     "attributes": {
       "technique": 74,
@@ -76142,9 +76142,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 84,
+    "odiRating": 84,
+    "t20Rating": 85,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -76296,9 +76296,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 78,
-    "odiRating": 78,
-    "t20Rating": 78,
+    "testRating": 79,
+    "odiRating": 77,
+    "t20Rating": 79,
     "attributes": {
       "technique": 86,
       "timing": 86,
@@ -76450,9 +76450,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 86,
+    "odiRating": 94,
+    "t20Rating": 89,
     "attributes": {
       "technique": 50,
       "timing": 52,
@@ -76604,9 +76604,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 78,
-    "odiRating": 78,
-    "t20Rating": 78,
+    "testRating": 76,
+    "odiRating": 79,
+    "t20Rating": 76,
     "attributes": {
       "technique": 39,
       "timing": 41,
@@ -76757,7 +76757,7 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
+    "testRating": 81,
     "odiRating": 81,
     "t20Rating": 82,
     "attributes": {
@@ -76910,9 +76910,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 84,
+    "odiRating": 84,
+    "t20Rating": 85,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -77064,9 +77064,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 85,
+    "odiRating": 85,
+    "t20Rating": 80,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -77218,9 +77218,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "testRating": 80,
+    "odiRating": 80,
+    "t20Rating": 81,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -77372,9 +77372,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 87,
+    "odiRating": 87,
+    "t20Rating": 92,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -77526,9 +77526,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 89,
+    "odiRating": 93,
+    "t20Rating": 94,
     "attributes": {
       "technique": 85,
       "timing": 87,
@@ -77680,9 +77680,9 @@
     },
     "isWicketKeeper": true,
     "workloadFatigue": 12,
-    "testRating": 91,
-    "odiRating": 91,
-    "t20Rating": 91,
+    "testRating": 92,
+    "odiRating": 90,
+    "t20Rating": 87,
     "attributes": {
       "technique": 90,
       "timing": 92,
@@ -77835,8 +77835,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 82,
-    "odiRating": 82,
-    "t20Rating": 82,
+    "odiRating": 80,
+    "t20Rating": 83,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -77988,8 +77988,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
+    "testRating": 81,
+    "odiRating": 81,
     "t20Rating": 82,
     "attributes": {
       "technique": 84,
@@ -78141,9 +78141,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 85,
+    "odiRating": 83,
+    "t20Rating": 80,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -78295,9 +78295,9 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 80,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "testRating": 84,
+    "odiRating": 84,
+    "t20Rating": 85,
     "attributes": {
       "technique": 87,
       "timing": 87,
@@ -78450,8 +78450,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 75,
-    "odiRating": 78,
-    "t20Rating": 78,
+    "odiRating": 75,
+    "t20Rating": 75,
     "attributes": {
       "technique": 39,
       "timing": 41,
@@ -78603,8 +78603,8 @@
     },
     "isWicketKeeper": false,
     "workloadFatigue": 12,
-    "testRating": 82,
-    "odiRating": 82,
+    "testRating": 81,
+    "odiRating": 81,
     "t20Rating": 82,
     "attributes": {
       "technique": 44,
@@ -78757,8 +78757,8 @@
     "isWicketKeeper": false,
     "workloadFatigue": 12,
     "testRating": 82,
-    "odiRating": 81,
-    "t20Rating": 82,
+    "odiRating": 80,
+    "t20Rating": 83,
     "attributes": {
       "technique": 84,
       "timing": 86,
