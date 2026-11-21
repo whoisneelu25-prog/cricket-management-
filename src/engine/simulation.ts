@@ -93,6 +93,7 @@ export interface DeliveryContext {
   tacticalCalibration?: TacticalCalibrationSettings;
   isUserBatting?: boolean;
   isUserBowling?: boolean;
+  isSecondInnings?: boolean;
 }
 
 // Deterministic Mulberry32 PRNG for reproducible test runs
@@ -636,6 +637,11 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
     }
   }
 
+  // In Test cricket, smash mode is disabled / converted to aggressive attacking play
+  if (format === 'TEST' && effectiveAggression === 'SMASH') {
+    effectiveAggression = 'ATTACKING';
+  }
+
   // Tactical modifiers
   let aggressionRunFactor = 1.0;
   let aggressionWicketRisk = 1.0;
@@ -1085,8 +1091,16 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
       finalWicketProb *= 1.14;
       aggressionRunFactor *= 0.92;
     } else {
-      finalWicketProb *= 1.10;
-      aggressionRunFactor *= 0.94;
+      // White-ball (ODI/T20I): Nerf opponent batters when user is bowling
+      // Especially in the 2nd innings chase to prevent unstoppable batting blitzes
+      const isSecondInnChase = Boolean(ctx.isSecondInnings || (ctx.targetRuns && ctx.targetRuns > 0));
+      if (isSecondInnChase) {
+        finalWicketProb *= 1.28;
+        aggressionRunFactor *= 0.85;
+      } else {
+        finalWicketProb *= 1.15;
+        aggressionRunFactor *= 0.90;
+      }
     }
   }
 
@@ -1303,21 +1317,27 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
         ? 0.90
         : 1.0;
 
+    // User Bowling in 2nd Innings: Nerf boundary conversion so computer doesn't run away with easy boundaries
+    const isUserBowling2ndInn = ctx.isUserBowling && Boolean(ctx.isSecondInnings || (ctx.targetRuns && ctx.targetRuns > 0));
+    const userBowlingBoundaryNerf = isUserBowling2ndInn ? 0.82 : ctx.isUserBowling ? 0.90 : 1.0;
+
     probSix =
       (isSmash ? 0.038 : isAttacking ? 0.028 : 0.020) *
       boundaryMultiplier *
       sixGroundMod *
+      userBowlingBoundaryNerf *
       (isWhiteBallDeath ? 1.15 : 1.0);
     probFour =
       (isSmash ? 0.108 : isAttacking ? 0.092 : 0.080) *
       boundaryMultiplier *
       fourGroundMod *
+      userBowlingBoundaryNerf *
       ropeProtectMod;
     probThree = 0.012 * twoGroundMod;
     probTwo = 0.064 * (striker.attributes.fitness / 85) * twoGroundMod * powerplaySingleTwoMod;
     probOne = (isSmash ? 0.28 : 0.33 * aggressionRunFactor) * powerplaySingleTwoMod;
   } else if (format === 'T20I') {
-    // 7.8 - 10.2 RPO baseline in T20Is (155-215 totals), influenced by ground dimensions, dew & powerplays
+    // Dynamic organic flow based on match situation (no artificial ceiling)
     const fourGroundMod = ctx.whiteBallModifiers ? ctx.whiteBallModifiers.boundaryFourMultiplier : 1.0;
     const sixGroundMod = ctx.whiteBallModifiers ? ctx.whiteBallModifiers.boundarySixMultiplier : 1.0;
     const twoGroundMod = ctx.whiteBallModifiers ? ctx.whiteBallModifiers.twoRunsMultiplier : 1.0;
@@ -1326,8 +1346,12 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
         ? 0.90
         : 1.0;
 
-    probSix = (isSmash ? 0.052 : 0.038) * boundaryMultiplier * sixGroundMod * (isWhiteBallDeath ? 1.15 : 1.0);
-    probFour = (isSmash ? 0.118 : 0.092) * boundaryMultiplier * fourGroundMod * ropeProtectMod;
+    // User Bowling in 2nd Innings: Nerf boundary conversion so computer doesn't hit unrealistic runaway boundaries
+    const isUserBowling2ndInn = ctx.isUserBowling && Boolean(ctx.isSecondInnings || (ctx.targetRuns && ctx.targetRuns > 0));
+    const userBowlingBoundaryNerf = isUserBowling2ndInn ? 0.80 : ctx.isUserBowling ? 0.90 : 1.0;
+
+    probSix = (isSmash ? 0.052 : 0.038) * boundaryMultiplier * sixGroundMod * userBowlingBoundaryNerf * (isWhiteBallDeath ? 1.15 : 1.0);
+    probFour = (isSmash ? 0.118 : 0.092) * boundaryMultiplier * fourGroundMod * userBowlingBoundaryNerf * ropeProtectMod;
     probThree = 0.010 * twoGroundMod;
     probTwo = 0.068 * (striker.attributes.fitness / 85) * twoGroundMod * powerplaySingleTwoMod;
     probOne = (isSmash ? 0.27 : 0.30 * aggressionRunFactor) * powerplaySingleTwoMod;

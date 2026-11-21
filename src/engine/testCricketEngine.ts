@@ -771,29 +771,34 @@ export function shouldAICaptainDeclare(match: Match): boolean {
     }
 
     const lead = inn1.totalRuns + inn.totalRuns - inn2.totalRuns;
-    // Need enough overs left to actually bowl the opposition out (at least ~50 overs ideally)
+    // Need enough overs left to actually bowl the opposition out (at least ~45 overs ideally)
     if (oversRemaining < 38) return false;
 
-    // Safe RPO cushion depends on Day 4/5 pitch wear:
-    // Heavy wear (>=60%): 3.65 RPO is almost impossible to chase over 85+ overs
-    // Moderate wear (40-59%): 3.95 RPO cushion
-    // Flat pitch (<40%): 4.25 RPO cushion
-    const safeChaseRPO = pitchWear >= 62 ? 3.35 : pitchWear >= 42 ? 3.65 : 3.95;
-    const desiredTarget = Math.max(
-      pitchWear >= 65 ? 285 : 320,
-      Math.min(420, Math.round(oversRemaining * safeChaseRPO))
+    const isOpponentBatting = Boolean(
+      (match.isUserMatch && match.userTeamId && inn.battingTeamId !== match.userTeamId) ||
+      (!match.isUserMatch && inn.battingTeamId === match.awayTeamId)
     );
 
-    if (lead + 1 >= desiredTarget && oversRemaining <= 145) {
-      return true;
+    // When opponent / AI team is batting and leading:
+    // User requested: declare only after 400+ lead, or when overs are running short (Day 5 / <= 85 overs remaining)
+    if (isOpponentBatting) {
+      if (lead >= 400 && oversRemaining <= 145) {
+        return true;
+      }
+      // When overs are running short (Day 5 or late Day 4 with <= 85 overs left to bowl them out)
+      if (oversRemaining <= 85 && oversRemaining >= 45 && lead >= 320) {
+        return true;
+      }
+      return false;
     }
 
-    // Day 4 Afternoon/Evening on worn wicket: 305+ lead with <= 140 overs remaining
-    if (pitchWear >= 52 && lead >= 305 && oversRemaining <= 140 && oversRemaining >= 48) {
+    // Standard AI vs AI or automated test declarations:
+    if (lead >= 400 && oversRemaining <= 145) {
       return true;
     }
-
-    // Late Day 4 / Day 5 Morning: if ~48-95 overs left and lead >= 285, declare to force a win!
+    if (pitchWear >= 52 && lead >= 310 && oversRemaining <= 140 && oversRemaining >= 48) {
+      return true;
+    }
     if (oversRemaining <= 95 && oversRemaining >= 48 && lead >= 285) {
       return true;
     }

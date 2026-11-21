@@ -1434,6 +1434,7 @@ export function stepMatchBall(matchInput: Match): Match {
     tacticalCalibration: match.tacticalCalibration,
     isUserBatting: isUserTeamBatting,
     isUserBowling: isUserTeamBowling,
+    isSecondInnings: match.format !== 'TEST' && (match.currentInningsIndex === 1 || currentInnings.inningsNumber === 2),
   });
 
   const nameMap: Record<string, string> = {};
