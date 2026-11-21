@@ -54,13 +54,27 @@ function applyFormFitnessRating(player: Player): Player {
     45,
     Math.min(100, Math.round(baseFitness - Math.max(0, fatigue - 18) * 0.45))
   );
-  const formBonus = (formScore - 80) * 0.22;
-  const fitnessBonus = (effectiveFitness - 82) * 0.14;
-  const ratingDelta = Math.max(-5, Math.min(5, Math.round(formBonus + fitnessBonus)));
-  const clampRating = (val: number) => Math.max(78, Math.min(99, (val || 82) + ratingDelta));
+  const formBonus = (formScore - 80) * 0.16;
+  const fitnessBonus = (effectiveFitness - 82) * 0.10;
+  const ratingDelta = Math.max(-3, Math.min(3, Math.round(formBonus + fitnessBonus)));
+
+  const tier = player.tier || (player.selectionCategoryGroup === 'A' ? 'A' : player.selectionCategoryGroup === 'B' ? 'B' : 'C');
+
+  const clampRating = (val: number | undefined) => {
+    const base = val || (tier === 'A' ? 90 : tier === 'B' ? 82 : 75);
+    const withDelta = base + ratingDelta;
+    if (tier === 'A') {
+      return Math.max(86, Math.min(95, withDelta));
+    } else if (tier === 'B') {
+      return Math.max(80, Math.min(85, withDelta));
+    } else {
+      return Math.max(75, Math.min(79, withDelta));
+    }
+  };
 
   return {
     ...player,
+    tier,
     fitness: effectiveFitness,
     testRating: clampRating(player.testRating),
     odiRating: clampRating(player.odiRating),

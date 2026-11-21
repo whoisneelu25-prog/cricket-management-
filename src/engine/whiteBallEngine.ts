@@ -783,7 +783,7 @@ export function selectNextWhiteBallBowler(
   }
   if (available.length === 0) {
     const anyEligibleUnderQuota = filterUnderQuota(
-      bowlingXI.filter((id) => id !== bowlingWkId && isEligibleWhiteBallBowler(getPlayerById(id)))
+      bowlingXI.filter((id) => id !== bowlingWkId && id !== prevBowlerId && isEligibleWhiteBallBowler(getPlayerById(id)))
     );
     if (anyEligibleUnderQuota.length > 0) {
       available = anyEligibleUnderQuota;
@@ -793,8 +793,8 @@ export function selectNextWhiteBallBowler(
       if (nonKeepersUnderQuota.length > 0) {
         available = nonKeepersUnderQuota;
       } else {
-        const anyOther = genuineBowlers.length > 0 ? genuineBowlers : bowlingXI.filter((id) => id !== prevBowlerId);
-        return anyOther.find((id) => id !== prevBowlerId) || anyOther[0];
+        const anyOther = genuineBowlers.filter((id) => id !== prevBowlerId);
+        return anyOther.find((id) => id !== prevBowlerId) || bowlingXI.find((id) => id !== prevBowlerId && id !== bowlingWkId) || bowlingXI[0];
       }
     }
   }
@@ -959,7 +959,12 @@ export function selectNextWhiteBallBowler(
   });
 
   scored.sort((a, b) => b.score - a.score);
-  return scored[0]?.id || available[0];
+  const bestCandidate =
+    scored.find((s) => s.id !== prevBowlerId)?.id ||
+    available.find((id) => id !== prevBowlerId) ||
+    bowlingXI.find((id) => id !== prevBowlerId && id !== bowlingWkId) ||
+    bowlingXI[0];
+  return bestCandidate;
 }
 
 /**
@@ -980,6 +985,7 @@ export function recordWhiteBallOverInSpellTracker(
     innings.bowlerSpellOvers[bowlerId] = 1;
   }
   innings.bowlerLastOverBowled[bowlerId] = completedOverIndex;
+  innings.lastCompletedOverBowlerId = bowlerId;
 }
 
 /**

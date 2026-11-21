@@ -166,9 +166,9 @@ export function calculateHighRiskActionProbabilities(params: {
   const isSuccessful = rand < success;
 
   // Scoring and risk factors depending on mode:
-  // Smash is more boundary-oriented while keeping dismissal risk balanced so teams don't collapse
-  const scoringIntentBonus = isSmash ? 1.55 : 1.32;
-  const riskMultiplier = isSmash ? (format === 'TEST' ? 1.12 : 1.10) : (format === 'TEST' ? 1.06 : 1.05);
+  // Smash is calibrated so realistic international scores happen in white-ball cricket (ODI ~270-340, T20I ~165-215)
+  const scoringIntentBonus = isSmash ? (format === 'TEST' ? 1.35 : 1.20) : 1.12;
+  const riskMultiplier = isSmash ? (format === 'TEST' ? 1.10 : 1.08) : (format === 'TEST' ? 1.05 : 1.04);
 
   return {
     isAttempted: true,

@@ -1304,18 +1304,18 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
         : 1.0;
 
     probSix =
-      (ctx.isUserBatting && isSmash ? 0.068 : ctx.isUserBatting && isAttacking ? 0.038 : 0.025) *
+      (isSmash ? 0.038 : isAttacking ? 0.028 : 0.020) *
       boundaryMultiplier *
       sixGroundMod *
-      (isWhiteBallDeath ? 1.22 : 1.0);
+      (isWhiteBallDeath ? 1.15 : 1.0);
     probFour =
-      (ctx.isUserBatting && isSmash ? 0.145 : ctx.isUserBatting && isAttacking ? 0.105 : 0.088) *
+      (isSmash ? 0.108 : isAttacking ? 0.092 : 0.080) *
       boundaryMultiplier *
       fourGroundMod *
       ropeProtectMod;
     probThree = 0.012 * twoGroundMod;
     probTwo = 0.064 * (striker.attributes.fitness / 85) * twoGroundMod * powerplaySingleTwoMod;
-    probOne = (ctx.isUserBatting && isSmash ? 0.24 : 0.33 * aggressionRunFactor) * powerplaySingleTwoMod;
+    probOne = (isSmash ? 0.28 : 0.33 * aggressionRunFactor) * powerplaySingleTwoMod;
   } else if (format === 'T20I') {
     // 7.8 - 10.2 RPO baseline in T20Is (155-215 totals), influenced by ground dimensions, dew & powerplays
     const fourGroundMod = ctx.whiteBallModifiers ? ctx.whiteBallModifiers.boundaryFourMultiplier : 1.0;
@@ -1326,11 +1326,11 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
         ? 0.90
         : 1.0;
 
-    probSix = (isSmash ? 0.085 : 0.040) * boundaryMultiplier * sixGroundMod * (isWhiteBallDeath ? 1.20 : 1.0);
-    probFour = (isSmash ? 0.158 : 0.100) * boundaryMultiplier * fourGroundMod * ropeProtectMod;
+    probSix = (isSmash ? 0.052 : 0.038) * boundaryMultiplier * sixGroundMod * (isWhiteBallDeath ? 1.15 : 1.0);
+    probFour = (isSmash ? 0.118 : 0.092) * boundaryMultiplier * fourGroundMod * ropeProtectMod;
     probThree = 0.010 * twoGroundMod;
     probTwo = 0.068 * (striker.attributes.fitness / 85) * twoGroundMod * powerplaySingleTwoMod;
-    probOne = (isSmash ? 0.23 : 0.30 * aggressionRunFactor) * powerplaySingleTwoMod;
+    probOne = (isSmash ? 0.27 : 0.30 * aggressionRunFactor) * powerplaySingleTwoMod;
   }
 
   const rollRuns = activeRandom();

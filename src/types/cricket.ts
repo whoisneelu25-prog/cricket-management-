@@ -143,6 +143,10 @@ export interface Player {
   isViceCaptain?: boolean;
   isWicketKeeper?: boolean;
 
+  // Selection Tier & Category
+  tier?: 'A' | 'B' | 'C';
+  selectionCategoryGroup?: string;
+
   // Workload & Health
   isInjured?: boolean;
   injuryDaysRemaining?: number;

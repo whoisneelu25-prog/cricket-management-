@@ -38,6 +38,7 @@ import {
   validateFormatSquad,
   validatePlayingXI,
   FORMAT_PLAYERS_MAP,
+  normalizeCountryCode,
 } from '../data/formatSquadsData';
 import {
   INITIAL_ASHES_COMPETITION,
@@ -1908,17 +1909,31 @@ export function sanitizeCareerSave(career: CareerSave): CareerSave {
       : Math.max(40, Math.min(100, Math.round((career.manager?.boardConfidence || 85) * 0.95)));
 
   const repairFixtureVenue = (m: Match, idx: number): Match => {
-    if (
+    const normHost = normalizeCountryCode(m.homeTeamId);
+    const hostVenues = VENUES.filter((v) => v.countryId === m.homeTeamId || v.countryId === normHost);
+
+    // If scheduled bilateral match, ensure distinct venue rotation per match in series
+    if (!m.tournamentId && hostVenues.length > 1 && m.status === 'SCHEDULED') {
+      const venueSlot = (m.matchNumber ? m.matchNumber - 1 : idx) % hostVenues.length;
+      const chosen = hostVenues[venueSlot];
+      if (chosen && m.venue !== chosen.name) {
+        return {
+          ...m,
+          venue: chosen.name,
+          pitch: chosen.pitch,
+          weather: chosen.weather,
+        };
+      }
+    } else if (
       !m.tournamentId &&
       m.homeTeamId !== 'ENG' &&
       (m.venue || '').toLowerCase().includes("lord's")
     ) {
-      const hostVenues = VENUES.filter((v) => v.countryId === m.homeTeamId);
       if (hostVenues.length > 0) {
         const chosen = hostVenues[idx % hostVenues.length];
         return {
           ...m,
-          venue: `${chosen.name}, ${chosen.city}`,
+          venue: chosen.name,
           pitch: chosen.pitch,
           weather: chosen.weather,
         };

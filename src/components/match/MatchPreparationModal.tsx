@@ -429,7 +429,7 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
                 <Activity className="w-3.5 h-3.5" /> Opponent Intelligence
               </span>
               <div className="text-sm font-bold text-white mt-1 font-display">
-                {oppTeam?.name} ({oppStrategy.replace('_', ' ')})
+                {oppTeam?.name} ({oppStrategy === 'PACE_HEAVY' ? 'Pace Heavy Attack' : oppStrategy === 'SPIN_HEAVY' ? 'Spin Heavy Attack' : oppStrategy.replace('_', ' ')})
               </div>
               <p className="text-[11px] text-[#8b97a3] mt-1 truncate font-mono">
                 Capt: {getEffectivePlayer(oppAIConfig.captainId, career)?.shortName || 'TBA'} • WK: {getEffectivePlayer(oppAIConfig.wicketKeeperId, career)?.shortName || 'TBA'}
@@ -714,6 +714,16 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
                   const isC = id === oppAIConfig.captainId;
                   const isWK = id === oppAIConfig.wicketKeeperId;
                   const isBowl = oppAIConfig.bowlingRotation?.includes(id);
+                  const rating = match.format === 'TEST' ? p?.testRating : match.format === 'ODI' ? p?.odiRating : p?.t20Rating;
+
+                  const roleLabel = p?.role === 'BATTER' ? 'BAT' : p?.role === 'ALL_ROUNDER' ? 'AR' : (p?.role === 'WICKETKEEPER_BATTER' || isWK) ? 'WK' : 'BOWL';
+                  const roleBadgeClass = p?.role === 'BATTER'
+                    ? 'bg-[#18202b] text-[#93a7be]'
+                    : p?.role === 'ALL_ROUNDER'
+                    ? 'bg-[#12281e] text-[#42cc8c]'
+                    : (p?.role === 'WICKETKEEPER_BATTER' || isWK)
+                    ? 'bg-amber-950 text-amber-300 font-bold'
+                    : 'bg-[#162738] text-[#56b0f5]';
 
                   return (
                     <div
@@ -724,10 +734,13 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
                         <span className="text-[9px] font-mono text-[#8b97a3]">{idx + 1}.</span>
                         <span className="font-semibold text-[#e8edf2] truncate">{p?.shortName || id}</span>
                       </div>
-                      <div className="flex items-center gap-1 font-mono text-[8px] shrink-0">
-                        {isC && <span className="px-1 rounded bg-[#2c2412] text-[#ffe9a8] font-bold">C</span>}
-                        {isWK && <span className="px-1 rounded bg-amber-950 text-amber-300 font-bold">WK</span>}
-                        {isBowl && <span className="px-1 rounded bg-[#0e2c1d] text-[#3fca86]">BOWL</span>}
+                      <div className="flex items-center gap-1.5 font-mono text-[8px] shrink-0">
+                        <span className={`px-1.5 py-0.5 rounded ${roleBadgeClass}`}>{roleLabel}</span>
+                        {rating && <span className="text-[#a1b0be] font-bold">{rating}</span>}
+                        {isC && <span className="px-1 py-0.5 rounded bg-[#2c2412] text-[#ffe9a8] font-bold">C</span>}
+                        {isBowl && roleLabel !== 'BOWL' && (
+                          <span className="px-1 py-0.5 rounded bg-[#0e2c1d] text-[#3fca86]">BOWL</span>
+                        )}
                       </div>
                     </div>
                   );

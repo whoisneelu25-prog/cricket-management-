@@ -8,6 +8,7 @@ import {
 } from '../types/cricket';
 import { VENUES } from '../data/venues';
 import { ALL_PLAYERS, getDefaultPlayingXI, getDefaultCaptainId, getDefaultViceCaptainId, getDefaultWicketKeeperId, getPlayersByCountry } from '../data/squads';
+import { normalizeCountryCode } from '../data/formatSquadsData';
 import { INITIAL_ASHES_COMPETITION, INITIAL_BGT_COMPETITION, TEAM_META } from '../data/tournamentData';
 import { determineMatchOutcome, isTerminalMatchStatus } from './matchEngine';
 
@@ -94,7 +95,8 @@ export function createBilateralTour(
     ? `tour_bgt_${year}${suffix}`
     : `tour_${visitingTeamId.toLowerCase()}_in_${hostTeamId.toLowerCase()}_${year}${suffix}`;
 
-  const hostVenues = VENUES.filter((v) => v.countryId === hostTeamId);
+  const normHost = normalizeCountryCode(hostTeamId);
+  const hostVenues = VENUES.filter((v) => v.countryId === hostTeamId || v.countryId === normHost);
   const selectedVenues = hostVenues.length > 0
     ? hostVenues.map((v) => v.name)
     : ['National Cricket Stadium'];

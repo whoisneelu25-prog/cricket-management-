@@ -250,21 +250,52 @@ function scorePlayerForAISelection(
 }
 
 function arrangeBalancedBattingOrder(players: Player[]): Player[] {
-  const roleWeight = (p: Player): number => {
-    if (p.role === 'BATTER') return 1;
-    if (p.role === 'WICKETKEEPER_BATTER') return 2;
-    if (p.role === 'ALL_ROUNDER') return 3;
-    return 4; // BOWLER
+  const batters = players.filter((p) => p.role === 'BATTER');
+  const wks = players.filter((p) => p.role === 'WICKETKEEPER_BATTER' || p.isWicketKeeper);
+  const ars = players.filter((p) => p.role === 'ALL_ROUNDER');
+  const bowlers = players.filter((p) => p.role === 'BOWLER' && !p.isWicketKeeper);
+
+  const batSort = (a: Player, b: Player) => {
+    const valA = (a.attributes?.technique || 70) * 0.55 + (a.attributes?.timing || 70) * 0.45;
+    const valB = (b.attributes?.technique || 70) * 0.55 + (b.attributes?.timing || 70) * 0.45;
+    return valB - valA;
   };
 
-  return [...players].sort((a, b) => {
-    const rwA = roleWeight(a);
-    const rwB = roleWeight(b);
-    if (rwA !== rwB) return rwA - rwB;
-    const batA = a.attributes.technique * 0.55 + a.attributes.timing * 0.45;
-    const batB = b.attributes.technique * 0.55 + b.attributes.timing * 0.45;
-    return batB - batA;
+  batters.sort(batSort);
+  ars.sort(batSort);
+  bowlers.sort(batSort);
+
+  // Assemble realistic international batting order:
+  // 1-5: Specialist top and middle order Batters
+  // 6: Primary Wicketkeeper / high-order All-Rounder
+  // 7: Key All-Rounder / Secondary Wicketkeeper
+  // 8-11: Specialist Bowlers ordered by batting ability (so tailenders bat #10-#11)
+  const ordered: Player[] = [];
+
+  // Batters first (openers and middle order)
+  batters.forEach((b) => ordered.push(b));
+
+  // Wicketkeeper(s)
+  wks.forEach((w) => {
+    if (!ordered.includes(w)) ordered.push(w);
   });
+
+  // All-Rounders
+  ars.forEach((a) => {
+    if (!ordered.includes(a)) ordered.push(a);
+  });
+
+  // Specialist Bowlers (tailenders last, ordered by batting attributes)
+  bowlers.forEach((b) => {
+    if (!ordered.includes(b)) ordered.push(b);
+  });
+
+  // Any other remaining player
+  players.forEach((p) => {
+    if (!ordered.includes(p)) ordered.push(p);
+  });
+
+  return ordered;
 }
 
 export function buildAISquadConfig(
@@ -297,7 +328,11 @@ export function buildAISquadConfig(
   // Squad of up to 17 players
   const squadPlayers = scored.slice(0, Math.min(17, Math.max(11, scored.length))).map((x) => x.player);
 
-  // Build balanced XI: 1 WK, at least 4 bowlers/all-rounders (min 3 specialist bowlers if available), rest best batters/ARs
+  // Build balanced, authentic Playing XI:
+  // - Exactly 1 primary Wicketkeeper
+  // - Exactly 4-5 Specialist Batters
+  // - Exactly 1-2 All-Rounders
+  // - Strictly 3-4 Specialist Bowlers (NEVER more than 4 pure specialist bowlers)
   const selectedIds = new Set<string>();
   const selectedPlayers: Player[] = [];
 
@@ -308,29 +343,63 @@ export function buildAISquadConfig(
     }
   };
 
-  // 1. Best Wicketkeeper
+  // 1. Exactly 1 primary Wicketkeeper
   const wks = scored.filter(
     (x) => x.player.isWicketKeeper || x.player.role === 'WICKETKEEPER_BATTER'
   );
-  if (wks.length > 0) addPlayer(wks[0].player);
-
-  // 2. Top 3 Specialist Bowlers (respecting pitch/strategy scores)
-  const bowlers = scored.filter((x) => x.player.role === 'BOWLER');
-  bowlers.slice(0, 3).forEach((x) => addPlayer(x.player));
-
-  // 3. At least 2 All-Rounders or 4th-5th bowling options
-  const bowlingOptions = scored.filter(
-    (x) => (x.player.role === 'ALL_ROUNDER' || x.player.role === 'BOWLER') && !selectedIds.has(x.player.id)
-  );
-  bowlingOptions.slice(0, 2).forEach((x) => addPlayer(x.player));
-
-  // 4. Fill remaining slots with highest-scored batters/all-rounders
-  for (const item of scored) {
-    if (selectedPlayers.length >= 11) break;
-    addPlayer(item.player);
+  if (wks.length > 0) {
+    addPlayer(wks[0].player);
   }
 
-  // Safety pad if country has exactly 11 players
+  // 2. Filter available candidates by role
+  const batters = scored.filter(
+    (x) => x.player.role === 'BATTER' && !selectedIds.has(x.player.id)
+  );
+  const allRounders = scored.filter(
+    (x) => x.player.role === 'ALL_ROUNDER' && !selectedIds.has(x.player.id)
+  );
+  const bowlers = scored.filter(
+    (x) => x.player.role === 'BOWLER' && !selectedIds.has(x.player.id)
+  );
+
+  // Target balance:
+  // In international cricket: 5 batters + 1 WK + 1 AR + 4 bowlers = 11 players
+  // OR: 4 batters + 1 WK + 2 ARs + 4 bowlers = 11 players
+  // If team has fewer ARs: 5 batters + 1 WK + 1 AR + 4 bowlers
+  const targetAllRoundersCount = allRounders.length >= 2 ? 2 : (allRounders.length === 1 ? 1 : 0);
+  const targetBowlersCount = targetAllRoundersCount === 2 ? 3 : 4;
+  const targetBattersCount = Math.max(4, 11 - (selectedPlayers.length) - targetAllRoundersCount - targetBowlersCount);
+
+  // Pick top specialist batters (respecting form, fitness & pitch suitability)
+  batters.slice(0, targetBattersCount).forEach((x) => addPlayer(x.player));
+
+  // Pick top all-rounders
+  allRounders.slice(0, targetAllRoundersCount).forEach((x) => addPlayer(x.player));
+
+  // Pick top specialist bowlers (strictly capped at 4 pure bowlers)
+  bowlers.slice(0, targetBowlersCount).forEach((x) => addPlayer(x.player));
+
+  // If still slots remaining (< 11), fill from remaining specialist batters and all-rounders FIRST
+  // Strictly prevent adding more pure bowlers beyond 4 unless no other players exist in the country!
+  if (selectedPlayers.length < 11) {
+    const remainingNonBowlers = scored.filter(
+      (x) => !selectedIds.has(x.player.id) && x.player.role !== 'BOWLER'
+    );
+    for (const item of remainingNonBowlers) {
+      if (selectedPlayers.length >= 11) break;
+      addPlayer(item.player);
+    }
+
+    // Fallback only if country has exhausted all batters/all-rounders/keepers
+    if (selectedPlayers.length < 11) {
+      for (const item of scored) {
+        if (selectedPlayers.length >= 11) break;
+        addPlayer(item.player);
+      }
+    }
+  }
+
+  // Safety pad if country has exactly 11 players in total
   for (const p of allCountryMen) {
     if (selectedPlayers.length >= 11) break;
     addPlayer(p);
