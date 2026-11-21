@@ -249,48 +249,106 @@ function scorePlayerForAISelection(
   return score;
 }
 
+/**
+ * Determines whether a player is an opener based on attributes and characteristics.
+ * Openers need high technique (>= 80) + defense (>= 78) or specifically high temperament.
+ * This mirrors real cricket: openers face new-ball swing/seam and need solid defenses.
+ */
+function isLikelyOpener(p: Player): boolean {
+  const tech = p.attributes?.technique || 60;
+  const def = p.attributes?.defense || 60;
+  const temp = p.attributes?.temperament || 60;
+  // Opener profile: high technique + defense + temperament OR explicitly pure batter with strong opening combo
+  return tech >= 80 && def >= 78 && temp >= 82;
+}
+
+/**
+ * Determines whether a player is a finisher/lower middle-order type.
+ * Finishers have high power + aggression but may have lower technique/defense.
+ */
+function isLikelyFinisher(p: Player): boolean {
+  const power = p.attributes?.powerHitting || 60;
+  const agg = p.attributes?.aggression || 60;
+  const tech = p.attributes?.technique || 60;
+  return power >= 82 && agg >= 80 && tech < 85;
+}
+
+/**
+ * Builds a realistically ordered batting lineup:
+ *  - #1-2: Openers (high technique + defense + temperament)
+ *  - #3-4: Specialist middle-order batters (high technique)
+ *  - #5-6: Middle-order / finisher batters or WK-batter high in order
+ *  - #6-7: All-Rounders (batting all-rounders higher, bowling ARs lower)
+ *  - #8-11: Specialist Bowlers (sorted by batting ability)
+ *
+ * This ensures no bowler opens and no opener bats at #8.
+ */
 function arrangeBalancedBattingOrder(players: Player[]): Player[] {
   const batters = players.filter((p) => p.role === 'BATTER');
-  const wks = players.filter((p) => p.role === 'WICKETKEEPER_BATTER' || p.isWicketKeeper);
+  const wks = players.filter((p) => (p.role === 'WICKETKEEPER_BATTER' || p.isWicketKeeper) && !batters.includes(p));
   const ars = players.filter((p) => p.role === 'ALL_ROUNDER');
   const bowlers = players.filter((p) => p.role === 'BOWLER' && !p.isWicketKeeper);
 
-  const batSort = (a: Player, b: Player) => {
-    const valA = (a.attributes?.technique || 70) * 0.55 + (a.attributes?.timing || 70) * 0.45;
-    const valB = (b.attributes?.technique || 70) * 0.55 + (b.attributes?.timing || 70) * 0.45;
+  // Sort batters by opening suitability (technique * 0.5 + defense * 0.3 + temperament * 0.2)
+  const openerScore = (p: Player) =>
+    (p.attributes?.technique || 60) * 0.5 +
+    (p.attributes?.defense || 60) * 0.3 +
+    (p.attributes?.temperament || 60) * 0.2;
+
+  // Sort batters into openers vs middle-order vs finishers
+  const openers = batters.filter((p) => isLikelyOpener(p)).sort((a, b) => openerScore(b) - openerScore(a));
+  const finishers = batters.filter((p) => !isLikelyOpener(p) && isLikelyFinisher(p))
+    .sort((a, b) => (b.attributes?.powerHitting || 60) - (a.attributes?.powerHitting || 60));
+  const middleOrderBatters = batters
+    .filter((p) => !isLikelyOpener(p) && !isLikelyFinisher(p))
+    .sort((a, b) => (b.attributes?.technique || 60) - (a.attributes?.technique || 60));
+
+  // Sort all-rounders: batting ARs higher in order (better technique first)
+  const battingARs = ars.filter((p) => (p.attributes?.technique || 60) >= 72)
+    .sort((a, b) => (b.attributes?.technique || 60) - (a.attributes?.technique || 60));
+  const bowlingARs = ars.filter((p) => (p.attributes?.technique || 60) < 72)
+    .sort((a, b) => (b.attributes?.technique || 60) - (a.attributes?.technique || 60));
+
+  // Sort WKs by batting ability (WKs with higher technique bat higher)
+  wks.sort((a, b) => (b.attributes?.technique || 60) - (a.attributes?.technique || 60));
+
+  // Sort bowlers by batting ability (pure tailenders last)
+  bowlers.sort((a, b) => {
+    const valA = (a.attributes?.technique || 30) * 0.5 + (a.attributes?.defense || 30) * 0.5;
+    const valB = (b.attributes?.technique || 30) * 0.5 + (b.attributes?.defense || 30) * 0.5;
     return valB - valA;
-  };
+  });
 
-  batters.sort(batSort);
-  ars.sort(batSort);
-  bowlers.sort(batSort);
-
-  // Assemble realistic international batting order:
-  // 1-5: Specialist top and middle order Batters
-  // 6: Primary Wicketkeeper / high-order All-Rounder
-  // 7: Key All-Rounder / Secondary Wicketkeeper
-  // 8-11: Specialist Bowlers ordered by batting ability (so tailenders bat #10-#11)
+  // ---- Assemble the batting order ----
   const ordered: Player[] = [];
 
-  // Batters first (openers and middle order)
-  batters.forEach((b) => ordered.push(b));
+  const push = (p: Player) => {
+    if (!ordered.includes(p)) ordered.push(p);
+  };
 
-  // Wicketkeeper(s)
-  wks.forEach((w) => {
-    if (!ordered.includes(w)) ordered.push(w);
-  });
+  // Slots #1-2: best openers
+  openers.slice(0, 2).forEach(push);
 
-  // All-Rounders
-  ars.forEach((a) => {
-    if (!ordered.includes(a)) ordered.push(a);
-  });
+  // Slot #3-4: remaining specialist batters (top technique), WK if top-order, then finishers
+  middleOrderBatters.slice(0, 3).forEach(push);
 
-  // Specialist Bowlers (tailenders last, ordered by batting attributes)
-  bowlers.forEach((b) => {
-    if (!ordered.includes(b)) ordered.push(b);
-  });
+  // Fill remaining batter slots (finishers/remaining openers)
+  finishers.forEach(push);
+  openers.slice(2).forEach(push); // any extra openers become middle-order
 
-  // Any other remaining player
+  // Slot #5-6: WK batter (usually bats around 5-7)
+  wks.forEach(push);
+
+  // Slot #6-7: batting all-rounders
+  battingARs.forEach(push);
+
+  // Slot #7-8: bowling all-rounders
+  bowlingARs.forEach(push);
+
+  // Slot #8-11: specialist bowlers (sorted best bat first so #8-9 can contribute)
+  bowlers.forEach(push);
+
+  // Safety: add any remaining player not yet placed
   players.forEach((p) => {
     if (!ordered.includes(p)) ordered.push(p);
   });
@@ -541,19 +599,46 @@ export function applyPostMatchAIUpdates(
       let injuryType = eff.injuryType;
       let injurySeverity = eff.injurySeverity;
 
-      const injuryProb = nextFatigue >= 75 ? 0.035 : 0.008;
-      if (!isInjured && rand() < injuryProb) {
+      // Realistic injury probability — scaled by fatigue, format, and player role
+      // Opponents can be injured too! This makes squad selection management critical.
+      const isBowlerAI = eff.role === 'BOWLER';
+      const isAllRounderAI = eff.role === 'ALL_ROUNDER';
+      const baseInjProbAI = match.format === 'TEST' ? 0.025 : match.format === 'ODI' ? 0.015 : 0.010;
+      const fatigBonusAI = nextFatigue >= 85 ? 0.07 : nextFatigue >= 72 ? 0.035 : nextFatigue >= 55 ? 0.012 : 0;
+      const roleBonusAI = isBowlerAI ? 0.022 : isAllRounderAI ? 0.010 : 0;
+      const injuryProbAI = baseInjProbAI + fatigBonusAI + roleBonusAI;
+
+      const bowlerInjuriesAI = [
+        { type: 'Side Strain', days: 14, sev: 'MODERATE' as const },
+        { type: 'Shoulder Impingement', days: 18, sev: 'MODERATE' as const },
+        { type: 'Stress Fracture (Back)', days: 42, sev: 'SEVERE' as const },
+        { type: 'Ankle Sprain', days: 10, sev: 'MINOR' as const },
+        { type: 'Groin Strain', days: 12, sev: 'MINOR' as const },
+        { type: 'Knee Soreness', days: 7, sev: 'MINOR' as const },
+      ];
+      const batterInjuriesAI = [
+        { type: 'Hamstring Strain', days: 14, sev: 'MODERATE' as const },
+        { type: 'Lower Back Pain', days: 10, sev: 'MINOR' as const },
+        { type: 'Finger Fracture', days: 21, sev: 'SEVERE' as const },
+        { type: 'Calf Muscle Tear', days: 18, sev: 'MODERATE' as const },
+        { type: 'Quad Tightness', days: 7, sev: 'MINOR' as const },
+        { type: 'Rib Contusion', days: 10, sev: 'MINOR' as const },
+      ];
+
+      if (!isInjured && rand() < injuryProbAI) {
+        const pool = isBowlerAI ? bowlerInjuriesAI : batterInjuriesAI;
+        const pick = pool[Math.floor(rand() * pool.length)];
         isInjured = true;
-        injuryDaysRemaining = 7 + Math.floor(rand() * 18);
-        injuryType = eff.role === 'BOWLER' ? 'Side Strain' : 'Hamstring Tightness';
-        injurySeverity = injuryDaysRemaining > 16 ? 'MODERATE' : 'MINOR';
+        injuryDaysRemaining = pick.days + Math.floor(rand() * 7);
+        injuryType = pick.type;
+        injurySeverity = pick.sev;
 
         const rating = getFormatRating(eff, match.format);
         if (rating >= 80) {
           news.push({
             id: `news_ai_inj_${pId}_${match.id}`,
-            title: `Injury Blow for ${eff.countryName}: ${eff.name} Ruled Out (${injuryDaysRemaining} Days)`,
-            summary: `${eff.name} sustained a ${injuryType.toLowerCase()} during ${match.seriesName || 'international duty'} and will miss approximately ${injuryDaysRemaining} days.`,
+            title: `🚑 ${eff.countryName} Injury: ${eff.name} — ${injuryType} (${injuryDaysRemaining} Days)`,
+            summary: `${eff.name} sustained a ${injuryType.toLowerCase()} during ${match.seriesName || 'international duty'} and will miss approximately ${injuryDaysRemaining} days. This is a significant blow to ${eff.countryName}'s plans.`,
             category: 'INJURY',
             timestamp: match.date || career.currentDate,
             relatedTeamId: teamId,

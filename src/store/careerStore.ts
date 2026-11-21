@@ -61,6 +61,7 @@ import {
   buildAISquadConfig,
   initializeAITeams,
   selectAIPlayingXIForMatch,
+  applyPostMatchAIUpdates,
 } from '../engine/aiTeamEngine';
 import {
   initializeDetailedTeamRankings,
@@ -1466,15 +1467,45 @@ export function applyUserMatchResult(
     let injuryType = eff?.injuryType;
     let injurySeverity = eff?.injurySeverity;
 
-    if (!isInjured && nextFatigue >= 82 && injRand() < 0.04) {
+    // Realistic injury probability: scales with fatigue, format intensity, and role
+    // Bowlers are more injury-prone (side strains, shoulder issues)
+    // Higher fatigue = higher risk; even fresh players have a small base risk
+    const isBowler = eff?.role === 'BOWLER';
+    const isAllRounder = eff?.role === 'ALL_ROUNDER';
+    const baseInjProb = matchCopy.format === 'TEST' ? 0.028 : matchCopy.format === 'ODI' ? 0.018 : 0.012;
+    const fatigueBonus = nextFatigue >= 85 ? 0.07 : nextFatigue >= 72 ? 0.04 : nextFatigue >= 55 ? 0.015 : 0;
+    const roleBonus = isBowler ? 0.025 : isAllRounder ? 0.012 : 0;
+    const injuryProb = baseInjProb + fatigueBonus + roleBonus;
+
+    // Injury pool — realistic cricket injuries with role-specific types
+    const bowlerInjuries = [
+      { type: 'Side Strain', days: 14, sev: 'MODERATE' as const },
+      { type: 'Shoulder Impingement', days: 18, sev: 'MODERATE' as const },
+      { type: 'Stress Fracture (Back)', days: 42, sev: 'SEVERE' as const },
+      { type: 'Ankle Sprain', days: 10, sev: 'MINOR' as const },
+      { type: 'Groin Strain', days: 12, sev: 'MINOR' as const },
+      { type: 'Knee Soreness', days: 7, sev: 'MINOR' as const },
+    ];
+    const batterInjuries = [
+      { type: 'Hamstring Strain', days: 14, sev: 'MODERATE' as const },
+      { type: 'Lower Back Pain', days: 10, sev: 'MINOR' as const },
+      { type: 'Finger Fracture', days: 21, sev: 'SEVERE' as const },
+      { type: 'Calf Muscle Tear', days: 18, sev: 'MODERATE' as const },
+      { type: 'Quad Tightness', days: 7, sev: 'MINOR' as const },
+      { type: 'Rib Contusion', days: 10, sev: 'MINOR' as const },
+    ];
+
+    if (!isInjured && injRand() < injuryProb) {
+      const pool = isBowler ? bowlerInjuries : batterInjuries;
+      const pick = pool[Math.floor(injRand() * pool.length)];
       isInjured = true;
-      injuryDaysRemaining = 6 + Math.floor(injRand() * 12);
-      injuryType = eff?.role === 'BOWLER' ? 'Shoulder Stiffness' : 'Grade 1 Hamstring Strain';
-      injurySeverity = 'MINOR';
+      injuryDaysRemaining = pick.days + Math.floor(injRand() * 7);
+      injuryType = pick.type;
+      injurySeverity = pick.sev;
       newHeadlines.push({
         id: `news_usr_inj_${pId}_${matchCopy.id}`,
-        title: `Medical Update: ${eff?.name || pId} Out for ${injuryDaysRemaining} Days (${injuryType})`,
-        summary: `High match workload (${nextFatigue}%) contributed to a minor ${injuryType.toLowerCase()} for ${eff?.name || pId}.`,
+        title: `🚑 Injury Alert: ${eff?.name || pId} — ${injuryType} (${injuryDaysRemaining} Days)`,
+        summary: `${eff?.name || pId} sustained a ${injuryType.toLowerCase()} during ${matchCopy.seriesName || 'the match'} and will be unavailable for approximately ${injuryDaysRemaining} days. The medical team is monitoring recovery.`,
         category: 'INJURY',
         timestamp: matchCopy.date || updatedCareer.currentDate,
         relatedTeamId: career.selectedTeamId,
@@ -1492,6 +1523,10 @@ export function applyUserMatchResult(
       injurySeverity,
     };
   });
+
+  // 3b. Apply opponent injuries & fatigue from the user match (opponents get hurt too!)
+  const opponentInjuryNews = applyPostMatchAIUpdates(updatedCareer, matchCopy);
+  newHeadlines.push(...opponentInjuryNews);
 
   // 4. Tour & Rivalry Standings update
   if (matchCopy.tourId && updatedCareer.tours) {

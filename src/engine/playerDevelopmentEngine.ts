@@ -107,21 +107,29 @@ export function processSquadTrainingDay(
       p.workloadFatigue = Math.max(0, p.workloadFatigue - recoveryRate);
     }
 
-    // 3. Risk of Injury during heavy fatigue
-    if (p.workloadFatigue >= 75) {
-      const injuryChance = (p.workloadFatigue - 70) * 0.005; // 2.5% to 15%
+    // 3. Risk of Injury during heavy fatigue — lower threshold for more realistic in-game injuries
+    if (p.workloadFatigue >= 65) {
+      const injuryChance = Math.min(0.18, (p.workloadFatigue - 60) * 0.006); // 3% at 65 fatigue → 18% at 90+
       if (Math.random() < injuryChance) {
         p.isInjured = true;
-        const injuries = [
-          { type: 'Hamstring Strain', days: 12, sev: 'MODERATE' as const },
-          { type: 'Side Strain', days: 18, sev: 'SEVERE' as const },
-          { type: 'Groin Soreness', days: 7, sev: 'MINOR' as const },
-          { type: 'Shoulder Impingement', days: 10, sev: 'MODERATE' as const },
-          { type: 'Ankle Sprain', days: 14, sev: 'MODERATE' as const },
+        const injuries = p.role === 'BOWLER' ? [
+          { type: 'Side Strain', days: 14, sev: 'MODERATE' as const },
+          { type: 'Shoulder Impingement', days: 18, sev: 'MODERATE' as const },
+          { type: 'Stress Fracture (Back)', days: 42, sev: 'SEVERE' as const },
+          { type: 'Ankle Sprain', days: 10, sev: 'MINOR' as const },
+          { type: 'Groin Strain', days: 12, sev: 'MINOR' as const },
+          { type: 'Knee Soreness', days: 7, sev: 'MINOR' as const },
+        ] : [
+          { type: 'Hamstring Strain', days: 14, sev: 'MODERATE' as const },
+          { type: 'Lower Back Pain', days: 10, sev: 'MINOR' as const },
+          { type: 'Finger Fracture', days: 21, sev: 'SEVERE' as const },
+          { type: 'Calf Muscle Tear', days: 18, sev: 'MODERATE' as const },
+          { type: 'Quad Tightness', days: 7, sev: 'MINOR' as const },
+          { type: 'Rib Contusion', days: 10, sev: 'MINOR' as const },
         ];
         const pick = injuries[Math.floor(Math.random() * injuries.length)];
         p.injuryType = pick.type;
-        p.injuryDaysRemaining = pick.days;
+        p.injuryDaysRemaining = pick.days + Math.floor(Math.random() * 7);
         p.injurySeverity = pick.sev;
         newInjuriesCount++;
         return p;
