@@ -211,14 +211,31 @@ function generateRoundRobinGroupMatches(
  * across all supported countries, bilateral tours, Ashes, BGT, WTC, T20 WC, Asia Cup, Tri-Series,
  * ODI World Cup, and Champions Trophy.
  */
-export function buildInternationalCalendar(userTeamId: string): CalendarTimeline {
+/**
+ * Builds the comprehensive initial multi-year international cricket calendar (Nov 2026 – Mar 2028)
+ * across all supported countries, bilateral tours, Ashes, BGT, WTC, T20 WC, Asia Cup, Tri-Series,
+ * ODI World Cup, and Champions Trophy.
+ * 
+ * An optional randomSeed can be provided so that each new career starts with a freshly mixed,
+ * varied opening tour for the user's selected country rather than the exact same default tour every time.
+ */
+export function buildInternationalCalendar(userTeamId: string, randomSeed?: number): CalendarTimeline {
   const events: CalendarEvent[] = [];
   const userMatches: Match[] = [];
   const worldMatches: Match[] = [];
   const allTours: Tour[] = [];
   const tracker = new TeamWindowTracker();
 
-  const tourTemplates: Array<{
+  // Pseudo-random generator for reproducible or random seed
+  const s = randomSeed ?? Math.floor(Math.random() * 1000000);
+  const rng = (offset: number) => {
+    const x = Math.sin(s + offset) * 10000;
+    return x - Math.floor(x);
+  };
+
+  // Define potential opening starter tour pools for the user's nation (Window 1: Nov 2026 – Jan 2027)
+  // This ensures that every new career features a realistic, exciting, and varied starter tour!
+  type TourTemplateItem = {
     host: string;
     visiting: string;
     tests: number;
@@ -230,8 +247,299 @@ export function buildInternationalCalendar(userTeamId: string): CalendarTimeline
     isSpecial?: 'ASHES' | 'BORDER_GAVASKAR';
     wtcId?: string;
     suffix?: string;
-  }> = [
-    // Window 1: Late Nov 2026 – Early Jan 2027 (WTC 2025-27 Window)
+  };
+
+  const starterOptionsByTeam: Record<string, TourTemplateItem[]> = {
+    AUS: [
+      {
+        host: 'AUS',
+        visiting: 'IND',
+        tests: 5,
+        odis: 0,
+        t20is: 0,
+        startDate: '2026-11-22',
+        year: 2026,
+        name: 'Border-Gavaskar Trophy (India in Australia)',
+        isSpecial: 'BORDER_GAVASKAR',
+        wtcId: 'wtc_2025_27',
+      },
+      {
+        host: 'AUS',
+        visiting: 'RSA',
+        tests: 3,
+        odis: 3,
+        t20is: 3,
+        startDate: '2026-11-20',
+        year: 2026,
+        name: 'South Africa Tour of Australia (Freedom Series)',
+        wtcId: 'wtc_2025_27',
+      },
+      {
+        host: 'AUS',
+        visiting: 'ENG',
+        tests: 0,
+        odis: 3,
+        t20is: 5,
+        startDate: '2026-11-21',
+        year: 2026,
+        name: 'England White-Ball Tour of Australia',
+      },
+      {
+        host: 'AUS',
+        visiting: 'NZL',
+        tests: 3,
+        odis: 3,
+        t20is: 0,
+        startDate: '2026-11-23',
+        year: 2026,
+        name: 'Chappell-Hadlee Series (New Zealand in Australia)',
+        wtcId: 'wtc_2025_27',
+      },
+      {
+        host: 'AUS',
+        visiting: 'WI',
+        tests: 2,
+        odis: 3,
+        t20is: 3,
+        startDate: '2026-11-22',
+        year: 2026,
+        name: 'Frank Worrell Trophy (West Indies in Australia)',
+        wtcId: 'wtc_2025_27',
+      },
+    ],
+    IND: [
+      {
+        host: 'AUS',
+        visiting: 'IND',
+        tests: 5,
+        odis: 0,
+        t20is: 0,
+        startDate: '2026-11-22',
+        year: 2026,
+        name: 'Border-Gavaskar Trophy (India in Australia)',
+        isSpecial: 'BORDER_GAVASKAR',
+        wtcId: 'wtc_2025_27',
+      },
+      {
+        host: 'IND',
+        visiting: 'NZL',
+        tests: 3,
+        odis: 3,
+        t20is: 3,
+        startDate: '2026-11-20',
+        year: 2026,
+        name: 'New Zealand Tour of India',
+        wtcId: 'wtc_2025_27',
+      },
+      {
+        host: 'IND',
+        visiting: 'ENG',
+        tests: 0,
+        odis: 3,
+        t20is: 5,
+        startDate: '2026-11-22',
+        year: 2026,
+        name: 'England Tour of India (White-Ball Super Series)',
+      },
+      {
+        host: 'RSA',
+        visiting: 'IND',
+        tests: 2,
+        odis: 3,
+        t20is: 4,
+        startDate: '2026-11-24',
+        year: 2026,
+        name: 'India Tour of South Africa',
+        wtcId: 'wtc_2025_27',
+      },
+      {
+        host: 'IND',
+        visiting: 'SL',
+        tests: 2,
+        odis: 3,
+        t20is: 3,
+        startDate: '2026-11-21',
+        year: 2026,
+        name: 'Sri Lanka Tour of India',
+        wtcId: 'wtc_2025_27',
+      },
+    ],
+    ENG: [
+      {
+        host: 'NZL',
+        visiting: 'ENG',
+        tests: 3,
+        odis: 0,
+        t20is: 3,
+        startDate: '2026-11-25',
+        year: 2026,
+        name: 'England Tour of New Zealand',
+        wtcId: 'wtc_2025_27',
+      },
+      {
+        host: 'ENG',
+        visiting: 'PAK',
+        tests: 3,
+        odis: 3,
+        t20is: 3,
+        startDate: '2026-11-20',
+        year: 2026,
+        name: 'Pakistan Tour of England',
+        wtcId: 'wtc_2025_27',
+      },
+      {
+        host: 'WI',
+        visiting: 'ENG',
+        tests: 3,
+        odis: 3,
+        t20is: 5,
+        startDate: '2026-11-22',
+        year: 2026,
+        name: 'England Tour of the West Indies (Botham-Richards Trophy)',
+        wtcId: 'wtc_2025_27',
+      },
+      {
+        host: 'ENG',
+        visiting: 'RSA',
+        tests: 3,
+        odis: 3,
+        t20is: 0,
+        startDate: '2026-11-23',
+        year: 2026,
+        name: 'South Africa Tour of England (Basil D’Oliveira Trophy)',
+        wtcId: 'wtc_2025_27',
+      },
+    ],
+    RSA: [
+      {
+        host: 'RSA',
+        visiting: 'SL',
+        tests: 2,
+        odis: 3,
+        t20is: 0,
+        startDate: '2026-11-24',
+        year: 2026,
+        name: 'Sri Lanka Tour of South Africa',
+        wtcId: 'wtc_2025_27',
+      },
+      {
+        host: 'AUS',
+        visiting: 'RSA',
+        tests: 3,
+        odis: 3,
+        t20is: 3,
+        startDate: '2026-11-20',
+        year: 2026,
+        name: 'South Africa Tour of Australia',
+        wtcId: 'wtc_2025_27',
+      },
+      {
+        host: 'RSA',
+        visiting: 'PAK',
+        tests: 2,
+        odis: 3,
+        t20is: 3,
+        startDate: '2026-11-22',
+        year: 2026,
+        name: 'Pakistan Tour of South Africa',
+        wtcId: 'wtc_2025_27',
+      },
+      {
+        host: 'RSA',
+        visiting: 'NZL',
+        tests: 2,
+        odis: 3,
+        t20is: 3,
+        startDate: '2026-11-25',
+        year: 2026,
+        name: 'New Zealand Tour of South Africa',
+        wtcId: 'wtc_2025_27',
+      },
+    ],
+    PAK: [
+      {
+        host: 'PAK',
+        visiting: 'WI',
+        tests: 2,
+        odis: 3,
+        t20is: 3,
+        startDate: '2026-11-22',
+        year: 2026,
+        name: 'West Indies Tour of Pakistan',
+        wtcId: 'wtc_2025_27',
+      },
+      {
+        host: 'ZIM',
+        visiting: 'PAK',
+        tests: 2,
+        odis: 3,
+        t20is: 3,
+        startDate: '2026-11-24',
+        year: 2026,
+        name: 'Pakistan Tour of Zimbabwe',
+      },
+      {
+        host: 'PAK',
+        visiting: 'BAN',
+        tests: 2,
+        odis: 3,
+        t20is: 3,
+        startDate: '2026-11-21',
+        year: 2026,
+        name: 'Bangladesh Tour of Pakistan',
+        wtcId: 'wtc_2025_27',
+      },
+      {
+        host: 'RSA',
+        visiting: 'PAK',
+        tests: 2,
+        odis: 3,
+        t20is: 3,
+        startDate: '2026-11-22',
+        year: 2026,
+        name: 'Pakistan Tour of South Africa',
+        wtcId: 'wtc_2025_27',
+      },
+    ],
+    NZL: [
+      {
+        host: 'NZL',
+        visiting: 'ENG',
+        tests: 3,
+        odis: 0,
+        t20is: 3,
+        startDate: '2026-11-25',
+        year: 2026,
+        name: 'England Tour of New Zealand',
+        wtcId: 'wtc_2025_27',
+      },
+      {
+        host: 'NZL',
+        visiting: 'SL',
+        tests: 2,
+        odis: 3,
+        t20is: 3,
+        startDate: '2026-11-22',
+        year: 2026,
+        name: 'Sri Lanka Tour of New Zealand',
+        wtcId: 'wtc_2025_27',
+      },
+      {
+        host: 'AUS',
+        visiting: 'NZL',
+        tests: 3,
+        odis: 3,
+        t20is: 0,
+        startDate: '2026-11-23',
+        year: 2026,
+        name: 'Chappell-Hadlee Trophy (New Zealand in Australia)',
+        wtcId: 'wtc_2025_27',
+      },
+    ],
+  };
+
+  // Default Window 1 baseline fixtures
+  const defaultWindow1: TourTemplateItem[] = [
     {
       host: 'AUS',
       visiting: 'IND',
@@ -297,6 +605,31 @@ export function buildInternationalCalendar(userTeamId: string): CalendarTimeline
       year: 2026,
       name: 'Ireland vs Afghanistan Series',
     },
+  ];
+
+  // Pick a dynamic starter tour for userTeamId if available in the starter options pool
+  let chosenWindow1: TourTemplateItem[] = [...defaultWindow1];
+  const userStarterOptions = starterOptionsByTeam[userTeamId];
+  if (userStarterOptions && userStarterOptions.length > 0) {
+    const pickedIndex = Math.floor(rng(17) * userStarterOptions.length);
+    const selectedStarterTour = userStarterOptions[pickedIndex];
+
+    // Remove any default Window 1 tour that involves the user or the selected opponent
+    chosenWindow1 = chosenWindow1.filter(
+      (t) =>
+        t.host !== selectedStarterTour.host &&
+        t.host !== selectedStarterTour.visiting &&
+        t.visiting !== selectedStarterTour.host &&
+        t.visiting !== selectedStarterTour.visiting
+    );
+
+    // Put selected starter tour at the very top of Window 1
+    chosenWindow1.unshift(selectedStarterTour);
+  }
+
+  const tourTemplates: TourTemplateItem[] = [
+    // Window 1: Mixed / dynamic starter tours
+    ...chosenWindow1,
 
     // Window 2: Mid Jan 2027 – Late Feb 2027 (Ashes + Multi-Format Bilateral Tours)
     {

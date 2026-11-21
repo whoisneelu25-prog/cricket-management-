@@ -255,7 +255,8 @@ export function createNewCareerSave(
   coachPerk?: string
 ): CareerSave {
   const team = INTERNATIONAL_TEAMS.find((t) => t.id === teamId) || INTERNATIONAL_TEAMS[0];
-  const { events, userMatches, worldMatches, tours } = buildInternationalCalendar(team.id);
+  const careerSeed = Date.now() + Math.floor(Math.random() * 100000);
+  const { events, userMatches, worldMatches, tours } = buildInternationalCalendar(team.id, careerSeed);
 
   const testConfig = getDefaultFormatSquadConfig(team.id, 'TEST');
   const odiConfig = getDefaultFormatSquadConfig(team.id, 'ODI');
