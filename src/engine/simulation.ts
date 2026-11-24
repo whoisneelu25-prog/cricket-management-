@@ -660,11 +660,11 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
       break;
     case 'ATTACKING':
       aggressionRunFactor = format === 'TEST' ? 1.34 : 1.25;
-      aggressionWicketRisk = ctx.isUserBatting ? 1.08 : format === 'TEST' ? 1.24 : 1.16;
+      aggressionWicketRisk = format === 'TEST' ? 1.24 : 1.16;
       break;
     case 'SMASH':
       aggressionRunFactor = format === 'TEST' ? 1.62 : 1.50;
-      aggressionWicketRisk = ctx.isUserBatting ? 1.18 : format === 'TEST' ? 1.38 : 1.26;
+      aggressionWicketRisk = format === 'TEST' ? 1.38 : 1.26;
       break;
   }
 
@@ -972,35 +972,34 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
   const ballsFaced = ctx.strikerBallsFaced || 0;
 
   // Realistic Settled Batter Mechanic (Cricket Management 2026 Engine):
-  // When a batter gets their eye in, early vulnerability reduces; no early-ball wicket spike on user batters
+  // When a batter gets their eye in, early vulnerability reduces organically
   let settledDiscount = 1.0;
   if (ballsFaced >= 50) {
     settledDiscount = 0.76; // Set batter, well adjusted to conditions
   } else if (ballsFaced >= 20) {
     settledDiscount = 0.85; // Getting settled
   } else if (ballsFaced < 8) {
-    settledDiscount = ctx.isUserBatting ? 0.94 : 1.04;
+    settledDiscount = 1.04;
   }
 
   // Base wicket probability per delivery
-  // Calibrated so Test matches realistically average 85-115 overs and middle/lower order contribute 50+ scores
+  // Equal baseline across both sides
   let baseWicketProb = 0.016;
   if (format === 'TEST') {
-    baseWicketProb = isTailender ? (ctx.isUserBatting ? 0.0235 : 0.0255) : (ctx.isUserBatting ? 0.0158 : 0.0152);
+    baseWicketProb = isTailender ? 0.0255 : 0.0152;
   } else if (format === 'ODI') {
-    baseWicketProb = isTailender ? (ctx.isUserBatting ? 0.0245 : 0.0295) : (ctx.isUserBatting ? 0.0175 : 0.0195);
+    baseWicketProb = isTailender ? 0.0295 : 0.0195;
   } else if (format === 'T20I') {
-    baseWicketProb = isTailender ? (ctx.isUserBatting ? 0.0270 : 0.0310) : (ctx.isUserBatting ? 0.0210 : 0.0225);
+    baseWicketProb = isTailender ? 0.0310 : 0.0225;
   }
 
   // Skill disparity: +bowlerSkill -batterMatchupSkill
-  // Ensure middle-order and lower-order batters have strong matchup floors so they regularly build 50+ scores
   const effectiveBatterMatchupSkill =
-    ctx.isUserBatting || format === 'TEST'
+    format === 'TEST'
       ? isLowerOrder
-        ? Math.max(batterMatchupSkill, ctx.isUserBatting ? 82 : 80)
+        ? Math.max(batterMatchupSkill, 80)
         : isMiddleOrder
-        ? Math.max(batterMatchupSkill, ctx.isUserBatting ? 86 : 84)
+        ? Math.max(batterMatchupSkill, 84)
         : batterMatchupSkill
       : batterMatchupSkill;
 
@@ -1008,14 +1007,14 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
   const skillDelta = (bowlerSkill + pitchBowlerBoost * 25 - effectiveBatterMatchupSkill) / 220;
   let finalWicketProb = baseWicketProb * (1 + skillDelta + bowlerFormMod - batterFormMod) * aggressionWicketRisk * settledDiscount;
 
-  // Middle Order (#4-#7) & Lower Order (#8-#11) Partnership & Scoring Boost
-  if (ctx.isUserBatting || format === 'TEST') {
+  // Middle Order (#4-#7) & Lower Order (#8-#11) Partnership & Scoring in Tests
+  if (format === 'TEST') {
     if (isMiddleOrder) {
-      finalWicketProb *= ctx.isUserBatting ? 0.93 : 0.94;
-      aggressionRunFactor *= ctx.isUserBatting ? 1.07 : 1.05;
+      finalWicketProb *= 0.94;
+      aggressionRunFactor *= 1.05;
     } else if (isLowerOrder) {
-      finalWicketProb *= ctx.isUserBatting ? 0.94 : 0.94;
-      aggressionRunFactor *= ctx.isUserBatting ? 1.09 : 1.07;
+      finalWicketProb *= 0.94;
+      aggressionRunFactor *= 1.07;
     }
   }
 
@@ -1077,32 +1076,12 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
   if (effectiveFieldPreset === 'DEFENSIVE_BOUNDARY') finalWicketProb *= 0.82;
   if (effectiveFieldPreset === 'DEATH_PROTECT' && format !== 'TEST') finalWicketProb *= 0.94;
 
-  // Natural managerial composure & balance without artificial over-number gatekeeping ("go with the flow")
-  // Realistic difficulty calibration: moderate user bowling edge without extreme 4-wickets-in-an-over streaks
-  if (ctx.isUserBatting) {
-    if (format === 'TEST') {
-      finalWicketProb *= 0.98;
-      aggressionRunFactor *= 1.02;
-    } else {
-      finalWicketProb *= 0.97;
-      aggressionRunFactor *= 1.02;
-    }
-  } else if (ctx.isUserBowling) {
-    if (format === 'TEST') {
-      finalWicketProb *= 1.08;
-      aggressionRunFactor *= 0.95;
-    } else {
-      // White-ball (ODI/T20I): Balanced realistic competition when user is bowling
-      // In 2nd innings chase, keep disciplined pressure without absurd multi-wicket over floods
-      const isSecondInnChase = Boolean(ctx.isSecondInnings || (ctx.targetRuns && ctx.targetRuns > 0));
-      if (isSecondInnChase) {
-        finalWicketProb *= 1.12;
-        aggressionRunFactor *= 0.91;
-      } else {
-        finalWicketProb *= 1.07;
-        aggressionRunFactor *= 0.94;
-      }
-    }
+  // Natural balance: fair contest between bat and ball based strictly on ratings, tactics, pitch & fatigue
+  // No artificial user buffs or handicaps
+  if (format === 'TEST') {
+    // Tests: natural balance
+  } else {
+    // White-ball: natural balance
   }
 
   const minWicketFloor = format === 'TEST' ? 0.0022 : 0.0028;
@@ -1269,7 +1248,7 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
   // 9. Run Scoring Probabilities
   const rawPowerFactor = (striker.attributes.powerHitting / 100) * (striker.attributes.timing / 100);
   const powerFactor =
-    ctx.isUserBatting || format === 'TEST'
+    format === 'TEST'
       ? isLowerOrder
         ? Math.max(rawPowerFactor, 0.78)
         : isMiddleOrder
@@ -1318,21 +1297,15 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
         ? 0.90
         : 1.0;
 
-    // User Bowling in 2nd Innings: Controlled boundary pressure without excessive suppression
-    const isUserBowling2ndInn = ctx.isUserBowling && Boolean(ctx.isSecondInnings || (ctx.targetRuns && ctx.targetRuns > 0));
-    const userBowlingBoundaryNerf = isUserBowling2ndInn ? 0.91 : ctx.isUserBowling ? 0.95 : 1.0;
-
     probSix =
       (isSmash ? 0.038 : isAttacking ? 0.028 : 0.020) *
       boundaryMultiplier *
       sixGroundMod *
-      userBowlingBoundaryNerf *
       (isWhiteBallDeath ? 1.15 : 1.0);
     probFour =
       (isSmash ? 0.108 : isAttacking ? 0.092 : 0.080) *
       boundaryMultiplier *
       fourGroundMod *
-      userBowlingBoundaryNerf *
       ropeProtectMod;
     probThree = 0.012 * twoGroundMod;
     probTwo = 0.064 * (striker.attributes.fitness / 85) * twoGroundMod * powerplaySingleTwoMod;
@@ -1347,12 +1320,8 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
         ? 0.90
         : 1.0;
 
-    // User Bowling in 2nd Innings: Controlled boundary pressure without excessive suppression
-    const isUserBowling2ndInn = ctx.isUserBowling && Boolean(ctx.isSecondInnings || (ctx.targetRuns && ctx.targetRuns > 0));
-    const userBowlingBoundaryNerf = isUserBowling2ndInn ? 0.90 : ctx.isUserBowling ? 0.95 : 1.0;
-
-    probSix = (isSmash ? 0.052 : 0.038) * boundaryMultiplier * sixGroundMod * userBowlingBoundaryNerf * (isWhiteBallDeath ? 1.15 : 1.0);
-    probFour = (isSmash ? 0.118 : 0.092) * boundaryMultiplier * fourGroundMod * userBowlingBoundaryNerf * ropeProtectMod;
+    probSix = (isSmash ? 0.052 : 0.038) * boundaryMultiplier * sixGroundMod * (isWhiteBallDeath ? 1.15 : 1.0);
+    probFour = (isSmash ? 0.118 : 0.092) * boundaryMultiplier * fourGroundMod * ropeProtectMod;
     probThree = 0.010 * twoGroundMod;
     probTwo = 0.068 * (striker.attributes.fitness / 85) * twoGroundMod * powerplaySingleTwoMod;
     probOne = (isSmash ? 0.27 : 0.30 * aggressionRunFactor) * powerplaySingleTwoMod;
