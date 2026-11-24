@@ -979,18 +979,18 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
   } else if (ballsFaced >= 20) {
     settledDiscount = 0.85; // Getting settled
   } else if (ballsFaced < 8) {
-    settledDiscount = ctx.isUserBatting ? 0.82 : 1.04;
+    settledDiscount = ctx.isUserBatting ? 0.94 : 1.04;
   }
 
   // Base wicket probability per delivery
   // Calibrated so Test matches realistically average 85-115 overs and middle/lower order contribute 50+ scores
   let baseWicketProb = 0.016;
   if (format === 'TEST') {
-    baseWicketProb = isTailender ? (ctx.isUserBatting ? 0.0215 : 0.0255) : (ctx.isUserBatting ? 0.0168 : 0.0152);
+    baseWicketProb = isTailender ? (ctx.isUserBatting ? 0.0235 : 0.0255) : (ctx.isUserBatting ? 0.0158 : 0.0152);
   } else if (format === 'ODI') {
-    baseWicketProb = isTailender ? (ctx.isUserBatting ? 0.0205 : 0.0295) : (ctx.isUserBatting ? 0.0160 : 0.0195);
+    baseWicketProb = isTailender ? (ctx.isUserBatting ? 0.0245 : 0.0295) : (ctx.isUserBatting ? 0.0175 : 0.0195);
   } else if (format === 'T20I') {
-    baseWicketProb = isTailender ? (ctx.isUserBatting ? 0.0240 : 0.0310) : (ctx.isUserBatting ? 0.0195 : 0.0225);
+    baseWicketProb = isTailender ? (ctx.isUserBatting ? 0.0270 : 0.0310) : (ctx.isUserBatting ? 0.0210 : 0.0225);
   }
 
   // Skill disparity: +bowlerSkill -batterMatchupSkill
@@ -998,9 +998,9 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
   const effectiveBatterMatchupSkill =
     ctx.isUserBatting || format === 'TEST'
       ? isLowerOrder
-        ? Math.max(batterMatchupSkill, ctx.isUserBatting ? 85 : 80)
+        ? Math.max(batterMatchupSkill, ctx.isUserBatting ? 82 : 80)
         : isMiddleOrder
-        ? Math.max(batterMatchupSkill, ctx.isUserBatting ? 89 : 84)
+        ? Math.max(batterMatchupSkill, ctx.isUserBatting ? 86 : 84)
         : batterMatchupSkill
       : batterMatchupSkill;
 
@@ -1011,11 +1011,11 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
   // Middle Order (#4-#7) & Lower Order (#8-#11) Partnership & Scoring Boost
   if (ctx.isUserBatting || format === 'TEST') {
     if (isMiddleOrder) {
-      finalWicketProb *= ctx.isUserBatting ? 0.88 : 0.94;
-      aggressionRunFactor *= ctx.isUserBatting ? 1.15 : 1.05;
+      finalWicketProb *= ctx.isUserBatting ? 0.93 : 0.94;
+      aggressionRunFactor *= ctx.isUserBatting ? 1.07 : 1.05;
     } else if (isLowerOrder) {
-      finalWicketProb *= ctx.isUserBatting ? 0.89 : 0.94;
-      aggressionRunFactor *= ctx.isUserBatting ? 1.20 : 1.07;
+      finalWicketProb *= ctx.isUserBatting ? 0.94 : 0.94;
+      aggressionRunFactor *= ctx.isUserBatting ? 1.09 : 1.07;
     }
   }
 
@@ -1078,28 +1078,29 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
   if (effectiveFieldPreset === 'DEATH_PROTECT' && format !== 'TEST') finalWicketProb *= 0.94;
 
   // Natural managerial composure & balance without artificial over-number gatekeeping ("go with the flow")
+  // Realistic difficulty calibration: moderate user bowling edge without extreme 4-wickets-in-an-over streaks
   if (ctx.isUserBatting) {
     if (format === 'TEST') {
-      finalWicketProb *= 0.94;
-      aggressionRunFactor *= 1.07;
+      finalWicketProb *= 0.98;
+      aggressionRunFactor *= 1.02;
     } else {
-      finalWicketProb *= 0.92;
-      aggressionRunFactor *= 1.06;
+      finalWicketProb *= 0.97;
+      aggressionRunFactor *= 1.02;
     }
   } else if (ctx.isUserBowling) {
     if (format === 'TEST') {
-      finalWicketProb *= 1.14;
-      aggressionRunFactor *= 0.92;
+      finalWicketProb *= 1.08;
+      aggressionRunFactor *= 0.95;
     } else {
-      // White-ball (ODI/T20I): Nerf opponent batters when user is bowling
-      // Especially in the 2nd innings chase to prevent unstoppable batting blitzes
+      // White-ball (ODI/T20I): Balanced realistic competition when user is bowling
+      // In 2nd innings chase, keep disciplined pressure without absurd multi-wicket over floods
       const isSecondInnChase = Boolean(ctx.isSecondInnings || (ctx.targetRuns && ctx.targetRuns > 0));
       if (isSecondInnChase) {
-        finalWicketProb *= 1.28;
-        aggressionRunFactor *= 0.85;
+        finalWicketProb *= 1.12;
+        aggressionRunFactor *= 0.91;
       } else {
-        finalWicketProb *= 1.15;
-        aggressionRunFactor *= 0.90;
+        finalWicketProb *= 1.07;
+        aggressionRunFactor *= 0.94;
       }
     }
   }
@@ -1317,9 +1318,9 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
         ? 0.90
         : 1.0;
 
-    // User Bowling in 2nd Innings: Nerf boundary conversion so computer doesn't run away with easy boundaries
+    // User Bowling in 2nd Innings: Controlled boundary pressure without excessive suppression
     const isUserBowling2ndInn = ctx.isUserBowling && Boolean(ctx.isSecondInnings || (ctx.targetRuns && ctx.targetRuns > 0));
-    const userBowlingBoundaryNerf = isUserBowling2ndInn ? 0.82 : ctx.isUserBowling ? 0.90 : 1.0;
+    const userBowlingBoundaryNerf = isUserBowling2ndInn ? 0.91 : ctx.isUserBowling ? 0.95 : 1.0;
 
     probSix =
       (isSmash ? 0.038 : isAttacking ? 0.028 : 0.020) *
@@ -1346,9 +1347,9 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
         ? 0.90
         : 1.0;
 
-    // User Bowling in 2nd Innings: Nerf boundary conversion so computer doesn't hit unrealistic runaway boundaries
+    // User Bowling in 2nd Innings: Controlled boundary pressure without excessive suppression
     const isUserBowling2ndInn = ctx.isUserBowling && Boolean(ctx.isSecondInnings || (ctx.targetRuns && ctx.targetRuns > 0));
-    const userBowlingBoundaryNerf = isUserBowling2ndInn ? 0.80 : ctx.isUserBowling ? 0.90 : 1.0;
+    const userBowlingBoundaryNerf = isUserBowling2ndInn ? 0.90 : ctx.isUserBowling ? 0.95 : 1.0;
 
     probSix = (isSmash ? 0.052 : 0.038) * boundaryMultiplier * sixGroundMod * userBowlingBoundaryNerf * (isWhiteBallDeath ? 1.15 : 1.0);
     probFour = (isSmash ? 0.118 : 0.092) * boundaryMultiplier * fourGroundMod * userBowlingBoundaryNerf * ropeProtectMod;
