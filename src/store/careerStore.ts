@@ -2036,13 +2036,32 @@ export function sanitizeCareerSave(career: CareerSave): CareerSave {
     return ensureMatchTacticalSystemsInitialized(updatedMatch);
   });
 
+  const emergingPlayers =
+    career.emergingPlayers && career.emergingPlayers.length > 0
+      ? career.emergingPlayers
+      : generateInitialEmergingPlayers();
+  const userEmergingIds = emergingPlayers
+    .filter((p) => p.countryId === userTeamId)
+    .map((p) => p.id);
+
+  (['TEST', 'ODI', 'T20I'] as MatchFormat[]).forEach((fmt) => {
+    sanitizedFormatSquads[fmt] = {
+      ...sanitizedFormatSquads[fmt],
+      squadPlayerIds: Array.from(
+        new Set([...sanitizedFormatSquads[fmt].squadPlayerIds, ...userEmergingIds])
+      ),
+    };
+  });
+
   // Sanitize user tours only (preserve AI tours intact)
   const sanitizedTours = (career.tours || []).map((t) => {
-    if (!t.tourSquadIds) return t;
     if (t.hostTeamId !== userTeamId && t.visitingTeamId !== userTeamId) return t;
+    const nextTourSquadIds = t.tourSquadIds
+      ? Array.from(new Set([...t.tourSquadIds.filter((id) => activeIds.has(id)), ...userEmergingIds]))
+      : t.tourSquadIds;
     return {
       ...t,
-      tourSquadIds: t.tourSquadIds.filter((id) => activeIds.has(id)),
+      tourSquadIds: nextTourSquadIds,
     };
   });
 
@@ -2065,10 +2084,7 @@ export function sanitizeCareerSave(career: CareerSave): CareerSave {
     playerRankings,
     notifications,
     teamMorale,
-    emergingPlayers:
-      career.emergingPlayers && career.emergingPlayers.length > 0
-        ? career.emergingPlayers
-        : generateInitialEmergingPlayers(),
+    emergingPlayers,
     archivedMatches: career.archivedMatches || [],
     formatSquads: sanitizedFormatSquads,
     customSquadXI: {
