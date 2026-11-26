@@ -94,6 +94,7 @@ export interface DeliveryContext {
   isUserBatting?: boolean;
   isUserBowling?: boolean;
   isSecondInnings?: boolean;
+  difficulty?: 'BEGINNER' | 'NORMAL' | 'PROFESSIONAL' | 'EXPERT';
 }
 
 // Deterministic Mulberry32 PRNG for reproducible test runs
@@ -1009,13 +1010,30 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
     finalWicketProb *= isSpin ? 1.22 : 1.04;
   }
 
-  // Slight realistic composure edge for user management (fair even chance, not super hard)
+  // Difficulty-driven balance (BEGINNER / NORMAL make it easy & fun for the user to win; PROFESSIONAL is neutral; EXPERT is hardcore)
+  const diff = ctx.difficulty || 'NORMAL';
   if (ctx.isUserBatting) {
-    finalWicketProb *= 0.96;
-    aggressionRunFactor *= 1.03;
+    if (diff === 'BEGINNER') {
+      finalWicketProb *= 0.82;
+      aggressionRunFactor *= 1.12;
+    } else if (diff === 'NORMAL') {
+      finalWicketProb *= 0.90;
+      aggressionRunFactor *= 1.07;
+    } else if (diff === 'EXPERT') {
+      finalWicketProb *= 1.08;
+      aggressionRunFactor *= 0.96;
+    }
   } else if (ctx.isUserBowling) {
-    finalWicketProb *= 1.04;
-    aggressionRunFactor *= 0.97;
+    if (diff === 'BEGINNER') {
+      finalWicketProb *= 1.18;
+      aggressionRunFactor *= 0.90;
+    } else if (diff === 'NORMAL') {
+      finalWicketProb *= 1.10;
+      aggressionRunFactor *= 0.95;
+    } else if (diff === 'EXPERT') {
+      finalWicketProb *= 0.95;
+      aggressionRunFactor *= 1.04;
+    }
   }
 
   // Bowler fatigue & Partnership momentum

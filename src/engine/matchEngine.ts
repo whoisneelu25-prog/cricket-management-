@@ -1435,6 +1435,7 @@ export function stepMatchBall(matchInput: Match): Match {
     isUserBatting: isUserTeamBatting,
     isUserBowling: isUserTeamBowling,
     isSecondInnings: match.format !== 'TEST' && (match.currentInningsIndex === 1 || currentInnings.inningsNumber === 2),
+    difficulty: activeSimulationCareer?.manager?.difficulty || 'NORMAL',
   });
 
   const nameMap: Record<string, string> = {};
