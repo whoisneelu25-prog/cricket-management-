@@ -62,6 +62,7 @@ import {
   initializeAITeams,
   selectAIPlayingXIForMatch,
   applyPostMatchAIUpdates,
+  generateStartingNewGenPlayers,
 } from '../engine/aiTeamEngine';
 import {
   initializeDetailedTeamRankings,
@@ -354,7 +355,7 @@ export function createNewCareerSave(
     rankingHistory: [initialSnapshot],
     notifications: initialNotifications,
     teamMorale: 85,
-    emergingPlayers: [],
+    emergingPlayers: generateStartingNewGenPlayers(team.id, careerSeed),
     archivedMatches: [],
     customSquadXI: {
       TEST: testConfig.playingXI,
