@@ -1018,6 +1018,19 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
     aggressionRunFactor *= 0.97;
   }
 
+  // Bowler fatigue & Partnership momentum
+  if (bowlerFatiguePenalty > 0) {
+    finalWicketProb *= Math.max(0.85, 1 - bowlerFatiguePenalty * 1.2);
+  }
+  const pRuns = (ctx as { partnershipRuns?: number }).partnershipRuns || 0;
+  if (pRuns >= 100) {
+    finalWicketProb *= 0.92;
+    aggressionRunFactor *= 1.08;
+  } else if (pRuns >= 50) {
+    finalWicketProb *= 0.95;
+    aggressionRunFactor *= 1.04;
+  }
+
   if (format === 'TEST') {
     if (!isTailender) {
       finalWicketProb *= Math.max(0.70, 1.15 - defenseProtection * 0.40);
@@ -1263,7 +1276,8 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
       : pitch.type === 'DUSTBOWL_SPIN' || pitch.type === 'CRACKED_DAY5'
       ? 0.90
       : 1.0;
-  const boundaryMultiplier = powerFactor * aggressionRunFactor * formatPaceBonus * powerplayBoundaryBonus * pitchBoundaryMod;
+  const fatigueBoundaryMod = bowlerFatiguePenalty > 0 ? Math.min(1.15, 1 + bowlerFatiguePenalty * 1.2) : 1.0;
+  const boundaryMultiplier = powerFactor * aggressionRunFactor * formatPaceBonus * powerplayBoundaryBonus * pitchBoundaryMod * fatigueBoundaryMod;
 
   const isSmash = effectiveAggression === 'SMASH';
   const isAttacking = effectiveAggression === 'ATTACKING';
