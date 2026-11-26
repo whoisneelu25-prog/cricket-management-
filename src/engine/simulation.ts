@@ -664,7 +664,7 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
       break;
     case 'SMASH':
       aggressionRunFactor = format === 'TEST' ? 1.62 : 1.50;
-      aggressionWicketRisk = format === 'TEST' ? 1.38 : 1.26;
+      aggressionWicketRisk = format === 'TEST' ? 1.38 : 1.48;
       break;
   }
 
@@ -983,10 +983,10 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
   }
 
   // Base wicket probability per delivery
-  // Equal baseline across both sides
-  let baseWicketProb = 0.016;
+  // Calibrated so Test innings realistically average 260-400 (75-105 overs) instead of 500+ every innings
+  let baseWicketProb = 0.018;
   if (format === 'TEST') {
-    baseWicketProb = isTailender ? 0.0255 : 0.0152;
+    baseWicketProb = isTailender ? 0.0315 : 0.0195;
   } else if (format === 'ODI') {
     baseWicketProb = isTailender ? 0.0295 : 0.0195;
   } else if (format === 'T20I') {
@@ -994,28 +994,28 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
   }
 
   // Skill disparity: +bowlerSkill -batterMatchupSkill
-  const effectiveBatterMatchupSkill =
-    format === 'TEST'
-      ? isLowerOrder
-        ? Math.max(batterMatchupSkill, 80)
-        : isMiddleOrder
-        ? Math.max(batterMatchupSkill, 84)
-        : batterMatchupSkill
-      : batterMatchupSkill;
+  const effectiveBatterMatchupSkill = batterMatchupSkill;
 
   const defenseProtection = (striker.attributes.defense * 0.40 + striker.attributes.temperament * 0.35 + striker.attributes.shotSelection * 0.25) / 100;
-  const skillDelta = (bowlerSkill + pitchBowlerBoost * 25 - effectiveBatterMatchupSkill) / 220;
+  const skillDelta = (bowlerSkill + pitchBowlerBoost * 25 - effectiveBatterMatchupSkill) / 200;
   let finalWicketProb = baseWicketProb * (1 + skillDelta + bowlerFormMod - batterFormMod) * aggressionWicketRisk * settledDiscount;
 
-  // Middle Order (#4-#7) & Lower Order (#8-#11) Partnership & Scoring in Tests
-  if (format === 'TEST') {
-    if (isMiddleOrder) {
-      finalWicketProb *= 0.94;
-      aggressionRunFactor *= 1.05;
-    } else if (isLowerOrder) {
-      finalWicketProb *= 0.94;
-      aggressionRunFactor *= 1.07;
-    }
+  // Pitch Type Impact on Wicket Probability (Flat track = fewer wickets, Bowler-friendly = more wickets)
+  if (pitch.type === 'BATTER_PARADISE') {
+    finalWicketProb *= 0.85;
+  } else if (pitch.type === 'GREEN_SEAMER') {
+    finalWicketProb *= isSpin ? 1.02 : 1.22;
+  } else if (pitch.type === 'DUSTBOWL_SPIN' || pitch.type === 'CRACKED_DAY5') {
+    finalWicketProb *= isSpin ? 1.22 : 1.04;
+  }
+
+  // Slight realistic composure edge for user management (fair even chance, not super hard)
+  if (ctx.isUserBatting) {
+    finalWicketProb *= 0.96;
+    aggressionRunFactor *= 1.03;
+  } else if (ctx.isUserBowling) {
+    finalWicketProb *= 1.04;
+    aggressionRunFactor *= 0.97;
   }
 
   if (format === 'TEST') {
@@ -1255,7 +1255,15 @@ export function simulateDelivery(ctx: DeliveryContext): BallOutcome {
         ? Math.max(rawPowerFactor, 0.82)
         : rawPowerFactor
       : rawPowerFactor;
-  const boundaryMultiplier = powerFactor * aggressionRunFactor * formatPaceBonus * powerplayBoundaryBonus;
+  const pitchBoundaryMod =
+    pitch.type === 'BATTER_PARADISE'
+      ? 1.15
+      : pitch.type === 'GREEN_SEAMER'
+      ? 0.88
+      : pitch.type === 'DUSTBOWL_SPIN' || pitch.type === 'CRACKED_DAY5'
+      ? 0.90
+      : 1.0;
+  const boundaryMultiplier = powerFactor * aggressionRunFactor * formatPaceBonus * powerplayBoundaryBonus * pitchBoundaryMod;
 
   const isSmash = effectiveAggression === 'SMASH';
   const isAttacking = effectiveAggression === 'ATTACKING';

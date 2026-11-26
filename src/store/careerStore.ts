@@ -1358,6 +1358,84 @@ export function takeSquadRestDay(career: CareerSave): CareerSave {
 }
 
 /**
+ * Simulates an intra-squad / National A-Squad practice match (Senior XI vs National A-Squad)
+ * to sharpen form, test emerging/reserve players, and award rating growth without affecting ICC rankings.
+ */
+export function playNationalASquadPracticeMatch(
+  career: CareerSave,
+  format: MatchFormat = 'ODI'
+): CareerSave {
+  const currentMs = new Date(career.currentDate).getTime();
+  const nextDate = new Date(currentMs + 24 * 3600 * 1000).toISOString().split('T')[0];
+
+  const sim = simulateWorldMatchesUntil(career, nextDate);
+  const updatedCareer = sim.updatedCareer;
+  updatedCareer.currentDayIndex = (updatedCareer.currentDayIndex || 0) + 1;
+  if (!updatedCareer.playerOverrides) updatedCareer.playerOverrides = {};
+
+  const pool = getEffectivePlayersByCountry(career.selectedTeamId, updatedCareer, true)
+    .filter((p) => !p.isInjured);
+  const seniorXI = (updatedCareer.formatSquads[format]?.playingXI || []).slice(0, 11);
+  const aSquad = pool
+    .filter((p) => !seniorXI.includes(p.id))
+    .slice(0, 11)
+    .map((p) => p.id);
+
+  const participants = [...seniorXI, ...aSquad];
+  const rand = mulberry32(Date.now() % 100000);
+  let topBatterName = '';
+  let topRuns = 0;
+  let topBowlerName = '';
+  let topWkts = 0;
+
+  const ratingKey =
+    format === 'TEST' ? 'testRating' : format === 'ODI' ? 'odiRating' : 't20Rating';
+
+  participants.forEach((pId) => {
+    const p = getEffectivePlayer(pId, updatedCareer);
+    if (!p) return;
+    const existing = updatedCareer.playerOverrides![pId] || {};
+    const curForm = p.currentForm ?? p.attributes.currentForm ?? 78;
+    const curRating = p[ratingKey] ?? 78;
+    const pot = p.potential ?? p.attributes?.potential ?? 90;
+
+    const runs = p.role !== 'BOWLER' ? Math.floor(rand() * 88) : Math.floor(rand() * 25);
+    const wkts = p.role === 'BOWLER' || p.role === 'ALL_ROUNDER' ? Math.floor(rand() * 4) : 0;
+
+    if (runs > topRuns) {
+      topRuns = runs;
+      topBatterName = p.shortName;
+    }
+    if (wkts > topWkts) {
+      topWkts = wkts;
+      topBowlerName = p.shortName;
+    }
+
+    const formBoost = runs >= 50 || wkts >= 3 ? 4 : 2;
+    const ratingBoost = (runs >= 60 || wkts >= 3) && curRating < pot ? 1 : 0;
+
+    updatedCareer.playerOverrides![pId] = {
+      ...existing,
+      currentForm: Math.min(99, curForm + formBoost),
+      workloadFatigue: Math.min(100, (p.workloadFatigue || 15) + 6),
+      [ratingKey]: Math.min(95, Math.min(pot, curRating + ratingBoost)),
+    };
+  });
+
+  const newsArticle: NewsArticle = {
+    id: `news_practice_asquad_${Date.now()}`,
+    title: `${TEAM_META[career.selectedTeamId]?.name || career.selectedTeamId} A-Squad Practice Match (${format})`,
+    summary: `Senior XI faced the National A-Squad in a ${format} warm-up on ${nextDate}. Standouts: ${topBatterName || 'Top Order'} (${topRuns} runs) and ${topBowlerName || 'Pace Unit'} (${topWkts} wkts). Squad form & young player ratings boosted.`,
+    category: 'SQUAD_SELECTION',
+    timestamp: nextDate,
+    relatedTeamId: career.selectedTeamId,
+  };
+
+  updatedCareer.news = [newsArticle, ...updatedCareer.news];
+  return updatedCareer;
+}
+
+/**
  * Applies a completed user match result to the career save EXACTLY ONCE (idempotent!):
  * Updates manager record, tour standings, tournament standings/knockouts, Ashes/BGT, ICC rankings,
  * player statistics, form, fatigue, injuries, and news WITHOUT skipping the calendar date!
@@ -1513,10 +1591,41 @@ export function applyUserMatchResult(
       });
     }
 
+    // Performance-based rating growth towards player potential
+    const potentialCap = eff?.potential ?? eff?.attributes?.potential ?? 92;
+    const ratingKey =
+      matchCopy.format === 'TEST'
+        ? 'testRating'
+        : matchCopy.format === 'ODI'
+        ? 'odiRating'
+        : 't20Rating';
+    const currentFmtRating = eff?.[ratingKey] ?? 78;
+    let ratingGrowth = 0;
+    if (runs >= 100 || wkts >= 5) ratingGrowth = 2;
+    else if (runs >= 50 || wkts >= 3) ratingGrowth = 1;
+
+    const nextFmtRating =
+      ratingGrowth > 0 && currentFmtRating < potentialCap
+        ? Math.min(95, Math.min(potentialCap, currentFmtRating + ratingGrowth))
+        : currentFmtRating;
+
+    if (nextFmtRating > currentFmtRating) {
+      newHeadlines.push({
+        id: `news_usr_growth_${pId}_${matchCopy.id}`,
+        title: `Player Progression: ${eff?.name || pId} Rises to ${nextFmtRating} OVR (${matchCopy.format})`,
+        summary: `Following a standout display (${runs} runs, ${wkts} wickets), ${eff?.name || pId} has improved in ${matchCopy.format} rating towards their ${potentialCap} potential.`,
+        category: 'MILESTONE',
+        timestamp: matchCopy.date || updatedCareer.currentDate,
+        relatedTeamId: career.selectedTeamId,
+        relatedPlayerId: pId,
+      });
+    }
+
     updatedCareer.playerOverrides![pId] = {
       ...existing,
       workloadFatigue: nextFatigue,
       currentForm: Math.max(45, Math.min(99, curForm + formDelta)),
+      [ratingKey]: nextFmtRating,
       isInjured,
       injuryDaysRemaining,
       injuryType,
