@@ -301,6 +301,11 @@ export function createNewCareerSave(
   const odiPoolIds = getNationFormatSelectionData(team.id, 'ODI')?.poolPlayerIds || allCountryPlayers.map((p) => p.id);
   const t20PoolIds = getNationFormatSelectionData(team.id, 'T20I')?.poolPlayerIds || allCountryPlayers.map((p) => p.id);
 
+  const initialEmerging = generateInitialEmergingPlayers(careerSeed);
+  const userEmergingIds = initialEmerging
+    .filter((p) => p.countryId === team.id)
+    .map((p) => p.id);
+
   const newCareer: CareerSave = {
     id: `career_${Date.now()}`,
     version: 4,
@@ -333,20 +338,20 @@ export function createNewCareerSave(
     formatSquads: {
       TEST: {
         ...testConfig,
-        targetSquadSize: 15,
-        squadPlayerIds: testConfig.squadPlayerIds.slice(0, 15),
+        targetSquadSize: 16,
+        squadPlayerIds: Array.from(new Set([...testConfig.squadPlayerIds.slice(0, 15), ...userEmergingIds])),
         reservePlayerIds: testPoolIds.filter((id) => !testConfig.squadPlayerIds.includes(id)).slice(0, 4),
       },
       ODI: {
         ...odiConfig,
-        targetSquadSize: 15,
-        squadPlayerIds: odiConfig.squadPlayerIds.slice(0, 15),
+        targetSquadSize: 16,
+        squadPlayerIds: Array.from(new Set([...odiConfig.squadPlayerIds.slice(0, 15), ...userEmergingIds])),
         reservePlayerIds: odiPoolIds.filter((id) => !odiConfig.squadPlayerIds.includes(id)).slice(0, 4),
       },
       T20I: {
         ...t20Config,
-        targetSquadSize: 15,
-        squadPlayerIds: t20Config.squadPlayerIds.slice(0, 15),
+        targetSquadSize: 16,
+        squadPlayerIds: Array.from(new Set([...t20Config.squadPlayerIds.slice(0, 15), ...userEmergingIds])),
         reservePlayerIds: t20PoolIds.filter((id) => !t20Config.squadPlayerIds.includes(id)).slice(0, 4),
       },
     },
@@ -355,7 +360,7 @@ export function createNewCareerSave(
     rankingHistory: [initialSnapshot],
     notifications: initialNotifications,
     teamMorale: 85,
-    emergingPlayers: generateInitialEmergingPlayers(careerSeed),
+    emergingPlayers: initialEmerging,
     archivedMatches: [],
     customSquadXI: {
       TEST: testConfig.playingXI,

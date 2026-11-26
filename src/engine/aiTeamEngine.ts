@@ -880,8 +880,8 @@ export function processAnnualPlayerLifecycle(
     const capLast = lastName.charAt(0).toUpperCase() + lastName.slice(1);
 
     const role = roles[(newYear + idx) % roles.length];
-    const age = 19 + Math.floor(rand() * 3); // 19-21
-    const potential = 85 + Math.floor(rand() * 10); // 85-94
+    const age = 18 + Math.floor(rand() * 3); // 18-20
+    const potential = 90;
     const baseSkill = 75 + Math.floor(rand() * 6); // 75-80 starting ability
     const isSpinner = cId === 'IND' || cId === 'SL' || cId === 'AFG' || cId === 'BAN' ? rand() > 0.45 : rand() > 0.7;
 
@@ -1001,8 +1001,8 @@ export function generateInitialEmergingPlayers(seed: number = 202611): Player[] 
     const capLast = lastName.charAt(0).toUpperCase() + lastName.slice(1);
 
     const role = roles[(idx + Math.floor(rand() * roles.length)) % roles.length];
-    const age = 19 + Math.floor(rand() * 3); // 19-21
-    const potential = 85 + Math.floor(rand() * 10); // 85-94
+    const age = 18 + Math.floor(rand() * 3); // 18-20
+    const potential = 90;
     const baseSkill = 75 + Math.floor(rand() * 6); // 75-80 starting ability
     const isSpinner =
       cId === 'IND' || cId === 'SL' || cId === 'AFG' || cId === 'BAN'
