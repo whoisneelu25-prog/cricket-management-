@@ -24,7 +24,6 @@ import {
   advanceCareerTime,
   advanceToNextMatchDate,
   takeSquadRestDay,
-  playNationalASquadPracticeMatch,
   announceTourSquad,
   TourFormatSquadAnnouncement,
   assignPlayerTrainingFocus,
@@ -737,14 +736,6 @@ export default function App() {
     saveCareerToStorage(nextCareer);
   };
 
-  // National A-Squad Practice Match Handler
-  const handlePlayPracticeMatch = () => {
-    if (!career) return;
-    const nextCareer = playNationalASquadPracticeMatch(career, career.manager.preferredFormat || 'ODI');
-    setCareer(nextCareer);
-    saveCareerToStorage(nextCareer);
-  };
-
   // Tour Squad Selection Handler
   const handleConfirmTourSquad = (
     tourId: string,
@@ -961,7 +952,6 @@ export default function App() {
               onSelectPlayer={(p) => setSelectedPlayer(p)}
               onAdvanceCalendar={handleAdvanceCalendar}
               onRestSquadDay={handleRestSquadDay}
-              onPlayPracticeMatch={handlePlayPracticeMatch}
               onOpenTourSelection={(tourId) => {
                 setSelectedTourInitialFormat(undefined);
                 setSelectedTourIdForModal(tourId);

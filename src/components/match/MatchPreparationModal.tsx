@@ -410,15 +410,6 @@ export const MatchPreparationModal: React.FC<MatchPreparationModalProps> = ({
                 <span>Spin: <strong className="text-white">{match.pitch.spinBonus >= 0 ? `+${match.pitch.spinBonus}` : match.pitch.spinBonus}</strong></span>
                 <span>Wear: <strong className="text-white">{match.pitch.wearFactor}</strong></span>
               </div>
-              <p className="text-[10px] text-[#e2b64a] mt-1.5 font-medium">
-                {match.pitch.type === 'BATTER_PARADISE'
-                  ? 'Flat Track: Expect high scores — prioritize batting depth.'
-                  : match.pitch.type === 'GREEN_SEAMER'
-                  ? 'Bowler Friendly (Pace): Extra seam & swing — play 3-4 pacers.'
-                  : match.pitch.type === 'DUSTBOWL_SPIN' || match.pitch.type === 'CRACKED_DAY5'
-                  ? 'Spin Friendly: Sharp turn expected — pick 2+ quality spinners.'
-                  : 'Balanced Surface: Even contest between bat and ball.'}
-              </p>
             </div>
 
             <div className="bg-[#10151c] border border-[#1e2733] p-3 rounded-xl">

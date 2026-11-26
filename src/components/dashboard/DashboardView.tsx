@@ -40,7 +40,6 @@ interface DashboardViewProps {
   onSelectPlayer: (player: Player) => void;
   onAdvanceCalendar: (mode: CalendarAdvanceMode) => void;
   onRestSquadDay?: () => void;
-  onPlayPracticeMatch?: () => void;
   onOpenTourSelection?: (tourId: string) => void;
   onNavigateToRankings?: () => void;
   onNavigateToFixtures?: () => void;
@@ -59,7 +58,6 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onSelectPlayer,
   onAdvanceCalendar,
   onRestSquadDay,
-  onPlayPracticeMatch,
   onOpenTourSelection,
   onNavigateToRankings,
   onNavigateToFixtures,
@@ -199,15 +197,6 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               className="bg-[#10151c] hover:bg-[#151d29] text-[#3fca86] border border-[#3fca86]/40 text-xs font-semibold px-2.5 py-1.5 rounded-lg transition cursor-pointer"
             >
               Rest Squad
-            </button>
-          )}
-          {onPlayPracticeMatch && (
-            <button
-              onClick={onPlayPracticeMatch}
-              title="Play Senior XI vs National A-Squad practice match (+form & young player rating growth)"
-              className="bg-[#10151c] hover:bg-[#151d29] text-[#e2b64a] border border-[#e2b64a]/40 text-xs font-semibold px-2.5 py-1.5 rounded-lg transition cursor-pointer"
-            >
-              A-Squad Practice
             </button>
           )}
         </div>
