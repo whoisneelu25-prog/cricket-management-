@@ -882,7 +882,7 @@ export function processAnnualPlayerLifecycle(
     const role = roles[(newYear + idx) % roles.length];
     const age = 19 + Math.floor(rand() * 3); // 19-21
     const potential = 85 + Math.floor(rand() * 10); // 85-94
-    const baseSkill = 71 + Math.floor(rand() * 7); // 71-77 starting ability
+    const baseSkill = 75 + Math.floor(rand() * 6); // 75-80 starting ability
     const isSpinner = cId === 'IND' || cId === 'SL' || cId === 'AFG' || cId === 'BAN' ? rand() > 0.45 : rand() > 0.7;
 
     const newPlayerId = `PLY_ACAD_${cId}_${newYear}_${idx + 1}`;
@@ -977,5 +977,111 @@ export function processAnnualPlayerLifecycle(
   career.aiTeams = initializeAITeams(career.selectedTeamId, career);
 
   return news;
+}
+
+/**
+ * Generates an initial batch of young new-gen academy prospects (1 per Core 12 nation)
+ * so both new career saves and migrated old saves immediately feature emerging talent.
+ */
+export function generateInitialEmergingPlayers(seed: number = 202611): Player[] {
+  const rand = mulberry32(seed);
+  const coreNations = ['IND', 'AUS', 'ENG', 'PAK', 'RSA', 'NZL', 'SL', 'BAN', 'WI', 'AFG', 'IRE', 'ZIM'];
+  const roles: PlayerRole[] = ['BATTER', 'BOWLER', 'ALL_ROUNDER', 'WICKETKEEPER_BATTER'];
+  const emerging: Player[] = [];
+
+  coreNations.forEach((cId, idx) => {
+    const team = INTERNATIONAL_TEAMS.find((t) => t.id === cId);
+    if (!team) return;
+
+    const fNames = ACADEMY_FIRST_NAMES[cId] || ['Alex', 'Sam', 'Jordan'];
+    const lNames = ACADEMY_LAST_NAMES[cId] || ['Smith', 'Patel', 'Khan'];
+    const firstName = fNames[Math.floor(rand() * fNames.length)];
+    const lastName = lNames[Math.floor(rand() * lNames.length)];
+    const capFirst = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+    const capLast = lastName.charAt(0).toUpperCase() + lastName.slice(1);
+
+    const role = roles[(idx + Math.floor(rand() * roles.length)) % roles.length];
+    const age = 19 + Math.floor(rand() * 3); // 19-21
+    const potential = 85 + Math.floor(rand() * 10); // 85-94
+    const baseSkill = 75 + Math.floor(rand() * 6); // 75-80 starting ability
+    const isSpinner =
+      cId === 'IND' || cId === 'SL' || cId === 'AFG' || cId === 'BAN'
+        ? rand() > 0.45
+        : rand() > 0.7;
+
+    const newPlayerId = `PLY_ACAD_${cId}_2026_${idx + 1}`;
+    emerging.push({
+      id: newPlayerId,
+      name: `${capFirst} ${capLast}`,
+      shortName: `${capFirst.charAt(0)}. ${capLast}`,
+      countryId: cId,
+      countryName: team.name,
+      age,
+      gender: 'MALE',
+      status: 'ACTIVE',
+      role,
+      battingHand: rand() > 0.3 ? 'RIGHT_HAND' : 'LEFT_HAND',
+      bowlingStyle: isSpinner ? 'OFF_BREAK' : rand() > 0.25 ? 'RIGHT_ARM_FAST' : 'LEFT_ARM_FAST',
+      formatEligibility: { TEST: true, ODI: true, T20I: true },
+      isWicketKeeper: role === 'WICKETKEEPER_BATTER',
+      tier: baseSkill >= 80 ? 'B' : 'C',
+      workloadFatigue: 10,
+      fitness: 88,
+      currentForm: 80,
+      potential,
+      developmentFeedback: 'Improving',
+      testRating: baseSkill,
+      odiRating: baseSkill + 1,
+      t20Rating: baseSkill + 2,
+      attributes: {
+        technique: role === 'BOWLER' ? 52 : baseSkill + 2,
+        timing: role === 'BOWLER' ? 54 : baseSkill + 3,
+        shotSelection: role === 'BOWLER' ? 50 : baseSkill,
+        defense: role === 'BOWLER' ? 52 : baseSkill + 1,
+        aggression: baseSkill + 4,
+        powerHitting: baseSkill + 2,
+        againstPace: baseSkill + 1,
+        againstSpin: baseSkill + 1,
+        consistency: baseSkill - 2,
+        temperament: baseSkill,
+        pace: role === 'BATTER' || role === 'WICKETKEEPER_BATTER' ? 45 : isSpinner ? 50 : baseSkill + 8,
+        swing: role === 'BATTER' ? 35 : isSpinner ? 30 : baseSkill + 4,
+        seam: role === 'BATTER' ? 35 : isSpinner ? 30 : baseSkill + 4,
+        spin: isSpinner && role !== 'BATTER' ? baseSkill + 8 : 35,
+        accuracy: role === 'BATTER' ? 40 : baseSkill + 3,
+        variation: role === 'BATTER' ? 40 : baseSkill + 3,
+        control: role === 'BATTER' ? 40 : baseSkill + 2,
+        deathBowling: role === 'BATTER' ? 35 : baseSkill + 1,
+        wicketTaking: role === 'BATTER' ? 35 : baseSkill + 4,
+        stamina: 86,
+        fielding: 82,
+        catching: 81,
+        throwing: 82,
+        fitness: 88,
+        leadership: 65,
+        mentalStrength: 76,
+        currentForm: 80,
+        potential,
+      },
+      stats: {
+        TEST: createEmptyFormatStats(),
+        ODI: createEmptyFormatStats(),
+        T20I: createEmptyFormatStats(),
+      },
+      simulatedStats: {
+        TEST: createEmptyFormatStats(),
+        ODI: createEmptyFormatStats(),
+        T20I: createEmptyFormatStats(),
+      },
+      sourceMeta: {
+        source: 'National Cricket Academy',
+        sourceId: newPlayerId,
+        lastUpdated: '2026-11-15',
+        verified: true,
+      },
+    });
+  });
+
+  return emerging;
 }
 

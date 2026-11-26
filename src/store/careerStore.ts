@@ -62,6 +62,7 @@ import {
   initializeAITeams,
   selectAIPlayingXIForMatch,
   applyPostMatchAIUpdates,
+  generateInitialEmergingPlayers,
 } from '../engine/aiTeamEngine';
 import {
   initializeDetailedTeamRankings,
@@ -354,7 +355,7 @@ export function createNewCareerSave(
     rankingHistory: [initialSnapshot],
     notifications: initialNotifications,
     teamMorale: 85,
-    emergingPlayers: [],
+    emergingPlayers: generateInitialEmergingPlayers(careerSeed),
     archivedMatches: [],
     customSquadXI: {
       TEST: testConfig.playingXI,
@@ -2059,7 +2060,10 @@ export function sanitizeCareerSave(career: CareerSave): CareerSave {
     playerRankings,
     notifications,
     teamMorale,
-    emergingPlayers: career.emergingPlayers || [],
+    emergingPlayers:
+      career.emergingPlayers && career.emergingPlayers.length > 0
+        ? career.emergingPlayers
+        : generateInitialEmergingPlayers(),
     archivedMatches: career.archivedMatches || [],
     formatSquads: sanitizedFormatSquads,
     customSquadXI: {
